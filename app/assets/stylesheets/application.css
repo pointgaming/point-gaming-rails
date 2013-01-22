@@ -8,6 +8,19 @@
  * You're free to add application-wide styles to this file and they'll appear at the top of the
  * compiled file, but it's generally better to create a new file per style scope.
  *
+ *=require bootstrap_and_overrides
+ *=require akira
+ *=require chatbox
  *= require_self
  *= require_tree .
 */
+#logo-container {
+  margin-bottom: 15px;
+}
+#lobby-games {
+  height: 400px;
+  overflow-y: scroll;
+}
+#game-room-info {
+  height: 300px;
+}

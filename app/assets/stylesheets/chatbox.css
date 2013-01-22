@@ -1,0 +1,11 @@
+#chatbox-form input {
+  width: 80%;
+}
+
+#chatbox-form button {
+  width: 15%;
+}
+
+#chatbox {
+  height: 350px;
+}
