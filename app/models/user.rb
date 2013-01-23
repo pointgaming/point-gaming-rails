@@ -52,4 +52,5 @@ class User
 
   has_many :auth_tokens, :validate=>false
   has_many :friends, :validate=>false
+  has_many :ignores, :validate=>false
 end
