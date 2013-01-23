@@ -2,6 +2,7 @@ Pointgaming::Application.routes.draw do
   namespace :api, defaults: {format: 'json'} do
     namespace :v1 do
       resources :sessions
+      resources :friends
     end
   end
 

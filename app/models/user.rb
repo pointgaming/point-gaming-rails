@@ -7,6 +7,8 @@ class User
          :multi_token_authenticatable, :recoverable, 
          :rememberable, :trackable, :validatable
 
+  field :_id, :type => String, :default => proc{ UUIDTools::UUID.random_create.to_s }
+
   ## Database authenticatable
   field :email,              :type => String, :default => ""
   field :encrypted_password, :type => String, :default => ""
@@ -49,4 +51,5 @@ class User
   validates_uniqueness_of :username, :email, :case_sensitive => false
 
   has_many :auth_tokens, :validate=>false
+  has_many :friends, :validate=>false
 end
