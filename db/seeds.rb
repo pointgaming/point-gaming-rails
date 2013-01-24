@@ -12,13 +12,36 @@ games = [
   'Counter-Strike: Go',
   'League of Legends',
   'StarCraft II',
-  'Counter-Strike: Source'
+  'Counter-Strike: Source',
+  'Quake 3',
+  'Quake Live'
 ]
 games.each {|game_name| 
   game = Game.create! :name => game_name, :player_count => 0
   puts 'New game created: ' << game.name
 
+  puts 'Creating 100 game rooms...'
   100.times { |i|
     game.rooms.create!({:description => "Room #{i}"})
   }
+}
+
+
+puts 'Creating Tournaments'
+
+game = Game.find_by(name: 'Quake Live')
+Tournament.create! :start_datetime => Time.now, :game => game, :game_type => 'Duel', :prize_pool => '$1,000 Cash/1000 Points', :player_limit => 5000, :player_count => 3492
+
+game = Game.find_by(name: 'Quake 3')
+Tournament.create! :start_datetime => Time.now, :game => game, :game_type => 'CTF', :prize_pool => '$1,000 Cash/1000 Points', :player_limit => 1000, :player_count => 459
+
+game = Game.find_by(name: 'Counter-Strike: Go')
+Tournament.create! :start_datetime => Time.now, :game => game, :game_type => 'Team 5vs5', :prize_pool => '$20,000 Cash/50,000 Points', :player_limit => 50000, :player_count => 12361
+
+
+puts 'Creating 100 Streams'
+
+game = Game.find_by(name: 'Quake Live')
+100.times {|i|
+  Stream.create! :name => "dProductions #{i}", :game => game, :details => 'Next Match Rapha vs Zero4 Map: Bloodrun', :betting => true, :viewer_count => 25024
 }

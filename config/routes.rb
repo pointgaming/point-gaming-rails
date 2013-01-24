@@ -1,4 +1,12 @@
 Pointgaming::Application.routes.draw do
+  resources :leagues
+  resources :tournaments
+  resources :streams
+  resources :store
+  resources :forums
+  resources :faq
+  resources :settings
+
   resources :games
   resources :lobbies do
     resources :rooms

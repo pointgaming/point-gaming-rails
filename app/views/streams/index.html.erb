@@ -1,0 +1,26 @@
+<div class="page-header">
+  <h1>Streams</h1>
+</div>
+
+<div class="row-fluid">
+  <% if @streams %>
+    <% @streams.each_slice(3) do |streams| %>
+      <ul class="thumbnails">
+        <% streams.each do |stream| %>
+          <li class="span3">
+            <div class="thumbnail">
+              <%= link_to image_tag('stream.png'), stream_path(stream) %>
+              <div class="caption">
+                <p>Stream Name: <%= stream.name %></p>
+                <p>Game: <%= stream.game.name %></p>
+                <p>Viewers: <%= stream.viewer_count %></p>
+                <p>Betting: <%= stream.betting ? 'Yes' : 'No' %></p>
+                <p><%= link_to "Watch", stream_path(stream), :class => 'btn btn-primary' %></p>
+              </div>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+    <% end %>
+  <% end %>
+</div>

@@ -1,0 +1,31 @@
+<div class="page-header">
+  <h1>Stream: <%= @stream.name %></h1>
+</div>
+
+<div class="span5">
+  <ul class="thumbnails">
+    <li>
+      <%= link_to image_tag('stream.png'), '#', :class => 'thumbnail' %>
+    </li>
+  </ul>
+  <div class="well">
+    <%= @stream.details %>
+  </div>
+
+  <form id="chatbox-form">
+    <fieldset>
+      <legend>Chat</legend>
+
+      <pre id="chatbox" class="pre-scrollable"></pre>
+
+      <div class="form-inline">
+        <input type="text" placeholder="Say anything..." />
+        <button type="submit" class="btn">Send</button>
+      </div>
+    </fieldset>
+  </form>
+</div>
+
+<div class="span5">
+  <h4>Betting Open: Rapha vs Zero4 On Bloodrun</h4>
+</div>
