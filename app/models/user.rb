@@ -51,6 +51,7 @@ class User
   validates_uniqueness_of :username, :email, :case_sensitive => false
 
   has_many :auth_tokens, :validate=>false
+  has_many :coins, :validate=>false
   has_many :friends, :validate=>false
   has_many :ignores, :validate=>false
 end

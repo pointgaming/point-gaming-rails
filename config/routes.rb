@@ -14,6 +14,8 @@ Pointgaming::Application.routes.draw do
 
   namespace :api, defaults: {format: 'json'} do
     namespace :v1 do
+      resources :coins
+      resources :games
       resources :sessions
       resources :friends
       resources :ignores
