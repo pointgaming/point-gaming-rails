@@ -1,0 +1,64 @@
+<div class="page-header">
+  <h1>Lobby: <%= @game.name %></h1>
+</div>
+
+<div class="row">
+  <div class="span9">
+    <div id="lobby-games">
+      <% if @rooms %>
+        <% @rooms.each_slice(3) do |rooms| %>
+          <ul class="thumbnails">
+            <% rooms.each do |room| %>
+              <li class="span3">
+                <%= link_to image_tag('stream.png'), lobby_room_path(@game, room), :class => 'thumbnail' %>
+              </li>
+            <% end %>
+          </ul>
+        <% end %>
+      <% end %>
+    </div>
+
+    <div class="tabbable">
+      <ul class="nav nav-tabs">
+        <li class="active">
+          <a href="#chatbox-form" data-toggle="tag">Chat</a>
+        </li>
+        <li>
+          <a href="#lobby-active-games" data-toggle="tag">Active Games</a>
+        </li>
+      </ul>
+
+      <div class="tab-content">
+        <div class="tab-pane active" id="chatbox-form">
+          <form id="chatbox-form">
+            <fieldset>
+              <pre id="chatbox" class="pre-scrollable"></pre>
+
+              <div class="form-inline">
+                <input type="text" placeholder="Say anything..." />
+                <button type="submit" class="btn">Send</button>
+              </div>
+            </fieldset>
+          </form>
+        </div>
+
+        <div class="tab-pane" id="lobby-active-games">
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="span3">
+    <h4>Players: 3,252</h4>
+
+    <div class="well">
+      <ul>
+        <li>Player 1</li>
+        <li>Player 2</li>
+        <li>Player 3</li>
+        <li>Player 4</li>
+        <li>Player 5</li>
+      </ul>
+    </div>
+  </div>

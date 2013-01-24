@@ -1,0 +1,68 @@
+<div class="page-header">
+  <h1>Room: <%= @room._id %></h1>
+</div>
+
+<div class="row">
+  <div class="span9">
+    <div id="game-room-info">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Description</th>
+            <th>Team Betting</th>
+            <th>Room Stats</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><%= @room.description %></td>
+
+            <td>
+              Team Bet Amount: 1000 Points<br />
+              Your Bet Amount: 200 Points<br />
+              Time Left: 59:23
+            </td>
+
+            <td>Required to Take Room: 5000 Points</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="tabbable">
+      <ul class="nav nav-tabs">
+        <li class="active">
+          <a href="#chatbox-form" data-toggle="tag">Chat</a>
+        </li>
+      </ul>
+
+      <div class="tab-content">
+        <div class="tab-pane active" id="chatbox-form">
+          <form id="chatbox-form">
+            <fieldset>
+              <pre id="chatbox" class="pre-scrollable"></pre>
+
+              <div class="form-inline">
+                <input type="text" placeholder="Say anything..." />
+                <button type="submit" class="btn">Send</button>
+              </div>
+            </fieldset>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="span3">
+    <h4>Players: <%= @room.player_count %></h4>
+
+    <div class="well">
+      <ul>
+        <li>Player 1</li>
+        <li>Player 2</li>
+        <li>Player 3</li>
+        <li>Player 4</li>
+        <li>Player 5</li>
+      </ul>
+    </div>
+  </div>

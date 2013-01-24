@@ -1,0 +1,22 @@
+<%- model_class = Game -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => model_class.model_name.human.pluralize %></h1>
+</div>
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th><%= model_class.human_attribute_name(:name) %></th>
+      <th><%= model_class.human_attribute_name(:player_count) %></th>
+      <th><%= model_class.human_attribute_name(:status) %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @games.each do |game| %>
+      <tr>
+        <td><%= link_to game.name, lobby_path(game) %></td>
+        <td><%= game.player_count %></td>
+        <td><%= "n/a" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
