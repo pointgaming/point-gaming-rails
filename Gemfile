@@ -8,6 +8,8 @@ gem 'rails', '3.2.3'
 # gem 'sqlite3'
 gem 'mongoid', "~> 3.0.0"
 
+gem 'redis-rails'
+
 gem 'devise'
 
 gem 'uuidtools'
