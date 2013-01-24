@@ -6,10 +6,10 @@ class Api::V1::SessionsController < ApplicationController
   respond_to :json
 
   def create
-    resource = User.find_for_database_authentication(:username => params[:user_login][:username])
+    resource = User.find_for_database_authentication(:username => params[:username])
     return invalid_login_attempt unless resource
 
-    if resource.valid_password?(params[:user_login][:password])
+    if resource.valid_password?(params[:password])
       sign_in :user, resource
       @auth_token = resource.auth_tokens.build
       if @auth_token.save
@@ -38,8 +38,8 @@ class Api::V1::SessionsController < ApplicationController
   protected
 
   def ensure_params_exist
-    return unless params[:user_login].blank?
-    render :json => {:success=>false, :message=>"Missing user_login parameter"}, :status=>422
+    return unless params[:username].blank? || params[:password].blank?
+    render :json => {:success=>false, :message=>"Missing username or password parameter"}, :status=>422
   end
 
   def ensure_auth_token
