@@ -223,6 +223,8 @@ end
 
 Warden::Manager.before_logout do |user, auth, opts|
   session = auth.env['rack.session']
-  AuthToken.find(session[:auth_token]).destroy
-  session.delete(:auth_token)
+  if session[:auth_token]
+    AuthToken.find(session[:auth_token]).destroy
+    session.delete(:auth_token)
+  end
 end
