@@ -2,7 +2,8 @@ var PointGaming = PointGaming || {};
 
 $(function () {
   var socket = io.connect(PointGaming.socketio_uri);
-  socket.on("connect", function() {
+  socket.on("connect", function() {});
+  socket.on("ready", function(){
     if (PointGaming.authToken) {
       // register listener for auth callback
       socket.on("auth_resp", function(data){
