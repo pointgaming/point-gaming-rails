@@ -1,0 +1,12 @@
+defaults: &DEFAULTS
+  socketio_uri: http://localhost:9999/
+
+development:
+  <<: *DEFAULTS
+
+test:
+  <<: *DEFAULTS
+
+prod:
+  <<: *DEFAULTS
+  socketio_uri: http://dev.pointgaming.net:4000/

@@ -216,8 +216,13 @@ Devise.setup do |config|
   # change the failure app, you can configure them inside the config.warden block.
 
   config.warden do |manager|
-  #   manager.intercept_401 = false
+    
     manager.default_strategies(:scope => :user).unshift :multi_token_authenticatable
   end
 end
 
+Warden::Manager.before_logout do |user, auth, opts|
+  session = auth.env['rack.session']
+  AuthToken.find(session[:auth_token]).destroy
+  session.delete(:auth_token)
+end

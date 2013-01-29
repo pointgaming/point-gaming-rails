@@ -20,6 +20,17 @@
     <%= favicon_link_tag 'favicon.ico', :rel => 'shortcut icon' %>
 
     <%= javascript_include_tag "application" %>
+    <%= javascript_tag do %>
+      var PointGaming;
+      if (!PointGaming) {
+        PointGaming = {};
+      }
+
+      PointGaming.socketio_uri = "<%= APP_CONFIG['socketio_uri'] %>";
+      <% if current_user && session[:auth_token] %>
+        PointGaming.authToken = "<%= session[:auth_token] %>";
+      <% end %>
+    <% end %>
   </head>
   <body>
 

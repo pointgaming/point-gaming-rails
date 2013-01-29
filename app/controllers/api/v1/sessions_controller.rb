@@ -26,6 +26,10 @@ class Api::V1::SessionsController < ApplicationController
     end
   end
 
+  def show
+    render :json => {:success=>true, username: current_user.username}
+  end
+
   def destroy
     if @auth_token.destroy
       sign_out :user
