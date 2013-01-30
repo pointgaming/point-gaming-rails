@@ -62,3 +62,39 @@
       </ul>
     </div>
   </div>
+</div>
+
+<%= javascript_tag do %>
+  var createChatRoom = function() {
+    var chat_room = new PointGaming.chatbox({
+      message_window_selector: "#chatbox",
+      chat_room: "<%="#{@game._id}"%>",
+    }, PointGaming.socket);
+
+    $("#chatbox-form").submit(function(e){
+      var inputbox = $('input[type="text"]', this);
+      var message = inputbox.val();
+      if (message) chat_room.sendMessage(message);
+      e.preventDefault();
+      inputbox.val('');
+    });
+  };
+
+  $(function () {
+    if (PointGaming.authToken) {
+      PointGaming.socket = io.connect(PointGaming.socketio_uri);
+      PointGaming.socket.on("ready", function(){
+        // send auth request
+        PointGaming.socket.emit("auth", {auth_token: PointGaming.authToken});
+      });
+
+      // register listener for auth callback
+      PointGaming.socket.on("auth_resp", function(data){
+        if (data.success === true && data.username) {
+          PointGaming.username = data.username;
+          PointGaming.chatroom = createChatRoom();
+        }
+      });
+    }
+  });
+<% end %>
