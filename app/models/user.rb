@@ -45,7 +45,10 @@ class User
   field :first_name
   field :last_name
 
-  attr_accessible :username, :first_name, :last_name, :email, :password, :password_confirmation, :remember_me
+  # online/offline chat status
+  field :status
+
+  attr_accessible :username, :first_name, :last_name, :email, :password, :password_confirmation, :remember_me, :status
 
   validates_presence_of :username, :first_name, :last_name
   validates_uniqueness_of :username, :email, :case_sensitive => false

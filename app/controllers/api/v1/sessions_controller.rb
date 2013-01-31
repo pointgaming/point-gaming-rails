@@ -30,6 +30,19 @@ class Api::V1::SessionsController < ApplicationController
     render :json => {:success=>true, username: current_user.username}
   end
 
+  def update
+    if params[:status].nil?
+      render :json => {:success=>false, :message=>"Missing status parameter"}, :status=>422
+      return
+    end
+
+    if current_user.update_attributes(:status => params[:status])
+      render :json => {:success=>true}
+    else
+      render :json => {:success=>false, :message=>"Failed to update the user status", :errors=>current_user.errors}
+    end
+  end
+
   def destroy
     if @auth_token.destroy
       sign_out :user
