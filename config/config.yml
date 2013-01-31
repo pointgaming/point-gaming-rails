@@ -7,6 +7,6 @@ development:
 test:
   <<: *DEFAULTS
 
-prod:
+production:
   <<: *DEFAULTS
   socketio_uri: http://dev.pointgaming.net:4000/
