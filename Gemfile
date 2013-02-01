@@ -10,6 +10,7 @@ gem 'mongoid', "~> 3.0.0"
 
 gem 'redis-rails'
 
+gem 'bunny', '>= 0.9.0.pre6'
 gem 'devise'
 
 gem 'uuidtools'
