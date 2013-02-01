@@ -12,12 +12,13 @@ Pointgaming::Application.routes.draw do
     resources :rooms
   end
 
-  namespace :api, defaults: {format: 'json'} do
+  namespace :api do
     namespace :v1 do
       resources :coins
       resources :games
       resources :sessions
       resources :friends
+      resources :friend_requests
       resources :ignores
     end
   end

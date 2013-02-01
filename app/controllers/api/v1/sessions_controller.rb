@@ -1,4 +1,4 @@
-class Api::V1::SessionsController < ApplicationController
+class Api::V1::SessionsController < Api::ApplicationController
   before_filter :authenticate_user!, :except=>[:create]
   before_filter :ensure_params_exist, :only=>[:create]
   before_filter :ensure_auth_token, :only=>[:destroy]

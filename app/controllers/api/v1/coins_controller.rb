@@ -1,4 +1,4 @@
-class Api::V1::CoinsController < ApplicationController
+class Api::V1::CoinsController < Api::ApplicationController
   before_filter :authenticate_user!
   before_filter :ensure_params_exist, :only=>[:create]
   before_filter :ensure_coin, :only=>[:show, :destroy]

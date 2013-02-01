@@ -1,4 +1,4 @@
-class Api::V1::IgnoresController < ApplicationController
+class Api::V1::IgnoresController < Api::ApplicationController
   before_filter :authenticate_user!
   before_filter :ensure_params_exist, :only=>[:create, :destroy]
   before_filter :ensure_user, :only=>[:create, :destroy]

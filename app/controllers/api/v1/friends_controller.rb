@@ -1,7 +1,7 @@
-class Api::V1::FriendsController < ApplicationController
+class Api::V1::FriendsController < Api::ApplicationController
   before_filter :authenticate_user!
-  before_filter :ensure_params_exist, :only=>[:create, :destroy]
-  before_filter :ensure_user, :only=>[:create, :destroy]
+  before_filter :ensure_params_exist, :only=>[:destroy]
+  before_filter :ensure_user, :only=>[:destroy]
   before_filter :ensure_friend, :only=>[:destroy]
 
   respond_to :json
@@ -13,15 +13,6 @@ class Api::V1::FriendsController < ApplicationController
       render :json => {:success=>true, :friends=>@friends}
     rescue
       render :json => {:success=>true, :friends=>[]}
-    end
-  end
-
-  def create
-    @friend = Friend.create({user_id: current_user._id, friend_user_id: @user._id})
-    if @friend.save
-      render :json => {:success=>true}
-    else
-      render :json => {:success=>false, :message=>"Failed to create the friend relation", :errors=>@friend.errors}, :status=>500
     end
   end
 

@@ -1,4 +1,4 @@
-class Api::V1::GamesController < ApplicationController
+class Api::V1::GamesController < Api::ApplicationController
   before_filter :authenticate_user!
 
   respond_to :json
