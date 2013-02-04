@@ -1,8 +1,5 @@
 class Api::V1::FriendsController < Api::ApplicationController
   before_filter :authenticate_user!
-  before_filter :ensure_params_exist, :only=>[:destroy]
-  before_filter :ensure_user, :only=>[:destroy]
-  before_filter :ensure_friend, :only=>[:destroy]
 
   respond_to :json
 
@@ -17,33 +14,18 @@ class Api::V1::FriendsController < Api::ApplicationController
   end
 
   def destroy
-    if @friend.destroy
+    begin
+      @friend = Friend.find_by(user_id: current_user._id, friend_user_id: params[:id])
+      @friend2 = Friend.where(user_id: @friend.friend_user_id, friend_user_id: current_user._id)
+    rescue Mongoid::Errors::DocumentNotFound
+      render :json => {:success=>false, :message=>"Invalid friend id"}, :status=>404
+      return
+    end
+
+    if @friend.destroy && @friend2.destroy
       render :json => {:success=>true}
     else
-      render :json => {:success=>false, :message=>"Failed to delete the friend relation", :errors=>@friend.errors}, :status=>500
-    end
-  end
-
-  protected
-
-  def ensure_params_exist
-    return unless params[:user].blank?
-    render :json => {:success=>false, :message=>"Missing user parameter"}, :status=>422
-  end
-
-  def ensure_user
-    begin
-      @user = User.find_by(username: params[:user][:username])
-    rescue Mongoid::Errors::DocumentNotFound
-      render :json => {:success=>false, :message=>"User not found"}, :status=>404
-    end
-  end
-
-  def ensure_friend
-    begin
-      @friend = Friend.find_by(user_id: current_user._id, friend_user_id: @user._id)
-    rescue Mongoid::Errors::DocumentNotFound
-      render :json => {:success=>false, :message=>"You are not friends with that user"}, :status=>404
+      render :json => {:success=>false, :message=>"Failed to delete the friend relation", :errors=>[@friend.errors,@friend2.errors]}, :status=>500
     end
   end
 end
