@@ -229,4 +229,5 @@ Warden::Manager.before_logout do |user, auth, opts|
     auth_token.save
     session.delete(:auth_token)
   end
+  session.delete(:email) if session[:email]
 end
