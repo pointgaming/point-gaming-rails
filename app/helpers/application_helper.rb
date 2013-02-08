@@ -6,4 +6,8 @@ module ApplicationHelper
             link_to link_text, link_path
         end
     end
+
+    def store_path
+      APP_CONFIG['store_url']
+    end
 end
