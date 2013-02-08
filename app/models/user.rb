@@ -2,7 +2,7 @@ class User
   include Mongoid::Document
 
   before_create :create_store_user
-  before_save :update_store_user
+  before_update :update_store_user
 
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
