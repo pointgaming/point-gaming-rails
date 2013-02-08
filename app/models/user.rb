@@ -1,5 +1,9 @@
 class User
   include Mongoid::Document
+
+  before_create :create_store_user
+  before_save :update_store_user
+
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
@@ -57,4 +61,29 @@ class User
   has_many :coins, :validate=>false
   has_many :friends, :validate=>false
   has_many :ignores, :validate=>false
+
+protected
+
+  def create_store_user
+    store_user = StoreUser.new :email => self.email
+    if store_user.save
+      true
+    else
+      self.errors[:base] << "Failed to create your form account."
+      false
+    end
+  end
+
+  def update_store_user
+    if self.email_changed?
+      store_user = StoreUser.find self.email_was
+      store_user.email = self.email
+      if store_user.save
+        true
+      else
+        self.errors[:base] << "Failed to update your form account."
+        false
+      end
+    end
+  end
 end
