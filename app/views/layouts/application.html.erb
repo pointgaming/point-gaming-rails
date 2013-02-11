@@ -37,7 +37,11 @@
     <div class="container">
       <%= render 'shared/navbar', :locals => {:current_path => @current_path} %>
 
-      <%= yield %>
+      <% if controller.respond_to?(:sub_layout) && controller.sub_layout %>
+        <%= render :partial=>"layouts/#{controller.sub_layout}" %>
+      <% else %>
+        <%= yield %>
+      <% end %>
     </div>
 
 

@@ -6,6 +6,7 @@ Pointgaming::Application.routes.draw do
   resources :forums
   resources :faq
   resources :settings
+  resources :subscriptions, only: [:index, :new, :create]
 
   resources :games
   resources :lobbies do
