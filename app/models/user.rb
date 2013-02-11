@@ -3,6 +3,7 @@ class User
 
   before_create :create_store_user
   before_update :update_store_user
+  after_destroy :destroy_store_user
 
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
@@ -84,6 +85,15 @@ protected
         self.errors[:base] << "Failed to update your form account."
         false
       end
+    end
+  end
+
+  def destroy_store_user
+    begin
+      store_user = StoreUser.find self.email
+      store_user.destroy
+    rescue ActiveResource::ResourceNotFound
+      # StoreUser was not found
     end
   end
 end
