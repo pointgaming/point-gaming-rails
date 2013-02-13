@@ -1,0 +1,54 @@
+<%- model_class = Bet -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => model_class.model_name.human.pluralize %></h1>
+</div>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th><%= model_class.human_attribute_name(:id) %></th>
+      <th><%= model_class.human_attribute_name(:_type) %></th>
+      <th><%= model_class.human_attribute_name(:_id) %></th>
+      <th><%= model_class.human_attribute_name(:winner) %></th>
+      <th><%= model_class.human_attribute_name(:loser) %></th>
+      <th><%= model_class.human_attribute_name(:map) %></th>
+      <th><%= model_class.human_attribute_name(:amount) %></th>
+      <th><%= model_class.human_attribute_name(:odds) %></th>
+      <th><%= model_class.human_attribute_name(:stream_id) %></th>
+      <th><%= model_class.human_attribute_name(:bookie_id) %></th>
+      <th><%= model_class.human_attribute_name(:bettor_id) %></th>
+      <th><%= model_class.human_attribute_name(:created_at) %></th>
+      <th><%=t '.actions', :default => t("helpers.actions") %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @bets.each do |bet| %>
+      <tr>
+        <td><%= link_to bet.id, user_stream_bet_path(bet) %></td>
+        <td><%= bet._type %></td>
+        <td><%= bet._id %></td>
+        <td><%= bet.winner %></td>
+        <td><%= bet.loser %></td>
+        <td><%= bet.map %></td>
+        <td><%= bet.amount %></td>
+        <td><%= bet.odds %></td>
+        <td><%= bet.stream_id %></td>
+        <td><%= bet.bookie_id %></td>
+        <td><%= bet.bettor_id %></td>
+        <td><%=l bet.created_at %></td>
+        <td>
+          <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                      edit_user_stream_bet_path(bet), :class => 'btn btn-mini' %>
+          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                      user_stream_bet_path(bet),
+                      :method => :delete,
+                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                      :class => 'btn btn-mini btn-danger' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to t('.new', :default => t("helpers.links.new")),
+            new_user_stream_bet_path,
+            :class => 'btn btn-primary' %>

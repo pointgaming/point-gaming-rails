@@ -7,6 +7,15 @@ Pointgaming::Application.routes.draw do
   resources :faq
   resources :settings
   resources :subscriptions, only: [:index, :new, :create]
+  resources :user_streams do
+    resources :bets, only: [:new, :show, :create, :update, :destroy]
+    resources :collaborators, only: [:index, :new, :create, :destroy]
+    member do
+      put 'change_owner'
+      put 'start'
+      put 'stop'
+    end
+  end
 
   resources :games
   resources :lobbies do

@@ -13,6 +13,8 @@
 //= require jquery
 //= require jquery_ujs
 //= require twitter/bootstrap
-//= require socket.io
-//= require chatbox
-//= require_tree .
+//= require bootstrap-modalmanager
+//= require bootstrap-modal
+//= require ./global/socket.io
+//= require ./global/chatbox
+//= require_tree ./global

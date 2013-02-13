@@ -49,6 +49,7 @@ class User
   field :username
   field :first_name
   field :last_name
+  field :points, type: Integer, default: 0
 
   # online/offline chat status
   field :status

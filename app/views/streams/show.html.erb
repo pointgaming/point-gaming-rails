@@ -1,31 +1,119 @@
+<%= javascript_include_tag "stream" %>
+
+<div id="ajax-modal" class="modal hide fade" tabindex="-1"></div>
+
 <div class="page-header">
-  <h1>Stream: <%= @stream.name %></h1>
+  <h1><%= @stream.name %></h1>
+
+  <% if @stream_owner.user_id === current_user.id %>
+    <div class="breadcrumb" style="margin: 0">
+      <%= link_to_modal 'Admin', user_stream_path(@stream), 'data-width' => "950", 'data-height' =>"600", 'data-title' => "Stream Admin", :remote => true, :class => 'btn btn-primary' %>
+    </div>
+  <% end %>
 </div>
 
-<div class="span5">
-  <ul class="thumbnails">
-    <li>
-      <%= link_to image_tag('stream.png'), '#', :class => 'thumbnail' %>
-    </li>
-  </ul>
-  <div class="well">
-    <%= @stream.details %>
+<div class="row">
+  <div class="span6">
+    <ul class="thumbnails">
+      <li>
+        <%= link_to image_tag('stream.png'), '#', :class => 'thumbnail' %>
+      </li>
+    </ul>
+
+    <% if @stream.betting %>
+      <fieldset>
+        <legend>Details</legend>
+
+        <div class="well">
+          <%= @stream.details %>
+        </div>
+      </fieldset>
+    <% end %>
+
+    <form id="chatbox-form">
+      <fieldset>
+        <legend>Chat</legend>
+
+        <pre id="chatbox" class="pre-scrollable"></pre>
+
+        <div class="form-inline">
+          <input type="text" placeholder="Say anything..." />
+          <button type="submit" class="btn">Send</button>
+        </div>
+      </fieldset>
+    </form>
   </div>
 
-  <form id="chatbox-form">
-    <fieldset>
-      <legend>Chat</legend>
-
-      <pre id="chatbox" class="pre-scrollable"></pre>
-
-      <div class="form-inline">
-        <input type="text" placeholder="Say anything..." />
-        <button type="submit" class="btn">Send</button>
+  <div class="span6">
+    <% if @stream.betting %>
+      <h4>Betting Open: <%= @stream.bet_details %></h4>
+      <div class="thumbnail">
+        <div class="caption">
+          <%= link_to_modal 'Propose a Bet', new_user_stream_bet_path(@stream), :remote => true, :class => 'btn btn-primary', style: 'width: 95%' %>
+        </div>
+        <div id="bet-container" class="caption">
+          <% unless @bets.empty? %>
+            <% @bets.each do |b| %>
+              <div id="<%= b._id %>" class="well well-small bet">
+                <%= "#{b.bookie.try(:username)}: #{b.winner}>#{b.loser} #{b.amount} Points #{b.odds}" %>
+                <div class="pull-right">
+                  <% if b.bettor %>
+                    Accepted: <%= b.bettor.try(:username) %>
+                  <% else %>
+                    <% if b.bookie.try(:id) === current_user.id %>
+                      <%= link_to "Cancel", user_stream_bet_path(@stream, b),
+                              'method' => 'delete', rel: 'ajax',
+                              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) } %>
+                    <% else %>
+                      <%= link_to "Accept", user_stream_bet_path(@stream, b),
+                              'method' => 'put', rel: 'ajax',
+                              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) } %>
+                    <% end %>
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
       </div>
-    </fieldset>
-  </form>
+    <% else %>
+      <h4>Betting Closed</h4>
+    <% end %>
+  </div>
 </div>
 
-<div class="span5">
-  <h4>Betting Open: Rapha vs Zero4 On Bloodrun</h4>
-</div>
+<%= javascript_tag do %>
+  $(function () {
+    if (PointGaming.authToken) {
+      PointGaming.socket = io.connect(PointGaming.socketio_uri);
+      PointGaming.socket.on("ready", function(){
+        // send auth request
+        PointGaming.socket.emit("auth", {auth_token: PointGaming.authToken});
+      });
+
+      // register listener for auth callback
+      PointGaming.socket.on("auth_resp", function(data){
+        if (data.success === true && data.user) {
+          PointGaming.user = data.user;
+        }
+      });
+
+      new PointGaming.BetsController({
+        chat_room: "s.<%="#{@stream._id}"%>",
+      });
+
+      var chat_room = new PointGaming.chatbox({
+        message_window_selector: "#chatbox",
+        chat_room: "s.<%="#{@stream._id}"%>",
+      }, PointGaming.socket);
+
+      $("#chatbox-form").submit(function(e){
+        var inputbox = $('input[type="text"]', this);
+        var message = inputbox.val();
+        if (message) chat_room.sendMessage(message);
+        e.preventDefault();
+        inputbox.val('');
+      });
+    }
+  });
+<% end %>

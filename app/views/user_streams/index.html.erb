@@ -1,0 +1,23 @@
+<%- model_class = Stream -%>
+<h2><%=t '.title', :default => model_class.model_name.human.pluralize %></h2>
+
+<div class="breadcrumb">
+  <%= link_to t('.new', :default => t("helpers.links.new")), new_user_stream_path, :class => 'btn btn-primary' %>
+</div>
+
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th><%= model_class.human_attribute_name(:name) %></th>
+      <th>Owner</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @streams.each do |stream| %>
+      <tr>
+        <td><%= link_to stream.name, user_stream_path(stream) %></td>
+        <td><%= stream.owner.try(:user).try(:username) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

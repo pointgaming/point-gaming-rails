@@ -7,5 +7,7 @@ class StreamsController < ApplicationController
 
   def show
     @stream = Stream.find params[:id]
+    @stream_owner = @stream.owner
+    @bets = Bet.where(stream_id: @stream._id).any_of({:bettor_id.in => [current_user._id, nil]}, {bookie_id: current_user._id}).all
   end
 end

@@ -27,7 +27,7 @@ class Api::V1::SessionsController < Api::ApplicationController
   end
 
   def show
-    render :json => {:success=>true, username: current_user.username}
+    render :json => {:success=>true, user: current_user}
   end
 
   def update

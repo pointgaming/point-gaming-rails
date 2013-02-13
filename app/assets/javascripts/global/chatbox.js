@@ -7,7 +7,6 @@ PointGaming.chatbox = function(options, socket){
   this.socket = socket;
 
   this.registerHandlers();
-  this.joinChat();
 };
 
 PointGaming.chatbox.prototype.appendMessage = function(message) {
@@ -23,7 +22,7 @@ PointGaming.chatbox.prototype.joinChat = function() {
 PointGaming.chatbox.prototype.sendMessage = function(message) {
   this.socket.emit('message', {
     chat: this.exchange_name, 
-    username: PointGaming.username, 
+    username: PointGaming.user.username, 
     message: message
   });
 };
@@ -36,12 +35,18 @@ PointGaming.chatbox.prototype.handleJoinChat = function(data) {
   this.appendMessage("<p><strong>" + message + "</strong></p>");
 };
 
+PointGaming.chatbox.prototype.handleAuthResponse = function(data) {
+  if (data.success === true) {
+    this.joinChat();
+  }
+};
+
 PointGaming.chatbox.prototype.handleMessage = function(data) {
   var self = this;
   var parseMessage = function() {
     if (data.exchange === 'c.'+self.exchange_name) {
       return "<p><strong>" + data.username + ":</strong> " + data.message + "</p>";
-    } else if (data.exchange === 'u.'+PointGaming.username) {
+    } else if (data.exchange === 'u.'+PointGaming.user.username) {
       return "<p><strong>" + data.username + " whispers:</strong> " + data.message + "</p>";
     }
     return "";
@@ -55,6 +60,8 @@ PointGaming.chatbox.prototype.handleMessage = function(data) {
 
 PointGaming.chatbox.prototype.registerHandlers = function() {
   var self = this;
+
+  this.socket.on("auth_resp", function(data){ self.handleAuthResponse(data); });
 
   this.socket.on("join_chat", function(data){ self.handleJoinChat(data); });
 

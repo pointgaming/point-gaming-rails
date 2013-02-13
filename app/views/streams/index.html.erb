@@ -11,10 +11,11 @@
             <div class="thumbnail">
               <%= link_to image_tag('stream.png'), stream_path(stream) %>
               <div class="caption">
-                <p>Stream Name: <%= stream.name %></p>
-                <p>Game: <%= stream.game.name %></p>
-                <p>Viewers: <%= stream.viewer_count %></p>
+                <h3><%= stream.name %></h3>
+                <p>Streaming: <%= stream.streaming ? 'Yes' : 'No' %></p>
                 <p>Betting: <%= stream.betting ? 'Yes' : 'No' %></p>
+                <p>Game: <%= stream.game.try(:name) %></p>
+                <p>Viewers: <%= stream.viewer_count %></p>
                 <p><%= link_to "Watch", stream_path(stream), :class => 'btn btn-primary' %></p>
               </div>
             </div>
