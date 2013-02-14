@@ -34,6 +34,7 @@ class Stream
   def team_options
     [[team1], [team2]]
   end
+
 private
 
   def betting_enabled?

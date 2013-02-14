@@ -1,4 +1,5 @@
 //= require ./stream/bets_controller
+//= require ./stream/streams_controller
 $(function(){
     var $modal = $('#ajax-modal');
 
