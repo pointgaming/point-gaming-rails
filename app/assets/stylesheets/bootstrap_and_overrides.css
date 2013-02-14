@@ -2,3 +2,4 @@
   =require bootstrap.min
   =require bootstrap-responsive.min
   */
+.modal form { margin-bottom: 0; }

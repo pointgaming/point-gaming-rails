@@ -1,25 +1,27 @@
 <%= form_for [:user_stream, @bet] do |f| %>
-  <div class="control-group">
-    <%= f.select :winner, @stream.team_options, include_blank: '- Select -', :class => 'text_field' %> will beat 
-    <%= f.select :loser, @stream.team_options, include_blank: '- Select -', :class => 'text_field' %> on map 
-    <%= f.text_field :map, :class => 'text_field', disabled: true %>
-  </div>
+  <div class="modal-body">
+    <div class="control-group">
+      <%= f.select :winner, @stream.team_options, include_blank: '- Select -', :class => 'text_field' %> will beat 
+      <%= f.select :loser, @stream.team_options, include_blank: '- Select -', :class => 'text_field' %> on map 
+      <%= f.text_field :map, :class => 'text_field', disabled: true %>
+    </div>
 
-  <div class="control-group">
-    <%= f.label :amount, :class => 'control-label' %>
-    <div class="controls">
-      <%= f.text_field :amount, :class => 'text_field' %>
+    <div class="control-group">
+      <%= f.label :amount, :class => 'control-label' %>
+      <div class="controls">
+        <%= f.text_field :amount, :class => 'text_field' %>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <%= f.label :odds, :class => 'control-label' %>
+      <div class="controls">
+        <%= f.select :odds, f.object.odds_options, :class => 'text_field' %>
+      </div>
     </div>
   </div>
 
-  <div class="control-group">
-    <%= f.label :odds, :class => 'control-label' %>
-    <div class="controls">
-      <%= f.select :odds, f.object.odds_options, :class => 'text_field' %>
-    </div>
-  </div>
-
-  <div class="form-actions">
+  <div class="modal-footer">
     <%= f.submit nil, :class => 'btn btn-primary' %>
     <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
             stream_path(@stream), :class => 'btn', 'data-dismiss' => 'modal' %>

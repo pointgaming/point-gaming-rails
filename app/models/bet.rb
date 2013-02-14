@@ -18,10 +18,15 @@ class Bet
   validates :winner, :presence=>true
   validates :loser, :presence=>true
   validates :map, :presence=>true
-  validates :amount, :presence=>true
+  validates :amount, :presence=>true, :numericality => true
   validates :odds, :presence=>true
+  validate :check_winner_and_loser
 
   def odds_options
     ['1 to 1', '1 to 5']
+  end
+
+  def check_winner_and_loser
+    errors.add(:loser, "cannot be the same as winner") if winner === loser
   end
 end
