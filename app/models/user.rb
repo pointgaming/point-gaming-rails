@@ -1,8 +1,11 @@
 class User
   include Mongoid::Document
 
+  before_create :create_forum_user
   before_create :create_store_user
+  before_update :update_forum_user
   before_update :update_store_user
+  after_destroy :destroy_forum_user
   after_destroy :destroy_store_user
 
   # Include default devise modules. Others available are:
@@ -65,13 +68,45 @@ class User
   has_many :ignores, :validate=>false
 
 protected
+  def create_forum_user
+    forum_user = ForumUser.new :email => self.email, :username => self.username
+    if forum_user.save
+      true
+    else
+      self.errors[:base] << "Failed to create your form account."
+      false
+    end
+  end
+
+  def update_forum_user
+    if self.email_changed? || self.username_changed?
+      forum_user = ForumUser.find self.email_was
+      forum_user.email = self.email
+      forum_user.username = self.username
+      if forum_user.save
+        true
+      else
+        self.errors[:base] << "Failed to update your forum account."
+        false
+      end
+    end
+  end
+
+  def destroy_forum_user
+    begin
+      forum_user = ForumUser.find self.email
+      forum_user.destroy
+    rescue ActiveResource::ResourceNotFound
+      # forumUser was not found
+    end
+  end
 
   def create_store_user
     store_user = StoreUser.new :email => self.email
     if store_user.save
       true
     else
-      self.errors[:base] << "Failed to create your form account."
+      self.errors[:base] << "Failed to create your store account."
       false
     end
   end
@@ -83,7 +118,7 @@ protected
       if store_user.save
         true
       else
-        self.errors[:base] << "Failed to update your form account."
+        self.errors[:base] << "Failed to update your store account."
         false
       end
     end

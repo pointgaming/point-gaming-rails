@@ -7,6 +7,10 @@ module ApplicationHelper
         end
     end
 
+    def forum_path
+      APP_CONFIG['forum_url']
+    end
+
     def store_path
       APP_CONFIG['store_url']
     end

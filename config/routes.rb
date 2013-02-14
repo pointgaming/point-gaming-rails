@@ -3,7 +3,6 @@ Pointgaming::Application.routes.draw do
   resources :tournaments
   resources :streams
   resources :store
-  resources :forums
   resources :faq
   resources :settings
   resources :subscriptions, only: [:index, :new, :create]
