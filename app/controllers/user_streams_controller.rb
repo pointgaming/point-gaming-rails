@@ -19,6 +19,11 @@ class UserStreamsController < ApplicationController
 
   def show
     @collaborators = Collaborator.where(stream_id: @stream.id).all
+
+    formats = [:html]
+    formats.unshift(:modal) if @is_ajax_request
+
+    render action: :show, formats: formats
   end
 
   def edit

@@ -2,7 +2,8 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 
   before_filter do |controller|
-    (controller.action_has_layout = false) if controller.request.xhr?
+    @is_ajax_request = controller.request.xhr?
+    controller.action_has_layout = false if @is_ajax_request
   end
 
   before_filter :set_current_path

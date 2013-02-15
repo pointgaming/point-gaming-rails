@@ -10,12 +10,15 @@ PointGaming.BetsController = function(options){
   this.registerHandlers();
 };
 
-PointGaming.BetsController.prototype.appendMessage = function(message, id) {
+PointGaming.BetsController.prototype.appendMessage = function(message, options) {
   if (!message) return;
-  id = id ? 'id="'+ id +'"' : '';
+  options = options || {};
+  var id = options.id ? 'id="'+ options.id +'"' : '',
+      data_content = options.data_content ? ' data-content="'+ options.data_content +'"' : "",
+      title = options.title ? ' title="'+ options.title +'"' : "";
 
   var message_window = $(this.bet_window_selector);
-  message_window.prepend('<div '+id+' class="well well-small bet">' + message + '</div>');
+  message_window.prepend('<div '+id + title + data_content +' class="well well-small bet">' + message + '</div>');
 };
 
 PointGaming.BetsController.prototype.joinChat = function() {
@@ -56,14 +59,14 @@ PointGaming.BetsController.prototype.handleMessage = function(data) {
 };
 
 PointGaming.BetsController.prototype.handleBetCreated = function(data) {
-  var message = data.bookie.username + ": " + data.bet.winner + ">" + data.bet.loser + " " + data.bet.amount + " Points " + data.bet.odds;
+  var message = data.bet.bookie.username + ": " + data.bet.winner + ">" + data.bet.loser + " " + data.bet.amount + " Points " + data.bet.odds;
   // if current_user is bookie
-  if (PointGaming.user._id === data.bookie._id) {
-    message += '<div class="pull-right"><a href="'+ data.bet_path +'" data-confirm="Are you sure?" data-method="delete" rel="ajax nofollow">Cancel</a></div>';
+  if (PointGaming.user._id === data.bet.bookie._id) {
+    message += '<div class="pull-right"><a href="'+ data.bet_path +'" data-confirm="Are you sure?" data-method="delete" data-remote="true" data-type="json" rel="nofollow">Cancel</a></div>';
   } else {
-    message += '<div class="pull-right"><a href="'+ data.bet_path +'" data-confirm="Are you sure?" data-method="put" rel="ajax nofollow">Accept</a></div>';
+    message += '<div class="pull-right"><a href="'+ data.bet_path +'" data-confirm="Are you sure?" data-method="put" data-remote="true" data-type="json" rel="nofollow">Accept</a></div>';
   }
-  this.appendMessage(message, data.bet._id);
+  this.appendMessage(message, {id: data.bet._id, data_content: data.bet_tooltip, title: 'Bet Details'});
 };
 
 PointGaming.BetsController.prototype.handleNewBettor = function(data) {
@@ -93,4 +96,11 @@ PointGaming.BetsController.prototype.registerHandlers = function() {
   this.socket.on("join_chat", function(data){ self.handleJoinChat(data); });
 
   this.socket.on("message", function(data){ self.handleMessage(data); });
+
+  $('body').popover({
+    selector: this.bet_selector,
+    placement: 'bottom',
+    trigger: 'hover',
+    html: true
+  });
 };

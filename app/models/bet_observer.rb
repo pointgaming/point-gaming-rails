@@ -1,11 +1,13 @@
 class BetObserver < Mongoid::Observer
   include Rails.application.routes.url_helpers
+  include ActionView::Helpers::TagHelper
+  include StreamsHelper
 
   def after_create(record)
     BunnyClient.instance.publish_fanout("c.s.#{record.stream.id}", {
       :action => :bet_created, 
-      :bet => record, 
-      :bookie => record.bookie, 
+      :bet => record.as_json(:include => [:bookie]),
+      :bet_tooltip => bet_tooltip(record),
       :bet_path => user_stream_bet_path(record.stream, record)
     }.to_json)
   end

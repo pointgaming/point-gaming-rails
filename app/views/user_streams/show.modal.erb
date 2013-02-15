@@ -8,9 +8,11 @@
   <div class="breadcrumb">
     <% if @stream.streaming %>
       <%= link_to t('.stop_streaming'), stop_user_stream_path(@stream), method: 'put', 
+              'data-type'=>'json', 'data-remote' => 'true', 'data-modal' => 'true', 
               :class => 'btn btn-danger streaming-toggle' %>
     <% else %>
       <%= link_to t('.start_streaming'), start_user_stream_path(@stream), method: 'put', 
+              'data-type'=>'json', 'data-remote' => 'true', 'data-modal' => 'true', 
               :class => 'btn btn-primary streaming-toggle' %>
     <% end %>
     <div class="pull-right">
@@ -77,8 +79,10 @@
                 <% if user_is_stream_owner && collaborator.owner != true %>
                   <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
                           user_stream_collaborator_path(@stream, collaborator),
+                          :method => 'delete', 'data-remote' => 'true', 'data-type' => 'json',
+                          'data-modal' => 'true',
                           :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-                          :method => 'delete', :class => 'btn btn-mini btn-danger' %>
+                          :class => 'btn btn-mini btn-danger' %>
                 <% end %>
               </div>
             </li>

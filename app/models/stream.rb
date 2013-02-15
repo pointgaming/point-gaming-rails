@@ -28,7 +28,7 @@ class Stream
   end
 
   def bet_details
-    betting ? "#{team1} vs #{team2} on #{map}" : ""
+    betting ? "Betting Open: #{team1} vs #{team2} on #{map}" : "Betting Closed"
   end
 
   def team_options

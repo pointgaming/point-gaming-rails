@@ -61,4 +61,9 @@ $(function(){
         });
         return false;
     });
+
+    $(document).on('ajax:success', 'a[data-remote][data-modal]', function(data, status, xhr){
+        // close the modal
+        $modal.modal('hide');
+    });
 });

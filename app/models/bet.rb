@@ -22,8 +22,20 @@ class Bet
   validates :odds, :presence=>true
   validate :check_winner_and_loser
 
+  def tooltip_attributes
+    [:winner, :loser, :map, :amount, :odds, :your_risk_amount, :your_win_amount]
+  end
+
   def odds_options
     ['1 to 1', '1 to 5']
+  end
+
+  def your_risk_amount
+    "risk"
+  end
+
+  def your_win_amount
+    "amount"
   end
 
   def check_winner_and_loser
