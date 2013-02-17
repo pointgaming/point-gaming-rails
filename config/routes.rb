@@ -1,4 +1,5 @@
 Pointgaming::Application.routes.draw do
+  resources :news
   resources :leagues
   resources :tournaments
   resources :streams
