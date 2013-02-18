@@ -1,5 +1,5 @@
 defaults: &DEFAULTS
-  socketio_uri: http://localhost:9999/
+  socketio_uri: https://localhost:9999/
   store_url: http://localhost:5000/
   store_api_url: http://localhost:5000/private/api/
   store_api_auth_token: 'M9812Y125T-V234BCOV6-B7PGL23WM-S68CAS53FNGO2B-4JGNT-6RU'
@@ -15,7 +15,7 @@ test:
 
 production:
   <<: *DEFAULTS
-  socketio_uri: http://dev.pointgaming.com:4000/
+  socketio_uri: https://dev.pointgaming.com:4000/
   store_url: https://store.pointgaming.com/
   store_api_url: https://store.pointgaming.com/private/api/
   store_api_auth_token: '25ds-45p56q63-56b75s5m-ndma2fd86gkjo4n6-5124z5568-68f9s'
