@@ -102,7 +102,7 @@ protected
   end
 
   def create_store_user
-    store_user = StoreUser.new :email => self.email
+    store_user = StoreUser.new :email => self.email, :username => self.username
     if store_user.save
       true
     else
@@ -112,9 +112,10 @@ protected
   end
 
   def update_store_user
-    if self.email_changed?
+    if self.email_changed? || self.username_changed?
       store_user = StoreUser.find self.email_was
       store_user.email = self.email
+      store_user.username = self.username
       if store_user.save
         true
       else
