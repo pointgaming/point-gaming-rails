@@ -1,47 +1,50 @@
+<%- @hide_nav ||= false %>
 <div class="container" id="logo-container">
     <a class="brand" href="/">
         <%= image_tag "logo.png", :alt => "Point Gaming" %>
     </a>
 </div>
 
-<div id="main-toolbar" class="navbar">
-    <div class="navbar-inner">
-        <div class="container">
-            <div class="nav-collapse">
-                <ul class="nav"> 
-                    <%= navItem "Home", "/" %>
-                    <%= navItem "Games", "/games" %>
-                    <%= navItem "Leagues", "/leagues" %>
-                    <%= navItem "Tournaments", "/tournaments" %>
-                    <%= navItem "Streams", "/streams" %>
-                    <%= navItem "Store", store_path %>
-                    <%= navItem "Forums", forum_path %>
-                </ul>
+<% unless @hide_nav %>
+  <div id="main-toolbar" class="navbar">
+      <div class="navbar-inner">
+          <div class="container">
+              <div class="nav-collapse">
+                  <ul class="nav"> 
+                      <%= navItem "Home", "/" %>
+                      <%= navItem "Games", "/games" %>
+                      <%= navItem "Leagues", "/leagues" %>
+                      <%= navItem "Tournaments", "/tournaments" %>
+                      <%= navItem "Streams", "/streams" %>
+                      <%= navItem "Store", store_path %>
+                      <%= navItem "Forums", forum_path %>
+                  </ul>
 
-                <ul class="nav pull-right">
-                    <%= form_tag users_search_path, method: :get, autocomplete: :off, :class => "navbar-search pull-left" do %>
-                        <input type="text" class="search-query span2" name="query" placeholder="Search" />
-                    <% end %>
+                  <ul class="nav pull-right">
+                      <%= form_tag users_search_path, method: :get, autocomplete: :off, :class => "navbar-search pull-left" do %>
+                          <input type="text" class="search-query span2" name="query" placeholder="Search" />
+                      <% end %>
 
-                    <% if user_signed_in? %>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= current_user.username %> (500) <b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <%= link_to "Settings", "/settings" %>
-                                </li>
-                                <li>
-                                    <%= link_to "Logout", destroy_user_session_path, :method=>'delete' %>
-                                </li>
-                            </ul>
-                        </li>
-                    <% else %>
-                        <li>
-                            <%= link_to("Login", new_user_session_path) %>
-                        </li>
-                    <% end %>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
+                      <% if user_signed_in? %>
+                          <li class="dropdown">
+                              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= current_user.username %> (500) <b class="caret"></b></a>
+                              <ul class="dropdown-menu">
+                                  <li>
+                                      <%= link_to "Settings", "/settings" %>
+                                  </li>
+                                  <li>
+                                      <%= link_to "Logout", destroy_user_session_path, :method=>'delete' %>
+                                  </li>
+                              </ul>
+                          </li>
+                      <% else %>
+                          <li>
+                              <%= link_to("Login", new_user_session_path) %>
+                          </li>
+                      <% end %>
+                  </ul>
+              </div>
+          </div>
+      </div>
+  </div>
+<% end %>
