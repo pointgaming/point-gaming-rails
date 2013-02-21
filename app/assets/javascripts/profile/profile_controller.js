@@ -15,4 +15,8 @@ PointGaming.ProfileController.prototype.registerHandlers = function() {
     url = "/users/subregion_options?parent_region=" + country_code;
     select_wrapper.load(url);
   });
+
+  $(document).on("click", "[data-behavior~='datepicker']", function(event) {
+    $(event.target).datetimepicker({format: 'yyyy-mm-dd', autoclose: true, minView: 2, todayHighlight: true}).focus();
+  });
 };

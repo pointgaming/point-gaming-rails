@@ -15,6 +15,7 @@
 //= require twitter/bootstrap/bootstrap-dropdown
 //= require twitter/bootstrap/bootstrap-tooltip
 //= require twitter/bootstrap/bootstrap-popover
+//= require bootstrap-datetimepicker
 //= require bootstrap-modalmanager
 //= require bootstrap-modal
 //= require bootstrap-typeahead
