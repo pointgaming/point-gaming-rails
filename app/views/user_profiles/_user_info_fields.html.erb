@@ -43,13 +43,13 @@
       <div class="control-group span3">
         <%= f.label :birth_date %>
         <div class="controls">
-          <%= f.text_field :birth_date, 'data-behavior' => 'datepicker', :class => "span12" %>
+          <%= f.text_field :birth_date, :value => (f.object.birth_date.nil? ? nil : l(f.object.birth_date)), 'data-behavior' => 'datepicker', :class => "span12" %>
         </div>
       </div>
       <div class="control-group span1">
         <%= f.label :age %>
         <div class="controls">
-          <%= f.number_field :age, :class => "span12" %>
+          <%= f.text_field :age, :class => "span12", disabled: true %>
         </div>
       </div>
     </div>

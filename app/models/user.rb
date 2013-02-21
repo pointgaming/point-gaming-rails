@@ -57,7 +57,6 @@ class User
   field :first_name
   field :last_name
   field :birth_date, type: Date
-  field :age, type: Integer
   field :phone
   field :team
   field :country
@@ -84,12 +83,21 @@ class User
 
   accepts_nested_attributes_for :profile
 
+  def age
+    return "" unless birth_date?
+
+    today = Date.today
+    age = today.year - birth_date.year
+    age -= 1 if birth_date.yday > Date.today.yday
+    age
+  end
+
   def profile_url
     user_profile_path(self)
   end
 
   def as_json(options={})
-    super(options.merge({methods: [:profile_url]}))
+    super(options.merge({methods: [:profile_url, :age]}))
   end
 
 protected

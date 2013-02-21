@@ -17,6 +17,23 @@ PointGaming.ProfileController.prototype.registerHandlers = function() {
   });
 
   $(document).on("click", "[data-behavior~='datepicker']", function(event) {
-    $(event.target).datetimepicker({format: 'yyyy-mm-dd', autoclose: true, minView: 2, todayHighlight: true}).focus();
+    $(event.target).datetimepicker({format: 'yyyy/mm/dd', autoclose: true, minView: 2, todayHighlight: true}).focus();
+  });
+
+  var getAge = function(dateString) {
+    var today = new Date(),
+      birthDate = new Date(dateString),
+      age = today.getFullYear() - birthDate.getFullYear(),
+      m = today.getMonth() - birthDate.getMonth();
+
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+
+    return age;
+  }
+
+  $(document).on("change", "input#user_birth_date", function(event) {
+    $('input#user_age').val(getAge($(event.target).val()));
   });
 };
