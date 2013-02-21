@@ -1,0 +1,19 @@
+<%= form_for @user, url: user_avatar_path(@user), html: {:multipart => true, :class => 'form-horizontal'} do |f| %>
+  <fieldset>
+    <legend>Upload Avatar</legend>
+
+    <%= render partial: 'shared/form_errors', locals: {model: f.object.avatar} %>
+
+    <div class="control-group">
+      <%= f.label :avatar, :class => 'control-label' %>
+      <div class="controls">
+        <%= f.file_field :avatar %>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <%= f.submit :Upload, :class => 'btn btn-primary' %>
+      <%= link_to t('.cancel', default: t("helpers.links.cancel")), edit_user_profile_path(@user), :class => 'btn', 'data-dismiss' => 'modal' %>
+    </div>
+  </fieldset>
+<% end %>

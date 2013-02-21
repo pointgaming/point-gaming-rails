@@ -1,0 +1,26 @@
+<%= form_for @config, url: user_configs_path, html: {:multipart => true, :class => 'form-horizontal'} do |f| %>
+  <fieldset>
+    <legend>Upload Config</legend>
+
+    <%= render partial: 'shared/form_errors', locals: {model: f.object} %>
+
+    <div class="control-group">
+      <%= f.label :name, :class => 'control-label' %>
+      <div class="controls">
+        <%= f.text_field :name %>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <%= f.label :attachment, :class => 'control-label' %>
+      <div class="controls">
+        <%= f.file_field :attachment %>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <%= f.submit :Upload, :class => 'btn btn-primary' %>
+      <%= link_to t('.cancel', default: t("helpers.links.cancel")), edit_user_profile_path(@user), :class => 'btn', 'data-dismiss' => 'modal' %>
+    </div>
+  </fieldset>
+<% end %>

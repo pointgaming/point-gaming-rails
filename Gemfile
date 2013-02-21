@@ -8,6 +8,8 @@ gem 'rails', '3.2.12'
 # gem 'sqlite3'
 gem 'mongoid', "~> 3.0.0"
 
+gem 'kaminari'
+
 gem 'redis-rails'
 
 gem 'bunny', '>= 0.9.0.pre6'
@@ -35,6 +37,12 @@ gem 'twitter-bootstrap-rails'
 gem 'jquery-rails'
 
 gem 'jquery-ui-rails'
+
+gem 'carmen'
+
+gem "mongoid-paperclip", :require => "mongoid_paperclip"
+
+gem 'carmen-rails'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'

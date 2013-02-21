@@ -1,0 +1,11 @@
+<div class="widget">
+  <div class="widget-header">
+    <i class="icon-book"></i>
+    <h3>Bio</h3>
+  </div>
+  <div class="widget-content">
+    <%= render partial: 'shared/form_errors', locals: {model: f.object} %>
+
+    <%= f.text_area :bio, :class => "span12", rows: "7" %>
+  </div>
+</div>

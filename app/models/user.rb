@@ -1,5 +1,9 @@
 class User
   include Mongoid::Document
+  include Rails.application.routes.url_helpers
+  include Mongoid::Paperclip
+
+  has_mongoid_attached_file :avatar, :default_url => ":class/:attachment/missing_:style.png"
 
   before_create :create_forum_user
   before_create :create_store_user
@@ -52,22 +56,44 @@ class User
   field :username
   field :first_name
   field :last_name
+  field :birth_date, type: Date
+  field :age, type: Integer
+  field :phone
+  field :team
+  field :country
+  field :state
   field :points, type: Integer, default: 0
 
   # online/offline chat status
   field :status
 
-  attr_accessible :username, :first_name, :last_name, :email, :password, :password_confirmation, :remember_me, :status
+  attr_accessible :username, :first_name, :last_name, :email, :password, :password_confirmation, 
+                  :remember_me, :status, :birth_date, :age, :phone, :team, :profile_attributes, 
+                  :avatar, :country, :state
 
   validates_presence_of :username, :first_name, :last_name
   validates_uniqueness_of :username, :email, :case_sensitive => false
+
+  belongs_to :profile
 
   has_many :auth_tokens, :validate=>false
   has_many :coins, :validate=>false
   has_many :friends, :validate=>false
   has_many :ignores, :validate=>false
+  has_many :configs, class_name: 'UserConfig'
+
+  accepts_nested_attributes_for :profile
+
+  def profile_url
+    user_profile_path(self)
+  end
+
+  def as_json(options={})
+    super(options.merge({methods: [:profile_url]}))
+  end
 
 protected
+
   def create_forum_user
     forum_user = ForumUser.new :email => self.email, :username => self.username
     if forum_user.save

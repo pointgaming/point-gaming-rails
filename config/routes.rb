@@ -1,4 +1,5 @@
 Pointgaming::Application.routes.draw do
+  resources :friend_requests
   resources :news
   resources :leagues
   resources :tournaments
@@ -34,6 +35,20 @@ Pointgaming::Application.routes.draw do
   end
 
   root :to => 'home#index'
+
+  get "/users/search", :to => "users#search"
+
+  get "/users/:user_id/configs/new", :to => "user_configs#new", as: 'new_user_config'
+  post "/users/:user_id/configs", :to => "user_configs#create", as: 'user_configs'
+  delete "/users/:user_id/configs/:id(.:format)", :to => "user_configs#destroy", as: 'user_config'
+
+  get "/users/:user_id/avatar/edit", :to => "user_avatar#edit", as: 'edit_user_avatar'
+  put "/users/:user_id/avatar", :to => "user_avatar#update", as: 'user_avatar'
+
+  get "/users/:user_id/profile/edit", :to => "user_profiles#edit", as: 'edit_user_profile'
+  get "/users/:user_id/profile", :to => "user_profiles#show", as: 'user_profile'
+  put "/users/:user_id/profile", :to => "user_profiles#update"
+  get '/users/subregion_options' => 'user_profiles#subregion_options'
 
   devise_for :users
 

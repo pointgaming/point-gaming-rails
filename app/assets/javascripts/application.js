@@ -12,9 +12,17 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require twitter/bootstrap
+//= require twitter/bootstrap/bootstrap-dropdown
+//= require twitter/bootstrap/bootstrap-tooltip
+//= require twitter/bootstrap/bootstrap-popover
 //= require bootstrap-modalmanager
 //= require bootstrap-modal
+//= require bootstrap-typeahead
 //= require ./global/socket.io
 //= require ./global/chatbox
+//= require ./global/toolbar_controller
 //= require_tree ./global
+
+$(function(){
+  new PointGaming.ToolbarController();
+});

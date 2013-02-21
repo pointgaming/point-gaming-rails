@@ -1,0 +1,99 @@
+<div class="widget">
+  <div class="widget-header">
+    <i class="icon-user"></i>
+    <h3>User Information</h3>
+  </div>
+  <div class="widget-content">
+    <%= render partial: 'shared/form_errors', locals: {model: f.object} %>
+
+    <div class="controls controls-row">
+      <div class="control-group span4">
+        <%= f.label :username %>
+        <div class="controls">
+          <%= f.text_field :username, :class => "span12" %>
+        </div>
+      </div>
+      <div class="control-group span4">
+        <%= f.label :password %>
+        <div class="controls">
+          <%= f.password_field :password, :class => "span12" %>
+        </div>
+      </div>
+      <div class="control-group span4">
+        <%= f.label :password_confirmation %>
+        <div class="controls">
+          <%= f.password_field :password_confirmation, :class => "span12" %>
+        </div>
+      </div>
+    </div>
+
+    <div class="controls controls-row">
+      <div class="control-group span4">
+        <%= f.label :first_name %>
+        <div class="controls">
+          <%= f.text_field :first_name, :class => "span12" %>
+        </div>
+      </div>
+      <div class="control-group span4">
+        <%= f.label :last_name %>
+        <div class="controls">
+          <%= f.text_field :last_name, :class => "span12" %>
+        </div>
+      </div>
+      <div class="control-group span3">
+        <%= f.label :birth_date %>
+        <div class="controls">
+          <%= f.text_field :birth_date, :class => "span12" %>
+        </div>
+      </div>
+      <div class="control-group span1">
+        <%= f.label :age %>
+        <div class="controls">
+          <%= f.number_field :age, :class => "span12" %>
+        </div>
+      </div>
+    </div>
+
+    <div class="controls controls-row">
+      <div class="control-group span4">
+        <%= f.label :email %>
+        <div class="controls">
+          <%= f.email_field :email, :class => "span12" %>
+        </div>
+      </div>
+      <div class="control-group span4">
+        <%= f.label :phone %>
+        <div class="controls">
+          <%= f.text_field :phone, :class => "span12" %>
+        </div>
+      </div>
+      <div class="control-group span4">
+        <%= f.label :team %>
+        <div class="controls">
+          <%= f.text_field :team, :class => "span12" %>
+        </div>
+      </div>
+    </div>
+
+    <div class="controls controls-row">
+      <div class="control-group span4">
+        <%= f.label :country %>
+        <div class="controls">
+          <%= f.country_select :country, priority: %w(US CA), prompt: 'Please select a country' %>
+        </div>
+      </div>
+      <div class="control-group span4">
+        <%= f.label :state %>
+        <div class="controls">
+          <%= render partial: 'subregion_select', locals: {parent_region: f.object.country} %>
+        </div>
+      </div>
+      <div class="control-group span4">
+        <%= f.label :points %>
+        <div class="controls">
+          <%= f.object.points %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
