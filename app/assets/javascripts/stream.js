@@ -1,5 +1,6 @@
 //= require ./stream/bets_controller
 //= require ./stream/streams_controller
+//= require ./stream/stream_admin_controller
 $(function(){
     var $modal = $('#ajax-modal');
 
@@ -25,6 +26,10 @@ $(function(){
     $(document).on('submit', '#ajax-modal form', function(){
         // save the current form
         var current_form = $(this);
+
+        if (current_form.is('.typeahead')) {
+            return;
+        }
 
         // show the spinner
         $('body').modalmanager('loading');
