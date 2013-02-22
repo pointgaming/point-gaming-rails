@@ -15,7 +15,7 @@ test:
 
 production:
   <<: *DEFAULTS
-  socketio_uri: https://dev.pointgaming.com:4000/
+  socketio_uri: https://socket.pointgaming.com/
   store_url: https://store.pointgaming.com/
   store_api_url: https://store.pointgaming.com/private/api/
   store_api_auth_token: '25ds-45p56q63-56b75s5m-ndma2fd86gkjo4n6-5124z5568-68f9s'
