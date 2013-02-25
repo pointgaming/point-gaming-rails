@@ -44,7 +44,8 @@ class Api::V1::SessionsController < Api::ApplicationController
   end
 
   def destroy
-    if @auth_token.destroy
+    @auth_token.expired = true;
+    if @auth_token.save
       sign_out :user
       render :json => {:success=>true}
     else
