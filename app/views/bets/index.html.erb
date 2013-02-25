@@ -34,7 +34,7 @@
         <td><%= bet.stream_id %></td>
         <td><%= bet.bookie_id %></td>
         <td><%= bet.bettor_id %></td>
-        <td><%=l bet.created_at %></td>
+        <td><%=ldate bet.created_at %></td>
         <td>
           <%= link_to t('.edit', :default => t("helpers.links.edit")),
                       edit_user_stream_bet_path(bet), :class => 'btn btn-mini' %>

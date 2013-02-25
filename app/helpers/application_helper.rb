@@ -7,6 +7,10 @@ module ApplicationHelper
         end
     end
 
+    def ldate(dt, options = {})
+      dt ? l(dt, options) : ''
+    end
+
     def forum_path
       APP_CONFIG['forum_url']
     end
