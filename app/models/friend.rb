@@ -5,6 +5,6 @@ class Friend
 
   validates :_id, :uniqueness=>true
 
-  belongs_to :user, :dependent => :nullify
+  belongs_to :user
   belongs_to :friend_user, :class_name=>"User"
 end
