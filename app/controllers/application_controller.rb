@@ -14,6 +14,12 @@ class ApplicationController < ActionController::Base
     root_path
   end
 
+  def render(options = nil, extra_options = {}, &block)
+    options ||= {}
+    options = options.merge({formats: [:modal, :html]}) if @is_ajax_request
+    super(options, extra_options, &block)
+  end
+
 private
 
   def set_current_path
@@ -21,7 +27,7 @@ private
   end
 
   def remove_layout_for_ajax_requests
-    @is_ajax_request = request.xhr?
+    @is_ajax_request = !!request.xhr?
     self.action_has_layout = false if @is_ajax_request
   end
 

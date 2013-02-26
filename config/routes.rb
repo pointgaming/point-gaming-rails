@@ -4,6 +4,9 @@ Pointgaming::Application.routes.draw do
   resources :leagues
   resources :tournaments
   resources :streams
+  resources :teams do
+    resources :members, controller: 'team_members'
+  end
   resources :store
   resources :faq
   resources :settings

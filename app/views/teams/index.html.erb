@@ -1,0 +1,25 @@
+<%- model_class = Team -%>
+<h2><%=t '.title', :default => model_class.model_name.human.pluralize %></h2>
+
+<div class="breadcrumb">
+  <%= link_to t('.new', :default => t("helpers.links.new")), new_team_path, :class => 'btn btn-primary' %>
+</div>
+
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th><%= model_class.human_attribute_name(:name) %></th>
+      <th><%= model_class.human_attribute_name(:member_count) %></th>
+      <th><%= TeamMember.human_attribute_name(:rank) %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @team_members.each do |team_member| %>
+      <tr>
+        <td><%= link_to team_member.team.name, team_path(team_member.team) %></td>
+        <td><%= team_member.team.member_count %></td>
+        <td><%= team_member.rank %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

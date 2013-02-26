@@ -6,3 +6,11 @@ en:
   date:
     formats:
       default: ! '%Y/%m/%d'
+  mongoid:
+    models:
+      team_member: 'Member'
+    attributes:
+      team:
+        tag: 'Nick Name'
+      team_member:
+        created_at: 'Joined at'

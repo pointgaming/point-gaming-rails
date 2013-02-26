@@ -5,6 +5,13 @@
   =require twitter-bootstrap-static/fontawesome
   */
 .modal form { margin-bottom: 0; }
+
+.form-actions.modal-actions {
+  margin-bottom: 0; 
+  -webkit-border-radius: 0 0 5px 5px;
+  -moz-border-radius: 0 0 5px 5px;
+  border-radius: 0 0 5px 5pxx;
+}
 ul.typeahead { z-index: 9001; }
 
 .widget {
@@ -53,7 +60,7 @@ ul.typeahead { z-index: 9001; }
   left: 10px;
 
   display: inline-block;
-  margin-right: 3em;
+  margin-right: 1.5em;
 
   font-size: 14px;
   font-weight: 800;

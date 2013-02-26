@@ -1,0 +1,30 @@
+<%- form_url = @team_member.new_record? ? team_members_url(@team) : team_member_url(@team, @team_member) %>
+<%= form_for @team_member, url: form_url, :html => { autocomplete: 'off' } do |f| %>
+  <div class="modal-body">
+    <%= fields_for :user do |user| %>
+      <div class="control-group">
+        <%= user.label :username, :class => 'control-label' %>
+        <div class="controls">
+          <% if f.object.new_record? %>
+            <%= user.text_field :username, :class => 'text_field' %>
+          <% else %>
+            <%= f.object.user.username %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="control-group">
+      <%= f.label :rank, :class => 'control-label' %>
+      <div class="controls">
+        <%= f.select :rank, f.object.rank_options, include_blank: '- Select -', :class => 'text_field' %>
+      </div>
+    </div>
+  </div>
+ 
+  <div class="form-actions modal-actions">
+    <%= f.submit nil, :class => 'btn btn-primary' %>
+    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                team_path(@team), :class => 'btn', 'data-dismiss' => 'modal' %>
+  </div>
+<% end %>
