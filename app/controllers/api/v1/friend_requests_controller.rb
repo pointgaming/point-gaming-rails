@@ -11,8 +11,9 @@ class Api::V1::FriendRequestsController < Api::ApplicationController
   respond_to :json
 
   def index
+    @sent = params[:sent]
     begin
-      if params[:sent]
+      if @sent
         @friend_requests = FriendRequest.where(user_id: current_user._id).all
       else
         @friend_requests = FriendRequest.where(friend_request_user_id: current_user._id).all
@@ -27,7 +28,7 @@ class Api::V1::FriendRequestsController < Api::ApplicationController
   def create
     @friend_request = FriendRequest.new({user_id: current_user._id, friend_request_user_id: @user._id})
     if @friend_request.save
-      render :json => {:success=>true}
+      respond_with(@friend_request)
     else
       render :json => {:success=>false, :message=>"Failed to create the friend request", :errors=>@friend_request.errors}, :status=>500
     end

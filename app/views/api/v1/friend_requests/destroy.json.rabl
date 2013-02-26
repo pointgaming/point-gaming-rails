@@ -1,6 +1,6 @@
 object false
 node :action do
-  'friend_request_created'
+  'friend_request_destroyed'
 end
 child @object => :data do
   attributes :_id

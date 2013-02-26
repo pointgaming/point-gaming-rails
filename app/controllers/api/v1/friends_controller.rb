@@ -7,9 +7,10 @@ class Api::V1::FriendsController < Api::ApplicationController
     begin
       @friends = Friend.where(user_id: current_user._id).all
       @friends = @friends.map { |friend| friend.friend_user }
-      render :json => {:success=>true, :friends=>@friends}
+
+      respond_with(@friends)
     rescue
-      render :json => {:success=>true, :friends=>[]}
+      render :json => {:friends=>[]}
     end
   end
 
