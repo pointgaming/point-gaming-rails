@@ -16,6 +16,7 @@ class Api::V1::SessionsController < Api::ApplicationController
         render :json => {
           :success=>true,
           :auth_token=>@auth_token._id,
+          :_id=>resource._id,
           :username=>resource.username
         }
       else
