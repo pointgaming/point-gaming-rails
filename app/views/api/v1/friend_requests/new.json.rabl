@@ -4,7 +4,10 @@ node :action do
 end
 child @object => :data do
   attributes :_id
-  glue :user do
-    attributes :username
+  child :user => :from_user do
+    attributes :_id, :username
+  end
+  child :friend_request_user => :to_user do
+    attributes :_id, :username
   end
 end
