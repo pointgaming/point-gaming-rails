@@ -1,6 +1,8 @@
 var PointGaming = PointGaming || {};
 
 PointGaming.TeamsController = function(options){
+  this.search_field_selector = 'input#user_username';
+
   this.registerHandlers();
 };
 
@@ -78,6 +80,15 @@ PointGaming.TeamsController.prototype.registerHandlers = function() {
   $(document).on('ajax:success', 'a[data-remote][data-modal]', function(data, status, xhr){
     // close the modal
     $modal.modal('hide');
+  });
+
+  $(document).on('click', this.search_field_selector, function(e){
+    var self = this;
+    $(this).typeahead({
+      ajax: { url: '/users/search.json', triggerLength: 1, method: 'get' },
+      display: 'username', 
+      val: 'username'
+    });
   });
 
 };
