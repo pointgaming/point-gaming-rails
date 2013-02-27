@@ -62,6 +62,7 @@ class User
   field :country
   field :state
   field :points, type: Integer, default: 0
+  field :stream_owner_count, :type => Integer, :default => 0
 
   # online/offline chat status
   field :status
@@ -100,6 +101,13 @@ class User
     super(options.merge({methods: [:profile_url, :age]}))
   end
 
+  def playable_name
+    username
+  end
+
+  def stream_limit
+    50
+  end
 protected
 
   def create_forum_user

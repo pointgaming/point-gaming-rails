@@ -1,8 +1,8 @@
 <%= form_for [:user_stream, @bet] do |f| %>
   <div class="modal-body">
     <div class="control-group">
-      <%= f.select :winner, @stream.team_options, include_blank: '- Select -', :class => 'text_field' %> will beat 
-      <%= f.select :loser, @stream.team_options, include_blank: '- Select -', :class => 'text_field' %> on map 
+      <%= f.select :winner, @stream.player_options, include_blank: '- Select -', :class => 'text_field' %> will beat 
+      <%= f.select :loser, @stream.player_options, include_blank: '- Select -', :class => 'text_field' %> on map 
       <%= f.text_field :map, :class => 'text_field', disabled: true %>
     </div>
 

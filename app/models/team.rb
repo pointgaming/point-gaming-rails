@@ -11,4 +11,8 @@ class Team
 
   validates :name, :presence=>true
   validates :tag, :presence=>true
+
+  def playable_name
+    name
+  end
 end

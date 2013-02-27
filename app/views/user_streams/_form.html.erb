@@ -26,16 +26,20 @@
     </div>
 
     <div class="control-group">
-      <%= f.label :team1, :class => 'control-label' %>
+      <%= f.label :player_1, :class => 'control-label' %>
       <div class="controls">
-        <%= f.text_field :team1, :class => 'text_field' %>
+        <%= f.text_field :player_1_name, :class => 'text_field playable-search' %>
+        <%= f.hidden_field :player_1_id %>
+        <%= f.hidden_field :player_1_type %>
       </div>
     </div>
 
     <div class="control-group">
-      <%= f.label :team2, :class => 'control-label' %>
+      <%= f.label :player_2, :class => 'control-label' %>
       <div class="controls">
-        <%= f.text_field :team2, :class => 'text_field' %>
+        <%= f.text_field :player_2_name, :class => 'text_field playable-search' %>
+        <%= f.hidden_field :player_2_id %>
+        <%= f.hidden_field :player_2_type %>
       </div>
     </div>
 

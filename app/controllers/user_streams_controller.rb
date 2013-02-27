@@ -4,6 +4,9 @@ class UserStreamsController < ApplicationController
   before_filter :ensure_stream_owner, only: [:change_owner, :start, :stop, :destroy]
   before_filter :ensure_owner_params, only: [:change_owner]
   before_filter :ensure_collaborator, only: [:change_owner]
+  before_filter :ensure_player_or_team, only: [:update]
+  before_filter :enforce_stream_limit_current_user, only: [:create]
+  before_filter :enforce_stream_limit_collaborator, only: [:change_owner]
 
   def sub_layout
     "settings"
@@ -41,6 +44,9 @@ class UserStreamsController < ApplicationController
   end
 
   def update
+    @stream.player_1 = @player_1
+    @stream.player_2 = @player_2
+
     respond_to do |format|
       if @stream.update_attributes(params[:stream])
         format.html { redirect_to user_stream_path(@stream), notice: 'The stream was successfully updated.' }
@@ -136,4 +142,47 @@ protected
       end
     end
   end
+
+  def ensure_player_or_team
+    return unless params[:stream][:betting].eql?("1")
+
+    begin
+      [:player_1, :player_2].each do |player|
+        if params[:stream]["#{player}_id"].present? && ['User', 'Team'].include?(params[:stream]["#{player}_type"])
+          # mongoid should throw an exception if this is not found
+          record = params[:stream]["#{player}_type"].constantize.find params[:stream]["#{player}_id"]
+          instance_variable_set "@#{player}".to_sym, record
+        else
+          raise "invalid_player"
+        end
+      end
+    rescue
+        message = 'An invalid player or team was specified'
+        respond_to do |format|
+          format.html { redirect_to user_stream_path(@stream), alert: message }
+          format.json { render json: [message], status: :unprocessable_entity }
+        end
+    end
+  end
+
+  def enforce_stream_limit_current_user
+    if current_user.stream_owner_count >= current_user.stream_limit
+      message = "You have reached the maximum number of streams."
+      respond_to do |format|
+        format.html { redirect_to user_streams_path, alert: message }
+        format.json { render json: [message], status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def enforce_stream_limit_collaborator
+    if @collaborator.blank? || @collaborator.user.stream_owner_count >= @collaborator.user.stream_limit
+      message = "Unable to set the new stream owner because the user has reached the maximum number of streams."
+      respond_to do |format|
+        format.html { redirect_to user_stream_path(@stream), alert: message }
+        format.json { render json: [message], status: :unprocessable_entity }
+      end
+    end
+  end
+
 end

@@ -39,6 +39,9 @@ Pointgaming::Application.routes.draw do
 
   root :to => 'home#index'
 
+  get "/search", :to => "search#index"
+  get "/search/playable", :to => "search#playable"
+
   get "/users/search", :to => "users#search"
 
   get "/users/:user_id/configs/new", :to => "user_configs#new", as: 'new_user_config'

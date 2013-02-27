@@ -10,6 +10,9 @@ en:
     models:
       team_member: 'Member'
     attributes:
+      stream:
+        player_1: 'Player or Team 1'
+        player_2: 'Player or Team 2'
       team:
         tag: 'Nick Name'
       team_member:

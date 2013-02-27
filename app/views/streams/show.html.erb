@@ -5,7 +5,7 @@
 <div class="page-header">
   <h1 id="stream-name"><%= @stream.name %></h1>
 
-  <% if @stream_owner.user_id === current_user.id %>
+  <% if @stream_owner.user_id === current_user.id || @collaborator.present? %>
     <div class="breadcrumb" style="margin: 0">
       <%= link_to_modal 'Admin', user_stream_path(@stream), 'data-width' => "950", 'data-height' =>"600", 'data-title' => "Stream Admin", :remote => true, :class => 'btn btn-primary' %>
     </div>
@@ -20,15 +20,13 @@
       </li>
     </ul>
 
-    <% if @stream.betting %>
-      <fieldset>
-        <legend>Details</legend>
+    <fieldset>
+      <legend>Details</legend>
 
-        <div id="stream-details" class="well">
-          <%= @stream.details %>
-        </div>
-      </fieldset>
-    <% end %>
+      <div id="stream-details" class="well">
+        <%= @stream.details %>
+      </div>
+    </fieldset>
 
     <form id="chatbox-form">
       <fieldset>
@@ -78,7 +76,7 @@
   </div>
 </div>
 
-<% if @stream_owner.user_id === current_user.id %>
+<% if @stream_owner.user_id === current_user.id || @collaborator.present? %>
   <%= javascript_tag do %>
     $(function () {
       new PointGaming.StreamAdminController();
