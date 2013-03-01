@@ -19,3 +19,4 @@
 public/system/*
 public/assets/*
 vendor/bundle/*
+dump.rdb
