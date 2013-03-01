@@ -16,13 +16,12 @@ PointGaming.chatbox.prototype.appendMessage = function(message) {
 };
 
 PointGaming.chatbox.prototype.joinChat = function() {
-  this.socket.emit('join_chat', {chat: this.exchange_name});
+  this.socket.emit('Chatroom.join', {_id: this.exchange_name});
 };
 
 PointGaming.chatbox.prototype.sendMessage = function(message) {
-  this.socket.emit('message', {
-    chat: this.exchange_name, 
-    username: PointGaming.user.username, 
+  this.socket.emit('Chatroom.Message.send', {
+    _id: this.exchange_name, 
     message: message
   });
 };
@@ -44,18 +43,27 @@ PointGaming.chatbox.prototype.handleAuthResponse = function(data) {
 PointGaming.chatbox.prototype.handleMessage = function(data) {
   var self = this;
   var parseMessage = function() {
-    if (data.exchange === 'c.'+self.exchange_name) {
-      return "<p><strong>" + data.username + ":</strong> " + data.message + "</p>";
-    } else if (data.exchange === 'u.'+PointGaming.user.username) {
-      return "<p><strong>" + data.username + " whispers:</strong> " + data.message + "</p>";
+    if (data.user_id && data.message) {
+      return "<p><strong>" + data.user_id + " whispers:</strong> " + data.message + "</p>";
     }
     return "";
   };
 
-  if (data.username && data.message && data.exchange) {
-    var message = parseMessage();
-    if (message) self.appendMessage(message);
-  }
+  var message = parseMessage();
+  if (message) self.appendMessage(message);
+};
+
+PointGaming.chatbox.prototype.handleChatMessage = function(data) {
+  var self = this;
+  var parseMessage = function() {
+    if (data._id === self.exchange_name && data.fromUser && data.message) {
+      return "<p><strong>" + data.fromUser.username + ":</strong> " + data.message + "</p>";
+    }
+    return "";
+  };
+
+  var message = parseMessage();
+  if (message) self.appendMessage(message);
 };
 
 PointGaming.chatbox.prototype.registerHandlers = function() {
@@ -66,4 +74,6 @@ PointGaming.chatbox.prototype.registerHandlers = function() {
   this.socket.on("join_chat", function(data){ self.handleJoinChat(data); });
 
   this.socket.on("message", function(data){ self.handleMessage(data); });
+
+  this.socket.on("Chatroom.Message.new", function(data){ self.handleChatMessage(data); });
 };
