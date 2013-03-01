@@ -43,8 +43,8 @@ PointGaming.chatbox.prototype.handleAuthResponse = function(data) {
 PointGaming.chatbox.prototype.handleMessage = function(data) {
   var self = this;
   var parseMessage = function() {
-    if (data.user_id && data.message) {
-      return "<p><strong>" + data.user_id + " whispers:</strong> " + data.message + "</p>";
+    if (data.fromUser && data.message) {
+      return "<p><strong>" + data.fromUser.username + " whispers:</strong> " + data.message + "</p>";
     }
     return "";
   };
@@ -73,7 +73,7 @@ PointGaming.chatbox.prototype.registerHandlers = function() {
 
   this.socket.on("join_chat", function(data){ self.handleJoinChat(data); });
 
-  this.socket.on("message", function(data){ self.handleMessage(data); });
+  this.socket.on("Message.new", function(data){ self.handleMessage(data); });
 
   this.socket.on("Chatroom.Message.new", function(data){ self.handleChatMessage(data); });
 };
