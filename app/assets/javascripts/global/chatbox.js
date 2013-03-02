@@ -20,10 +20,26 @@ PointGaming.chatbox.prototype.joinChat = function() {
 };
 
 PointGaming.chatbox.prototype.sendMessage = function(message) {
-  this.socket.emit('Chatroom.Message.send', {
-    _id: this.exchange_name, 
-    message: message
-  });
+  switch (message) {
+    case "/who":
+      this.socket.emit('Chatroom.Member.getList', { _id: this.exchange_name });
+      break;
+
+    case '/chatrooms':
+      this.socket.emit('Chatroom.User.getList');
+      break;
+
+    case '/friends':
+      this.socket.emit('friends');
+      break;
+
+    default:
+      this.socket.emit('Chatroom.Message.send', {
+        _id: this.exchange_name, 
+        message: message
+      });
+      break;
+  }
 };
 
 PointGaming.chatbox.prototype.handleJoinChat = function(data) {
@@ -53,11 +69,69 @@ PointGaming.chatbox.prototype.handleMessage = function(data) {
   if (message) self.appendMessage(message);
 };
 
+PointGaming.chatbox.prototype.handleChatMemberChangedMessage = function(data) {
+  var self = this;
+  var parseMessage = function() {
+    if (data._id === self.exchange_name && data.user && data.status) {
+      return "<p><strong>" + data.user.username + " has " + data.status + " the chat.</strong></p>";
+    }
+    return "";
+  };
+
+  var message = parseMessage();
+  if (message) self.appendMessage(message);
+};
+
 PointGaming.chatbox.prototype.handleChatMessage = function(data) {
   var self = this;
   var parseMessage = function() {
     if (data._id === self.exchange_name && data.fromUser && data.message) {
       return "<p><strong>" + data.fromUser.username + ":</strong> " + data.message + "</p>";
+    }
+    return "";
+  };
+
+  var message = parseMessage();
+  if (message) self.appendMessage(message);
+};
+
+PointGaming.chatbox.prototype.handleChatroomList = function(data) {
+  var self = this;
+  var parseMessage = function() {
+    if (data.chatrooms) {
+      return "<p><strong>You are in the following chatrooms: </strong><ul><li>" + data.chatrooms.join('<li>') + "</p>";
+    }
+    return "";
+  };
+
+  var message = parseMessage();
+  if (message) self.appendMessage(message);
+};
+
+PointGaming.chatbox.prototype.handleMemberList = function(data) {
+  var self = this;
+  var parseMessage = function() {
+    if (data._id === self.exchange_name && data.members) {
+      data.members = $.map(data.members, function(item, index){
+        return item.username + ' (' + item._id + ')';
+      });
+      return "<p><strong>The following users are in this room: </strong><ul><li>" + data.members.join('<li>') + "</p>";
+    }
+    return "";
+  };
+
+  var message = parseMessage();
+  if (message) self.appendMessage(message);
+};
+
+PointGaming.chatbox.prototype.handleFriendsList = function(data) {
+  var self = this;
+  var parseMessage = function() {
+    if (data.friends) {
+      data.friends = $.map(data.friends, function(item, index){
+        return item.username + ' (' + item.status + ')';
+      });
+      return "<p><strong>Friends List:</strong><ul><li>" + data.friends.join('<li>') + "</ul></p>";
     }
     return "";
   };
@@ -76,4 +150,12 @@ PointGaming.chatbox.prototype.registerHandlers = function() {
   this.socket.on("Message.new", function(data){ self.handleMessage(data); });
 
   this.socket.on("Chatroom.Message.new", function(data){ self.handleChatMessage(data); });
+
+  this.socket.on("Chatroom.Member.change", function(data){ self.handleChatMemberChangedMessage(data); });
+
+  this.socket.on("Chatroom.User.list", function(data){ self.handleChatroomList(data); });
+
+  this.socket.on("Chatroom.Member.list", function(data){ self.handleMemberList(data); });
+
+  this.socket.on("friends", function(data){ self.handleFriendsList(data); });
 };
