@@ -147,7 +147,7 @@ PointGaming.chatbox.prototype.registerHandlers = function() {
 
   this.socket.on("join_chat", function(data){ self.handleJoinChat(data); });
 
-  this.socket.on("Message.new", function(data){ self.handleMessage(data); });
+  this.socket.on("Message.Receive.new", function(data){ self.handleMessage(data); });
 
   this.socket.on("Chatroom.Message.new", function(data){ self.handleChatMessage(data); });
 
