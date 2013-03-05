@@ -5,6 +5,9 @@ Pointgaming::Application.routes.draw do
   resources :tournaments
   resources :streams
   resources :teams do
+    collection do
+      put 'change_active'
+    end
     resources :members, controller: 'team_members'
   end
   resources :store

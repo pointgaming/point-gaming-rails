@@ -1,6 +1,8 @@
 class TeamsController < ApplicationController
   before_filter :authenticate_user!
-  before_filter :ensure_team, except: [:index, :new, :create]
+  before_filter :ensure_team, except: [:index, :new, :create, :change_active]
+  before_filter :ensure_change_active_params, only: [:change_active]
+  before_filter :ensure_user_is_team_member, only: [:change_active]
 
   def sub_layout
     "settings"
@@ -41,6 +43,15 @@ class TeamsController < ApplicationController
     end
   end
 
+  def change_active
+    current_user.team = @team_member.team
+    if current_user.save
+      redirect_to teams_path, notice: 'Your active team was changed successfully.'
+    else
+      redirect_to teams_path, alert: 'Failed to change your active team.'
+    end
+  end
+
   def destroy
     @team.destroy
 
@@ -51,5 +62,19 @@ protected
 
   def ensure_team
     @team = Team.find params[:id]
+  end
+
+  def ensure_change_active_params
+    unless params[:user].try(:[], :team_id)
+      redirect_to teams_path, alert: 'Invalid params.'
+    end
+  end
+
+  def ensure_user_is_team_member
+    begin
+      @team_member = TeamMember.where(user_id: current_user._id, team_id: params[:user][:team_id]).first
+    rescue Mongoid::Errors::DocumentNotFound
+      redirect_to teams_path, alert: 'Invalid team specified.'
+    end
   end
 end

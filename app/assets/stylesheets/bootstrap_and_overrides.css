@@ -182,3 +182,8 @@ ul.typeahead { z-index: 9001; }
 .widget-content form div.alert {
   margin: 20px 15px 15px;
 }
+
+.widget-content .widget-padding-container {
+  padding-left: 15px;
+  padding-right: 15px;
+}

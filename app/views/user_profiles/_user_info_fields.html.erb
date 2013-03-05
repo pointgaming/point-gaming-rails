@@ -70,7 +70,7 @@
       <div class="control-group span4">
         <%= f.label :team %>
         <div class="controls">
-          <%= f.text_field :team, :class => "span12" %>
+          <%= link_to f.object.team.try(:name), team_path(f.object.team) %>
         </div>
       </div>
     </div>

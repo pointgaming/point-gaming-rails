@@ -5,6 +5,31 @@
   <%= link_to t('.new', :default => t("helpers.links.new")), new_team_path, :class => 'btn btn-primary' %>
 </div>
 
+<div class="widget widget-nopad">
+  <div class="widget-header">
+    <i class="icon-user"></i>
+    <h3>Active Team</h3>
+  </div>
+  <div class="widget-content">
+    <%= form_for current_user, url: change_active_teams_path, html: {method: :put } do |f| %>
+      <div class="widget-padding-container">
+        <div class="control-group"> 
+          <%= f.label :team_id, :class => 'control-label' %>
+          <div class="controls">
+            <%= f.select :team_id, 
+                  @team_members.collect {|t| [ t.team.name, t.team.id ]},  
+                  include_blank: '- Select -'
+            %>
+          </div>
+        </div>
+      </div>
+      <div class="form-actions">
+        <%= f.submit :Change, :class => 'btn btn-primary' %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
 <table class="table table-bordered table-striped">
   <thead>
     <tr>

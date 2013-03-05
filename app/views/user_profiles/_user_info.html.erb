@@ -56,7 +56,9 @@
       <div class="control-group span4">
         <label>Team Name</label>
         <div class="controls">
-          <%= model.team %>
+          <% unless model.team.nil? %>
+            <%= link_to model.team.try(:name), team_path(model.team) %>
+          <% end %>
         </div>
       </div>
     </div>

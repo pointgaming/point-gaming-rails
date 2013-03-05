@@ -58,7 +58,6 @@ class User
   field :last_name
   field :birth_date, type: Date
   field :phone
-  field :team
   field :country
   field :state
   field :points, type: Integer, default: 0
@@ -68,13 +67,15 @@ class User
   field :status
 
   attr_accessible :username, :first_name, :last_name, :email, :password, :password_confirmation, 
-                  :remember_me, :status, :birth_date, :age, :phone, :team, :profile_attributes, 
+                  :remember_me, :status, :birth_date, :age, :phone, :profile_attributes, 
                   :avatar, :country, :state
 
   validates_presence_of :username, :first_name, :last_name
   validates_uniqueness_of :username, :email, :case_sensitive => false
 
   belongs_to :profile
+
+  belongs_to :team
 
   has_many :auth_tokens, :validate=>false
   has_many :coins, :validate=>false
