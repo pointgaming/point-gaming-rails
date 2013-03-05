@@ -5,6 +5,7 @@ PointGaming.StreamsController = function(options){
   this.exchange_name = options.chat_room;
 
   this.name_container = 'h1#stream-name';
+  this.details_container = 'div#stream-details';
   this.bet_details_container = 'h4#stream-bet-details';
   this.bet_container = 'div#stream-bet-container';
 
@@ -43,6 +44,7 @@ PointGaming.StreamsController.prototype.handleMessage = function(data) {
 
 PointGaming.StreamsController.prototype.handleStreamUpdated = function(data) {
   $(this.name_container).html(data.stream.name);
+  $(this.details_container).html(data.stream.details);
   $(this.bet_details_container).html(data.bet_details);
   if (data.stream.betting) {
     $(this.bet_container).show();

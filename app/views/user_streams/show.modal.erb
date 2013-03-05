@@ -18,36 +18,8 @@
   </div>
 <% end %>
 
-<div class="span3">
+<div class="span6">
   <%= render partial: 'form' %>
-</div>
-
-<div class="span3">
-  <%= form_for :collaborator, url: change_owner_user_stream_path, html: {method: :put } do |f| %>
-    <fieldset>
-      <legend>Owner</legend>
-      <% if user_is_stream_owner %>
-        <div class="control-group"> 
-          <%= f.label :id, 'Change Owner', :class => 'control-label' %>
-          <div class="controls">
-            <%= f.select :id, 
-                  @collaborators.collect {|c| [ c.user.try(:username), c.id ]}, 
-                  { selected: @stream_owner.try(:id) } %>
-          </div>
-        </div>
-        <div class="form-actions">
-          <%= f.submit :Change, :class => 'btn btn-primary' %>
-        </div>
-      <% else %>
-        <div class="control-group"> 
-          <%= label :id, 'Current Owner', :class => 'control-label' %>
-          <div class="controls">
-            <%= label :id, @stream_owner.try(:user).try(:username) %>
-          </div>
-        </div>
-      <% end %>
-    </fieldset>
-  <% end %>
 </div>
 
 <div id="stream-admin-collaborators" class="span3">
