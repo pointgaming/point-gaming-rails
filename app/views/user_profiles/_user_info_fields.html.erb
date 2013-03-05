@@ -70,7 +70,9 @@
       <div class="control-group span4">
         <%= f.label :team %>
         <div class="controls">
-          <%= link_to f.object.team.try(:name), team_path(f.object.team) %>
+          <% unless f.object.team.nil? %>
+            <%= link_to f.object.team.try(:name), team_path(f.object.team) %>
+          <% end %>
         </div>
       </div>
     </div>

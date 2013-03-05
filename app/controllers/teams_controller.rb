@@ -44,7 +44,7 @@ class TeamsController < ApplicationController
   end
 
   def change_active
-    current_user.team = @team_member.team
+    current_user.team = params[:user][:team_id].blank? ? nil : @team_member.team;
     if current_user.save
       redirect_to teams_path, notice: 'Your active team was changed successfully.'
     else
@@ -71,10 +71,9 @@ protected
   end
 
   def ensure_user_is_team_member
-    begin
+    unless params[:user][:team_id].blank?
       @team_member = TeamMember.where(user_id: current_user._id, team_id: params[:user][:team_id]).first
-    rescue Mongoid::Errors::DocumentNotFound
-      redirect_to teams_path, alert: 'Invalid team specified.'
+      redirect_to teams_path, alert: 'Invalid team specified.' if @team_member.nil?
     end
   end
 end
