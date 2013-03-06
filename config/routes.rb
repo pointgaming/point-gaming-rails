@@ -1,6 +1,5 @@
 Pointgaming::Application.routes.draw do
   resources :friend_requests
-  resources :news
   resources :leagues
   resources :tournaments
   resources :streams
@@ -27,6 +26,11 @@ Pointgaming::Application.routes.draw do
   resources :games
   resources :lobbies do
     resources :rooms
+  end
+
+  namespace :admin do
+    root :to => "dashboard#index"
+    resources :news
   end
 
   namespace :api do

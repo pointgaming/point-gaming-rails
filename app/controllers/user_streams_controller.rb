@@ -8,10 +8,6 @@ class UserStreamsController < ApplicationController
   before_filter :enforce_stream_limit_current_user, only: [:create]
   before_filter :enforce_stream_limit_collaborator, only: [:change_owner]
 
-  def sub_layout
-    "settings"
-  end
-
   def index
     @streams = Collaborator.where(user_id: current_user.id).all.collect {|c| c.stream}
   end

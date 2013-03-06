@@ -4,10 +4,6 @@ class TeamsController < ApplicationController
   before_filter :ensure_change_active_params, only: [:change_active]
   before_filter :ensure_user_is_team_member, only: [:change_active]
 
-  def sub_layout
-    "settings"
-  end
-
   def index
     @team_members = TeamMember.where(user_id: current_user.id).all
   end

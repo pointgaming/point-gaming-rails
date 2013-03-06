@@ -1,0 +1,12 @@
+<div class="page-header">
+  <h1><%=t '.title', :default => "Admin Control Panel" %></h1>
+</div>
+
+<div class="row">
+  <div class="span2">
+    <%= render partial: 'admin/sidebar' %>
+  </div>
+  <div class="span10">
+    <%= yield %>
+  </div>
+</div>
