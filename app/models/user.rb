@@ -62,6 +62,7 @@ class User
   field :state
   field :points, type: Integer, default: 0
   field :stream_owner_count, :type => Integer, :default => 0
+  field :admin, :type => Boolean, :default => 0
 
   # online/offline chat status
   field :status
@@ -112,7 +113,7 @@ class User
 protected
 
   def create_forum_user
-    forum_user = ForumUser.new :email => self.email, :username => self.username
+    forum_user = ForumUser.new :email => self.email, :username => self.username, :admin => self.admin
     if forum_user.save
       true
     else
@@ -122,11 +123,12 @@ protected
   end
 
   def update_forum_user
-    if self.email_changed? || self.username_changed? || self.points_changed?
+    if self.email_changed? || self.username_changed? || self.points_changed? || self.admin_changed?
       forum_user = ForumUser.find self.email_was
       forum_user.email = self.email
       forum_user.username = self.username
       forum_user.points = self.points
+      forum_user.admin = self.admin
       if forum_user.save
         true
       else
@@ -146,7 +148,7 @@ protected
   end
 
   def create_store_user
-    store_user = StoreUser.new :email => self.email, :username => self.username
+    store_user = StoreUser.new :email => self.email, :username => self.username, :admin => self.admin
     if store_user.save
       true
     else
@@ -156,11 +158,12 @@ protected
   end
 
   def update_store_user
-    if self.email_changed? || self.username_changed? || self.points_changed?
+    if self.email_changed? || self.username_changed? || self.points_changed? || self.admin_changed?
       store_user = StoreUser.find self.email_was
       store_user.email = self.email
       store_user.username = self.username
       store_user.points = self.points
+      store_user.admin = self.admin
       if store_user.save
         true
       else
