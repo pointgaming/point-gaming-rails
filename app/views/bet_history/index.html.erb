@@ -1,0 +1,27 @@
+<%- model_class = Bet -%>
+<div class="page-header">
+  <h1>Bet History</h1>
+</div>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th><%= model_class.human_attribute_name(:created_at) %></th>
+      <th><%= model_class.human_attribute_name(:amount) %></th>
+      <th><%= model_class.human_attribute_name(:participants) %></th>
+      <th><%= model_class.human_attribute_name(:against_user) %></th>
+      <th><%= model_class.human_attribute_name(:outcome) %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @bets.each do |bet| %>
+      <tr>
+        <td><%= link_to ldate(bet.created_at), bet_history_path(bet) %></td>
+        <td><%= bet.amount %></td>
+        <td><%= bet.participants(current_user) %></td>
+        <td><%= bet.against_user(current_user).try(:username) %></td>
+        <td><%= bet.outcome %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

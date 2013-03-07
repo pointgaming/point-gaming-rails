@@ -1,4 +1,4 @@
-class BetsController < ApplicationController
+class Api::V1::BetsController < Api::ApplicationController
   before_filter :authenticate_user!
   before_filter :ensure_room
   before_filter :ensure_bet, except: [:new, :create]
@@ -9,7 +9,7 @@ class BetsController < ApplicationController
   before_filter :ensure_bet_owner, only: [:destroy]
   before_filter :ensure_no_bettor, only: [:update, :destroy]
 
-  respond_to :html, :json
+  respond_to :json
 
   def new
     @bet = Bet.new({room: @room, map: @room.map})

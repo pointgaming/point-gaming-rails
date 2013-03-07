@@ -1,0 +1,28 @@
+<%- model_class = Bet -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => model_class.model_name.human %></h1>
+</div>
+
+<dl class="dl-horizontal">
+  <dt><strong><%= model_class.human_attribute_name(:winner) %>:</strong></dt>
+  <dd><%= @bet.winner.try(:playable_name) %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:loser) %>:</strong></dt>
+  <dd><%= @bet.loser.try(:playable_name) %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:map) %>:</strong></dt>
+  <dd><%= @bet.map %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:amount) %>:</strong></dt>
+  <dd><%= @bet.amount %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:odds) %>:</strong></dt>
+  <dd><%= @bet.odds %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:bookie) %>:</strong></dt>
+  <dd><%= @bet.bookie.try(:username) %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:bettor) %>:</strong></dt>
+  <dd><%= @bet.bettor.try(:username) %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:outcome) %>:</strong></dt>
+  <dd><%= @bet.outcome %></dd>
+</dl>
+
+<div class="form-actions">
+  <%= link_to t('.back', :default => t("helpers.links.back")),
+              bet_history_index_path, :class => 'btn'  %>
+</div>

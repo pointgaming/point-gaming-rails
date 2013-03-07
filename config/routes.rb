@@ -2,7 +2,9 @@ Pointgaming::Application.routes.draw do
   resources :friend_requests
   resources :leagues
   resources :tournaments
-  resources :streams
+  resources :streams do
+    resources :bets, only: [:new, :show, :create, :update, :destroy]
+  end
   resources :teams do
     collection do
       put 'change_active'
@@ -12,9 +14,9 @@ Pointgaming::Application.routes.draw do
   resources :store
   resources :faq
   resources :settings
+  resources :bet_history
   resources :subscriptions, only: [:index, :new, :create]
   resources :user_streams do
-    resources :bets, only: [:new, :show, :create, :update, :destroy]
     resources :collaborators, only: [:index, :new, :create, :destroy]
     member do
       put 'change_owner'
@@ -41,6 +43,12 @@ Pointgaming::Application.routes.draw do
       resources :friends
       resources :friend_requests
       resources :ignores
+      resources :streams do
+        resources :bets, only: [:new, :show, :create, :update, :destroy]
+      end
+      resources :rooms do
+        resources :bets, only: [:new, :show, :create, :update, :destroy]
+      end
     end
   end
 

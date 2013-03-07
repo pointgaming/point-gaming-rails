@@ -46,23 +46,23 @@
     <h4 id="stream-bet-details"><%= @stream.bet_details %></h4>
     <div id="stream-bet-container" class="thumbnail" style="<%= @stream.betting ? '' : 'display: none' %>">
       <div class="caption">
-        <%= link_to_modal 'Propose a Bet', new_user_stream_bet_path(@stream), :remote => true, :class => 'btn btn-primary', style: 'width: 95%' %>
+        <%= link_to_modal 'Propose a Bet', new_stream_bet_path(@stream), :remote => true, :class => 'btn btn-primary', style: 'width: 95%' %>
       </div>
       <div id="bet-container" class="caption">
         <% unless @bets.empty? %>
           <% @bets.each do |b| %>
             <div id="<%= b._id %>" class="well well-small bet" title="Bet Details" data-content="<%= bet_tooltip(b).html_safe %>">
-              <%= "#{b.bookie.try(:username)}: #{b.winner}>#{b.loser} #{b.amount} Points #{b.odds}" %>
+              <%= "#{b.bookie.try(:username)}: #{b.winner.try(:playable_name)}>#{b.loser.try(:playable_name)} #{b.amount} Points #{b.odds}" %>
               <div class="pull-right">
                 <% if b.bettor %>
                   Accepted: <%= b.bettor.try(:username) %>
                 <% else %>
                   <% if b.bookie.try(:id) === current_user.id %>
-                    <%= link_to "Cancel", user_stream_bet_path(@stream, b),
+                    <%= link_to "Cancel", stream_bet_path(@stream, b),
                           'method' => 'delete', 'data-remote' => 'true', 'data-type' => :json,
                           :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) } %>
                   <% else %>
-                    <%= link_to "Accept", user_stream_bet_path(@stream, b),
+                    <%= link_to "Accept", stream_bet_path(@stream, b),
                           'method' => 'put', 'data-remote' => 'true', 'data-type' => :json,
                           :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) } %>
                   <% end %>

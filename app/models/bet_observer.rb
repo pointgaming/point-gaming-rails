@@ -4,29 +4,35 @@ class BetObserver < Mongoid::Observer
   include StreamsHelper
 
   def after_create(record)
-    BunnyClient.instance.publish_fanout("c.s.#{record.stream.id}", {
-      :action => :bet_created, 
-      :bet => record.as_json(:include => [:bookie]),
-      :bet_tooltip => bet_tooltip(record),
-      :bet_path => user_stream_bet_path(record.stream, record)
+    BunnyClient.instance.publish_fanout("c.#{record.room.mq_exchange}", {
+      :action => 'Bet.new',
+      :data => {
+        :bet => record.as_json(:include => [:bookie]),
+        :bet_tooltip => bet_tooltip(record),
+        :bet_path => polymorphic_path([record.room, record])
+      }
     }.to_json)
   end
 
   def after_update(record)
     if record.bettor_id_changed? && record.bettor
-      BunnyClient.instance.publish_fanout("c.s.#{record.stream.id}", {
-        :action => :new_bettor, 
-        :bet => record, 
-        :bookie => record.bookie, 
-        :bettor => record.bettor
+      BunnyClient.instance.publish_fanout("c.#{record.room.mq_exchange}", {
+        :action => 'Bet.Bettor.new', 
+        :data => {
+          :bet => record, 
+          :bookie => record.bookie, 
+          :bettor => record.bettor
+        }
       }.to_json)
     end
   end
 
   def after_destroy(record)
-    BunnyClient.instance.publish_fanout("c.s.#{record.stream.id}", {
-      :action => :bet_destroyed, 
-      :bet => record
+    BunnyClient.instance.publish_fanout("c.#{record.room.mq_exchange}", {
+      :action => 'Bet.destroy', 
+      :data => {
+        :bet => record
+      }
     }.to_json)
   end
 end

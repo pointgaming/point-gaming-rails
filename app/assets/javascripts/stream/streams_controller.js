@@ -29,19 +29,6 @@ PointGaming.StreamsController.prototype.handleJoinChat = function(data) {
 
 };
 
-PointGaming.StreamsController.prototype.handleMessage = function(data) {
-  if (data.action) {
-    switch (data.action) {
-      case "stream_updated":
-        this.handleStreamUpdated(data);
-        break;
-      case "stream_destroyed":
-        this.handleStreamDestroyed(data);
-        break;
-    }
-  }
-};
-
 PointGaming.StreamsController.prototype.handleStreamUpdated = function(data) {
   $(this.name_container).html(data.stream.name);
   $(this.details_container).html(data.stream.details);
@@ -64,5 +51,6 @@ PointGaming.StreamsController.prototype.registerHandlers = function() {
 
   this.socket.on("join_chat", function(data){ self.handleJoinChat(data); });
 
-  this.socket.on("message", function(data){ self.handleMessage(data); });
+  this.socket.on("Stream.update", this.handleStreamUpdated.bind(this));
+  this.socket.on("Stream.destroy", this.handleStreamDestroyed.bind(this));
 };

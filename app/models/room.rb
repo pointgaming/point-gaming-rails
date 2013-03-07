@@ -13,4 +13,8 @@ class Room
   validates :player_limit, :presence=>true
 
   validates :player_count, :presence=>true
+
+  def mq_exchange
+    "GameRoom_#{_id}"
+  end
 end

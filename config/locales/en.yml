@@ -10,6 +10,9 @@ en:
     models:
       team_member: 'Member'
     attributes:
+      bet:
+        winner_name: 'Winner'
+        loser_name: 'Loser'
       stream:
         player_1: 'Player or Team 1'
         player_2: 'Player or Team 2'

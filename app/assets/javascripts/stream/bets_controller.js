@@ -42,24 +42,8 @@ PointGaming.BetsController.prototype.handleJoinChat = function(data) {
   this.appendMessage("<strong>" + message + "</strong>");
 };
 
-PointGaming.BetsController.prototype.handleMessage = function(data) {
-  if (data.action) {
-    switch (data.action) {
-      case "bet_created":
-        this.handleBetCreated(data);
-        break;
-      case "new_bettor":
-        this.handleNewBettor(data);
-        break;
-      case "bet_destroyed":
-        this.handleBetDestroyed(data);
-        break;
-    }
-  }
-};
-
 PointGaming.BetsController.prototype.handleBetCreated = function(data) {
-  var message = data.bet.bookie.username + ": " + data.bet.winner + ">" + data.bet.loser + " " + data.bet.amount + " Points " + data.bet.odds;
+  var message = data.bet.bookie.username + ": " + data.bet.winner_name + ">" + data.bet.loser_name + " " + data.bet.amount + " Points " + data.bet.odds;
   // if current_user is bookie
   if (PointGaming.user._id === data.bet.bookie._id) {
     message += '<div class="pull-right"><a href="'+ data.bet_path +'" data-confirm="Are you sure?" data-method="delete" data-remote="true" data-type="json" rel="nofollow">Cancel</a></div>';
@@ -95,7 +79,10 @@ PointGaming.BetsController.prototype.registerHandlers = function() {
 
   this.socket.on("join_chat", function(data){ self.handleJoinChat(data); });
 
-  this.socket.on("message", function(data){ self.handleMessage(data); });
+  this.socket.on("Bet.new", this.handleBetCreated.bind(this));
+  this.socket.on("Bet.destroy", this.handleBetDestroyed.bind(this));
+
+  this.socket.on("Bet.Bettor.new", this.handleNewBettor.bind(this));
 
   $('body').popover({
     selector: this.bet_selector,

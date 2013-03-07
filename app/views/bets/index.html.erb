@@ -23,7 +23,7 @@
   <tbody>
     <% @bets.each do |bet| %>
       <tr>
-        <td><%= link_to bet.id, user_stream_bet_path(bet) %></td>
+        <td><%= link_to bet.id, stream_bet_path(bet) %></td>
         <td><%= bet._type %></td>
         <td><%= bet._id %></td>
         <td><%= bet.winner %></td>
@@ -37,9 +37,9 @@
         <td><%=ldate bet.created_at %></td>
         <td>
           <%= link_to t('.edit', :default => t("helpers.links.edit")),
-                      edit_user_stream_bet_path(bet), :class => 'btn btn-mini' %>
+                      edit_stream_bet_path(bet), :class => 'btn btn-mini' %>
           <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                      user_stream_bet_path(bet),
+                      stream_bet_path(bet),
                       :method => :delete,
                       :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
                       :class => 'btn btn-mini btn-danger' %>
