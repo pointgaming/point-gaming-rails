@@ -1,4 +1,4 @@
-class RoomsController < ApplicationController
+class GameRoomsController < ApplicationController
   before_filter :authenticate_user!
   before_filter :find_room, :only=>[:show]
   before_filter :find_game, :only=>[:show]
@@ -13,6 +13,6 @@ class RoomsController < ApplicationController
   end
 
   def find_room
-    @room = Room.find params[:id]
+    @room = GameRoom.find params[:id]
   end
 end

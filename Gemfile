@@ -2,59 +2,32 @@ source 'https://rubygems.org'
 
 gem 'rails', '3.2.12'
 
-# Bundle edge Rails instead:
-# gem 'rails', :git => 'git://github.com/rails/rails.git'
-
-# gem 'sqlite3'
+gem 'bunny', '>= 0.9.0.pre6'
 gem 'mongoid', "~> 3.0.0"
-
-gem 'kaminari'
-
 gem 'redis-rails'
 
-gem 'bunny', '>= 0.9.0.pre6'
 gem 'devise'
-
-gem 'uuidtools'
-
+gem 'carmen'
+gem 'carmen-rails'
+gem "mongoid-paperclip", :require => "mongoid_paperclip"
+gem 'kaminari'
+gem 'workflow_on_mongoid'
 gem 'rabl-rails'
 gem 'oj'
+gem 'uuidtools'
 
-# Gems used only for assets and not required
-# in production environments by default.
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
-
-  # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-  # gem 'therubyracer', :platform => :ruby
-
   gem 'uglifier', '>= 1.0.3'
 end
 
+group :development do
+  gem "better_errors", ">= 0.3.2", :group => :development
+  gem "binding_of_caller", ">= 0.6.8", :group => :development
+end
+
+# required to precompile assets
 gem 'twitter-bootstrap-rails'
-
 gem 'jquery-rails'
-
 gem 'jquery-ui-rails'
-
-gem 'carmen'
-
-gem "mongoid-paperclip", :require => "mongoid_paperclip"
-
-gem 'carmen-rails'
-
-# To use ActiveModel has_secure_password
-# gem 'bcrypt-ruby', '~> 3.0.0'
-
-# To use Jbuilder templates for JSON
-# gem 'jbuilder'
-
-# Use unicorn as the app server
-# gem 'unicorn'
-
-# Deploy with Capistrano
-# gem 'capistrano'
-
-# To use debugger
-# gem 'ruby-debug19', :require => 'ruby-debug'

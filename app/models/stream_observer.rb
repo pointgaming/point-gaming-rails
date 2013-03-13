@@ -1,10 +1,10 @@
 class StreamObserver < Mongoid::Observer
+
   def after_update(record)
     BunnyClient.instance.publish_fanout("c.#{record.mq_exchange}", {
       :action => 'Stream.update',
       :data => {
-        :stream => record,
-        :bet_details => record.bet_details
+        :stream => record
       }
     }.to_json)
   end

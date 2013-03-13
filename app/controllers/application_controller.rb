@@ -1,6 +1,8 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
+  self.responder = CustomResponder
+
   before_filter :set_current_path
   before_filter :remove_layout_for_ajax_requests
 
@@ -32,6 +34,6 @@ private
   end
 
   def render_permission_denied
-    render :file => "#{Rails.root}/public/403.html", :status => :forbidden, :layout => false
+    render :file => "#{Rails.root}/public/403", :status => :forbidden, :layout => false
   end
 end

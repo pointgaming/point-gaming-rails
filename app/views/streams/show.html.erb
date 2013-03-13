@@ -1,6 +1,7 @@
 <%= javascript_include_tag "stream" %>
 
 <div id="ajax-modal" class="modal hide fade" tabindex="-1"></div>
+<div id="match-modal" class="modal hide fade" tabindex="-1"></div>
 
 <div class="page-header">
   <h1 id="stream-name"><%= @stream.name %></h1>
@@ -43,10 +44,15 @@
   </div>
 
   <div class="span6">
-    <h4 id="stream-bet-details"><%= @stream.bet_details %></h4>
-    <div id="stream-bet-container" class="thumbnail" style="<%= @stream.betting ? '' : 'display: none' %>">
+    <h4 id="stream-match-details">
+      <% if @stream.match %>
+        <%= match_details(@stream.match) %>
+      <% end %>
+    </h4>
+    <div id="stream-bet-container" class="thumbnail" style="<%= @stream.match.try(:betting) ? '' : 'display: none' %>">
       <div class="caption">
-        <%= link_to_modal 'Propose a Bet', new_stream_bet_path(@stream), :remote => true, :class => 'btn btn-primary', style: 'width: 95%' %>
+        <%= link_to_modal 'Propose a Bet', @stream.match ? new_match_bet_path(@stream.match) : '#', 
+              :remote => true, :class => 'btn btn-primary', style: 'width: 95%', :id => 'propose-bet' %>
       </div>
       <div id="bet-container" class="caption">
         <% unless @bets.empty? %>
@@ -58,11 +64,11 @@
                   Accepted: <%= b.bettor.try(:username) %>
                 <% else %>
                   <% if b.bookie.try(:id) === current_user.id %>
-                    <%= link_to "Cancel", stream_bet_path(@stream, b),
+                    <%= link_to "Cancel", match_bet_path(b.match, b),
                           'method' => 'delete', 'data-remote' => 'true', 'data-type' => :json,
                           :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) } %>
                   <% else %>
-                    <%= link_to "Accept", stream_bet_path(@stream, b),
+                    <%= link_to "Accept", match_bet_path(b.match, b),
                           'method' => 'put', 'data-remote' => 'true', 'data-type' => :json,
                           :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) } %>
                   <% end %>
@@ -75,14 +81,6 @@
     </div>
   </div>
 </div>
-
-<% if @stream_owner.user_id === current_user.id || @collaborator.present? %>
-  <%= javascript_tag do %>
-    $(function () {
-      new PointGaming.StreamAdminController();
-    });
-  <% end %>
-<% end %>
 
 <%= javascript_tag do %>
   $(function () {
@@ -100,6 +98,15 @@
         }
       });
 
+      <% if @stream_owner.user_id === current_user.id || @collaborator.present? %>
+        new PointGaming.StreamAdminController();
+        new PointGaming.MatchAdminController(<%= @stream.match ? @stream.match.to_json.html_safe : '{}' %>, {
+          new_match_path: "<%= new_stream_match_path(@stream, Match.new) %>",
+          polymorphic_match_path: "<%= stream_match_path(@stream, ':match_id') %>",
+          match_path: "<%= match_path(':match_id') %>"
+        });
+      <% end %>
+
       new PointGaming.BetsController({
         chat_room: "s.<%="#{@stream._id}"%>",
       });
@@ -107,6 +114,8 @@
       new PointGaming.StreamsController({
         chat_room: "s.<%="#{@stream._id}"%>",
       });
+
+      new PointGaming.MatchController(<%= @stream.match ? @stream.match.to_json.html_safe : '' %>);
 
       var chat_room = new PointGaming.chatbox({
         message_window_selector: "#chatbox",

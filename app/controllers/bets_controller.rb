@@ -1,6 +1,6 @@
 class BetsController < ApplicationController
   before_filter :authenticate_user!
-  before_filter :ensure_room
+  before_filter :ensure_match
   before_filter :ensure_bet, except: [:new, :create]
   before_filter :ensure_params, only: [:create]
   before_filter :ensure_winner, only: [:create]
@@ -12,7 +12,7 @@ class BetsController < ApplicationController
   respond_to :html, :json
 
   def new
-    @bet = Bet.new({room: @room, map: @room.map})
+    @bet = Bet.new({match: @match, map: @match.map})
   end
 
   def show
@@ -22,8 +22,8 @@ class BetsController < ApplicationController
   def create
     @bet = Bet.new(params[:bet])
     @bet.bookie = current_user
-    @bet.room = @room
-    @bet.map = @room.map
+    @bet.match = @match
+    @bet.map = @match.map
 
     @bet.winner = @winner
     @bet.winner_name = @winner.try(:playable_name)
@@ -32,7 +32,7 @@ class BetsController < ApplicationController
     @bet.loser_name = @loser.try(:playable_name)
 
     @bet.save
-    respond_with(@room, @bet)
+    respond_with(@match, @bet)
   end
 
   def update
@@ -49,13 +49,9 @@ class BetsController < ApplicationController
 
 protected
 
-  def ensure_room
-    [:room_id, :stream_id].each do |key|
-      if params[key].present?
-        @room = key.to_s.gsub(/_id$/, '').classify.constantize.find(params[key])
-      end
-    end
-    unless @room
+  def ensure_match
+    @match = Match.find params[:match_id]
+    unless @match
       raise ::PermissionDenied
     end
   end
@@ -63,7 +59,7 @@ protected
   def ensure_params
     if params[:bet].blank?
       respond_to do |format|
-        format.html { redirect_to polymorphic_path(@room), alert: 'Invalid or missing parameters.' }
+        format.html { redirect_to polymorphic_path(@match), alert: 'Invalid or missing parameters.' }
         format.json { render json: [], status: :unprocessable_entity }
       end
     end
@@ -71,7 +67,7 @@ protected
 
   def ensure_winner
     if ['player_1', 'player_2'].include?(params[:bet][:winner])
-      @winner = @room.send(params[:bet][:winner])
+      @winner = @match.send(params[:bet][:winner])
     else
       nil
     end
@@ -79,17 +75,17 @@ protected
 
   def ensure_loser
     if ['player_1', 'player_2'].include?(params[:bet][:loser])
-      @loser = @room.send(params[:bet][:loser])
+      @loser = @match.send(params[:bet][:loser])
     else
       nil
     end
   end
 
   def ensure_bet
-    @bet = Bet.where(room: @room).find params[:id]
+    @bet = Bet.where(match: @match).find params[:id]
     unless @bet
       respond_to do |format|
-        format.html { redirect_to polymorphic_path(@room), alert: "The specified bet was not found." }
+        format.html { redirect_to polymorphic_path(@match), alert: "The specified bet was not found." }
         format.json { render json: [], status: :unprocessable_entity }
       end
     end
@@ -98,7 +94,7 @@ protected
   def ensure_bet_owner
     unless @bet.bookie_id === current_user._id
       respond_to do |format|
-        format.html { redirect_to polymorphic_path(@room), alert: 'You do not have permission to make changes to that bet.' }
+        format.html { redirect_to polymorphic_path(@match), alert: 'You do not have permission to make changes to that bet.' }
         format.json { render json: [], status: :unprocessable_entity }
       end
     end
@@ -107,7 +103,7 @@ protected
   def ensure_not_bet_owner
     unless @bet.bookie_id != current_user._id
       respond_to do |format|
-        format.html { redirect_to polymorphic_path(@room), alert: 'You do not have permission to accept the bet because you are the bet owner.' }
+        format.html { redirect_to polymorphic_path(@match), alert: 'You do not have permission to accept the bet because you are the bet owner.' }
         format.json { render json: [], status: :unprocessable_entity }
       end
     end
@@ -116,7 +112,7 @@ protected
   def ensure_no_bettor
     unless @bet.bettor.nil?
       respond_to do |format|
-        format.html { redirect_to polymorphic_path(@room), alert: 'You cannot make that change to the bet because the bet has been accepted by another user.' }
+        format.html { redirect_to polymorphic_path(@match), alert: 'You cannot make that change to the bet because the bet has been accepted by another user.' }
         format.json { render json: [], status: :unprocessable_entity }
       end
     end

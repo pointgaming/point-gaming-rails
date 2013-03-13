@@ -1,9 +1,21 @@
 Pointgaming::Application.routes.draw do
+  resources :matches, only: [:edit, :update] do
+    member do
+      put 'start'
+      put 'stop'
+      put 'cancel'
+      put 'finalize'
+    end
+    resources :bets, only: [:new, :show, :create, :update, :destroy]
+  end
   resources :friend_requests
   resources :leagues
   resources :tournaments
   resources :streams do
-    resources :bets, only: [:new, :show, :create, :update, :destroy]
+    resources :matches, only: [:index, :new, :show, :create, :destroy]
+  end
+  resources :game_rooms do
+    resources :matches, only: [:index, :new, :show, :create, :destroy]
   end
   resources :teams do
     collection do
@@ -26,9 +38,7 @@ Pointgaming::Application.routes.draw do
   end
 
   resources :games
-  resources :lobbies do
-    resources :rooms
-  end
+  resources :lobbies
 
   namespace :admin do
     root :to => "dashboard#index"
@@ -43,11 +53,20 @@ Pointgaming::Application.routes.draw do
       resources :friends
       resources :friend_requests
       resources :ignores
-      resources :streams do
+      resources :matches, only: [:update] do
+        member do
+          put 'start'
+          put 'stop'
+          put 'cancel'
+          put 'finalize'
+        end
         resources :bets, only: [:new, :show, :create, :update, :destroy]
       end
-      resources :rooms do
-        resources :bets, only: [:new, :show, :create, :update, :destroy]
+      resources :streams, only: [] do
+        resources :matches, only: [:index, :new, :show, :create, :destroy]
+      end
+      resources :game_rooms, only: [] do
+        resources :matches, only: [:index, :new, :show, :create, :destroy]
       end
     end
   end

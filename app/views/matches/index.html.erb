@@ -1,0 +1,29 @@
+<%- model_class = Match -%>
+<h2>Match History for <%=@room.name%></h2>
+
+<div class="breadcrumb">
+  <% if @room.class === Stream %>
+    <%= link_to t('.back'), user_stream_path(@room), :class => 'btn' %>
+  <% end %>
+</div>
+
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th><%= model_class.human_attribute_name(:name) %></th>
+      <th><%= model_class.human_attribute_name(:created_at) %></th>
+      <th><%= model_class.human_attribute_name(:updated_at) %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @matches.each do |match| %>
+      <tr>
+        <td><%= link_to match_details(match, :short), polymorphic_path([@room, match]) %></td>
+        <td><%= ldate match.created_at %></td>
+        <td><%= ldate match.updated_at %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= paginate @matches %>

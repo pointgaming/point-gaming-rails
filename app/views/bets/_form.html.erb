@@ -1,8 +1,8 @@
-<%= form_for [:stream, @bet] do |f| %>
+<%= form_for [@match, @bet] do |f| %>
   <div class="modal-body">
     <div class="control-group">
-      <%= f.select :winner, @room.player_options, include_blank: '- Select -', :class => 'text_field' %> will beat 
-      <%= f.select :loser, @room.player_options, include_blank: '- Select -', :class => 'text_field' %> on map 
+      <%= f.select :winner, @match.player_options, include_blank: '- Select -', :class => 'text_field' %> will beat 
+      <%= f.select :loser, @match.player_options, include_blank: '- Select -', :class => 'text_field' %> on map 
       <%= f.text_field :map, :class => 'text_field', disabled: true %>
     </div>
 
@@ -24,6 +24,6 @@
   <div class="modal-footer">
     <%= f.submit nil, :class => 'btn btn-primary' %>
     <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
-            @room, :class => 'btn', 'data-dismiss' => 'modal' %>
+            @match, :class => 'btn', 'data-dismiss' => 'modal' %>
   </div>
 <% end %>

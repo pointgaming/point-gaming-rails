@@ -31,6 +31,11 @@ GEM
     amq-protocol (1.2.0)
     arel (3.0.2)
     bcrypt-ruby (3.0.1)
+    better_errors (0.7.0)
+      coderay (>= 1.0.0)
+      erubis (>= 2.6.6)
+    binding_of_caller (0.7.1)
+      debug_inspector (>= 0.0.1)
     builder (3.0.4)
     bunny (0.9.0.pre7)
       amq-protocol (>= 1.2.0)
@@ -39,6 +44,7 @@ GEM
       carmen (~> 1.0.0.beta2)
       rails
     cocaine (0.4.2)
+    coderay (1.0.9)
     coffee-rails (3.2.2)
       coffee-script (>= 2.2.0)
       railties (~> 3.2.0)
@@ -46,6 +52,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.4.0)
+    debug_inspector (0.0.2)
     devise (2.2.3)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.1)
@@ -162,11 +169,17 @@ GEM
     uuidtools (2.1.3)
     warden (1.2.1)
       rack (>= 1.0)
+    workflow (0.8.7)
+    workflow_on_mongoid (0.8.0.7)
+      mongoid
+      workflow (~> 0.8)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
+  better_errors (>= 0.3.2)
+  binding_of_caller (>= 0.6.8)
   bunny (>= 0.9.0.pre6)
   carmen
   carmen-rails
@@ -185,3 +198,4 @@ DEPENDENCIES
   twitter-bootstrap-rails
   uglifier (>= 1.0.3)
   uuidtools
+  workflow_on_mongoid

@@ -21,6 +21,7 @@
 //= require bootstrap-typeahead
 //= require ./global/socket.io
 //= require ./global/chatbox
+//= require ./global/modal_helper
 //= require ./global/toolbar_controller
 //= require_tree ./global
 

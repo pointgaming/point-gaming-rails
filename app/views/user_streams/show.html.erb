@@ -14,6 +14,8 @@
       <%= link_to t('.start_streaming'), start_user_stream_path(@stream), method: 'put', 
               :class => 'btn btn-primary streaming-toggle' %>
     <% end %>
+    <%= link_to t('.match_history'), stream_matches_path(@stream), 
+            :class => 'btn' %>
     <div class="pull-right">
       <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
               user_stream_path(@stream),

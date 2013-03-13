@@ -10,7 +10,7 @@
           <ul class="thumbnails">
             <% rooms.each do |room| %>
               <li class="span3">
-                <%= link_to image_tag('stream.png'), lobby_room_path(@game, room), :class => 'thumbnail' %>
+                <%= link_to image_tag('stream.png'), '#', :class => 'thumbnail' %>
               </li>
             <% end %>
           </ul>

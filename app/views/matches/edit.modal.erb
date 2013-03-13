@@ -1,0 +1,24 @@
+<%- model_class = Match -%>
+<div class="modal-header">
+  <h2>Finalize Match</h2>
+</div>
+
+<%= form_for @match do |f| %>
+  <div class="modal-body">
+    <div class="span3">
+      <%= render partial: 'shared/form_errors', locals: {model: f.object} %>
+
+      <div class="control-group">
+        <%= f.label :winner, :class => 'control-label' %>
+        <div class="controls">
+          <%= f.select :winner, @match.player_options %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <%= f.submit nil, :class => 'btn btn-primary' %>
+    <%= link_to t('.cancel', default: t("helpers.links.cancel")), user_streams_path, :class => 'btn', 'data-dismiss' => 'modal' %>
+  </div>
+<% end %>

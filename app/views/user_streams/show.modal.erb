@@ -4,8 +4,8 @@
   <h2><%=t '.title', :default => model_class.model_name.human %>: <%= @stream.name %></h2>
 </div>
 
-<% if user_is_stream_owner %>
-  <div class="breadcrumb">
+<div class="breadcrumb">
+  <% if user_is_stream_owner %>
     <% if @stream.streaming %>
       <%= link_to t('.stop_streaming'), stop_user_stream_path(@stream), method: 'put', 
               'data-type'=>'json', 'data-remote' => 'true', 'data-modal' => 'true', 
@@ -15,8 +15,17 @@
               'data-type'=>'json', 'data-remote' => 'true', 'data-modal' => 'true', 
               :class => 'btn btn-primary streaming-toggle' %>
     <% end %>
-  </div>
-<% end %>
+  <% end %>
+  <% if @stream.match.blank? %>
+    <%= link_to_modal t('.new_match'), new_polymorphic_path([@stream, @stream.build_match]),
+          remote: true, data: {'modal-target' => '#match-modal'},
+          :id => 'manage-match', :class => 'btn' %>
+  <% else %>
+    <%= link_to_modal t('.manage_match'), polymorphic_path([@stream, @stream.match]),
+          remote: true, data: {'modal-target' => '#match-modal', 'match-id' => @stream.match._id.to_s},
+          :id => 'manage-match', :class => 'btn' %>
+  <% end %>
+</div>
 
 <div class="span6">
   <%= render partial: 'form' %>

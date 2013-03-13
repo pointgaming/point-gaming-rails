@@ -2,6 +2,9 @@ class Bet
   include Mongoid::Document
   include Mongoid::Timestamps
 
+  scope :for_user, lambda {|user| any_of({:bettor_id.in => [user._id, nil]}, {bookie_id: user._id}) }
+  scope :pending, where(outcome: :undetermined)
+
   attr_accessible :amount, :odds, :map
 
   # store winner/loser names historically
@@ -15,14 +18,13 @@ class Bet
   # values: undetermined, bookie_won, bettor_won
   field :outcome, :type => String, default: :undetermined
 
+  belongs_to :match
+
   # this should be player_1 or player_2 from stream or game_room model
   belongs_to :winner, :polymorphic => true
 
   # this should be player_1 or player_2 from stream or game_room model
   belongs_to :loser, :polymorphic => true
-
-  # this should be either a stream or a game room
-  belongs_to :room, :polymorphic => true
 
   # user who owns/offered the bet
   belongs_to :bookie, class_name: 'User'
@@ -36,6 +38,9 @@ class Bet
   validates :amount, :presence=>true, :numericality => true
   validates :odds, :presence=>true
   validate :check_winner_and_loser
+  validate :check_match_state, on: :create
+  validate :check_bookie_points, on: :create
+  validate :check_bettor_points, on: :update
 
   def tooltip_attributes
     [:winner_name, :loser_name, :map, :amount, :odds, :your_risk_amount, :your_win_amount]
@@ -61,6 +66,26 @@ class Bet
 
   def against_user(user)
     (user._id === bookie_id) ? bettor : bookie
+  end
+
+private
+
+  def check_match_state
+    errors.add(:match, "is not currently accepting new bets.") unless match.state === 'new'
+  end
+
+  def check_bookie_points
+    pending_points = Bet.pending.for_user(bookie).sum(:amount).to_i
+
+    errors.add(:amount, "cannot be larger than your available points.") if amount > (bookie.points - pending_points)
+  end
+
+  def check_bettor_points
+    return unless bettor_changed?
+
+    pending_points = Bet.pending.for_user(bettor).sum(:amount).to_i
+
+    errors.add(:amount, "cannot be larger than your available points.") if amount > (bettor.points - pending_points)
   end
 
   def check_winner_and_loser

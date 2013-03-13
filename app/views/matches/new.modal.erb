@@ -1,0 +1,49 @@
+<%- model_class = Match -%>
+<div class="modal-header">
+  <h2>Create Match</h2>
+</div>
+
+<%= form_for [@room, @match] do |f| %>
+  <div class="modal-body">
+    <div class="span3">
+      <%= render partial: 'shared/form_errors', locals: {model: f.object} %>
+
+      <div class="control-group">
+        <%= f.label :betting, :class => 'control-label' %>
+        <div class="controls">
+          <%= f.check_box :betting %>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <%= f.label :player_1_name, :class => 'control-label' %>
+        <div class="controls">
+          <%= f.text_field :player_1_name, :class => 'text_field playable-search' %>
+          <%= f.hidden_field :player_1_id %>
+          <%= f.hidden_field :player_1_type %>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <%= f.label :player_2_name, :class => 'control-label' %>
+        <div class="controls">
+          <%= f.text_field :player_2_name, :class => 'text_field playable-search' %>
+          <%= f.hidden_field :player_2_id %>
+          <%= f.hidden_field :player_2_type %>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <%= f.label :map, :class => 'control-label' %>
+        <div class="controls">
+          <%= f.text_field :map, :class => 'text_field' %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <%= f.submit nil, :class => 'btn btn-primary' %>
+    <%= link_to t('.cancel', default: t("helpers.links.cancel")), user_streams_path, :class => 'btn', 'data-dismiss' => 'modal' %>
+  </div>
+<% end %>

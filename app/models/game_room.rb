@@ -1,4 +1,4 @@
-class Room
+class GameRoom
   include Mongoid::Document
 
   field :description, :type => String, :default => ''
