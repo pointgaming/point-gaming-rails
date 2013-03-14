@@ -9,6 +9,6 @@ class Admin::ApplicationController < ApplicationController
 private
 
   def ensure_admin
-    
+    raise ::PermissionDenied unless current_user.admin?
   end
 end

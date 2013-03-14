@@ -1,6 +1,7 @@
 class Admin::NewsController < Admin::ApplicationController
   before_filter :ensure_news, only: [:show, :edit, :update, :destroy]
   before_filter :ensure_params, only: [:update, :create]
+  authorize_resource
 
   def index
     @news = News.all

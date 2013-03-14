@@ -1,0 +1,13 @@
+<div class="page-header">
+  <h3>Groups
+  <%= link_to t('.new', :default => t("helpers.links.new")),
+              new_admin_group_path,
+              :class => 'btn btn-mini btn-primary' %>
+  </h3>
+</div>
+
+<ul class="nav nav-list">
+  <% @groups.each do |group| %>
+    <%= navItem group.name, edit_admin_group_path(group) %>
+  <% end %>
+</ul>

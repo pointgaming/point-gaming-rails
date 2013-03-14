@@ -14,6 +14,8 @@ GEM
       rack-cache (~> 1.2)
       rack-test (~> 0.6.1)
       sprockets (~> 2.2.1)
+    active_hash (0.9.13)
+      activesupport (>= 2.2.2)
     activemodel (3.2.12)
       activesupport (= 3.2.12)
       builder (~> 3.0.0)
@@ -39,6 +41,7 @@ GEM
     builder (3.0.4)
     bunny (0.9.0.pre7)
       amq-protocol (>= 1.2.0)
+    cancan (1.6.9)
     carmen (1.0.0.beta2)
     carmen-rails (1.0.0.beta3)
       carmen (~> 1.0.0.beta2)
@@ -193,9 +196,11 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  active_hash
   better_errors (>= 0.3.2)
   binding_of_caller (>= 0.6.8)
   bunny (>= 0.9.0.pre6)
+  cancan
   carmen
   carmen-rails
   coffee-rails (~> 3.2.1)

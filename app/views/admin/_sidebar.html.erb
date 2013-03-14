@@ -1,4 +1,8 @@
 <ul class="nav nav-list">
-  <%= navItem "Admin", "#" %>
-  <%= navItem "News", admin_news_index_path %>
+  <% if can? :manage, Group %>
+    <%= navItem "Groups",  admin_groups_path %>
+  <% end %>
+  <% if can? :manage, News %>
+    <%= navItem "News", admin_news_index_path %>
+  <% end %>
 </ul>

@@ -78,6 +78,8 @@ class User
 
   belongs_to :team
 
+  belongs_to :group
+
   has_many :auth_tokens, :validate=>false
   has_many :coins, :validate=>false
   has_many :friends, :validate=>false

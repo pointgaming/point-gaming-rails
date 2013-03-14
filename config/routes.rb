@@ -44,6 +44,9 @@ Pointgaming::Application.routes.draw do
 
   namespace :admin do
     root :to => "dashboard#index"
+    resources :groups do
+      resources :users, controller: 'group_users'
+    end
     resources :news
   end
 

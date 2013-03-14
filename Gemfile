@@ -5,9 +5,11 @@ gem 'rails', '3.2.12'
 gem 'bunny', '>= 0.9.0.pre6'
 gem 'mongoid', "~> 3.0.0"
 gem 'redis-rails'
+gem 'active_hash'
 
 gem 'resque'
 gem 'devise'
+gem 'cancan'
 gem 'carmen'
 gem 'carmen-rails'
 gem "mongoid-paperclip", :require => "mongoid_paperclip"

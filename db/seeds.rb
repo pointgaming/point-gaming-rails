@@ -38,10 +38,16 @@ Tournament.create! :start_datetime => Time.now, :game => game, :game_type => 'CT
 game = Game.find_by(name: 'Counter-Strike: Go')
 Tournament.create! :start_datetime => Time.now, :game => game, :game_type => 'Team 5vs5', :prize_pool => '$20,000 Cash/50,000 Points', :player_limit => 50000, :player_count => 12361
 
-
-puts 'Creating 100 Streams'
-
-game = Game.find_by(name: 'Quake Live')
-100.times {|i|
-  Stream.create! :name => "dProductions #{i}", :game => game, :details => 'Next Match Rapha vs Zero4 Map: Bloodrun', :betting => true, :viewer_count => 25024
+groups = [
+  {name: 'CEO/COO', prefix: '~'},
+  {name: 'Executive', prefix: '@'},
+  {name: 'Super Admin', prefix: '#'},
+  {name: 'Admin', prefix: '$'},
+  {name: 'Dispute Admin', prefix: '%'},
+  {name: 'Forums Admin', prefix: '^'},
+  {name: 'Forums Moderator', prefix: '&'}
+]
+groups.each_with_index {|group, index| 
+  group['sort_order'] = index unless group.has_key?(:sort_order)
+  Group.create! group
 }

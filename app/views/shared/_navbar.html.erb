@@ -28,7 +28,7 @@
                           <li class="dropdown">
                               <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= "#{current_user.username} (#{current_user.points})" %> <b class="caret"></b></a>
                               <ul class="dropdown-menu">
-                                <% if current_user.admin? %>
+                                <% if can? :show, :admin_link %>
                                   <li><%= link_to "Admin", admin_root_path %></li>
                                   <li class="divider"></li>
                                 <% end %>
