@@ -1,11 +1,19 @@
 class Bet
   include Mongoid::Document
   include Mongoid::Timestamps
+  include Rails.application.routes.url_helpers
+  include ActionView::Helpers::TagHelper
+  include StreamsHelper
 
   scope :for_user, lambda {|user| any_of({:bettor_id.in => [user._id, nil]}, {bookie_id: user._id}) }
+  scope :for_match, lambda {|match| where(match_id: match._id) }
   scope :pending, where(outcome: :undetermined)
 
   attr_accessible :amount, :odds, :map
+
+  after_create :publish_bet_created
+  after_update :publish_bet_updated
+  after_destroy :publish_bet_destroyed
 
   # store winner/loser names historically
   field :winner_name, :type => String
@@ -15,7 +23,7 @@ class Bet
   field :amount, :type => Integer
   field :odds, :type => String
 
-  # values: undetermined, bookie_won, bettor_won
+  # values: undetermined, cancelled, bookie_won, bettor_won
   field :outcome, :type => String, default: :undetermined
 
   belongs_to :match
@@ -81,7 +89,7 @@ private
   end
 
   def check_bettor_points
-    return unless bettor_changed?
+    return unless bettor_id_changed?
 
     pending_points = Bet.pending.for_user(bettor).sum(:amount).to_i
 
@@ -90,5 +98,36 @@ private
 
   def check_winner_and_loser
     errors.add(:loser, "cannot be the same as winner") if winner === loser
+  end
+
+  def publish_bet_created
+    BunnyClient.instance.publish_fanout("c.#{match.room.mq_exchange}", {
+      :action => 'Bet.new',
+      :data => {
+        :bet => self.as_json(:include => [:bookie]),
+        :bet_tooltip => bet_tooltip(self),
+        :bet_path => polymorphic_path([match, self])
+      }
+    }.to_json)
+  end
+
+  def publish_bet_updated
+    action = (bettor_id_changed? && bettor) ? 'Bet.Bettor.new' : 'Bet.update'
+
+    BunnyClient.instance.publish_fanout("c.#{match.room.mq_exchange}", {
+      :action => action,
+      :data => {
+        :bet => self.as_json(:include => [:bookie, :bettor])
+      }
+    }.to_json)
+  end
+
+  def publish_bet_destroyed()
+    BunnyClient.instance.publish_fanout("c.#{match.room.mq_exchange}", {
+      :action => 'Bet.destroy', 
+      :data => {
+        :bet => self.as_json(:include => [:bookie, :bettor])
+      }
+    }.to_json)
   end
 end

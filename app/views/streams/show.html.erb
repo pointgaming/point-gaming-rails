@@ -57,7 +57,7 @@
       <div id="bet-container" class="caption">
         <% unless @bets.empty? %>
           <% @bets.each do |b| %>
-            <div id="<%= b._id %>" class="well well-small bet" title="Bet Details" data-content="<%= bet_tooltip(b).html_safe %>">
+            <div id="<%= b._id %>" class="well well-small bet" title="Bet Details" data-content="<%= bet_tooltip(b).html_safe %>" data-match-id="<%= b.match._id %>">
               <%= "#{b.bookie.try(:username)}: #{b.winner.try(:playable_name)}>#{b.loser.try(:playable_name)} #{b.amount} Points #{b.odds}" %>
               <div class="pull-right">
                 <% if b.bettor %>
@@ -108,18 +108,21 @@
       <% end %>
 
       new PointGaming.BetsController({
-        chat_room: "s.<%="#{@stream._id}"%>",
+        chat_room: "s.<%="#{@stream._id}"%>"
       });
 
       new PointGaming.StreamsController({
-        chat_room: "s.<%="#{@stream._id}"%>",
+        chat_room: "s.<%="#{@stream._id}"%>"
       });
 
-      new PointGaming.MatchController(<%= @stream.match ? @stream.match.to_json.html_safe : '' %>);
+      new PointGaming.MatchController(
+        <%= @stream.match ? @stream.match.to_json.html_safe : '{}' %>,
+        "<%= new_match_bet_path(':match_id') %>"
+      );
 
       var chat_room = new PointGaming.chatbox({
         message_window_selector: "#chatbox",
-        chat_room: "s.<%="#{@stream._id}"%>",
+        chat_room: "s.<%="#{@stream._id}"%>"
       }, PointGaming.socket);
 
       $("#chatbox-form").submit(function(e){

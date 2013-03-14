@@ -60,11 +60,15 @@ class Match
     update_attribute(:betting, false)
     self.room.match = nil;
     self.room.save
+
+    Resque.enqueue FinalizeBetsJob, _id
   end
 
   def finalize
     update_attribute(:betting, false)
-    self.room.match = nil;
-    self.room.save
+    room.match = nil;
+    room.save
+
+    Resque.enqueue FinalizeBetsJob, _id
   end
 end

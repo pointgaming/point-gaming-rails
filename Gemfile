@@ -6,6 +6,7 @@ gem 'bunny', '>= 0.9.0.pre6'
 gem 'mongoid', "~> 3.0.0"
 gem 'redis-rails'
 
+gem 'resque'
 gem 'devise'
 gem 'carmen'
 gem 'carmen-rails'

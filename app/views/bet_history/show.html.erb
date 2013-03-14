@@ -3,6 +3,19 @@
   <h1><%=t '.title', :default => model_class.model_name.human %></h1>
 </div>
 
+<h3>Match Information</h3>
+<dl class="dl-horizontal">
+  <dt><strong><%= Match.human_attribute_name(:details) %>:</strong></dt>
+  <dd><%= match_details(@bet.match, :short) %></dd>
+  <dt><strong><%= Match.human_attribute_name(:created_at) %>:</strong></dt>
+  <dd><%= ldate @bet.match.created_at %></dd>
+  <dt><strong><%= Match.human_attribute_name(:state) %>:</strong></dt>
+  <dd><%= @bet.match.state %></dd>
+  <dt><strong><%= Match.human_attribute_name(:winner) %>:</strong></dt>
+  <dd><%= @bet.match.winner.try(:playable_name) %></dd>
+</dl>
+
+<h3>Bet Information</h3>
 <dl class="dl-horizontal">
   <dt><strong><%= model_class.human_attribute_name(:winner) %>:</strong></dt>
   <dd><%= @bet.winner.try(:playable_name) %></dd>
@@ -14,12 +27,12 @@
   <dd><%= @bet.amount %></dd>
   <dt><strong><%= model_class.human_attribute_name(:odds) %>:</strong></dt>
   <dd><%= @bet.odds %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:outcome) %>:</strong></dt>
+  <dd><%= @bet.outcome %></dd>
   <dt><strong><%= model_class.human_attribute_name(:bookie) %>:</strong></dt>
   <dd><%= @bet.bookie.try(:username) %></dd>
   <dt><strong><%= model_class.human_attribute_name(:bettor) %>:</strong></dt>
   <dd><%= @bet.bettor.try(:username) %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:outcome) %>:</strong></dt>
-  <dd><%= @bet.outcome %></dd>
 </dl>
 
 <div class="form-actions">

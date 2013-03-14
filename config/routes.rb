@@ -1,3 +1,5 @@
+require 'resque/server'
+
 Pointgaming::Application.routes.draw do
   resources :matches, only: [:edit, :update] do
     member do
@@ -91,6 +93,10 @@ Pointgaming::Application.routes.draw do
   get '/users/subregion_options' => 'user_profiles#subregion_options'
 
   devise_for :users
+
+  authenticate :user, lambda {|u| u.admin? } do
+    mount Resque::Server.new, :at => "/resque"
+  end
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

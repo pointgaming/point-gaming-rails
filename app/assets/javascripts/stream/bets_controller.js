@@ -7,18 +7,23 @@ PointGaming.BetsController = function(options){
   this.bet_window_selector = options.bet_window_selector || 'div#bet-container';
   this.bet_selector = options.bet_selector || 'div.bet';
 
+
   this.registerHandlers();
 };
 
 PointGaming.BetsController.prototype.appendMessage = function(message, options) {
+  var attributes = '',
+      key;
   if (!message) return;
-  options = options || {};
-  var id = options.id ? 'id="'+ options.id +'"' : '',
-      data_content = options.data_content ? ' data-content="'+ options.data_content +'"' : "",
-      title = options.title ? ' title="'+ options.title +'"' : "";
+
+  for (key in options) {
+    if (options.hasOwnProperty(key)) {
+      attributes += key + '="' + options[key] + '" ';
+    }
+  }
 
   var message_window = $(this.bet_window_selector);
-  message_window.prepend('<div '+id + title + data_content +' class="well well-small bet">' + message + '</div>');
+  message_window.prepend('<div '+ attributes +' class="well well-small bet">' + message + '</div>');
 };
 
 PointGaming.BetsController.prototype.joinChat = function() {
@@ -50,16 +55,35 @@ PointGaming.BetsController.prototype.handleBetCreated = function(data) {
   } else {
     message += '<div class="pull-right"><a href="'+ data.bet_path +'" data-confirm="Are you sure?" data-method="put" data-remote="true" data-type="json" rel="nofollow">Accept</a></div>';
   }
-  this.appendMessage(message, {id: data.bet._id, data_content: data.bet_tooltip, title: 'Bet Details'});
+  this.appendMessage(message, {id: data.bet._id, "data-content": data.bet_tooltip, "data-match-id": data.bet.match_id, title: 'Bet Details'});
+};
+
+PointGaming.BetsController.prototype.handleBetUpdated = function(data) {
+  var bet_container = $(this.bet_selector + '#'+data.bet._id, this.bet_window_selector);
+  if (data.bet.outcome === 'bettor_won') {
+    if (PointGaming.user._id === data.bet.bookie._id) {
+      $('div.pull-right', bet_container).html('You lost');
+    } else if (PointGaming.user._id === data.bet.bettor._id) {
+      $('div.pull-right', bet_container).html('You win');
+    }
+  } else if (data.bet.outcome === 'bookie_won') {
+    if (PointGaming.user._id === data.bet.bookie._id) {
+      $('div.pull-right', bet_container).html('You win');
+    } else if (PointGaming.user._id === data.bet.bettor._id) {
+      $('div.pull-right', bet_container).html('You lost');
+    }
+  } else if (data.bet.outcome !== 'undetermined') {
+    $('div.pull-right', bet_container).html(data.bet.outcome);
+  }
 };
 
 PointGaming.BetsController.prototype.handleNewBettor = function(data) {
-  // find bet row and delete it
+  // find bet row
   var bet_container = $(this.bet_selector + '#'+data.bet._id, this.bet_window_selector);
-  if (PointGaming.user._id === data.bookie._id) {
+  if (PointGaming.user._id === data.bet.bookie._id) {
     // current_user was the bookie, add notification
-    $('div.pull-right', bet_container).html('Accepted: ' + data.bettor.username);
-  } else if (PointGaming.user._id === data.bettor._id) {
+    $('div.pull-right', bet_container).html('Accepted: ' + data.bet.bettor.username);
+  } else if (PointGaming.user._id === data.bet.bettor._id) {
     // current_user was the bettor, add notification
     $('div.pull-right', bet_container).html('Accepted');
   } else {
@@ -80,6 +104,7 @@ PointGaming.BetsController.prototype.registerHandlers = function() {
   this.socket.on("join_chat", function(data){ self.handleJoinChat(data); });
 
   this.socket.on("Bet.new", this.handleBetCreated.bind(this));
+  this.socket.on("Bet.update", this.handleBetUpdated.bind(this));
   this.socket.on("Bet.destroy", this.handleBetDestroyed.bind(this));
 
   this.socket.on("Bet.Bettor.new", this.handleNewBettor.bind(this));

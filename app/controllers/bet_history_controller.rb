@@ -7,7 +7,7 @@ class BetHistoryController < ApplicationController
   end
 
   def index
-    @bets = Bet.any_of({bettor_id: current_user._id}, {bookie_id: current_user._id}).all
+    @bets = Bet.for_user(current_user).order_by(created_at: 'DESC').all
   end
 
   def show
@@ -17,6 +17,6 @@ class BetHistoryController < ApplicationController
 private
 
   def ensure_bet
-    @bet = Bet.any_of({bettor_id: current_user._id}, {bookie_id: current_user._id}).find params[:id]
+    @bet = Bet.for_user(current_user).find params[:id]
   end
 end

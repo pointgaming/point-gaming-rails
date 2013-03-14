@@ -11,6 +11,8 @@
   <thead>
     <tr>
       <th><%= model_class.human_attribute_name(:name) %></th>
+      <th><%= model_class.human_attribute_name(:state) %></th>
+      <th><%= model_class.human_attribute_name(:winner) %></th>
       <th><%= model_class.human_attribute_name(:created_at) %></th>
       <th><%= model_class.human_attribute_name(:updated_at) %></th>
     </tr>
@@ -19,6 +21,8 @@
     <% @matches.each do |match| %>
       <tr>
         <td><%= link_to match_details(match, :short), polymorphic_path([@room, match]) %></td>
+        <td><%= match.state %></td>
+        <td><%= match.winner.try(:playable_name) %></td>
         <td><%= ldate match.created_at %></td>
         <td><%= ldate match.updated_at %></td>
       </tr>

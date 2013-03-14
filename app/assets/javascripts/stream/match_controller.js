@@ -1,14 +1,17 @@
 var PointGaming = PointGaming || {};
 
-PointGaming.MatchController = function(match){
+PointGaming.MatchController = function(match, new_bet_path){
   this.match = match || {};
+
+  this.new_bet_path = new_bet_path;
 
   this.match_details_container = $('h4#stream-match-details');
 
   this.stream_bet_container = $('div#stream-bet-container');
   this.propose_bet_link = $('a#propose-bet');
 
-  this.bet_window_selector = 'div#bet-container';
+  this.bet_window = $('div#bet-container');
+  this.bet_selector = 'div.bet';
 
   this.registerHandlers();
 };
@@ -22,7 +25,11 @@ PointGaming.MatchController.prototype.handleNewMatch = function(data) {
   this.match = data.match;
 
   this.match_details_container.html(data.match_details);
+
+  $(this.bet_selector, this.bet_window).not('[data-match-id="' + data.match._id + '"]').remove();
+
   if (data.match.betting) {
+    this.propose_bet_link.attr('href', this.new_bet_path.replace(/:match_id/, data.match._id));
     this.stream_bet_container.show();
     this.betting_changed(false, true);
   }
@@ -73,7 +80,6 @@ PointGaming.MatchController.prototype.appendMessage = function(message, options)
       data_content = options.data_content ? ' data-content="'+ options.data_content +'"' : "",
       title = options.title ? ' title="'+ options.title +'"' : "";
 
-  var message_window = $(this.bet_window_selector);
-  message_window.prepend('<div '+id + title + data_content +' class="well well-small bet">' + message + '</div>');
+  this.bet_window.prepend('<div '+id + title + data_content +' class="well well-small bet">' + message + '</div>');
 };
 

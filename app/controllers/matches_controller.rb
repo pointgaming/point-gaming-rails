@@ -36,7 +36,11 @@ class MatchesController < ApplicationController
   end
 
   def update
-    @match.winner = @match.player_1
+    if params[:match][:winner] === 'player_1'
+      @match.winner = @match.player_1 
+    elsif params[:match][:winner] === 'player_2'
+      @match.winner = @match.player_2
+    end
 
     @match.save && @match.finalize!
     respond_with(@match)
