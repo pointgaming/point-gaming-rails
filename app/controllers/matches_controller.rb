@@ -51,11 +51,6 @@ class MatchesController < ApplicationController
     respond_with(@match)
   end
 
-  def stop
-    @match.stop!
-    respond_with(@match)
-  end
-
   def cancel
     @match.cancel!
     respond_with(@match)

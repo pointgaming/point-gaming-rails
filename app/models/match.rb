@@ -14,9 +14,6 @@ class Match
       event :cancel, transitions_to: :cancelled
     end 
     state :started do
-      event :stop, transitions_to: :stopped
-    end 
-    state :stopped do
       event :finalize, transitions_to: :finalized
     end 
     state :cancelled
@@ -49,10 +46,6 @@ class Match
   end
 
   def start
-    update_attribute(:betting, false)
-  end
-
-  def stop
     update_attribute(:betting, false)
   end
 

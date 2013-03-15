@@ -9,11 +9,6 @@
           :data => {type: :json, remote: :true, 'dismiss-modal' => :true}, 
           :class => 'btn btn-primary' %>
   <% end %>
-  <% if @match.can_stop? %>
-    <%= link_to t('.stop'), stop_match_path(@match), method: 'put', 
-          :data => {type: :json, remote: :true, 'dismiss-modal' => :true}, 
-          :class => 'btn btn-primary' %>
-  <% end %>
   <% if @match.can_finalize? %>
     <%= link_to t('.finalize'), edit_match_path(@match), method: 'get', 
           :data => {type: :json, remote: :true, 'modal-follow-link' => :true},
