@@ -9,6 +9,16 @@
   <% if @stream_owner.user_id === current_user.id || @collaborator.present? %>
     <div class="breadcrumb" style="margin: 0">
       <%= link_to_modal 'Admin', user_stream_path(@stream), 'data-width' => "950", 'data-height' =>"600", 'data-title' => "Stream Admin", :remote => true, :class => 'btn btn-primary' %>
+
+      <% if @stream.match.blank? %>
+        <%= link_to_modal t('.new_match'), new_polymorphic_path([@stream, Match.new]),
+              remote: true, data: {'modal-target' => '#match-modal'},
+              :id => 'manage-match', :class => 'btn' %>
+      <% else %>
+        <%= link_to_modal t('.manage_match'), polymorphic_path([@stream, @stream.match]),
+              remote: true, data: {'modal-target' => '#match-modal', 'match-id' => @stream.match._id.to_s},
+              :id => 'manage-match', :class => 'btn' %>
+      <% end %>
     </div>
   <% end %>
 </div>

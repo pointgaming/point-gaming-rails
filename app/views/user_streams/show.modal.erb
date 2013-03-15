@@ -16,15 +16,6 @@
               :class => 'btn btn-primary streaming-toggle' %>
     <% end %>
   <% end %>
-  <% if @stream.match.blank? %>
-    <%= link_to_modal t('.new_match'), new_polymorphic_path([@stream, @stream.build_match]),
-          remote: true, data: {'modal-target' => '#match-modal'},
-          :id => 'manage-match', :class => 'btn' %>
-  <% else %>
-    <%= link_to_modal t('.manage_match'), polymorphic_path([@stream, @stream.match]),
-          remote: true, data: {'modal-target' => '#match-modal', 'match-id' => @stream.match._id.to_s},
-          :id => 'manage-match', :class => 'btn' %>
-  <% end %>
 </div>
 
 <div class="span6">

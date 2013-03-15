@@ -42,7 +42,7 @@ PointGaming.MatchAdminController.prototype.openModal = function(modal){
 PointGaming.MatchAdminController.prototype.handleMatchCreated = function(data){
   this.addAlertToModal("A new match has been created by another user.", 'alert-info');
 
-  $('a#manage-match', '#ajax-modal').data('match-id', data.match._id)
+  $('a#manage-match').data('match-id', data.match._id)
     .attr('href', this.options.polymorphic_match_path.replace(':match_id', data.match._id))
     .html('Manage Match');
 };
@@ -77,7 +77,7 @@ PointGaming.MatchAdminController.prototype.handleMatchUpdated = function(data){
 
 PointGaming.MatchAdminController.prototype.state_changed = function(old_value, new_value) {
   if (new_value === 'cancelled' || new_value === 'finalized') {
-    $('a#manage-match', '#ajax-modal').data('match-id', '')
+    $('a#manage-match').data('match-id', '')
       .attr('href', this.options.new_match_path)
       .html('New Match');
   }
