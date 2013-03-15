@@ -21,6 +21,13 @@
         <%= f.text_area :details, :rows => 8 %>
       </div>
     </div>
+
+    <div class="control-group">
+      <%= f.label :thumbnail, :class => 'control-label' %>
+      <div class="controls">
+        <%= f.file_field :thumbnail %>
+      </div>
+    </div>
   </fieldset>
 
   <div class="form-actions">

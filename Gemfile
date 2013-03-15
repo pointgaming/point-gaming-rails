@@ -18,6 +18,7 @@ gem 'workflow_on_mongoid'
 gem 'rabl-rails'
 gem 'oj'
 gem 'uuidtools'
+gem 'remotipart', '~> 1.0'
 
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'

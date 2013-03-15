@@ -4,7 +4,8 @@ class StreamObserver < Mongoid::Observer
     BunnyClient.instance.publish_fanout("c.#{record.mq_exchange}", {
       :action => 'Stream.update',
       :data => {
-        :stream => record
+        :stream => record,
+        :thumbnail => record.thumbnail.url(:thumb)
       }
     }.to_json)
   end

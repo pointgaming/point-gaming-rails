@@ -5,6 +5,7 @@ PointGaming.StreamsController = function(options){
   this.exchange_name = options.chat_room;
 
   this.details_container = $('div#stream-details');
+  this.thumbnail = $('img#stream-thumbnail');
 
   this.registerHandlers();
 };
@@ -16,6 +17,7 @@ PointGaming.StreamsController.prototype.registerHandlers = function() {
 
 PointGaming.StreamsController.prototype.handleStreamUpdated = function(data) {
   this.details_container.html(data.stream.details);
+  this.thumbnail.attr('src', data.thumbnail);
 };
 
 PointGaming.StreamsController.prototype.handleStreamDestroyed = function(data) {

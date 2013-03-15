@@ -1,5 +1,8 @@
 class Stream
   include Mongoid::Document
+  include Mongoid::Paperclip
+
+  has_mongoid_attached_file :thumbnail, :default_url => ":class/:attachment/missing_:style.png", :styles => {:thumb => '300x200!'}
 
   field :name, :type => String, :default => ''
   field :details, :type => String, :default => ''
