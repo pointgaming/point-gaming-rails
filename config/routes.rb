@@ -53,9 +53,7 @@ Pointgaming::Application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :coins
-      resources :games, only: [:index, :show] do
-        resources :rooms, only: [:index, :show, :create, :update], controller: 'game_rooms'
-      end
+      resources :games, only: [:index]
       resources :sessions
       resources :friends
       resources :friend_requests
@@ -72,7 +70,7 @@ Pointgaming::Application.routes.draw do
       resources :streams, only: [] do
         resources :matches, only: [:index, :new, :show, :create, :destroy]
       end
-      resources :game_rooms, only: [] do
+      resources :game_rooms, only: [:index, :show, :create, :update] do
         resources :matches, only: [:index, :new, :show, :create, :destroy]
       end
     end
