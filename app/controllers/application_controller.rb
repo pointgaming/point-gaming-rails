@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
   before_filter :remove_layout_for_ajax_requests
 
   rescue_from ::PermissionDenied, :with => :render_permission_denied
+  rescue_from ::UnprocessableEntity, :with => :render_unprocessable_entity
 
   def after_sign_in_path_for(resource)
     session[:email] = resource.email
@@ -31,6 +32,14 @@ private
   def remove_layout_for_ajax_requests
     @is_ajax_request = !!request.xhr?
     self.action_has_layout = false if @is_ajax_request
+  end
+
+  def render_unprocessable_entity
+    respond_to do |format|
+      # TODO: this is not a good html implementation
+      format.html { redirect_to root_path, alert: 'Invalid or missing parameters.' }
+      format.json { render json: [], status: :unprocessable_entity }
+    end
   end
 
   def render_permission_denied

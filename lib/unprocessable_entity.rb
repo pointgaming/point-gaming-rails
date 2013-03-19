@@ -1,0 +1,3 @@
+class UnprocessableEntity < Exception
+
+end
