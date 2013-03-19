@@ -3,6 +3,10 @@ class GameRoom
 
   scope :for, lambda {|game| where(game_id: game._id) }
 
+  after_create :publish_created
+  after_update :publish_updated
+  after_destroy :publish_destroyed
+
   field :position, type: Integer
   field :is_advertising, type: Boolean, default: false
   field :is_locked, type: Boolean, default: false
@@ -20,5 +24,34 @@ class GameRoom
 
   def mq_exchange
     "GameRoom_#{_id}"
+  end
+
+private
+
+  def publish_created
+    BunnyClient.instance.publish_fanout("c.#{mq_exchange}", {
+      :action => 'GameRoom.new',
+      :data => {
+        :game_room => self.as_json(:include => [:owner])
+      }
+    }.to_json)
+  end
+
+  def publish_updated
+    BunnyClient.instance.publish_fanout("c.#{mq_exchange}", {
+      :action => 'GameRoom.update',
+      :data => {
+        :game_room => self.as_json(:include => [:owner])
+      }
+    }.to_json)
+  end
+
+  def publish_destroyed()
+    BunnyClient.instance.publish_fanout("c.#{mq_exchange}", {
+      :action => 'GameRoom.destroy', 
+      :data => {
+        :game_room => self.as_json(:include => [:owner])
+      }
+    }.to_json)
   end
 end
