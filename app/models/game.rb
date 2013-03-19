@@ -9,4 +9,12 @@ class Game
 
   validates :name, :presence=>true, :uniqueness=>true
   validates :player_count, :presence=>true
+
+  def display_name
+    name
+  end
+
+  def mq_exchange
+    "Game_#{_id}"
+  end
 end

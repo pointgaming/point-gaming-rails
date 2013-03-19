@@ -29,7 +29,7 @@ class GameRoom
 private
 
   def publish_created
-    BunnyClient.instance.publish_fanout("c.#{mq_exchange}", {
+    BunnyClient.instance.publish_fanout("c.#{self.game.mq_exchange}", {
       :action => 'GameRoom.new',
       :data => {
         :game_room => self.as_json(:include => [:owner])
@@ -38,7 +38,7 @@ private
   end
 
   def publish_updated
-    BunnyClient.instance.publish_fanout("c.#{mq_exchange}", {
+    BunnyClient.instance.publish_fanout("c.#{self.game.mq_exchange}", {
       :action => 'GameRoom.update',
       :data => {
         :game_room => self.as_json(:include => [:owner])
@@ -47,7 +47,7 @@ private
   end
 
   def publish_destroyed()
-    BunnyClient.instance.publish_fanout("c.#{mq_exchange}", {
+    BunnyClient.instance.publish_fanout("c.#{self.game.mq_exchange}", {
       :action => 'GameRoom.destroy', 
       :data => {
         :game_room => self.as_json(:include => [:owner])
