@@ -1,7 +1,5 @@
 <%- model_class = Profile -%>
-<div class="page-header">
-  <h1><%= @user.username.pluralize %> <%=t '.title', :default => model_class.model_name.human %></h1>
-</div>
+<h1><%= @user.username.pluralize %> <%=t '.title', :default => model_class.model_name.human %></h1>
 
 <div class="breadcrumb">
   <% if @user._id === current_user._id %>

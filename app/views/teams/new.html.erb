@@ -1,5 +1,5 @@
 <%- model_class = Team -%>
-<h2><%=t '.title', :default => t('helpers.titles.new', :model => model_class.model_name.human,
-                               :default => "New #{model_class.model_name.human}") %></h2>
+<h1><%=t '.title', :default => t('helpers.titles.new', :model => model_class.model_name.human,
+                               :default => "New #{model_class.model_name.human}") %></h1>
 
 <%= render :partial => 'form' %>

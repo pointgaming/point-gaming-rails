@@ -1,12 +1,95 @@
 <%- model_class = News -%>
-<div class="page-header">
-  <h1><%=t '.title', :default => model_class.model_name.human.pluralize %></h1>
-</div>
+<h1>Point Gaming News</h1>
 
-<% @news.each do |news| %>
-  <div class="post">
-    <h4><%= news.title %></h4>
-    <p><%= news.content %></p>
-    <hr />
-  </div>
-<% end %>
+<div id="twocolumns">
+  <section id="content">
+    <% @news.each do |news| %>
+      <div class="post">
+        <h1><%= link_to news.title, '#' %></h1>
+        <%= image_tag "img01.jpg", alt: "image description", width: "633", height: "263" %>
+        <div class="text-block">
+          <p><%= news.content %></p>
+        </div>
+        <div class="panel">
+          <time class="date" datetime="<%= ldate news.created_at, :format => :long %>"><%= ldate news.created_at.to_date, :format => :long %></time>
+          <nav class="sub-nav">
+            <ul>
+              <li><a href="#">Learn More</a></li>
+              <li><a href="#">20 Comments</a></li>
+            </ul>
+          </nav>
+          <nav class="share-icons">
+            <ul>
+              <li><a href="#"><%= image_tag "ico-facebook-share.png", alt: "facebook share", width: "61", height: "20" %></a></li>
+              <li><a href="#"><%= image_tag "ico-tweet.png", alt: "tweet", width: "55", height: "20" %></a></li>
+              <li><a href="#"><%= image_tag "ico-google+1.png", alt: "google+1", width: "32", height: "20" %></a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    <% end %>
+  </section>
+  <aside id="sidebar">
+    <div class="widget">
+      <div class="visual">
+        <%= image_tag "img02.jpg", alt: "image description", width: "287", height: "121" %>
+        <h2>Last Tournaments</h2>
+      </div>
+      <table>
+        <tbody>
+          <tr>
+            <th class="title">Tournament</th>
+            <th>Date</th>
+          </tr>
+          <% if @tournaments.nil? || @tournaments.empty? %>
+            <tr class="bottom">
+              <td colspan="2">No results were found.</td>
+            </tr>
+          <% else %>
+            <% @tournaments.each do |tournament, index| %>
+              <tr class="<%= 'bottom' if index == (@tournaments.length - 1) %>">
+                <td><%= link_to tournament.game.name, tournament_path(tournament) %></td>
+                <td><span class="item"><time datetime="<%= tournament.start_datetime %>"><%= ldate tournament.start_datetime.to_date, format: :short %></time></span></td>
+              </tr>
+            <% end %>
+          <% end %>
+        </tbody>
+      </table>
+      <%= link_to "View all tournaments", tournaments_path, :class => 'link' %>
+    </div>
+
+    <div class="widget leaderboard">
+      <div class="visual">
+        <%= image_tag "img03.jpg", alt: "image description", width: "284", height: "120" %>
+        <h2>Leaderboard</h2>
+      </div>
+      <table>
+        <tbody><tr>
+          <th class="title">Nickname</th>
+          <th>Points</th>
+        </tr>
+        <tr>
+          <td><a href="#">Andy Lurs</a></td>
+          <td><span class="item">18 940</span></td>
+        </tr>
+        <tr>
+          <td><a href="#">Highlight Joe</a></td>
+          <td><span class="item">16 435</span></td>
+        </tr>
+        <tr>
+          <td><a href="#">Ronaldinio</a></td>
+          <td><span class="item">13 991</span></td>
+        </tr>
+        <tr>
+          <td><a href="#">FallenLeaf</a></td>
+          <td><span class="item">12 703</span></td>
+        </tr>
+        <tr class="bottom">
+          <td><a href="#">Anonimous</a></td>
+          <td><span class="item">12698</span></td>
+        </tr>
+      </tbody></table>
+      <a href="#" class="link">View all players</a>
+    </div>
+  </aside>
+</div>

@@ -12,6 +12,8 @@
  *=require bootstrap-modal
  *=require akira
  *=require chatbox
+ *=require pg_design
+ *=require ie
  *= require_self
  *= require_tree .
 */
@@ -24,4 +26,14 @@
 }
 #game-room-info {
   height: 300px;
+}
+
+.search-form input[type="text"] {
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  box-shadow: none !important;
+}
+
+#header {
+  overflow: visible;
 }

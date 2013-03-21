@@ -34,14 +34,16 @@
   </head>
   <body>
 
-    <div class="container">
+    <div id="wrapper">
       <%= render 'shared/navbar', :locals => {:current_path => @current_path} %>
 
-      <% if controller.respond_to?(:sub_layout) && controller.sub_layout %>
-        <%= render :partial=>"layouts/#{controller.sub_layout}" %>
-      <% else %>
-        <%= yield %>
-      <% end %>
+      <div id="main">
+        <% if controller.respond_to?(:sub_layout) && controller.sub_layout %>
+          <%= render :partial=>"layouts/#{controller.sub_layout}" %>
+        <% else %>
+          <%= yield %>
+        <% end %>
+      </div>
     </div>
 
 

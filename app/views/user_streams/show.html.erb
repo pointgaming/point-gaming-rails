@@ -1,9 +1,7 @@
 <%- model_class = Stream -%>
 <%= javascript_include_tag "user_streams" %>
 <%- user_is_stream_owner = @stream_owner.try(:user_id) === current_user.id -%>
-<div class="modal-header">
-  <h2><%=t '.title', :default => model_class.model_name.human %>: <%= @stream.name %></h2>
-</div>
+<h1><%=t '.title', :default => model_class.model_name.human %>: <%= @stream.name %></h1>
 
 <% if user_is_stream_owner %>
   <div class="breadcrumb">

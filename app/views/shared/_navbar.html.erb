@@ -1,55 +1,49 @@
 <%- @hide_nav ||= false %>
-<div class="container" id="logo-container">
-    <a class="brand" href="/">
-        <%= image_tag "logo.png", :alt => "Point Gaming" %>
-    </a>
-</div>
-
-<% unless @hide_nav %>
-  <div id="main-toolbar" class="navbar">
-      <div class="navbar-inner">
-          <div class="container">
-              <div class="nav-collapse">
-                  <ul class="nav"> 
-                      <%= navItem "Home", root_path %>
-                      <%= navItem "Games", games_path %>
-                      <%= navItem "Tournaments", tournaments_path %>
-                      <%= navItem "Streams", streams_path %>
-                      <%= navItem "Store", store_path %>
-                      <%= navItem "Forums", forum_path %>
-                  </ul>
-
-                  <ul class="nav pull-right">
-                      <%= form_tag users_search_path, method: :get, autocomplete: :off, :class => "navbar-search pull-left" do %>
-                          <input type="text" class="search-query span2" name="query" placeholder="Search" />
-                      <% end %>
-
-                      <% if user_signed_in? %>
-                          <li class="dropdown">
-                              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= "#{current_user.username} (#{current_user.points})" %> <b class="caret"></b></a>
-                              <ul class="dropdown-menu">
-                                <% if can? :show, :admin_link %>
-                                  <li><%= link_to "Admin", admin_root_path %></li>
-                                  <li class="divider"></li>
-                                <% end %>
-                                <li><%= link_to "Streams", user_streams_path %></li>
-                                <li><%= link_to "Teams", teams_path %></li>
-                                <li><%= link_to "Tournaments", "#" %></li>
-                                <li class="divider"></li>
-                                <li><%= link_to "Profile", edit_user_profile_path(current_user) %></li>
-                                <li><%= link_to "Settings", settings_path %></li>
-                                <li class="divider"></li>
-                                <li><%= link_to "Logout", destroy_user_session_path, :method=>'delete' %></li>
-                              </ul>
-                          </li>
-                      <% else %>
-                          <li>
-                              <%= link_to("Login", new_user_session_path) %>
-                          </li>
-                      <% end %>
-                  </ul>
-              </div>
-          </div>
-      </div>
+<header id="header">
+  <div class="header-holder">
+    <div class="header-frame">
+      <strong class="logo"><%= link_to "Point Gaming", root_path %></strong>
+      <% unless @hide_nav %>
+        <nav class="main-nav">
+          <ul>
+            <%= navItem "Home", root_path %>
+            <%= navItem "Games", games_path %>
+            <%= navItem "Tournaments", tournaments_path %>
+            <%= navItem "Streams", streams_path %>
+            <%= navItem "Store", store_path %>
+            <%= navItem "Forums", forum_path %>
+          </ul>
+        </nav>
+        <%= form_tag users_search_path, method: :get, autocomplete: :off, :class => "navbar-search search-form" do %>
+          <fieldset>
+            <input placeholder="Search" type="text" name="query" class="search-query">
+            <input type="submit" value="submit">
+          </fieldset>
+        <% end %>
+        <% if user_signed_in? %>
+          <ul class="pull-right">
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= "#{current_user.username} (#{current_user.points})" %> <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <% if can? :show, :admin_link %>
+                    <li><%= link_to "Admin", admin_root_path %></li>
+                    <li class="divider"></li>
+                  <% end %>
+                  <li><%= link_to "Streams", user_streams_path %></li>
+                  <li><%= link_to "Teams", teams_path %></li>
+                  <li><%= link_to "Tournaments", "#" %></li>
+                  <li class="divider"></li>
+                  <li><%= link_to "Profile", edit_user_profile_path(current_user) %></li>
+                  <li><%= link_to "Settings", settings_path %></li>
+                  <li class="divider"></li>
+                  <li><%= link_to "Logout", destroy_user_session_path, :method=>'delete' %></li>
+                </ul>
+            </li>
+          </ul>
+        <% else %>
+          <%= link_to("Login", new_user_session_path, :class => "login") %>
+        <% end %>
+      <% end %>
+    </div>
   </div>
-<% end %>
+</header>

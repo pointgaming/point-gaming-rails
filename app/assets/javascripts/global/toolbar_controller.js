@@ -2,7 +2,7 @@ var PointGaming = PointGaming || {};
 
 PointGaming.ToolbarController = function(options){
   options = options || {};
-  this.toolbar_selector = options.toolbar_selector || 'div#main-toolbar';
+  this.toolbar_selector = options.toolbar_selector || 'header';
   this.search_field_selector = options.search_field_selector || 'input.search-query';
 
   this.registerHandlers();
