@@ -18,7 +18,7 @@
           <tr>
             <td><%= friend.username %></td>
             <td><%= friend.points %></td>
-            <td><%= friend.team %></td>
+            <td><%= friend.team.try(:name) %></td>
             <td>
               <% unless friend._id === current_user._id || user._id === current_user._id %>
                 <%= link_to 'Send Friend Request',
