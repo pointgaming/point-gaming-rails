@@ -12,7 +12,7 @@ class Team
   validates :name, :presence=>true
   validates :tag, :presence=>true
 
-  def playable_name
+  def display_name
     name
   end
 end

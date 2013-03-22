@@ -187,3 +187,7 @@ ul.typeahead { z-index: 9001; }
   padding-left: 15px;
   padding-right: 15px;
 }
+
+.dropdown-menu li.category > span {
+    padding-left: 10px;
+}

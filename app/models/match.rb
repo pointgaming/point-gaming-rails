@@ -34,15 +34,15 @@ class Match
   attr_writer :player_1_name, :player_2_name
   
   def player_1_name
-    player_1 ? player_1.playable_name : read_attribute("player_1_name")
+    player_1 ? player_1.display_name : read_attribute("player_1_name")
   end
 
   def player_2_name
-    player_2 ? player_2.playable_name : read_attribute("player_2_name")
+    player_2 ? player_2.display_name : read_attribute("player_2_name")
   end
 
   def player_options
-    [[player_1.playable_name, :player_1], [player_2.playable_name, :player_2]]
+    [[player_1.display_name, :player_1], [player_2.display_name, :player_2]]
   end
 
   def start

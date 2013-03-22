@@ -1,7 +1,7 @@
 class SearchController < ApplicationController
   before_filter :authenticate_user!
 
-  respond_to :json
+  respond_to :html, :json
 
   def index
     @results = []
@@ -10,7 +10,7 @@ class SearchController < ApplicationController
     @results += Stream.where(name: /#{Regexp.escape(params[:query])}/i).all
     @results += Game.where(name: /#{Regexp.escape(params[:query])}/i).all
 
-    Kaminari.paginate_array(@results).page(params[:page])
+    @results = Kaminari.paginate_array(@results).page(params[:page]).per(25)
 
     respond_with(@results)
   end

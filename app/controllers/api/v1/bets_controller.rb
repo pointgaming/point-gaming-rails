@@ -26,10 +26,10 @@ class Api::V1::BetsController < Api::ApplicationController
     @bet.map = @room.map
 
     @bet.winner = @winner
-    @bet.winner_name = @winner.try(:playable_name)
+    @bet.winner_name = @winner.try(:display_name)
 
     @bet.loser = @loser
-    @bet.loser_name = @loser.try(:playable_name)
+    @bet.loser_name = @loser.try(:display_name)
 
     @bet.save
     respond_with(@room, @bet)

@@ -19,7 +19,7 @@ class ApplicationController < ActionController::Base
 
   def render(options = nil, extra_options = {}, &block)
     options ||= {}
-    options = options.merge({formats: [:modal, :html]}) if @is_ajax_request
+    options = options.merge({formats: [:modal, :rabl, :json, :html]}) if @is_ajax_request
     super(options, extra_options, &block)
   end
 

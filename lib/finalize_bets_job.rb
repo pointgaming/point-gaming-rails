@@ -12,7 +12,7 @@ class FinalizeBetsJob
     if match.state === 'finalized' && match.winner
       lambda {|bet| 
         if bet.bettor_id.nil?
-          bet.update_attribute(:outcome, :cancelled)
+          bet.update_attribute(:outcome, :void)
         elsif bet.winner._id === match.winner._id
           bet.update_attribute(:outcome, :bookie_won)
 

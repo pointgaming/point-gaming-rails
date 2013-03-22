@@ -14,7 +14,7 @@
             <%= navItem "Forums", forum_path %>
           </ul>
         </nav>
-        <%= form_tag users_search_path, method: :get, autocomplete: :off, :class => "navbar-search search-form" do %>
+        <%= form_tag search_path, method: :get, autocomplete: :off, :class => "navbar-search search-form" do %>
           <fieldset>
             <input placeholder="Search" type="text" name="query" class="search-query">
             <input type="submit" value="submit">

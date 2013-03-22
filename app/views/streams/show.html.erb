@@ -67,7 +67,7 @@
           <% unless @bets.empty? %>
             <% @bets.each do |b| %>
               <div id="<%= b._id %>" class="well well-small bet" title="Bet Details" data-content="<%= bet_tooltip(b).html_safe %>" data-match-id="<%= b.match._id %>">
-                <%= "#{b.bookie.try(:username)}: #{b.winner.try(:playable_name)}>#{b.loser.try(:playable_name)} #{b.amount} Points #{b.odds}" %>
+                <%= "#{b.bookie.try(:username)}: #{b.winner.try(:display_name)}>#{b.loser.try(:display_name)} #{b.amount} Points #{b.odds}" %>
                 <div class="pull-right">
                   <% if b.bettor %>
                     Accepted: <%= b.bettor.try(:username) %>

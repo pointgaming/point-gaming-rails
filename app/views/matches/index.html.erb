@@ -22,7 +22,7 @@
       <tr>
         <td><%= link_to match_details(match, :short), polymorphic_path([@room, match]) %></td>
         <td><%= match.state %></td>
-        <td><%= match.winner.try(:playable_name) %></td>
+        <td><%= match.winner.try(:display_name) %></td>
         <td><%= ldate match.created_at %></td>
         <td><%= ldate match.updated_at %></td>
       </tr>

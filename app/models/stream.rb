@@ -23,6 +23,10 @@ class Stream
     Collaborator.where(stream_id: self.id, owner: true).first
   end
 
+  def display_name
+    name
+  end
+
   def mq_exchange
     "s.#{_id}"
   end

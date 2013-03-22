@@ -40,7 +40,6 @@ Pointgaming::Application.routes.draw do
   end
 
   resources :games
-  resources :lobbies
 
   namespace :admin do
     root :to => "dashboard#index"
@@ -91,7 +90,7 @@ Pointgaming::Application.routes.draw do
   put "/users/:user_id/avatar", :to => "user_avatar#update", as: 'user_avatar'
 
   get "/users/:user_id/profile/edit", :to => "user_profiles#edit", as: 'edit_user_profile'
-  get "/users/:user_id/profile", :to => "user_profiles#show", as: 'user_profile'
+  get "/users/:user_id/profile", :to => "user_profiles#show", as: 'user'
   put "/users/:user_id/profile", :to => "user_profiles#update"
   get '/users/subregion_options' => 'user_profiles#subregion_options'
 

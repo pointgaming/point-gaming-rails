@@ -51,6 +51,8 @@ function ($) {
         this.select = this.options.select || this.select;
         this.sorter = this.options.sorter || this.sorter;
         this.source = this.options.source || this.source;        
+        this.next = this.options.next || this.next;        
+        this.prev = this.options.prev || this.prev;        
                 
         if (!this.source.length) {
             var ajax = this.options.ajax;

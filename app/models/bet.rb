@@ -68,8 +68,8 @@ class Bet
 
   def participants(user)
     (user._id === bookie_id) ? 
-      "#{winner.try(:playable_name)} vs #{loser.try(:playable_name)}" : 
-      "#{loser.try(:playable_name)} vs #{winner.try(:playable_name)}"
+      "#{winner.try(:display_name)} vs #{loser.try(:display_name)}" : 
+      "#{loser.try(:display_name)} vs #{winner.try(:display_name)}"
   end
 
   def against_user(user)

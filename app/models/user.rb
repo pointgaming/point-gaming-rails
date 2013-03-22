@@ -105,7 +105,7 @@ class User
     super(options.merge({methods: [:profile_url, :age]}))
   end
 
-  def playable_name
+  def display_name
     username
   end
 
