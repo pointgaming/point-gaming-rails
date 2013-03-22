@@ -4,7 +4,7 @@
 
 <div id="ajax-modal" class="modal hide fade" tabindex="-1"></div>
 
-<% if @member.leader? %>
+<% if @member.try(:leader?) %>
   <div class="breadcrumb container-fluid">
     <div class="pull-right">
       <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
@@ -21,7 +21,7 @@
     <div class="widget-header">
       <i class="icon-info-sign"></i>
       <h3>Team Details</h3>
-      <% if @member.leader? %>
+      <% if @member.try(:leader?) %>
         <%= link_to_modal t('.edit', :default => t("helpers.links.edit")),
                           edit_team_path(@team), :class => 'btn btn-mini btn-primary', 
                           remote: true, :data => {width: '320px'} %>
@@ -61,7 +61,7 @@
     <div class="widget-header">
       <i class="icon-th"></i>
       <h3>Members</h3>
-      <% if @member.leader? %>
+      <% if @member.try(:leader?) %>
         <%= link_to_modal t('.add_member', :default => t("helpers.links.add_member")),
                     new_team_member_path(@team), remote: true,
                     :data => {width: '320px'},
@@ -86,7 +86,7 @@
                 <td><%= member.rank %></td>
                 <td><%= ldate member.created_at %></td>
                 <td>
-                  <% if @member.leader? %>
+                  <% if @member.try(:leader?) %>
                     <%= link_to_modal t('.edit', :default => t("helpers.links.edit")),
                                       edit_team_member_path(@team, member),
                                       :data => {width: '320px'},
