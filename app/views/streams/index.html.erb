@@ -1,23 +1,25 @@
-<div class="row-fluid">
-  <% if @streams %>
-    <% @streams.each_slice(3) do |streams| %>
-      <ul class="thumbnails">
-        <% streams.each do |stream| %>
-          <li class="span3">
-            <div class="thumbnail">
-              <%= link_to image_tag(stream.thumbnail.url(:thumb)), stream_path(stream) %>
-              <div class="caption">
-                <h3><%= stream.name %></h3>
-                <p>Streaming: <%= stream.streaming ? 'Yes' : 'No' %></p>
-                <p>Betting: <%#= stream.betting ? 'Yes' : 'No' %></p>
-                <p>Game: <%= stream.game.try(:name) %></p>
-                <p>Viewers: <%= stream.viewer_count %></p>
-                <p><%= link_to "Watch", stream_path(stream), :class => 'btn btn-primary' %></p>
+<div class="container-fluid">
+  <div class="row-fluid">
+    <% if @streams %>
+      <% @streams.each_slice(3) do |streams| %>
+        <ul class="thumbnails">
+          <% streams.each do |stream| %>
+            <li class="span3">
+              <div class="thumbnail">
+                <%= link_to image_tag(stream.thumbnail.url(:thumb)), stream_path(stream) %>
+                <div class="caption">
+                  <h3><%= stream.name %></h3>
+                  <p>Streaming: <%= stream.streaming ? 'Yes' : 'No' %></p>
+                  <p>Betting: <%#= stream.betting ? 'Yes' : 'No' %></p>
+                  <p>Game: <%= stream.game.try(:name) %></p>
+                  <p>Viewers: <%= stream.viewer_count %></p>
+                  <p><%= link_to "Watch", stream_path(stream), :class => 'btn btn-primary' %></p>
+                </div>
               </div>
-            </div>
-          </li>
-        <% end %>
-      </ul>
+            </li>
+          <% end %>
+        </ul>
+      <% end %>
     <% end %>
-  <% end %>
+  </div>
 </div>
