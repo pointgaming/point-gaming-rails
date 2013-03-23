@@ -4,10 +4,10 @@
                     :default => "Edit #{model_class.model_name.human}") %></h1>
 
 <div class="breadcrumb">
-  <%= link_to 'View Profile', user_profile_path(@user), :class => 'btn' %>
+  <%= link_to 'View Profile', user_path(@user), :class => 'btn' %>
 </div>
 
-<%= form_for @user, url: user_profile_path(@user) do |f| %>
+<%= form_for @user, url: user_path(@user) do |f| %>
   <div class="row-fluid">
     <div class="span3">
       <%= render partial: 'user_profiles/user_image_fields', locals: {model: @user} %>

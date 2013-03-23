@@ -20,7 +20,7 @@ class UserProfilesController < ApplicationController
     end
 
     if @user.update_attributes(params[:user])
-      redirect_to user_profile_path(@user)
+      redirect_to user_path(@user)
     else
       render :action => :edit
     end

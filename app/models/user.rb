@@ -98,7 +98,7 @@ class User
   end
 
   def profile_url
-    user_profile_path(self)
+    user_path(self)
   end
 
   def as_json(options={})
