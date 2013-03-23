@@ -9,7 +9,7 @@ class BunnyClient
     x = @bunny.create_channel
     ch = x.fanout(exchange, {durable: true})
     ch.publish(message)
-    puts "Publishing message: #{message} to exchange: #{exchange}"
+    Rails.logger.info "Publishing message: #{message} to exchange: #{exchange}"
   end
 
   def bunny
