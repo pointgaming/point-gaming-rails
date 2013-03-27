@@ -7,12 +7,12 @@
   <% if @match.can_start? %>
     <%= link_to t('.start'), start_match_path(@match), method: 'put', 
           :data => {type: :json, remote: :true, 'dismiss-modal' => :true}, 
-          :class => 'btn btn-primary' %>
+          :class => 'btn' %>
   <% end %>
   <% if @match.can_finalize? %>
     <%= link_to t('.finalize'), edit_match_path(@match), method: 'get', 
           :data => {type: :json, remote: :true, 'modal-follow-link' => :true},
-          :class => 'btn btn-primary' %>
+          :class => 'btn' %>
   <% end %>
   <% if @match.can_cancel? %>
     <div class="pull-right">

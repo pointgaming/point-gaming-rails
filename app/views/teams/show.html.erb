@@ -23,7 +23,7 @@
       <h3>Team Details</h3>
       <% if @member.try(:leader?) %>
         <%= link_to_modal t('.edit', :default => t("helpers.links.edit")),
-                          edit_team_path(@team), :class => 'btn btn-mini btn-primary', 
+                          edit_team_path(@team), :class => 'btn btn-mini', 
                           remote: true, :data => {width: '320px'} %>
       <% end %>
     </div>
@@ -65,7 +65,7 @@
         <%= link_to_modal t('.add_member', :default => t("helpers.links.add_member")),
                     new_team_member_path(@team), remote: true,
                     :data => {width: '320px'},
-                    :class => 'btn btn-mini btn-primary' %>
+                    :class => 'btn btn-mini' %>
       <% end %>
     </div>
     <div class="widget-content">

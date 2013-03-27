@@ -10,7 +10,7 @@
               :class => 'btn btn-danger streaming-toggle' %>
     <% else %>
       <%= link_to t('.start_streaming'), start_user_stream_path(@stream), method: 'put', 
-              :class => 'btn btn-primary streaming-toggle' %>
+              :class => 'btn streaming-toggle' %>
     <% end %>
     <%= link_to t('.match_history'), stream_matches_path(@stream), 
             :class => 'btn' %>
@@ -44,7 +44,7 @@
               </div>
             </div>
             <div class="form-actions">
-              <%= f.submit :Change, :class => 'btn btn-primary' %>
+              <%= f.submit :Change, :class => 'btn' %>
             </div>
           <% else %>
             <div class="control-group"> 

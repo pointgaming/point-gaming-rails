@@ -7,7 +7,7 @@
 
 <% if @stream_owner.user_id === current_user.id || @collaborator.present? %>
   <div class="breadcrumb" style="margin: 0">
-    <%= link_to_modal 'Admin', user_stream_path(@stream), 'data-width' => "950", 'data-height' =>"600", 'data-title' => "Stream Admin", :remote => true, :class => 'btn btn-primary' %>
+    <%= link_to_modal 'Admin', user_stream_path(@stream), 'data-width' => "950", 'data-height' =>"600", 'data-title' => "Stream Admin", :remote => true, :class => 'btn' %>
 
     <% if @stream.match.blank? %>
       <%= link_to_modal t('.new_match'), new_polymorphic_path([@stream, Match.new]),
@@ -61,7 +61,7 @@
       <div id="stream-bet-container" class="thumbnail" style="<%= @stream.match.try(:betting) ? '' : 'display: none' %>">
         <div class="caption">
           <%= link_to_modal 'Propose a Bet', @stream.match ? new_match_bet_path(@stream.match) : '#', 
-                :remote => true, :class => 'btn btn-primary', style: 'width: 95%', :id => 'propose-bet' %>
+                :remote => true, :class => 'btn', style: 'width: 95%', :id => 'propose-bet' %>
         </div>
         <div id="bet-container" class="caption">
           <% unless @bets.empty? %>

@@ -9,7 +9,7 @@
           friend_requests_path(username: @user.username),
           :method => :post,
           :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-          :class => 'btn btn-primary' %>
+          :class => 'btn' %>
   <% end %>
 </div>
 

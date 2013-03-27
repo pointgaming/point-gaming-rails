@@ -1,7 +1,7 @@
 <%- model_class = Team -%>
 
 <div class="breadcrumb">
-  <%= link_to t('.new', :default => t("helpers.links.new")), new_team_path, :class => 'btn btn-primary' %>
+  <%= link_to t('.new', :default => t("helpers.links.new")), new_team_path, :class => 'btn' %>
 </div>
 
 <div class="widget widget-nopad">
@@ -23,7 +23,7 @@
         </div>
       </div>
       <div class="form-actions">
-        <%= f.submit :Change, :class => 'btn btn-primary' %>
+        <%= f.submit :Change, :class => 'btn' %>
       </div>
     <% end %>
   </div>

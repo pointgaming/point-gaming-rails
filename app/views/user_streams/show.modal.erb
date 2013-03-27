@@ -13,7 +13,7 @@
     <% else %>
       <%= link_to t('.start_streaming'), start_user_stream_path(@stream), method: 'put', 
               'data-type'=>'json', 'data-remote' => 'true', 'data-modal' => 'true', 
-              :class => 'btn btn-primary streaming-toggle' %>
+              :class => 'btn streaming-toggle' %>
     <% end %>
   <% end %>
 </div>

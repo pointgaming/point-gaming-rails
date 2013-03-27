@@ -13,7 +13,7 @@
                   <p>Betting: <%#= stream.betting ? 'Yes' : 'No' %></p>
                   <p>Game: <%= stream.game.try(:name) %></p>
                   <p>Viewers: <%= stream.viewer_count %></p>
-                  <p><%= link_to "Watch", stream_path(stream), :class => 'btn btn-primary' %></p>
+                  <p><%= link_to "Watch", stream_path(stream), :class => 'btn' %></p>
                 </div>
               </div>
             </li>
