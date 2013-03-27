@@ -232,4 +232,4 @@ Warden::Manager.before_logout do |user, auth, opts|
   session.delete(:email) if session[:email]
 end
 
-require 'devise/controllers/sessions_controller'
+require 'devise/devise_controller'
