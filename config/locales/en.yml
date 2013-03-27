@@ -20,3 +20,5 @@ en:
         tag: 'Nick Name'
       team_member:
         created_at: 'Joined at'
+      tournament:
+        start_datetime: 'Start Date'
