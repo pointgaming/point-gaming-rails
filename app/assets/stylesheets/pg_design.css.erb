@@ -104,7 +104,7 @@ input[type=submit]:hover{cursor:pointer;}
 #header{
 	background:#a2181a url('<%= asset_path('bg-header.png') %>') 50% 0;
 	border-bottom:2px solid #f7f7f7;
-	padding:67px 0 61px;
+	padding:0px 0 85px;
 	height:74px;
 	overflow:hidden;
 	margin-bottom:32px;
@@ -112,6 +112,23 @@ input[type=submit]:hover{cursor:pointer;}
 	-moz-box-shadow: 0 2px 5px rgba(0,0,0,.32);
 	box-shadow: 0 2px 5px rgba(0,0,0,.32);
 	font-family:'lucida_grandebold', Arial, Helvetica, sans-serif;
+}
+.header-toolbar{
+  margin: 0 auto;
+  padding: 10px 0 15px;
+  width: 940px;
+}
+.header-toolbar a{
+  color: #fff;
+  display: block;
+  font-size: 75%;
+}
+.header-toolbar a .caret{
+  border-top: 4px solid white;
+}
+.header-toolbar > ul > li {
+  float: right;
+  padding-left: 15px;
 }
 .header-holder{
 	-webkit-border-radius: 37px 36px 36px 37px/37px 37px 36px 36px;

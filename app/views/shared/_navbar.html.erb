@@ -1,5 +1,32 @@
 <%- @hide_nav ||= false %>
 <header id="header">
+  <div class="header-toolbar container-fluid">
+    <ul class="pull-right">
+      <% if user_signed_in? %>
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= "#{current_user.username} (#{current_user.points})" %> <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <% if can? :show, :admin_link %>
+                <li><%= link_to "Admin", admin_root_path %></li>
+                <li class="divider"></li>
+              <% end %>
+              <li><%= link_to "Streams", user_streams_path %></li>
+              <li><%= link_to "Teams", teams_path %></li>
+              <li><%= link_to "Tournaments", "#" %></li>
+              <li class="divider"></li>
+              <li><%= link_to "Profile", edit_user_profile_path(current_user) %></li>
+              <li><%= link_to "Settings", settings_path %></li>
+              <li class="divider"></li>
+              <li><%= link_to "Logout", destroy_user_session_path, :method=>'delete' %></li>
+            </ul>
+        </li>
+      <% else %>
+        <li><%= link_to("Login", new_user_session_path, :class => "") %></li>
+        <li><%= link_to("Register", new_user_registration_path, :class => "") %></li>
+      <% end %>
+    </ul>
+  </div>
+
   <div class="header-holder">
     <div class="header-frame">
       <strong class="logo"><%= link_to "Point Gaming", root_path %></strong>
@@ -13,35 +40,14 @@
             <%= navItem "Forums", forum_path %>
           </ul>
         </nav>
-        <%= form_tag search_path, method: :get, autocomplete: :off, :class => "navbar-search search-form" do %>
-          <fieldset>
-            <input placeholder="Search" type="text" name="query" class="search-query">
-            <input type="submit" value="submit">
-          </fieldset>
-        <% end %>
-        <% if user_signed_in? %>
-          <ul class="pull-right">
-            <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= "#{current_user.username} (#{current_user.points})" %> <b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                  <% if can? :show, :admin_link %>
-                    <li><%= link_to "Admin", admin_root_path %></li>
-                    <li class="divider"></li>
-                  <% end %>
-                  <li><%= link_to "Streams", user_streams_path %></li>
-                  <li><%= link_to "Teams", teams_path %></li>
-                  <li><%= link_to "Tournaments", "#" %></li>
-                  <li class="divider"></li>
-                  <li><%= link_to "Profile", edit_user_profile_path(current_user) %></li>
-                  <li><%= link_to "Settings", settings_path %></li>
-                  <li class="divider"></li>
-                  <li><%= link_to "Logout", destroy_user_session_path, :method=>'delete' %></li>
-                </ul>
-            </li>
-          </ul>
-        <% else %>
-          <%= link_to("Login", new_user_session_path, :class => "login") %>
-        <% end %>
+        <div class="pull-right">
+          <%= form_tag search_path, method: :get, autocomplete: :off, :class => "navbar-search search-form pull-right" do %>
+            <fieldset>
+              <input placeholder="Search" type="text" name="query" class="search-query">
+              <input type="submit" value="submit">
+            </fieldset>
+          <% end %>
+        </div>
       <% end %>
     </div>
   </div>
