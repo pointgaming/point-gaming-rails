@@ -18,10 +18,6 @@ class TeamsController < ApplicationController
     @member = TeamMember.where(user_id: current_user._id, team_id: @team._id).first
   end
 
-  def edit
-
-  end
-
   def create
     @team = Team.new(params[:team])
     member = @team.members.build({team_id: @team._id, user_id: current_user.id, rank: 'Leader'})
@@ -31,11 +27,6 @@ class TeamsController < ApplicationController
     else
       render :action => :new
     end
-  end
-
-  def update
-    @team.update_attributes(params[:team])
-    respond_with(@team)
   end
 
   def change_active

@@ -18,7 +18,7 @@ Pointgaming::Application.routes.draw do
   resources :game_rooms do
     resources :matches, only: [:index, :new, :show, :create, :destroy]
   end
-  resources :t, controller: 'teams', as: 'teams' do
+  resources :t, controller: 'teams', as: 'teams', except: [:edit, :update] do
     collection do
       put 'change_active'
     end
