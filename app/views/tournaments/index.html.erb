@@ -15,7 +15,7 @@
     <% @tournaments.each do |tournament| %>
       <tr>
         <td><%= link_to "View Details", tournament_path(tournament) %></td>
-        <td><%= tournament.start_datetime %></td>
+        <td><%= ldate tournament.start_datetime %></td>
         <td><%= tournament.game.name %></td>
         <td><%= tournament.game_type %></td>
         <td><%= tournament.prize_pool %></td>
