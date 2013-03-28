@@ -59,6 +59,7 @@ class User
   field :slug, :type => String, :default => ''
   field :first_name
   field :last_name
+  field :time_zone, default: Rails.application.config.time_zone
   field :birth_date, type: Date
   field :phone
   field :country

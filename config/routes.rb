@@ -91,8 +91,8 @@ Pointgaming::Application.routes.draw do
 
   get "/u/:user_id/profile/edit", :to => "user_profiles#edit", as: 'edit_user_profile'
   get "/u/:user_id", :to => "user_profiles#show", as: 'user'
+  put "/u/:user_id", :to => "user_profiles#update"
   get "/u/:user_id/profile", :to => "user_profiles#show", as: 'user_profile'
-  put "/u/:user_id/profile", :to => "user_profiles#update"
   get '/u/subregion_options' => 'user_profiles#subregion_options'
 
   devise_for :users
