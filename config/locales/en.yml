@@ -6,6 +6,9 @@ en:
   date:
     formats:
       default: ! '%Y/%m/%d'
+  time:
+    formats:
+      default: ! '%Y/%m/%d %I:%M %p'
   mongoid:
     models:
       team_member: 'Member'
