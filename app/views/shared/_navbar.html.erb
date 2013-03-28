@@ -22,7 +22,9 @@
         </li>
       <% else %>
         <li><%= link_to("Login", new_user_session_path, :class => "") %></li>
-        <li><%= link_to("Register", new_user_registration_path, :class => "") %></li>
+        <%- if devise_mapping.registerable? && controller_name != 'registrations' %>
+          <li><%= link_to("Register", new_user_registration_path, :class => "") %></li>
+        <% end %>
       <% end %>
     </ul>
   </div>

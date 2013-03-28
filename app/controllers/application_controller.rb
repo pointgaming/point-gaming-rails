@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
 
   self.responder = CustomResponder
 
+  before_filter :authenticate_user!
   before_filter :set_current_path
   before_filter :remove_layout_for_ajax_requests
 

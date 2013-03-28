@@ -19,6 +19,10 @@ module ApplicationHelper
       APP_CONFIG['store_url']
     end
 
+    def devise_mapping
+      @devise_mapping ||= Devise.mappings[:user]
+    end
+
     # Creates a link tag to a given url or path and ensures that the linke will be rendered
     # as jquery modal dialog
     #
