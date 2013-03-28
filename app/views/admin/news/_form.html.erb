@@ -12,6 +12,13 @@
     </div>
   </div>
 
+  <div class="control-group">
+    <%= f.label :image, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.file_field :image %>
+    </div>
+  </div>
+
   <div class="form-actions">
     <%= f.submit nil, :class => 'btn' %>
     <%= link_to t('.cancel', :default => t("helpers.links.cancel")),

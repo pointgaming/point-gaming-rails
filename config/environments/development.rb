@@ -34,4 +34,8 @@ Pointgaming::Application.configure do
 
   # Expands the lines which load the assets
   config.assets.debug = true
+
+  config.to_prepare do
+    DeviseFilters.add_filters
+  end
 end

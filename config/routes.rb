@@ -12,13 +12,15 @@ Pointgaming::Application.routes.draw do
   resources :friend_requests
   resources :leagues
   resources :tournaments
-  resources :s, controller: 'streams', as: 'streams' do
+  resources :streams, controller: 'streams', as: 'streams', only: [:index, :create]
+  resources :s, controller: 'streams', as: 'streams', except: [:index, :create, :edit, :update] do
     resources :matches, only: [:index, :new, :show, :create, :destroy]
   end
   resources :game_rooms do
     resources :matches, only: [:index, :new, :show, :create, :destroy]
   end
-  resources :t, controller: 'teams', as: 'teams', except: [:edit, :update] do
+  resources :teams, controller: 'teams', as: 'teams', only: [:index, :create]
+  resources :t, controller: 'teams', as: 'teams', except: [:index, :create, :edit, :update] do
     collection do
       put 'change_active'
     end
@@ -88,7 +90,8 @@ Pointgaming::Application.routes.draw do
   put "/u/:user_id/avatar", :to => "user_avatar#update", as: 'user_avatar'
 
   get "/u/:user_id/profile/edit", :to => "user_profiles#edit", as: 'edit_user_profile'
-  get "/u/:user_id/profile", :to => "user_profiles#show", as: 'user'
+  get "/u/:user_id", :to => "user_profiles#show", as: 'user'
+  get "/u/:user_id/profile", :to => "user_profiles#show", as: 'user_profile'
   put "/u/:user_id/profile", :to => "user_profiles#update"
   get '/u/subregion_options' => 'user_profiles#subregion_options'
 
