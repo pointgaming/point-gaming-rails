@@ -15,6 +15,8 @@ class MatchesController < ApplicationController
 
   def new
     @match = Match.new
+    @games = Game.all
+    @last_game = Match.order_by(:created_at => 'DESC').where(room: @room).nin(game_id: nil).first.try(:game)
     respond_with(@match)
   end
 

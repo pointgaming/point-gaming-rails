@@ -20,6 +20,7 @@ class Match
     state :finalized
   end
 
+  belongs_to :game
   belongs_to :room, :polymorphic => true
   belongs_to :player_1, :polymorphic => true
   belongs_to :player_2, :polymorphic => true
@@ -30,6 +31,7 @@ class Match
   validates :player_1, :presence=>true
   validates :player_2, :presence=>true
   validates :map, :presence=>true
+  validates :game, :presence=>true
 
   attr_writer :player_1_name, :player_2_name
   
