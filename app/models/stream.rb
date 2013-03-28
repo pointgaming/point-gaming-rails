@@ -10,6 +10,7 @@ class Stream
   field :slug, :type => String, :default => ''
   field :details, :type => String, :default => ''
   field :streaming, :type => Boolean, :default => false
+  field :embedded_html
 
   field :viewer_count, :type => Integer, :default => 0
 
