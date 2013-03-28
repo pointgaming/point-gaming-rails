@@ -4,6 +4,8 @@ class TeamsController < ApplicationController
   before_filter :ensure_change_active_params, only: [:change_active]
   before_filter :ensure_user_is_team_member, only: [:change_active]
 
+  respond_to :html, :json
+
   def index
     @team_members = TeamMember.where(user_id: current_user.id).all
   end
@@ -32,11 +34,8 @@ class TeamsController < ApplicationController
   end
 
   def update
-    if @team.update_attributes(params[:team])
-      redirect_to teams_path
-    else
-      render :action => :edit
-    end
+    @team.update_attributes(params[:team])
+    respond_with(@team)
   end
 
   def change_active
@@ -57,7 +56,8 @@ class TeamsController < ApplicationController
 protected
 
   def ensure_team
-    @team = Team.find params[:id]
+    @team = Team.where(slug: params[:id]).first
+    raise Mongoid::Errors::DocumentNotFound unless @team.present?
   end
 
   def ensure_change_active_params

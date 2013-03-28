@@ -103,7 +103,9 @@ class UserStreamsController < ApplicationController
 protected
 
   def ensure_stream
-    @stream = Stream.find(params[:id])
+    @stream = Stream.where(slug: params[:id]).first
+    raise Mongoid::Errors::DocumentNotFound unless @stream.present?
+
     @stream_owner = @stream.owner
   end
 

@@ -1,4 +1,6 @@
 defaults: &DEFAULTS
+  display_name_regex: !ruby/regexp '/^[\w\-]([\w\s\-](?<!\s(?<=\s\s))){0,15}(?<!\s)$/'
+  display_name_regex_message: "must be 1-16 characters, can only include letters, numbers, -, _, and space, cannot start or end with space and a space cannot follow another space."
   socketio_uri: https://localhost:9999/
   store_url: http://localhost:5000/
   store_api_url: http://localhost:5000/private/api/

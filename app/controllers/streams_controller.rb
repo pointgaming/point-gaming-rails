@@ -6,7 +6,9 @@ class StreamsController < ApplicationController
   end
 
   def show
-    @stream = Stream.find params[:id]
+    @stream = Stream.where(slug: params[:id]).first
+    raise Mongoid::Errors::DocumentNotFound unless @stream.present?
+
     @stream_owner = @stream.owner
     @collaborator = Collaborator.where(stream_id: @stream._id, user_id: current_user._id)
 

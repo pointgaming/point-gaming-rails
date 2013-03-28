@@ -33,7 +33,8 @@ class UserProfilesController < ApplicationController
 protected
 
   def ensure_user
-    @user = User.find params[:user_id]
+    @user = User.where(slug: params[:user_id]).first
+    raise Mongoid::Errors::DocumentNotFound unless @user.present?
   end
 
   def ensure_user_profile
@@ -51,7 +52,7 @@ protected
   end
 
   def ensure_user_id_is_current_user
-    unless params[:user_id] === current_user._id
+    unless params[:user_id] === current_user.slug
       raise ::PermissionDenied
     end
   end

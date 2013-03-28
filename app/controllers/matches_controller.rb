@@ -64,10 +64,10 @@ protected
   end
 
   def ensure_room
-    [:game_room_id, :stream_id].each do |key|
-      if params[key].present?
-        @room = key.to_s.gsub(/_id$/, '').classify.constantize.find(params[key])
-      end
+    if params[:stream_id].present?
+      @room = Stream.where(slug: params[:stream_id]).first
+    elsif params[:game_room_id].present?
+      @room = GameRoom.find(params[:game_room_id])
     end
     unless @room
       raise ::PermissionDenied

@@ -40,7 +40,8 @@ class CollaboratorsController < ApplicationController
 protected
 
   def ensure_stream
-    @stream = Stream.find(params[:user_stream_id])
+    @stream = Stream.where(slug: params[:user_stream_id]).first
+    raise Mongoid::Errors::DocumentNotFound unless @stream.present?
   end
 
   def ensure_stream_owner

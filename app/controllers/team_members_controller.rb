@@ -53,7 +53,8 @@ class TeamMembersController < ApplicationController
 protected
 
   def ensure_team
-    @team = Team.find(params[:team_id])
+    @team = Team.where(slug: params[:team_id]).first
+    raise Mongoid::Errors::DocumentNotFound unless @team.present?
   end
 
   def ensure_team_owner

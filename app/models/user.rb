@@ -5,6 +5,8 @@ class User
 
   has_mongoid_attached_file :avatar, :default_url => ":class/:attachment/missing_:style.png"
 
+  before_validation :populate_slug
+
   before_create :create_forum_user
   before_create :create_store_user
   before_update :update_forum_user
@@ -54,6 +56,7 @@ class User
   # field :authentication_token, :type => String
 
   field :username
+  field :slug, :type => String, :default => ''
   field :first_name
   field :last_name
   field :birth_date, type: Date
@@ -71,8 +74,10 @@ class User
                   :remember_me, :status, :birth_date, :age, :phone, :profile_attributes, 
                   :avatar, :country, :state
 
-  validates_presence_of :username, :first_name, :last_name
-  validates_uniqueness_of :username, :email, :case_sensitive => false
+  validates_presence_of :username, :slug, :first_name, :last_name
+  validates_uniqueness_of :username, :slug, :email, :case_sensitive => false
+
+  validates :username, :format => {:with => APP_CONFIG[:display_name_regex], message: APP_CONFIG[:display_name_regex_message]}
 
   belongs_to :profile
 
@@ -97,6 +102,10 @@ class User
     age
   end
 
+  def to_param
+    self.slug
+  end
+
   def profile_url
     user_path(self)
   end
@@ -113,6 +122,11 @@ class User
     50
   end
 protected
+
+  def populate_slug
+    self.slug = username.downcase.gsub(/\s/, "_") if username.present?
+    true
+  end
 
   def create_forum_user
     forum_user = ForumUser.new :email => self.email, :username => self.username, :admin => self.admin

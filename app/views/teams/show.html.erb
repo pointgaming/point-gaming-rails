@@ -21,11 +21,6 @@
     <div class="widget-header">
       <i class="icon-info-sign"></i>
       <h3>Team Details</h3>
-      <% if @member.try(:leader?) %>
-        <%= link_to_modal t('.edit', :default => t("helpers.links.edit")),
-                          edit_team_path(@team), :class => 'btn btn-mini', 
-                          remote: true, :data => {width: '320px'} %>
-      <% end %>
     </div>
     <div class="widget-content">
       <div class="control-group">
