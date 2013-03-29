@@ -3,7 +3,7 @@ class User
   include Rails.application.routes.url_helpers
   include Mongoid::Paperclip
 
-  has_mongoid_attached_file :avatar, :default_url => ":class/:attachment/missing_:style.png"
+  has_mongoid_attached_file :avatar, :default_url => "/:class/:attachment/missing_:style.png"
 
   before_validation :populate_slug
 

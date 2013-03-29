@@ -33,6 +33,10 @@ Pointgaming::Application.configure do
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   config.force_ssl = true
 
+  config.ssl_options = {
+    exclude: proc {|env| env['PATH_INFO'].start_with?('/s/') && env['PATH_INFO'].ends_with?('/embedded_content') }
+  }
+
   # See everything in the log (default is :info)
   # config.log_level = :debug
 

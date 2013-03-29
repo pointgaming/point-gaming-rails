@@ -3,8 +3,9 @@ class Stream
   include Mongoid::Paperclip
 
   before_validation :populate_slug
+  before_save :sanitize_embedded_html
 
-  has_mongoid_attached_file :thumbnail, :default_url => ":class/:attachment/missing_:style.png", :styles => {:thumb => '300x200!'}
+  has_mongoid_attached_file :thumbnail, :default_url => ":class/:attachment/missing_:style.png", :styles => {:tiny => '50x50!', :thumb => '300x200!'}
 
   field :name, :type => String, :default => ''
   field :slug, :type => String, :default => ''
@@ -45,6 +46,12 @@ private
   def populate_slug
     self.slug = name.downcase.gsub(/\s/, "_") if name.present?
     true
+  end
+
+  def sanitize_embedded_html
+    if self.embedded_html_changed? && self.embedded_html.present?
+      self.embedded_html = Sanitize.clean(self.embedded_html, Sanitize::Config::EMBEDDED_CONTENT)
+    end
   end
 
 end

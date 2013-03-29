@@ -94,6 +94,7 @@ GEM
       paperclip (>= 2.3.6)
     moped (1.4.2)
     multi_json (1.6.0)
+    nokogiri (1.5.9)
     oj (2.0.4)
     origin (1.0.11)
     orm_adapter (0.4.0)
@@ -161,6 +162,8 @@ GEM
       redis-namespace (~> 1.0)
       sinatra (>= 0.9.2)
       vegas (~> 0.1.2)
+    sanitize (2.0.3)
+      nokogiri (>= 1.4.4, < 1.6)
     sass (3.2.5)
     sass-rails (3.2.6)
       railties (~> 3.2.0)
@@ -223,6 +226,7 @@ DEPENDENCIES
   redis-rails
   remotipart (~> 1.0)
   resque
+  sanitize
   sass-rails (~> 3.2.3)
   twitter-bootstrap-rails
   uglifier (>= 1.0.3)

@@ -5,7 +5,7 @@ PointGaming.MatchController = function(match, new_bet_path){
 
   this.new_bet_path = new_bet_path;
 
-  this.match_details_container = $('h4#stream-match-details');
+  this.match_details_container = $('span#stream-match-details');
 
   this.stream_bet_container = $('div#stream-bet-container');
   this.propose_bet_link = $('a#propose-bet');
@@ -19,12 +19,20 @@ PointGaming.MatchController = function(match, new_bet_path){
 PointGaming.MatchController.prototype.registerHandlers = function() {
   PointGaming.socket.on("Match.new", this.handleNewMatch.bind(this));
   PointGaming.socket.on("Match.update", this.handleMatchUpdated.bind(this));
+
+  $('span#stream-name').popover({
+    placement: 'bottom',
+    trigger: 'hover',
+    html: true,
+    container: 'body',
+    title: 'Stream Details'
+  });
 };
 
 PointGaming.MatchController.prototype.handleNewMatch = function(data) {
   this.match = data.match;
 
-  this.match_details_container.html(data.match_details);
+  this.match_details_container.html(data.match_details ? ' - '+data.match_details : '');
 
   $(this.bet_selector, this.bet_window).not('[data-match-id="' + data.match._id + '"]').remove();
 
@@ -50,7 +58,7 @@ PointGaming.MatchController.prototype.handleMatchUpdated = function(data) {
       key,
       oldValue;
 
-  this.match_details_container.html(data.match_details);
+  this.match_details_container.html(data.match_details ? ' - '+data.match_details : '');
 
   for (key in data.match) {
     if (data.match.hasOwnProperty(key)) {

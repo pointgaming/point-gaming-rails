@@ -15,6 +15,9 @@ Pointgaming::Application.routes.draw do
   resources :streams, controller: 'streams', as: 'streams', only: [:index, :create]
   resources :s, controller: 'streams', as: 'streams', except: [:index, :create, :edit, :update] do
     resources :matches, only: [:index, :new, :show, :create, :destroy]
+    member do
+      get 'embedded_content'
+    end
   end
   resources :game_rooms do
     resources :matches, only: [:index, :new, :show, :create, :destroy]

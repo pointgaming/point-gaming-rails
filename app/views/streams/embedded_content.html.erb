@@ -1,0 +1,5 @@
+<% if @stream.embedded_html.present? %>
+  <%= @stream.embedded_html.html_safe %>
+<% else %>
+  <%= link_to image_tag(@stream.thumbnail.url(:thumb), id: 'stream-thumbnail'), '#', :class => 'thumbnail' %>
+<% end %>

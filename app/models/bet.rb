@@ -51,7 +51,7 @@ class Bet
   validate :check_bettor_points, on: :update
 
   def tooltip_attributes
-    [:winner_name, :loser_name, :map, :amount, :odds, :your_risk_amount, :your_win_amount]
+    [:your_risk_amount, :your_win_amount]
   end
 
   def odds_options

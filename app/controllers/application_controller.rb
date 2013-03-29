@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
 
   self.responder = CustomResponder
 
-  before_filter :authenticate_user!
+  before_filter :authenticate_user!, :if => :requested_private_url?
   around_filter :user_time_zone, :if => :current_user
   before_filter :set_current_path
   before_filter :remove_layout_for_ajax_requests
@@ -26,6 +26,14 @@ class ApplicationController < ActionController::Base
   end
 
 private
+
+  def requested_private_url?
+    !requested_public_url?
+  end
+
+  def requested_public_url?
+    request.env['PATH_INFO'].start_with?('/s/') && request.env['PATH_INFO'].ends_with?('/embedded_content')
+  end
 
   def user_time_zone(&block)
       Time.use_zone(current_user.time_zone, &block)

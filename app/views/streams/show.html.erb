@@ -3,7 +3,15 @@
 <div id="ajax-modal" class="modal hide fade" tabindex="-1"></div>
 <div id="match-modal" class="modal hide fade" tabindex="-1"></div>
 
-<h1 id="stream-name"><%= @stream.name %></h1>
+<h1>
+  <%= image_tag @stream.thumbnail.url(:tiny), id: 'stream-thumbnail' %>
+  <span id="stream-name" data-content="<%= @stream.details %>">
+    <%= @stream.name %>
+    <span id="stream-match-details">
+      <%= " - #{match_details(@stream.match)}" if @stream.match %>
+    </span>
+  </span>
+</h1>
 
 <% if @stream_owner.user_id === current_user.id || @collaborator.present? %>
   <div class="breadcrumb" style="margin: 0">
@@ -23,73 +31,76 @@
 
 <div class="container-fluid">
   <div class="row-fluid">
-    <div class="span6">
-      <ul class="thumbnails">
-        <li id="embed_container">
-          <% if @stream.embedded_html.present? %>
-            <%= @stream.embedded_html.html_safe %>
-          <% else %>
-            <%= link_to image_tag(@stream.thumbnail.url(:thumb), id: 'stream-thumbnail'), '#', :class => 'thumbnail' %>
-          <% end %>
-        </li>
-      </ul>
+    <div id="embed_container" class="span8">
+      <iframe src="<%= embedded_content_stream_url(@stream) %>" scrolling="auto" class="span12" height="450"></iframe>
+    </div>
 
-      <fieldset>
-        <legend>Details</legend>
-
-        <div id="stream-details" class="well">
-          <%= @stream.details %>
-        </div>
-      </fieldset>
-
+    <div class="span4">
       <form id="chatbox-form">
         <fieldset>
           <legend>Chat</legend>
 
           <pre id="chatbox" class="pre-scrollable"></pre>
 
-          <div class="form-inline">
-            <input type="text" placeholder="Say anything..." />
-            <button type="submit" class="btn">Send</button>
+          <div class="form-inline row-fluid">
+            <input type="text" placeholder="Say anything..." class="span12" />
+            <button type="submit" class="btn span12">Send</button>
           </div>
         </fieldset>
       </form>
     </div>
+  </div>
+</div>
 
-    <div class="span6">
-      <h4 id="stream-match-details">
-        <% if @stream.match %>
-          <%= match_details(@stream.match) %>
-        <% end %>
-      </h4>
-      <div id="stream-bet-container" class="thumbnail" style="<%= @stream.match.try(:betting) ? '' : 'display: none' %>">
-        <div class="caption">
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span12">
+      <div id="stream-bet-container" style="<%= @stream.match.try(:betting) ? '' : 'display: none' %>">
+        <div class="breadcrumb">
           <%= link_to_modal 'Propose a Bet', @stream.match ? new_match_bet_path(@stream.match) : '#', 
-                :remote => true, :class => 'btn', style: 'width: 95%', :id => 'propose-bet' %>
+                            :remote => true, :class => 'btn', :id => 'propose-bet' %>
         </div>
-        <div id="bet-container" class="caption">
-          <% unless @bets.empty? %>
-            <% @bets.each do |b| %>
-              <div id="<%= b._id %>" class="well well-small bet" title="Bet Details" data-content="<%= bet_tooltip(b).html_safe %>" data-match-id="<%= b.match._id %>">
-                <%= "#{b.bookie.try(:username)}: #{b.winner.try(:display_name)}>#{b.loser.try(:display_name)} #{b.amount} Points #{b.odds}" %>
-                <div class="pull-right">
-                  <% if b.bettor %>
-                    Accepted: <%= b.bettor.try(:username) %>
-                  <% else %>
-                    <% if b.bookie.try(:id) === current_user.id %>
-                      <%= link_to "Cancel", match_bet_path(b.match, b),
-                            'method' => 'delete', 'data-remote' => 'true', 'data-type' => :json,
-                            :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) } %>
-                    <% else %>
-                      <%= link_to "Accept", match_bet_path(b.match, b),
-                            'method' => 'put', 'data-remote' => 'true', 'data-type' => :json,
-                            :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) } %>
-                    <% end %>
-                  <% end %>
-                </div>
-              </div>
-            <% end %>
-          <% end %>
+        <div>
+          <table class="table table-bordered table-striped">
+            <tr>
+              <th>Winner</th>
+              <th>Loser</th>
+              <th>Points</th>
+              <th>Odds</th>
+              <th></th>
+            </tr>
+            <tbody id="bet-container">
+              <% unless @bets.empty? %>
+                <% @bets.each do |b| %>
+                  <tr id="<%= b._id %>" class="bet" title="Bet Details" data-content="<%= bet_tooltip(b).html_safe %>" data-match-id="<%= b.match._id %>">
+                    <td><%= b.winner.try(:display_name) %></td>
+                    <td><%= b.loser.try(:display_name) %></td>
+                    <td><%= b.amount %></td>
+                    <td><%= b.odds %></td>
+                    <td class="actions">
+                      <% if b.bettor %>
+                        Accepted: <%= b.bettor.try(:username) %>
+                      <% else %>
+                        <% if b.bookie.try(:id) === current_user.id %>
+                          <%= link_to "Cancel", match_bet_path(b.match, b),
+                                'method' => 'delete', :class => 'btn', 'data-remote' => 'true', 'data-type' => :json,
+                                :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) } %>
+                        <% else %>
+                          <%= link_to "Accept", match_bet_path(b.match, b),
+                                'method' => 'put', :class => 'btn', 'data-remote' => 'true', 'data-type' => :json,
+                                :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) } %>
+                        <% end %>
+                      <% end %>
+                    </td>
+                  </tr>
+                <% end %>
+              <% else %>
+                <tr id="no-results">
+                  <td colspan="5">No results were found.</td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
