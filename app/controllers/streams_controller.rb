@@ -3,7 +3,7 @@ class StreamsController < ApplicationController
   before_filter :ensure_stream, only: [:show, :embedded_content]
 
   def index
-    @streams = Stream.where(streaming: true).all
+    @streams = Stream.where(streaming: true).order_by(viewer_count: 'DESC').all
   end
 
   def show
