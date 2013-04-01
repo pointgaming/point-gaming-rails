@@ -78,6 +78,8 @@ Pointgaming::Application.routes.draw do
     end
   end
 
+  get '/desktop_client/version', to: 'site#desktop_version'
+
   root :to => 'home#index'
 
   get "/search", :to => "search#index"
