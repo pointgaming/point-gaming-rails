@@ -34,7 +34,8 @@ Pointgaming::Application.configure do
   config.force_ssl = true
 
   config.ssl_options = {
-    exclude: proc {|env| env['PATH_INFO'].start_with?('/s/') && env['PATH_INFO'].ends_with?('/embedded_content') }
+    exclude: proc {|env| env['PATH_INFO'].start_with?('/s/') && env['PATH_INFO'].ends_with?('/embedded_content') },
+    hsts: false
   }
 
   # See everything in the log (default is :info)

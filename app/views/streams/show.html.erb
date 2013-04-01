@@ -32,7 +32,7 @@
 <div class="container-fluid">
   <div class="row-fluid">
     <div id="embed_container" class="span8">
-      <iframe src="<%= embedded_content_stream_url(@stream) %>" scrolling="auto" class="span12" height="450"></iframe>
+      <iframe src="<%= embedded_content_stream_url(@stream, protocol: 'http') %>" scrolling="auto" class="span12" height="450"></iframe>
     </div>
 
     <div class="span4">
