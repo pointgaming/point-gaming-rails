@@ -73,9 +73,7 @@ Pointgaming::Application.routes.draw do
       resources :streams, only: [] do
         resources :matches, only: [:index, :new, :show, :create, :destroy]
       end
-      resources :game_rooms, only: [:index, :show, :create, :update] do
-        resources :matches, only: [:index, :new, :show, :create, :destroy]
-      end
+      resources :game_rooms, only: [:show, :destroy]
     end
   end
 

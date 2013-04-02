@@ -1,8 +1,17 @@
 class Api::ApplicationController < ActionController::Base
   rescue_from ::PermissionDenied, :with => :render_permission_denied
   rescue_from ::UnprocessableEntity, :with => :render_unprocessable_entity
+  rescue_from ::Mongoid::Errors::DocumentNotFound, :with => :render_not_found
 
 private
+
+  def authenticate_node_api
+    params[:api_token] && params[:api_token] === APP_CONFIG['node_api_auth_token']
+  end
+
+  def authenticate_node_api!
+    render_unauthorized unless authenticate_node_api
+  end
 
   def authenticate_store_api
     params[:api_token] && params[:api_token] === APP_CONFIG['store_api_auth_token']
@@ -26,6 +35,10 @@ private
 
   def authenticate_rails_app_api!
     render_unauthorized unless authenticate_rails_app_api
+  end
+
+  def render_not_found
+    render json: {}, status: 404
   end
 
   def render_unauthorized

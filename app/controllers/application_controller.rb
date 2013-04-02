@@ -36,7 +36,7 @@ private
   end
 
   def user_time_zone(&block)
-      Time.use_zone(current_user.time_zone, &block)
+    Time.use_zone(current_user.time_zone, &block)
   end
 
   def set_current_path
