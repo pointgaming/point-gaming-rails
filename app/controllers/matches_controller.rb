@@ -1,6 +1,7 @@
 class MatchesController < ApplicationController
   before_filter :authenticate_user!
   before_filter :ensure_room, only: [:index, :new, :create]
+  before_filter :load_games, only: [:new, :create, :show, :edit, :update]
   before_filter :ensure_match, except: [:index, :new, :create]
   before_filter :ensure_room_has_no_match, only: [:new, :create]
   before_filter :ensure_room_controller, except: [:index, :show]
@@ -15,8 +16,7 @@ class MatchesController < ApplicationController
 
   def new
     @match = Match.new
-    @games = Game.all
-    @last_game = Match.order_by(:created_at => 'DESC').where(room: @room).nin(game_id: nil).first.try(:game)
+    @match.game = Match.order_by(:created_at => 'DESC').where(room: @room).nin(game_id: nil).first.try(:game)
     respond_with(@match)
   end
 
@@ -38,14 +38,11 @@ class MatchesController < ApplicationController
   end
 
   def update
-    if params[:match][:winner] === 'player_1'
-      @match.winner = @match.player_1 
-    elsif params[:match][:winner] === 'player_2'
-      @match.winner = @match.player_2
+    if @match.state === 'new'
+      update_match_attributes
+    else
+      update_match_winner
     end
-
-    @match.save && @match.finalize!
-    respond_with(@match)
   end
 
   def start
@@ -59,6 +56,22 @@ class MatchesController < ApplicationController
   end
 
 protected
+
+  def update_match_attributes
+    @match.update_attributes params[:match] if params[:match]
+    respond_with(@match)
+  end
+
+  def update_match_winner
+    if params[:match][:winner] === 'player_1'
+      @match.winner = @match.player_1 
+    elsif params[:match][:winner] === 'player_2'
+      @match.winner = @match.player_2
+    end
+
+    @match.save && @match.finalize!
+    respond_with(@match)
+  end
 
   def ensure_match
     @match = Match.find params[:id]
@@ -74,6 +87,10 @@ protected
     unless @room
       raise ::PermissionDenied
     end
+  end
+
+  def load_games
+    @games = Game.all
   end
 
   def ensure_room_has_no_match

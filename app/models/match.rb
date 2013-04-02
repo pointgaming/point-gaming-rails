@@ -2,10 +2,18 @@ class Match
   include Mongoid::Document
   include Mongoid::Timestamps
   include Workflow
+  include MatchesHelper
+
+  before_save :calculate_match_hash, :if => :match_criteria_changed?
+
+  after_create :publish_created
+  after_update :publish_updated
+  after_update :void_bets
 
   field :betting, :type => Boolean, :default => true
   field :map, :type => String, :default => ''
   field :state, :type => String
+  field :match_hash, :type => String
 
   workflow_column :state
   workflow do
@@ -47,23 +55,59 @@ class Match
     [[player_1.display_name, :player_1], [player_2.display_name, :player_2]]
   end
 
-  def start
-    update_attribute(:betting, false)
-  end
-
   def cancel
-    update_attribute(:betting, false)
     self.room.match = nil;
     self.room.save
 
-    Resque.enqueue FinalizeBetsJob, _id
+    Resque.enqueue FinalizeBetsJob, self._id
   end
 
   def finalize
-    update_attribute(:betting, false)
-    room.match = nil;
-    room.save
+    self.room.match = nil;
+    self.room.save
 
-    Resque.enqueue FinalizeBetsJob, _id
+    Resque.enqueue FinalizeBetsJob, self._id
   end
+
+private
+
+  def calculate_match_hash
+    data = match_criteria.map{|column| self.send(column)}
+    self.match_hash = Digest::MD5.hexdigest( data.join(':') )
+  end
+
+  def match_criteria
+    ['betting', 'player_1_id', 'player_1_type', 'player_2_id', 'player_2_type']
+  end
+
+  def match_criteria_changed?
+    !(self.changed & match_criteria).empty?
+  end
+
+  def publish_created
+    return unless self.room.present?
+    BunnyClient.instance.publish_fanout("c.#{self.room.mq_exchange}", {
+      :action => 'Match.new',
+      :data => {
+        :match => self,
+        :match_details => match_details(self)
+      }
+    }.to_json)
+  end
+
+  def publish_updated
+    return unless self.room.present?
+    BunnyClient.instance.publish_fanout("c.#{self.room.mq_exchange}", {
+      :action => 'Match.update',
+      :data => {
+        :match => self,
+        :match_details => match_details(self)
+      }
+    }.to_json)
+  end
+
+  def void_bets
+    Resque.enqueue(VoidBetsJob, self._id) if self.state === 'new' && match_hash_changed?
+  end
+
 end

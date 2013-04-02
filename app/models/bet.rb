@@ -22,8 +22,9 @@ class Bet
   field :map, :type => String
   field :amount, :type => Integer
   field :odds, :type => String
+  field :match_hash, :type => String
 
-  # values: undetermined, cancelled, bookie_won, bettor_won
+  # values: undetermined, cancelled, bookie_won, bettor_won, void
   field :outcome, :type => String, default: :undetermined
 
   belongs_to :match
@@ -40,6 +41,7 @@ class Bet
   # user who accepted the bet
   belongs_to :bettor, class_name: 'User'
 
+  validates :match_hash, :presence=>true
   validates :winner, :presence=>true
   validates :loser, :presence=>true
   validates :map, :presence=>true
@@ -48,6 +50,7 @@ class Bet
   validate :check_winner_and_loser
   validate :check_match_state, on: :create
   validate :check_bookie_points, on: :create
+  validate :check_match_hash, on: :create
   validate :check_bettor_points, on: :update
 
   def tooltip_attributes
@@ -82,6 +85,10 @@ private
     errors.add(:match, "is not currently accepting new bets.") unless match.state === 'new'
   end
 
+  def check_match_hash
+    errors.add(:match, " details have changed. This bet was not accepted.") if self.match_hash != self.match.match_hash
+  end
+
   def check_bookie_points
     pending_points = Bet.pending.for_user(bookie).sum(:amount).to_i
 
@@ -100,7 +107,13 @@ private
     errors.add(:loser, "cannot be the same as winner") if winner === loser
   end
 
+  def can_publish_message?
+    self.match.present? && self.match.room.present?
+  end
+
   def publish_bet_created
+    return unless can_publish_message?
+
     BunnyClient.instance.publish_fanout("c.#{match.room.mq_exchange}", {
       :action => 'Bet.new',
       :data => {
@@ -112,6 +125,8 @@ private
   end
 
   def publish_bet_updated
+    return unless can_publish_message?
+
     action = (bettor_id_changed? && bettor) ? 'Bet.Bettor.new' : 'Bet.update'
 
     BunnyClient.instance.publish_fanout("c.#{match.room.mq_exchange}", {
@@ -123,6 +138,8 @@ private
   end
 
   def publish_bet_destroyed()
+    return unless can_publish_message?
+
     BunnyClient.instance.publish_fanout("c.#{match.room.mq_exchange}", {
       :action => 'Bet.destroy', 
       :data => {

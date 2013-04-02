@@ -1,5 +1,6 @@
 <%= form_for [@match, @bet] do |f| %>
   <div class="modal-body">
+    <%= hidden_field_tag :match_hash, @match.match_hash %>
     <div class="control-group">
       <%= f.select :winner, @match.player_options, include_blank: '- Select -', :class => 'text_field' %> will beat 
       <%= f.select :loser, @match.player_options, include_blank: '- Select -', :class => 'text_field' %> on map 

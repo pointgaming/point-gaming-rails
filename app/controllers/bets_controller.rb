@@ -24,6 +24,7 @@ class BetsController < ApplicationController
     @bet.bookie = current_user
     @bet.match = @match
     @bet.map = @match.map
+    @bet.match_hash = params[:match_hash]
 
     @bet.winner = @winner
     @bet.winner_name = @winner.try(:display_name)

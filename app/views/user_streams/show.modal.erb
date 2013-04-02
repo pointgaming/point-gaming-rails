@@ -4,8 +4,8 @@
   <h2><%=t '.title', :default => model_class.model_name.human %>: <%= @stream.name %></h2>
 </div>
 
-<div class="breadcrumb">
-  <% if user_is_stream_owner %>
+<% if user_is_stream_owner %>
+  <div class="breadcrumb">
     <% if @stream.streaming %>
       <%= link_to t('.stop_streaming'), stop_user_stream_path(@stream), method: 'put', 
               'data-type'=>'json', 'data-remote' => 'true', 'data-modal' => 'true', 
@@ -15,8 +15,8 @@
               'data-type'=>'json', 'data-remote' => 'true', 'data-modal' => 'true', 
               :class => 'btn streaming-toggle' %>
     <% end %>
-  <% end %>
-</div>
+  </div>
+<% end %>
 
 <div class="span6">
   <%= render partial: 'form' %>

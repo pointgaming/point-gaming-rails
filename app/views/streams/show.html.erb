@@ -55,7 +55,8 @@
 <div class="container-fluid">
   <div class="row-fluid">
     <div class="span12">
-      <div id="stream-bet-container" style="<%= @stream.match.try(:betting) ? '' : 'display: none' %>">
+      <%- show_bet_container = @stream.match.try(:betting) || !@bets.empty? %>
+      <div id="stream-bet-container" style="<%= show_bet_container ? '' : 'display: none' %>">
         <div class="breadcrumb">
           <%= link_to_modal 'Propose a Bet', @stream.match ? new_match_bet_path(@stream.match) : '#', 
                             :remote => true, :class => 'btn', :id => 'propose-bet' %>

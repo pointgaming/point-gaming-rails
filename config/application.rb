@@ -33,7 +33,7 @@ module Pointgaming
 
     # TODO: get rid of observers since they are going to be removed in rails 4, also they don't work in a background thread
     # https://github.com/defunkt/resque/issues/780
-    config.mongoid.observers = :user_observer, :friend_observer, :match_observer, :stream_observer, :friend_request_observer
+    config.mongoid.observers = :user_observer, :friend_observer, :stream_observer, :friend_request_observer
 
     # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
     # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.

@@ -22,35 +22,40 @@
     </div>
   <% end %>
 <% end %>
+
 <% unless @breadcrumbs.blank? %>
   <div class="breadcrumb"><%= @breadcrumbs %></div>
 <% end %>
 
-<div class="modal-body">
-  <div class="span4">
-    <div class="control-group">
-      <%= label @match, :details, :class => 'control-label' %>
-      <div class="controls">
-        <%= match_details(@match, :short) %>
-      </div>
-    </div>
+<% if @match.state === 'new' %>
+  <%= render partial: 'form' %>
+<% else %>
+  <div class="modal-body">
+    <div class="span4">
+        <div class="control-group">
+          <%= label @match, :details, :class => 'control-label' %>
+          <div class="controls">
+            <%= match_details(@match, :short) %>
+          </div>
+        </div>
 
-    <div class="control-group">
-      <%= label @match, :created_at, :class => 'control-label' %>
-      <div class="controls">
-        <%= ldate @match.created_at %>
-      </div>
-    </div>
+        <div class="control-group">
+          <%= label @match, :created_at, :class => 'control-label' %>
+          <div class="controls">
+            <%= ldate @match.created_at %>
+          </div>
+        </div>
 
-    <div class="control-group">
-      <%= label @match, :state, :class => 'control-label' %>
-      <div class="controls">
-        <%= @match.state %>
-      </div>
+        <div class="control-group">
+          <%= label @match, :state, :class => 'control-label' %>
+          <div class="controls">
+            <%= @match.state %>
+          </div>
+        </div>
     </div>
   </div>
-</div>
 
-<div class="modal-footer">
-  <%= link_to t('.close', default: t("helpers.links.close")), '#', :class => 'btn', 'data-dismiss' => 'modal' %>
-</div>
+  <div class="modal-footer">
+    <%= link_to t('.close', default: t("helpers.links.close")), '#', :class => 'btn', 'data-dismiss' => 'modal' %>
+  </div>
+<% end %>

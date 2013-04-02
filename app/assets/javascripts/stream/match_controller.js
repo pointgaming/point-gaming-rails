@@ -10,8 +10,8 @@ PointGaming.MatchController = function(match, new_bet_path){
   this.stream_bet_container = $('div#stream-bet-container');
   this.propose_bet_link = $('a#propose-bet');
 
-  this.bet_window = $('div#bet-container');
-  this.bet_selector = 'div.bet';
+  this.bet_window = $('tbody#bet-container');
+  this.bet_selector = 'tr.bet';
 
   this.registerHandlers();
 };
@@ -34,7 +34,7 @@ PointGaming.MatchController.prototype.handleNewMatch = function(data) {
 
   this.match_details_container.html(data.match_details ? ' - '+data.match_details : '');
 
-  $(this.bet_selector, this.bet_window).not('[data-match-id="' + data.match._id + '"]').remove();
+  this.removeOldBets(data.match._id);
 
   if (data.match.betting) {
     this.propose_bet_link.attr('href', this.new_bet_path.replace(/:match_id/, data.match._id));
@@ -43,13 +43,26 @@ PointGaming.MatchController.prototype.handleNewMatch = function(data) {
   }
 };
 
-PointGaming.MatchController.prototype.betting_changed = function(old_value, new_value) {
-  this.appendMessage('Betting is now ' + (new_value ? 'Enabled' : 'Disabled'));
+PointGaming.MatchController.prototype.removeOldBets = function(new_match_id) {
+  $(this.bet_selector, this.bet_window).not('[data-match-id="' + new_match_id + '"]').remove();
 
+  if (this.bet_window.children().length === 0) {
+    this.bet_window.prepend('<tr id="no-results"><td colspan="5">No results were found.</td></tr>');
+  }
+};
+
+PointGaming.MatchController.prototype.state_changed = function(old_value, new_value) {
+  if (new_value !== 'new') {
+    this.propose_bet_link.hide();
+  }
+}
+
+PointGaming.MatchController.prototype.betting_changed = function(old_value, new_value) {
   if (new_value) {
+    this.stream_bet_container.show();
     this.propose_bet_link.show();
   } else {
-    this.propose_bet_link.hide();
+    this.stream_bet_container.hide();
   }
 };
 
@@ -79,15 +92,3 @@ PointGaming.MatchController.prototype.handleMatchUpdated = function(data) {
     }
   }
 };
-
-PointGaming.MatchController.prototype.appendMessage = function(message, options) {
-  if (!message) return;
-
-  options = options || {};
-  var id = options.id ? 'id="'+ options.id +'"' : '',
-      data_content = options.data_content ? ' data-content="'+ options.data_content +'"' : "",
-      title = options.title ? ' title="'+ options.title +'"' : "";
-
-  this.bet_window.prepend('<div '+id + title + data_content +' class="well well-small bet">' + message + '</div>');
-};
-

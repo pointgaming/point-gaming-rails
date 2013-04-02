@@ -11,7 +11,7 @@ class StreamsController < ApplicationController
     @collaborator = Collaborator.where(stream_id: @stream._id, user_id: current_user._id)
 
     if @stream.match
-      @bets = Bet.where(match: @stream.match).for_user(current_user).all
+      @bets = Bet.pending.where(match: @stream.match).for_user(current_user).all
     else
       @bets = []
     end
