@@ -140,11 +140,10 @@ protected
   end
 
   def update_forum_user
-    if self.email_changed? || self.username_changed? || self.points_changed? || self.admin_changed?
+    if self.email_changed? || self.username_changed? || self.admin_changed?
       forum_user = ForumUser.find self.email_was
       forum_user.email = self.email
       forum_user.username = self.username
-      forum_user.points = self.points
       forum_user.admin = self.admin
       if forum_user.save
         true
@@ -175,11 +174,10 @@ protected
   end
 
   def update_store_user
-    if self.email_changed? || self.username_changed? || self.points_changed? || self.admin_changed?
+    if self.email_changed? || self.username_changed? || self.admin_changed?
       store_user = StoreUser.find self.email_was
       store_user.email = self.email
       store_user.username = self.username
-      store_user.points = self.points
       store_user.admin = self.admin
       if store_user.save
         true
