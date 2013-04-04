@@ -38,8 +38,8 @@ PointGaming.BetsController.prototype.appendBet = function(bet, tooltip, url) {
 
   message += "<td>" + bet.winner_name + "</td>";
   message += "<td>" + bet.loser_name + "</td>";
-  message += "<td>" + bet.amount + "</td>";
-  message += "<td>" + bet.odds + "</td>";
+  message += "<td>" + bet.bookie_amount + "</td>";
+  message += "<td>" + bet.bookie_odds + ":" + bet.bettor_odds + "</td>";
   message += '<td class="actions">' + actions + "</td>";
 
   var message_window = $(this.bet_window_selector);
@@ -51,7 +51,20 @@ PointGaming.BetsController.prototype.appendBet = function(bet, tooltip, url) {
 };
 
 PointGaming.BetsController.prototype.handleBetCreated = function(data) {
-  this.appendBet(data.bet, data.bet_tooltip, data.bet_path);
+  this.appendBet(data.bet, this.createBetTooltip(data.bet), data.bet_path);
+};
+
+PointGaming.BetsController.prototype.createBetTooltip = function(bet) {
+  var data = {};
+  if (PointGaming.user._id === bet.bookie._id) {
+    data.risk_amount = bet.bookie_amount;
+    data.win_amount = bet.bettor_amount;
+  } else {
+    data.risk_amount = bet.bettor_amount;
+    data.win_amount = bet.bookie_amount;
+  }
+
+  return '<ul><li>Your risk amount: ' + data.risk_amount + '</li><li>Your win amount: ' + data.win_amount + '</li></ul>';
 };
 
 PointGaming.BetsController.prototype.handleBetUpdated = function(data) {
@@ -96,6 +109,14 @@ PointGaming.BetsController.prototype.handleBetDestroyed = function(data) {
   }
 };
 
+PointGaming.BetsController.prototype.recalculateBetDetails = function() {
+  var bet_amount = $('input[data-hook=bookie-amount]').val() || 0,
+      bet_odds_multiplier = $('select[data-hook=bettor-odds]').val() || 0;
+
+  $('span[data-hook=risk-amount]').html(bet_amount);
+  $('span[data-hook=win-amount]').html(bet_amount * bet_odds_multiplier);
+};
+
 PointGaming.BetsController.prototype.registerHandlers = function() {
   var self = this;
 
@@ -104,6 +125,10 @@ PointGaming.BetsController.prototype.registerHandlers = function() {
   this.socket.on("Bet.destroy", this.handleBetDestroyed.bind(this));
 
   this.socket.on("Bet.Bettor.new", this.handleNewBettor.bind(this));
+
+  $('body').on('keyup', 'input#bet_bookie_amount', this.recalculateBetDetails.bind(this));
+  $('body').on('change', 'input#bet_bookie_amount', this.recalculateBetDetails.bind(this));
+  $('body').on('change', 'select#bet_bettor_odds', this.recalculateBetDetails.bind(this));
 
   $('body').popover({
     selector: this.bet_selector,

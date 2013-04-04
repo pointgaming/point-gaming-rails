@@ -5,11 +5,16 @@ class Bet
   include ActionView::Helpers::TagHelper
   include StreamsHelper
 
-  scope :for_user, lambda {|user| any_of({:bettor_id.in => [user._id, nil]}, {bookie_id: user._id}) }
+  before_validation :populate_bettor_amount, :on => :create
+
+  scope :for_user, lambda {|user| any_of({bettor_id: user._id}, {bookie_id: user._id}) }
+  scope :for_bookie, lambda {|user| where(bookie_id: user._id) }
+  scope :for_bettor, lambda {|user| where(bettor_id: user._id) }
+  scope :available_for_user, lambda {|user| any_of({:bettor_id.in => [user._id, nil]}, {bookie_id: user._id}) }
   scope :for_match, lambda {|match| where(match_id: match._id) }
   scope :pending, where(outcome: :undetermined)
 
-  attr_accessible :amount, :odds, :map
+  attr_accessible :bookie_amount, :bettor_odds, :map
 
   after_create :publish_bet_created
   after_update :publish_bet_updated
@@ -20,8 +25,10 @@ class Bet
   field :loser_name, :type => String
 
   field :map, :type => String
-  field :amount, :type => Integer
-  field :odds, :type => String
+  field :bookie_amount, :type => Integer
+  field :bettor_amount, :type => Integer
+  field :bookie_odds, :type => Integer, default: 1
+  field :bettor_odds, :type => Integer
   field :match_hash, :type => String
 
   # values: undetermined, cancelled, bookie_won, bettor_won, void
@@ -45,28 +52,19 @@ class Bet
   validates :winner, :presence=>true
   validates :loser, :presence=>true
   validates :map, :presence=>true
-  validates :amount, :presence=>true, :numericality => true
-  validates :odds, :presence=>true
+  validates :bookie_amount, :presence=>true, :numericality => true
+  validates :bettor_amount, :presence=>true, :numericality => true
+  validates :bookie_odds, :presence=>true
+  validates :bettor_odds, :presence=>true
   validate :check_winner_and_loser
   validate :check_match_state, on: :create
   validate :check_bookie_points, on: :create
   validate :check_match_hash, on: :create
   validate :check_bettor_points, on: :update
 
-  def tooltip_attributes
-    [:your_risk_amount, :your_win_amount]
-  end
-
   def odds_options
-    ['1:1', '1:2', '1:3', '1:4', '1:5', '1:6', '1:7', '1:8', '1:9', '1:10']
-  end
-
-  def your_risk_amount
-    "risk"
-  end
-
-  def your_win_amount
-    "amount"
+    [['1:1','1'], ['1:2','2'], ['1:3','3'], ['1:4','4'], ['1:5','5'], 
+     ['1:6','6'], ['1:7','7'], ['1:8','8'], ['1:9','9'], ['1:10','10']]
   end
 
   def participants(user)
@@ -79,7 +77,52 @@ class Bet
     (user._id === bookie_id) ? bettor : bookie
   end
 
+  def bet_amount(user)
+    if user._id === bookie_id
+      bookie_amount
+    elsif user._id === bettor_id
+      bettor_amount
+    else
+      nil
+    end
+  end
+
+  def display_odds
+    "#{self.bookie_odds}:#{self.bettor_odds}"
+  end
+
+  def risk_amount(user)
+    if user._id === bookie_id
+      bookie_amount
+    else
+      bettor_amount
+    end
+  end
+
+  def win_amount(user)
+    if user._id === bookie_id
+      bettor_amount
+    else
+      bookie_amount
+    end
+  end
+
+  def outcome_amount(user)
+    if self.outcome === 'bettor_won'
+      user._id === bettor_id ? "+#{win_amount(user)}" : "-#{bet_amount(user)}"
+    elsif self.outcome === 'bookie_won'
+      user._id === bookie_id ? "+#{win_amount(user)}" : "-#{bet_amount(user)}"
+    else
+      nil
+    end
+  end
+
 private
+
+  def populate_bettor_amount
+    return unless self.bookie_amount.is_a?(Fixnum) && self.bettor_odds.is_a?(Fixnum)
+    self.bettor_amount = self.bookie_amount * self.bettor_odds
+  end
 
   def check_match_state
     errors.add(:match, "is not currently accepting new bets.") unless match.state === 'new'
@@ -90,17 +133,19 @@ private
   end
 
   def check_bookie_points
-    pending_points = Bet.pending.for_user(bookie).sum(:amount).to_i
+    pending_points = Bet.pending.for_bookie(bookie).sum(:bookie_amount).to_i
+    pending_points += Bet.pending.for_bettor(bookie).sum(:bettor_amount).to_i
 
-    errors.add(:amount, "cannot be larger than your available points.") if amount > (bookie.points - pending_points)
+    errors.add(:bookie_amount, "cannot be larger than your available points.") if bookie_amount > (bookie.points - pending_points)
   end
 
   def check_bettor_points
     return unless bettor_id_changed?
 
-    pending_points = Bet.pending.for_user(bettor).sum(:amount).to_i
+    pending_points = Bet.pending.for_bookie(bettor).sum(:bookie_amount).to_i
+    pending_points += Bet.pending.for_bettor(bettor).sum(:bettor_amount).to_i
 
-    errors.add(:amount, "cannot be larger than your available points.") if amount > (bettor.points - pending_points)
+    errors.add(:bettor_amount, "cannot be larger than your available points.") if bettor_amount > (bettor.points - pending_points)
   end
 
   def check_winner_and_loser
@@ -118,7 +163,6 @@ private
       :action => 'Bet.new',
       :data => {
         :bet => self.as_json(:include => [:bookie]),
-        :bet_tooltip => bet_tooltip(self),
         :bet_path => polymorphic_path([match, self])
       }
     }.to_json)

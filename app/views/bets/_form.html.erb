@@ -7,17 +7,34 @@
       <%= f.text_field :map, :class => 'text_field', disabled: true %>
     </div>
 
-    <div class="control-group">
-      <%= f.label :amount, :class => 'control-label' %>
-      <div class="controls">
-        <%= f.text_field :amount, :class => 'text_field' %>
-      </div>
-    </div>
+    <div class="row-fluid">
+      <div class="span4">
+        <div class="control-group">
+          <%= f.label :bookie_amount, t(:amount), :class => 'control-label' %>
+          <div class="controls">
+            <%= f.text_field :bookie_amount, :class => 'text_field', 'data-hook' => 'bookie-amount' %>
+          </div>
+        </div>
 
-    <div class="control-group">
-      <%= f.label :odds, :class => 'control-label' %>
-      <div class="controls">
-        <%= f.select :odds, f.object.odds_options, :class => 'text_field' %>
+        <div class="control-group">
+          <%= f.label :bettor_odds, t(:odds), :class => 'control-label' %>
+          <div class="controls">
+            <%= f.select :bettor_odds, f.object.odds_options, {}, { 'data-hook' => 'bettor-odds' } %>
+          </div>
+        </div>
+      </div>
+
+      <div class="span4" id="bet-details-container">
+        <div class="control-group">
+          <%= f.label :bet_details, :class => 'control-label' %>
+          <div class="controls">
+            <%= Bet.human_attribute_name :risk_amount %>:
+            <%= content_tag(:span, "", 'data-hook' => 'risk-amount') %>
+            <br />
+            <%= Bet.human_attribute_name :win_amount %>:
+            <%= content_tag(:span, "", 'data-hook' => 'win-amount') %>
+          </div>
+        </div>
       </div>
     </div>
   </div>

@@ -4,7 +4,7 @@
   <thead>
     <tr>
       <th><%= model_class.human_attribute_name(:created_at) %></th>
-      <th><%= model_class.human_attribute_name(:amount) %></th>
+      <th><%= model_class.human_attribute_name(:bet_amount) %></th>
       <th><%= model_class.human_attribute_name(:participants) %></th>
       <th><%= model_class.human_attribute_name(:against_user) %></th>
       <th><%= model_class.human_attribute_name(:outcome) %></th>
@@ -14,7 +14,7 @@
     <% @bets.each do |bet| %>
       <tr>
         <td><%= link_to ldate(bet.created_at), bet_history_path(bet) %></td>
-        <td><%= bet.amount %></td>
+        <td class="number"><%= bet.outcome_amount(current_user) || bet.bet_amount(current_user) %></td>
         <td><%= bet.participants(current_user) %></td>
         <td><%= bet.against_user(current_user).try(:username) %></td>
         <td><%= bet.outcome %></td>

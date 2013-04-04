@@ -73,11 +73,11 @@
             <tbody id="bet-container">
               <% unless @bets.empty? %>
                 <% @bets.each do |b| %>
-                  <tr id="<%= b._id %>" class="bet" title="Bet Details" data-content="<%= bet_tooltip(b).html_safe %>" data-match-id="<%= b.match._id %>">
+                  <tr id="<%= b._id %>" class="bet" title="Bet Details" data-content="<%= bet_tooltip(b, current_user).html_safe %>" data-match-id="<%= b.match._id %>">
                     <td><%= b.winner.try(:display_name) %></td>
                     <td><%= b.loser.try(:display_name) %></td>
-                    <td><%= b.amount %></td>
-                    <td><%= b.odds %></td>
+                    <td><%= b.bookie_amount %></td>
+                    <td><%= b.display_odds %></td>
                     <td class="actions">
                       <% if b.bettor %>
                         Accepted: <%= b.bettor.try(:username) %>

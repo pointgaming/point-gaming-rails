@@ -75,3 +75,7 @@ div.game-badge {
 form#credit-card-form input {
   width: auto;
 }
+
+td.number {
+  text-align: right;
+}

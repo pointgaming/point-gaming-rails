@@ -16,13 +16,13 @@ class FinalizeBetsJob
         elsif bet.winner._id === match.winner._id
           bet.update_attribute(:outcome, :bookie_won)
 
-          bet.bookie.inc(:points, bet.amount)
-          bet.bettor.inc(:points, bet.amount * -1)
+          bet.bookie.inc(:points, bet.bettor_amount)
+          bet.bettor.inc(:points, bet.bettor_amount * -1)
         else
           bet.update_attribute(:outcome, :bettor_won)
 
-          bet.bettor.inc(:points, bet.amount)
-          bet.bookie.inc(:points, bet.amount * -1)
+          bet.bettor.inc(:points, bet.bookie_amount)
+          bet.bookie.inc(:points, bet.bookie_amount * -1)
         end
       }
     elsif match.state === 'cancelled'

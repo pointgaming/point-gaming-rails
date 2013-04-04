@@ -1,8 +1,8 @@
 module StreamsHelper
-  def bet_tooltip(bet)
+  def bet_tooltip(bet, user)
     tags = []
-    bet.tooltip_attributes.each do |key|
-      tags << content_tag(:li, "#{Bet.human_attribute_name(key)}: #{bet.send(key)}")
+    [:risk_amount, :win_amount].each do |key|
+      tags << content_tag(:li, "#{Bet.human_attribute_name(key)}: #{bet.send(key, user)}")
     end
     content_tag :ul, tags.join
   end

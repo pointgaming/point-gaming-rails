@@ -21,10 +21,12 @@
   <dd><%= @bet.loser.try(:display_name) %></dd>
   <dt><strong><%= model_class.human_attribute_name(:map) %>:</strong></dt>
   <dd><%= @bet.map %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:amount) %>:</strong></dt>
-  <dd><%= @bet.amount %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:bet_amount) %>:</strong></dt>
+  <dd><%= @bet.bet_amount(current_user) %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:outcome_amount) %>:</strong></dt>
+  <dd><%= @bet.outcome_amount(current_user) %></dd>
   <dt><strong><%= model_class.human_attribute_name(:odds) %>:</strong></dt>
-  <dd><%= @bet.odds %></dd>
+  <dd><%= @bet.display_odds %></dd>
   <dt><strong><%= model_class.human_attribute_name(:outcome) %>:</strong></dt>
   <dd><%= @bet.outcome %></dd>
   <dt><strong><%= model_class.human_attribute_name(:bookie) %>:</strong></dt>
