@@ -1,5 +1,5 @@
 <ul class="nav nav-list">
   <%= navItem "Subscription", subscriptions_path %>
-  <%= navItem "Billing", "#" %>
+  <%= navItem "Billing", current_user.has_stripe_token? ? billing_path(1) : new_billing_path %>
   <%= navItem "Bet History", bet_history_index_path %>
 </ul>

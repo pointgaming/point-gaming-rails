@@ -67,6 +67,7 @@ class User
   field :points, type: Integer, default: 0
   field :stream_owner_count, :type => Integer, :default => 0
   field :admin, :type => Boolean, :default => 0
+  field :stripe_customer_token
 
   # online/offline chat status
   field :status
@@ -112,11 +113,17 @@ class User
   end
 
   def as_json(options={})
-    super(options.merge({methods: [:profile_url, :age]}))
+    super(options.merge({
+      methods: [:profile_url, :age]
+    }))
   end
 
   def display_name
     username
+  end
+
+  def has_stripe_token?
+    self.stripe_customer_token.present?
   end
 
   def stream_limit

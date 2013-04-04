@@ -1,0 +1,88 @@
+<%= javascript_include_tag "https://js.stripe.com/v1/" %>
+<%= javascript_include_tag "billing" %>
+
+<%- form_url = current_user.has_stripe_token? ? billing_path(1) : billing_index_path %>
+<%- form_method = current_user.has_stripe_token? ? :put : :post %>
+<%= form_tag form_url, method: form_method, id: 'credit-card-form', :class => 'form-horizontal' do %>
+  <fieldset>
+    <legend>Billing Information</legend>
+
+    <span class="payment-errors"></span>
+
+    <div class="control-group">
+      <%= label nil, :name, :class => 'control-label' %>
+      <div class="controls">
+        <input id="_name" type="text" size="20" data-stripe="name"/>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <%= label nil, :card_number, :class => 'control-label' %>
+      <div class="controls">
+        <input id="_card_number" type="text" size="20" data-stripe="number"/>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <%= label nil, :cvc, :class => 'control-label' %>
+      <div class="controls">
+        <input id="_cvc" type="text" size="4" data-stripe="cvc"/>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <%= label nil, 'Expiration (MM/YYYY)', :class => 'control-label', :for => '_exp_month' %>
+      <div class="controls">
+        <input id="_exp_month" type="text" size="2" data-stripe="exp-month"/>
+        <span> / </span>
+        <input type="text" size="4" data-stripe="exp-year"/>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Billing Address</legend>
+
+    <div class="control-group">
+      <%= label nil, :address_1, :class => 'control-label' %>
+      <div class="controls">
+        <input id="_address_1" type="text" size="20" data-stripe="address_line1"/>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <%= label nil, :address_2, :class => 'control-label' %>
+      <div class="controls">
+        <input id="_address_2" type="text" size="20" data-stripe="address_line2"/>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <%= label nil, :city, :class => 'control-label' %>
+      <div class="controls">
+        <input id="_city" type="text" size="20" data-stripe="address_city"/>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <%= label nil, :state, :class => 'control-label' %>
+      <div class="controls">
+        <input id="_state" type="text" size="20" data-stripe="address_state"/>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <%= label nil, :zip, :class => 'control-label' %>
+      <div class="controls">
+        <input id="_zip" type="text" size="20" data-stripe="address_zip"/>
+      </div>
+    </div>
+  </fieldset>
+
+  <div class="form-actions">
+    <%= submit_tag :Save, :class => 'btn' %>
+    <% if current_user.has_stripe_token? %>
+      <%= link_to t('.cancel', default: t("helpers.links.cancel")), billing_path(1), :class => 'btn' %>
+    <% end %>
+  </div>
+<% end %>

@@ -71,3 +71,7 @@ div.game-badge {
 #streams .viewer_count {
   text-align: right;
 }
+
+form#credit-card-form input {
+  width: auto;
+}

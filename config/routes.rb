@@ -32,6 +32,7 @@ Pointgaming::Application.routes.draw do
   resources :store
   resources :faq
   resources :settings
+  resources :billing, except: [:index]
   resources :bet_history
   resources :subscriptions, only: [:index, :new, :create]
   resources :user_streams do
