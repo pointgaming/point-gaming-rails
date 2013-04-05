@@ -38,7 +38,7 @@ class Stream
   end
 
   def mq_exchange
-    "s.#{_id}"
+    "Stream_#{_id}"
   end
 
 private

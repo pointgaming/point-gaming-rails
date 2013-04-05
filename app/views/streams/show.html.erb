@@ -134,11 +134,11 @@
       <% end %>
 
       new PointGaming.BetsController({
-        chat_room: "s.<%="#{@stream._id}"%>"
+        chat_room: "<%= @stream.mq_exchange %>"
       });
 
       new PointGaming.StreamsController({
-        chat_room: "s.<%="#{@stream._id}"%>"
+        chat_room: "<%= @stream.mq_exchange %>"
       });
 
       new PointGaming.MatchController(
@@ -148,7 +148,7 @@
 
       var chat_room = new PointGaming.chatbox({
         message_window_selector: "#chatbox",
-        chat_room: "s.<%="#{@stream._id}"%>"
+        chat_room: "<%= @stream.mq_exchange %>"
       }, PointGaming.socket);
 
       $("#chatbox-form").submit(function(e){
