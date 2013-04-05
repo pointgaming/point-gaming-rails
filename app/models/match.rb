@@ -55,6 +55,10 @@ class Match
     [[player_1.display_name, :player_1], [player_2.display_name, :player_2]]
   end
 
+  def start
+    Resque.enqueue VoidUnacceptedBetsJob, self._id
+  end
+
   def cancel
     self.room.match = nil;
     self.room.save

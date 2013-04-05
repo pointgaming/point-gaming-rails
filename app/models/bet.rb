@@ -13,6 +13,7 @@ class Bet
   scope :available_for_user, lambda {|user| any_of({:bettor_id.in => [user._id, nil]}, {bookie_id: user._id}) }
   scope :for_match, lambda {|match| where(match_id: match._id) }
   scope :pending, where(outcome: :undetermined)
+  scope :unaccepted, where(bettor_id: nil)
 
   attr_accessible :bookie_amount, :bettor_odds, :map
 
