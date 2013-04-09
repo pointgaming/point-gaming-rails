@@ -79,3 +79,8 @@ form#credit-card-form input {
 td.number {
   text-align: right;
 }
+
+div.header-toolbar a:visited,
+div.header-toolbar a:hover {
+  color: #fff;
+}
