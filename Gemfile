@@ -34,6 +34,9 @@ group :development do
   gem 'meta_request'
 end
 
+gem 'capistrano'
+gem 'capistrano-ext'
+
 # required to precompile assets
 gem 'twitter-bootstrap-rails'
 gem 'jquery-rails'
