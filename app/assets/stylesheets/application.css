@@ -81,7 +81,8 @@ td.number {
 }
 
 div.header-toolbar a:visited,
-div.header-toolbar a:hover {
+div.header-toolbar a:hover,
+div.header-toolbar .dropdown-menu > li > a:hover {
   color: #fff;
 }
 
