@@ -26,7 +26,7 @@ class UserConfigsController < ApplicationController
 protected
 
   def ensure_user
-    @user = User.find params[:user_id]
+    @user = User.find_by username: params[:user_id]
   end
 
   def ensure_config
@@ -34,7 +34,7 @@ protected
   end
 
   def ensure_user_id_is_current_user
-    unless params[:user_id] === current_user._id
+    unless params[:user_id] === current_user.username
       raise ::PermissionDenied
     end
   end
