@@ -19,6 +19,8 @@ class UserProfilesController < ApplicationController
       params[:user].delete("password_confirmation")
     end
 
+    params[:user].delete("username")
+
     if @user.update_attributes(params[:user])
       redirect_to user_path(@user)
     else
