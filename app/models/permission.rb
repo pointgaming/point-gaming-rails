@@ -2,6 +2,8 @@ class Permission < ActiveHash::Base
   self.data = [
     {id: :show_admin_link, ability: [:show, :admin_link]},
     {id: :manage_news, ability: [:manage, News]},
-    {id: :manage_groups, ability: [:manage, Group]}
+    {id: :manage_groups, ability: [:manage, Group]},
+    {id: :forums_admin, ability: [:admin, :forums]},
+    {id: :store_admin, ability: [:admin, :store]}
   ]
 end
