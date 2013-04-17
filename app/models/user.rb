@@ -129,7 +129,17 @@ class User
   def stream_limit
     50
   end
-protected
+
+  def friend_request_sent?(user)
+    FriendRequest.where(user_id: id, friend_request_user_id: user.id).exists?
+  end
+
+  def friends_with?(user)
+    Friend.where(user_id: id, friend_user_id: user.id).exists? &&
+      Friend.where(user_id: user.id, friend_user_id: id).exists?
+  end
+
+  protected
 
   def populate_slug
     self.slug = username.downcase.gsub(/\s/, "_") if username.present?

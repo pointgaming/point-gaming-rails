@@ -25,9 +25,9 @@ class FriendRequestsController < ApplicationController
   def create
     @friend_request = FriendRequest.new({user_id: current_user._id, friend_request_user_id: @user._id})
     if @friend_request.save
-      redirect_to friend_requests_path
+      redirect_to :back
     else
-      redirect_to friend_requests_path, alert: 'Failed to create the friend request.'
+      redirect_to :back, alert: 'Failed to create the friend request.'
     end
   end
 
@@ -42,27 +42,27 @@ class FriendRequestsController < ApplicationController
       @friend2 = Friend.new({user_id: @friend_request.user_id, friend_user_id: @friend_request.friend_request_user_id})
       if @friend.save && @friend2.save
         @friend_request.destroy
-        redirect_to friend_requests_path
+        redirect_to :back
       else
         @friend.destroy && @friend2.destroy
-        redirect_to friend_requests_path, alert: 'Failed to create the friend relations.'
+        redirect_to :back, alert: 'Failed to create the friend relations.'
       end
     elsif params[:friend_request][:action] === 'reject'
       if @friend_request.destroy
-        redirect_to friend_requests_path
+        redirect_to :back
       else
-        redirect_to friend_requests_path, alert: 'Failed to delete the friend request.'
+        redirect_to :back, alert: 'Failed to delete the friend request.'
       end
     else
-      redirect_to friend_requests_path, alert: 'Invalid friend_request.action'
+      redirect_to :back, alert: 'Invalid friend_request.action'
     end
   end
 
   def destroy
     if @friend_request.destroy
-      redirect_to friend_requests_path, flash: 'Friend request deleted successfully.'
+      redirect_to :back, flash: 'Friend request deleted successfully.'
     else
-      redirect_to friend_requests_path, alert: 'Failed to delete the friend request.'
+      redirect_to :back, alert: 'Failed to delete the friend request.'
     end
   end
 
@@ -80,21 +80,21 @@ class FriendRequestsController < ApplicationController
     end
 
     return unless params[:friend_request].blank?
-    redirect_to friend_requests_path, alert: 'Missing friend_request parameter.'
+    redirect_to :back, alert: 'Missing friend_request parameter.'
   end
 
   def ensure_user
     begin
       @user = User.find_by(username: params[:friend_request][:username])
     rescue Mongoid::Errors::DocumentNotFound
-      redirect_to friend_requests_path, alert: 'That user was not found.'
+      redirect_to :back, alert: 'That user was not found.'
     end
   end
 
   def ensure_user_not_friend
     begin
       @friend = Friend.where(user_id: current_user.id).find_by(friend_user_id: @user._id)
-      redirect_to friend_requests_path, alert: 'You are already friends with that user.' unless @friend.new_record?
+      redirect_to :back, alert: 'You are already friends with that user.' unless @friend.new_record?
     rescue Mongoid::Errors::DocumentNotFound
       # expected
     end
@@ -104,7 +104,7 @@ class FriendRequestsController < ApplicationController
     begin
       @friend_request = FriendRequest.find(params[:id])
     rescue Mongoid::Errors::DocumentNotFound
-      redirect_to friend_requests_path, alert: 'That friend request was not found.'
+      redirect_to :back, alert: 'That friend request was not found.'
     end
   end
 

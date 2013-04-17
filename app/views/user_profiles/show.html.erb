@@ -5,11 +5,17 @@
   <% if @user._id === current_user._id %>
     <%= link_to 'Edit Profile', edit_user_profile_path(@user), :class => 'btn' %>
   <% else %>
-    <%= link_to 'Send Friend Request',
-          friend_requests_path(username: @user.username),
-          :method => :post,
-          :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-          :class => 'btn' %>
+    <% if current_user.friends_with?(@user) %>
+      <%= link_to "Already friends!", "#", class: "btn", disabled: true %>
+    <% elsif current_user.friend_request_sent?(@user) %>
+      <%= link_to "Friend request sent!", "#", class: "btn", disabled: true %>
+    <% else %>
+      <%= link_to 'Send Friend Request',
+            friend_requests_path(username: @user.username),
+            :method => :post,
+            :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+            :class => 'btn' %>
+    <% end %>
   <% end %>
 </div>
 
