@@ -10,6 +10,7 @@ Pointgaming::Application.routes.draw do
     resources :bets, only: [:new, :show, :create, :update, :destroy]
   end
   resources :friend_requests
+  resources :friends
   resources :leagues
   resources :tournaments
   resources :streams, controller: 'streams', as: 'streams', only: [:index, :create]
