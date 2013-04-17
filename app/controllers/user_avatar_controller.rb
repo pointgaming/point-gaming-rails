@@ -20,11 +20,11 @@ class UserAvatarController < ApplicationController
 protected
 
   def ensure_user
-    @user = User.find_by username: params[:user_id]
+    @user = User.find_by slug: params[:user_id]
   end
 
   def ensure_user_id_is_current_user
-    unless params[:user_id] === current_user.username
+    unless params[:user_id] === current_user.slug
       raise ::PermissionDenied
     end
   end
