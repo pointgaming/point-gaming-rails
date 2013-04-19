@@ -5,114 +5,117 @@ class Bet
   include ActionView::Helpers::TagHelper
   include StreamsHelper
 
-  before_validation :populate_bettor_amount, :on => :create
+  before_validation :populate_taker_wager, :on => :create
+  before_validation :populate_offerer_odds, :on => :create
 
-  scope :for_user, lambda {|user| any_of({bettor_id: user._id}, {bookie_id: user._id}) }
-  scope :for_bookie, lambda {|user| where(bookie_id: user._id) }
-  scope :for_bettor, lambda {|user| where(bettor_id: user._id) }
-  scope :available_for_user, lambda {|user| any_of({:bettor_id.in => [user._id, nil]}, {bookie_id: user._id}) }
+  scope :for_user, lambda {|user| any_of({taker_id: user._id}, {offerer_id: user._id}) }
+  scope :for_offerer, lambda {|user| where(offerer_id: user._id) }
+  scope :for_taker, lambda {|user| where(taker_id: user._id) }
+  scope :available_for_user, lambda {|user| any_of({:taker_id.in => [user._id, nil]}, {offerer_id: user._id}) }
   scope :for_match, lambda {|match| where(match_id: match._id) }
   scope :pending, where(outcome: :undetermined)
-  scope :unaccepted, where(bettor_id: nil)
+  scope :unaccepted, where(taker_id: nil)
 
-  attr_accessible :bookie_amount, :bettor_odds, :map
+  attr_accessible :offerer_wager, :taker_odds
 
   after_create :publish_bet_created
   after_update :publish_bet_updated
   after_destroy :publish_bet_destroyed
 
-  # store winner/loser names historically
-  field :winner_name, :type => String
-  field :loser_name, :type => String
+  # store offerer_choice/taker_choice names historically
+  field :offerer_choice_name, :type => String
+  field :taker_choice_name, :type => String
 
-  field :map, :type => String
-  field :bookie_amount, :type => Integer
-  field :bettor_amount, :type => Integer
-  field :bookie_odds, :type => Integer, default: 1
-  field :bettor_odds, :type => Integer
+  field :offerer_wager, :type => Integer
+  field :taker_wager, :type => Integer
+  field :offerer_odds, :type => String, default: '1:1'
+  field :taker_odds, :type => String, default: '1:1'
   field :match_hash, :type => String
 
-  # values: undetermined, cancelled, bookie_won, bettor_won, void
+  # values: undetermined, cancelled, offerer_won, taker_won, void
   field :outcome, :type => String, default: :undetermined
 
   belongs_to :match
 
   # this should be player_1 or player_2 from stream or game_room model
-  belongs_to :winner, :polymorphic => true
+  belongs_to :offerer_choice, :polymorphic => true
 
   # this should be player_1 or player_2 from stream or game_room model
-  belongs_to :loser, :polymorphic => true
+  belongs_to :taker_choice, :polymorphic => true
 
   # user who owns/offered the bet
-  belongs_to :bookie, class_name: 'User'
+  belongs_to :offerer, class_name: 'User'
 
   # user who accepted the bet
-  belongs_to :bettor, class_name: 'User'
+  belongs_to :taker, class_name: 'User'
 
   validates :match_hash, :presence=>true
-  validates :winner, :presence=>true
-  validates :loser, :presence=>true
-  validates :map, :presence=>true
-  validates :bookie_amount, :presence=>true, :numericality => true
-  validates :bettor_amount, :presence=>true, :numericality => true
-  validates :bookie_odds, :presence=>true
-  validates :bettor_odds, :presence=>true
-  validate :check_winner_and_loser
+  validates :offerer_choice, :presence=>true
+  validates :taker_choice, :presence=>true
+  validates :offerer_wager, :presence=>true, :numericality => true
+  validates :taker_wager, :presence=>true, :numericality => true
+  validates :offerer_odds, :presence=>true
+  validates :taker_odds, :presence=>true
+  validate :check_offerer_choice_and_taker_choice
   validate :check_match_state, on: :create
-  validate :check_bookie_points, on: :create
+  validate :check_offerer_points, on: :create
   validate :check_match_hash, on: :create
-  validate :check_bettor_points, on: :update
+  validate :check_taker_points, on: :update
 
   def odds_options
-    [['1:1','1'], ['1:2','2'], ['1:3','3'], ['1:4','4'], ['1:5','5'], 
-     ['1:6','6'], ['1:7','7'], ['1:8','8'], ['1:9','9'], ['1:10','10']]
+    ['10:1', '9:1', '8:1', '7:1', '6:1', '5:1', '4:1', '3:1', '2:1', '1:1',
+     '1:2', '1:3', '1:4', '1:5', '1:6', '1:7', '1:8', '1:9', '1:10']
   end
 
   def participants(user)
-    (user._id === bookie_id) ? 
-      "#{winner.try(:display_name)} vs #{loser.try(:display_name)}" : 
-      "#{loser.try(:display_name)} vs #{winner.try(:display_name)}"
+    (user._id === offerer_id) ? 
+      "#{offerer_choice.try(:display_name)} vs #{taker_choice.try(:display_name)}" : 
+      "#{taker_choice.try(:display_name)} vs #{offerer_choice.try(:display_name)}"
   end
 
   def against_user(user)
-    (user._id === bookie_id) ? bettor : bookie
+    (user._id === offerer_id) ? taker : offerer
   end
 
   def bet_amount(user)
-    if user._id === bookie_id
-      bookie_amount
-    elsif user._id === bettor_id
-      bettor_amount
+    if user._id === offerer_id
+      offerer_wager
+    elsif user._id === taker_id
+      taker_wager
     else
       nil
     end
   end
 
-  def display_odds
-    "#{self.bookie_odds}:#{self.bettor_odds}"
+  def display_odds(user)
+    if user._id === offerer_id
+      self.taker_odds
+    else
+      self.offerer_odds
+    end
   end
 
   def risk_amount(user)
-    if user._id === bookie_id
-      bookie_amount
+    if user._id === offerer_id
+      offerer_wager
     else
-      bettor_amount
+      taker_wager
     end
   end
 
   def win_amount(user)
-    if user._id === bookie_id
-      bettor_amount
+    if user._id === offerer_id
+      taker_wager
     else
-      bookie_amount
+      offerer_wager
     end
   end
 
   def outcome_amount(user)
-    if self.outcome === 'bettor_won'
-      user._id === bettor_id ? "+#{win_amount(user)}" : "-#{bet_amount(user)}"
-    elsif self.outcome === 'bookie_won'
-      user._id === bookie_id ? "+#{win_amount(user)}" : "-#{bet_amount(user)}"
+    if self.outcome === 'taker_won'
+      user._id === taker_id ? "+#{win_amount(user)}" : "-#{bet_amount(user)}"
+    elsif self.outcome === 'offerer_won'
+      user._id === offerer_id ? "+#{win_amount(user)}" : "-#{bet_amount(user)}"
     else
       nil
     end
@@ -120,9 +123,22 @@ class Bet
 
 private
 
-  def populate_bettor_amount
-    return unless self.bookie_amount.is_a?(Fixnum) && self.bettor_odds.is_a?(Fixnum)
-    self.bettor_amount = self.bookie_amount * self.bettor_odds
+  def populate_taker_wager
+    return unless self.offerer_wager.is_a?(Fixnum) && self.taker_odds.present?
+    pieces = self.taker_odds.split(":").map(&:to_i)
+
+    if pieces.first === 0
+      # this shouldn't happen, but it will prevent division by 0
+      self.taker_wager = 0
+    else
+      self.taker_wager = ((self.offerer_wager * pieces.last) / pieces.first).to_i
+    end
+  end
+
+  def populate_offerer_odds
+    return unless self.taker_odds
+    pieces = self.taker_odds.split(":")
+    self.offerer_odds = "#{pieces.last}:#{pieces.first}"
   end
 
   def check_match_state
@@ -133,24 +149,24 @@ private
     errors.add(:match, " details have changed. This bet was not accepted.") if self.match_hash != self.match.match_hash
   end
 
-  def check_bookie_points
-    pending_points = Bet.pending.for_bookie(bookie).sum(:bookie_amount).to_i
-    pending_points += Bet.pending.for_bettor(bookie).sum(:bettor_amount).to_i
+  def check_offerer_points
+    pending_points = Bet.pending.for_offerer(offerer).sum(:offerer_wager).to_i
+    pending_points += Bet.pending.for_taker(offerer).sum(:taker_wager).to_i
 
-    errors.add(:bookie_amount, "cannot be larger than your available points.") if bookie_amount > (bookie.points - pending_points)
+    errors.add(:offerer_wager, "cannot be larger than your available points.") if offerer_wager > (offerer.points - pending_points)
   end
 
-  def check_bettor_points
-    return unless bettor_id_changed?
+  def check_taker_points
+    return unless taker_id_changed?
 
-    pending_points = Bet.pending.for_bookie(bettor).sum(:bookie_amount).to_i
-    pending_points += Bet.pending.for_bettor(bettor).sum(:bettor_amount).to_i
+    pending_points = Bet.pending.for_offerer(taker).sum(:offerer_wager).to_i
+    pending_points += Bet.pending.for_taker(taker).sum(:taker_wager).to_i
 
-    errors.add(:bettor_amount, "cannot be larger than your available points.") if bettor_amount > (bettor.points - pending_points)
+    errors.add(:taker_wager, "cannot be larger than your available points.") if taker_wager > (taker.points - pending_points)
   end
 
-  def check_winner_and_loser
-    errors.add(:loser, "cannot be the same as winner") if winner === loser
+  def check_offerer_choice_and_taker_choice
+    errors.add(:taker_choice, "cannot be the same as offerer_choice") if offerer_choice === taker_choice
   end
 
   def can_publish_message?
@@ -163,7 +179,7 @@ private
     BunnyClient.instance.publish_fanout("c.#{match.room.mq_exchange}", {
       :action => 'Bet.new',
       :data => {
-        :bet => self.as_json(:include => [:bookie]),
+        :bet => self.as_json(:include => [:offerer]),
         :bet_path => polymorphic_path([match, self])
       }
     }.to_json)
@@ -172,12 +188,12 @@ private
   def publish_bet_updated
     return unless can_publish_message?
 
-    action = (bettor_id_changed? && bettor) ? 'Bet.Bettor.new' : 'Bet.update'
+    action = (taker_id_changed? && taker) ? 'Bet.Bettor.new' : 'Bet.update'
 
     BunnyClient.instance.publish_fanout("c.#{match.room.mq_exchange}", {
       :action => action,
       :data => {
-        :bet => self.as_json(:include => [:bookie, :bettor])
+        :bet => self.as_json(:include => [:offerer, :taker])
       }
     }.to_json)
   end
@@ -188,7 +204,7 @@ private
     BunnyClient.instance.publish_fanout("c.#{match.room.mq_exchange}", {
       :action => 'Bet.destroy', 
       :data => {
-        :bet => self.as_json(:include => [:bookie, :bettor])
+        :bet => self.as_json(:include => [:offerer, :taker])
       }
     }.to_json)
   end

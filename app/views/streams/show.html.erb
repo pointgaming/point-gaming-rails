@@ -74,15 +74,15 @@
               <% unless @bets.empty? %>
                 <% @bets.each do |b| %>
                   <tr id="<%= b._id %>" class="bet" title="Bet Details" data-content="<%= bet_tooltip(b, current_user).html_safe %>" data-match-id="<%= b.match._id %>">
-                    <td><%= b.winner.try(:display_name) %></td>
-                    <td><%= b.loser.try(:display_name) %></td>
-                    <td><%= b.bookie_amount %></td>
-                    <td><%= b.display_odds %></td>
+                    <td><%= b.offerer_choice.try(:display_name) %></td>
+                    <td><%= b.taker_choice.try(:display_name) %></td>
+                    <td><%= b.offerer_wager %></td>
+                    <td><%= b.display_odds(current_user) %></td>
                     <td class="actions">
-                      <% if b.bettor %>
-                        Accepted: <%= b.bettor.try(:username) %>
+                      <% if b.taker %>
+                        Accepted: <%= b.taker.try(:username) %>
                       <% else %>
-                        <% if b.bookie.try(:id) === current_user.id %>
+                        <% if b.offerer.try(:id) === current_user.id %>
                           <%= link_to "Cancel", match_bet_path(b.match, b),
                                 'method' => 'delete', :class => 'btn', 'data-remote' => 'true', 'data-type' => :json,
                                 :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) } %>

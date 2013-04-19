@@ -8,22 +8,20 @@
   <dd><%= @bet._type %></dd>
   <dt><strong><%= model_class.human_attribute_name(:_id) %>:</strong></dt>
   <dd><%= @bet._id %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:winner) %>:</strong></dt>
-  <dd><%= @bet.winner %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:loser) %>:</strong></dt>
-  <dd><%= @bet.loser %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:map) %>:</strong></dt>
-  <dd><%= @bet.map %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:offerer_choice) %>:</strong></dt>
+  <dd><%= @bet.offerer_choice %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:taker_choice) %>:</strong></dt>
+  <dd><%= @bet.taker_choice %></dd>
   <dt><strong><%= model_class.human_attribute_name(:amount) %>:</strong></dt>
   <dd><%= @bet.amount %></dd>
   <dt><strong><%= model_class.human_attribute_name(:odds) %>:</strong></dt>
   <dd><%= @bet.odds %></dd>
   <dt><strong><%= model_class.human_attribute_name(:stream_id) %>:</strong></dt>
   <dd><%= @bet.stream_id %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:bookie_id) %>:</strong></dt>
-  <dd><%= @bet.bookie_id %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:bettor_id) %>:</strong></dt>
-  <dd><%= @bet.bettor_id %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:offerer_id) %>:</strong></dt>
+  <dd><%= @bet.offerer_id %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:taker_id) %>:</strong></dt>
+  <dd><%= @bet.taker_id %></dd>
 </dl>
 
 <div class="form-actions">

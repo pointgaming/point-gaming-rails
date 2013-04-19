@@ -8,14 +8,13 @@
       <th><%= model_class.human_attribute_name(:id) %></th>
       <th><%= model_class.human_attribute_name(:_type) %></th>
       <th><%= model_class.human_attribute_name(:_id) %></th>
-      <th><%= model_class.human_attribute_name(:winner) %></th>
-      <th><%= model_class.human_attribute_name(:loser) %></th>
-      <th><%= model_class.human_attribute_name(:map) %></th>
+      <th><%= model_class.human_attribute_name(:offerer_choice) %></th>
+      <th><%= model_class.human_attribute_name(:taker_choice) %></th>
       <th><%= model_class.human_attribute_name(:amount) %></th>
       <th><%= model_class.human_attribute_name(:odds) %></th>
       <th><%= model_class.human_attribute_name(:stream_id) %></th>
-      <th><%= model_class.human_attribute_name(:bookie_id) %></th>
-      <th><%= model_class.human_attribute_name(:bettor_id) %></th>
+      <th><%= model_class.human_attribute_name(:offerer_id) %></th>
+      <th><%= model_class.human_attribute_name(:taker_id) %></th>
       <th><%= model_class.human_attribute_name(:created_at) %></th>
       <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
@@ -26,14 +25,13 @@
         <td><%= link_to bet.id, stream_bet_path(bet) %></td>
         <td><%= bet._type %></td>
         <td><%= bet._id %></td>
-        <td><%= bet.winner %></td>
-        <td><%= bet.loser %></td>
-        <td><%= bet.map %></td>
+        <td><%= bet.offerer_choice %></td>
+        <td><%= bet.taker_choice %></td>
         <td><%= bet.amount %></td>
         <td><%= bet.odds %></td>
         <td><%= bet.stream_id %></td>
-        <td><%= bet.bookie_id %></td>
-        <td><%= bet.bettor_id %></td>
+        <td><%= bet.offerer_id %></td>
+        <td><%= bet.taker_id %></td>
         <td><%=ldate bet.created_at %></td>
         <td>
           <%= link_to t('.edit', :default => t("helpers.links.edit")),

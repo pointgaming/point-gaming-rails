@@ -14,8 +14,8 @@ en:
       team_member: 'Member'
     attributes:
       bet:
-        winner_name: 'Winner'
-        loser_name: 'Loser'
+        offerer_choice_name: 'Winner'
+        taker_choice_name: 'Loser'
         risk_amount: 'Your risk amount'
         win_amount: 'Your win amount'
       match:

@@ -30,16 +30,16 @@ PointGaming.BetsController.prototype.appendBet = function(bet, tooltip, url) {
     }
   }
 
-  if (PointGaming.user._id === bet.bookie._id) {
+  if (PointGaming.user._id === bet.offerer._id) {
     actions += '<a href="'+ url +'" class="btn" data-confirm="Are you sure?" data-method="delete" data-remote="true" data-type="json" rel="nofollow">Cancel</a>';
   } else {
     actions += '<a href="'+ url +'" class="btn" data-confirm="Are you sure?" data-method="put" data-remote="true" data-type="json" rel="nofollow">Accept</a>';
   }
 
-  message += "<td>" + bet.winner_name + "</td>";
-  message += "<td>" + bet.loser_name + "</td>";
-  message += "<td>" + bet.bookie_amount + "</td>";
-  message += "<td>" + bet.bookie_odds + ":" + bet.bettor_odds + "</td>";
+  message += "<td>" + bet.offerer_choice_name + "</td>";
+  message += "<td>" + bet.taker_choice_name + "</td>";
+  message += "<td>" + bet.offerer_wager + "</td>";
+  message += "<td>" + bet.taker_odds + "</td>";
   message += '<td class="actions">' + actions + "</td>";
 
   var message_window = $(this.bet_window_selector);
@@ -56,12 +56,12 @@ PointGaming.BetsController.prototype.handleBetCreated = function(data) {
 
 PointGaming.BetsController.prototype.createBetTooltip = function(bet) {
   var data = {};
-  if (PointGaming.user._id === bet.bookie._id) {
-    data.risk_amount = bet.bookie_amount;
-    data.win_amount = bet.bettor_amount;
+  if (PointGaming.user._id === bet.offerer._id) {
+    data.risk_amount = bet.offerer_wager;
+    data.win_amount = bet.taker_wager;
   } else {
-    data.risk_amount = bet.bettor_amount;
-    data.win_amount = bet.bookie_amount;
+    data.risk_amount = bet.taker_wager;
+    data.win_amount = bet.offerer_wager;
   }
 
   return '<ul><li>Your risk amount: ' + data.risk_amount + '</li><li>Your win amount: ' + data.win_amount + '</li></ul>';
@@ -73,11 +73,11 @@ PointGaming.BetsController.prototype.handleBetUpdated = function(data) {
 };
 
 PointGaming.BetsController.prototype.getFinalizedStatus = function(bet) {
-  if (bet.outcome === 'bettor_won' || bet.outcome === 'bookie_won') {
-    if (PointGaming.user._id === bet.bookie._id) {
-      return (bet.outcome === 'bettor_won') ? 'You lost' : 'You win';
-    } else if (PointGaming.user._id === bet.bettor._id) {
-      return (bet.outcome === 'bettor_won') ? 'You win' : 'You lost';
+  if (bet.outcome === 'taker_won' || bet.outcome === 'offerer_won') {
+    if (PointGaming.user._id === bet.offerer._id) {
+      return (bet.outcome === 'taker_won') ? 'You lost' : 'You win';
+    } else if (PointGaming.user._id === bet.taker._id) {
+      return (bet.outcome === 'taker_won') ? 'You win' : 'You lost';
     }
   } else if (bet.outcome !== 'undetermined') {
     return bet.outcome;
@@ -87,11 +87,11 @@ PointGaming.BetsController.prototype.getFinalizedStatus = function(bet) {
 
 PointGaming.BetsController.prototype.handleNewBettor = function(data) {
   var bet_container = $(this.bet_selector + '#'+data.bet._id, this.bet_window_selector);
-  if (PointGaming.user._id === data.bet.bookie._id) {
-    // current_user was the bookie, add notification
-    $(this.bet_actions_column_selector, bet_container).html('Accepted: ' + data.bet.bettor.username);
-  } else if (PointGaming.user._id === data.bet.bettor._id) {
-    // current_user was the bettor, add notification
+  if (PointGaming.user._id === data.bet.offerer._id) {
+    // current_user was the offerer, add notification
+    $(this.bet_actions_column_selector, bet_container).html('Accepted: ' + data.bet.taker.username);
+  } else if (PointGaming.user._id === data.bet.taker._id) {
+    // current_user was the taker, add notification
     $(this.bet_actions_column_selector, bet_container).html('Accepted');
   } else {
     bet_container.remove();
@@ -110,11 +110,13 @@ PointGaming.BetsController.prototype.handleBetDestroyed = function(data) {
 };
 
 PointGaming.BetsController.prototype.recalculateBetDetails = function() {
-  var bet_amount = $('input[data-hook=bookie-amount]').val() || 0,
-      bet_odds_multiplier = $('select[data-hook=bettor-odds]').val() || 0;
+  var bet_amount = $('input[data-hook=offerer-amount]').val() || 0,
+      odds_pieces = $('select[data-hook=taker-odds]').val().split(":") || [0, 0];
+      bet_odds_divisor = odds_pieces[0],
+      bet_odds_multiplier = odds_pieces[1];
 
-  $('span[data-hook=risk-amount]').html(bet_amount);
-  $('span[data-hook=win-amount]').html(bet_amount * bet_odds_multiplier);
+  $('span[data-hook=risk-amount]').html(Math.floor(bet_amount));
+  $('span[data-hook=win-amount]').html(Math.floor( (bet_amount * bet_odds_multiplier) / bet_odds_divisor ));
 };
 
 PointGaming.BetsController.prototype.registerHandlers = function() {
@@ -126,9 +128,9 @@ PointGaming.BetsController.prototype.registerHandlers = function() {
 
   this.socket.on("Bet.Bettor.new", this.handleNewBettor.bind(this));
 
-  $('body').on('keyup', 'input#bet_bookie_amount', this.recalculateBetDetails.bind(this));
-  $('body').on('change', 'input#bet_bookie_amount', this.recalculateBetDetails.bind(this));
-  $('body').on('change', 'select#bet_bettor_odds', this.recalculateBetDetails.bind(this));
+  $('body').on('keyup', 'input#bet_offerer_wager', this.recalculateBetDetails.bind(this));
+  $('body').on('change', 'input#bet_offerer_wager', this.recalculateBetDetails.bind(this));
+  $('body').on('change', 'select#bet_taker_odds', this.recalculateBetDetails.bind(this));
 
   $('body').popover({
     selector: this.bet_selector,

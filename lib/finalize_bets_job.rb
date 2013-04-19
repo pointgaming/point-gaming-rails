@@ -11,18 +11,18 @@ class FinalizeBetsJob
   def self.get_bet_finalizer(match)
     if match.state === 'finalized' && match.winner
       lambda {|bet| 
-        if bet.bettor_id.nil?
+        if bet.taker_id.nil?
           bet.update_attribute(:outcome, :void)
-        elsif bet.winner._id === match.winner._id
-          bet.update_attribute(:outcome, :bookie_won)
+        elsif bet.offerer_choice_id === match.winner_id && bet.offerer_choice_type === match.winner_type
+          bet.update_attribute(:outcome, :offerer_won)
 
-          bet.bookie.inc(:points, bet.bettor_amount)
-          bet.bettor.inc(:points, bet.bettor_amount * -1)
+          bet.offerer.inc(:points, bet.taker_wager)
+          bet.taker.inc(:points, bet.taker_wager * -1)
         else
-          bet.update_attribute(:outcome, :bettor_won)
+          bet.update_attribute(:outcome, :taker_won)
 
-          bet.bettor.inc(:points, bet.bookie_amount)
-          bet.bookie.inc(:points, bet.bookie_amount * -1)
+          bet.taker.inc(:points, bet.offerer_wager)
+          bet.offerer.inc(:points, bet.offerer_wager * -1)
         end
       }
     elsif match.state === 'cancelled'
