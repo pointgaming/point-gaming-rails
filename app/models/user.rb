@@ -181,7 +181,7 @@ class User
   end
 
   def create_store_user
-    store_user = StoreUser.new :email => self.email, :username => self.username, :admin => self.admin
+    store_user = Store::User.new :email => self.email, :username => self.username, :admin => self.admin
     if store_user.save
       true
     else
@@ -192,7 +192,7 @@ class User
 
   def update_store_user
     if self.email_changed? || self.username_changed? || self.admin_changed?
-      store_user = StoreUser.find self.email_was
+      store_user = Store::User.find self.email_was
       store_user.email = self.email
       store_user.username = self.username
       store_user.admin = self.admin
@@ -207,7 +207,7 @@ class User
 
   def destroy_store_user
     begin
-      store_user = StoreUser.find self.email
+      store_user = Store::User.find self.email
       store_user.destroy
     rescue ActiveResource::ResourceNotFound
       # StoreUser was not found

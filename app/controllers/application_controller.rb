@@ -25,6 +25,19 @@ class ApplicationController < ActionController::Base
     super(options, extra_options, &block)
   end
 
+  def current_order
+    return @current_order if @current_order
+
+    @current_order = nil
+    if session[:order_id]
+      current_order = Store::Order.find session[:order_id]
+      @current_order = current_order if current_order && current_order.state === 'cart'
+    end
+
+    @current_order
+  end
+  helper_method :current_order
+
 private
 
   def requested_private_url?
