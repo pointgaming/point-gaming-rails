@@ -188,7 +188,7 @@ private
   def publish_bet_updated
     return unless can_publish_message?
 
-    action = (taker_id_changed? && taker) ? 'Bet.Bettor.new' : 'Bet.update'
+    action = (taker_id_changed? && taker) ? 'Bet.Taker.new' : 'Bet.update'
 
     BunnyClient.instance.publish_fanout("c.#{match.room.mq_exchange}", {
       :action => action,

@@ -85,7 +85,7 @@ PointGaming.BetsController.prototype.getFinalizedStatus = function(bet) {
   return '';
 };
 
-PointGaming.BetsController.prototype.handleNewBettor = function(data) {
+PointGaming.BetsController.prototype.handleNewTaker = function(data) {
   var bet_container = $(this.bet_selector + '#'+data.bet._id, this.bet_window_selector);
   if (PointGaming.user._id === data.bet.offerer._id) {
     // current_user was the offerer, add notification
@@ -126,7 +126,7 @@ PointGaming.BetsController.prototype.registerHandlers = function() {
   this.socket.on("Bet.update", this.handleBetUpdated.bind(this));
   this.socket.on("Bet.destroy", this.handleBetDestroyed.bind(this));
 
-  this.socket.on("Bet.Bettor.new", this.handleNewBettor.bind(this));
+  this.socket.on("Bet.Taker.new", this.handleNewTaker.bind(this));
 
   $('body').on('keyup', 'input#bet_offerer_wager', this.recalculateBetDetails.bind(this));
   $('body').on('change', 'input#bet_offerer_wager', this.recalculateBetDetails.bind(this));
