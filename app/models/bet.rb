@@ -6,7 +6,7 @@ class Bet
   include StreamsHelper
 
   before_validation :populate_taker_wager, :on => :create
-  before_validation :populate_offerer_odds, :on => :create
+  before_validation :populate_taker_odds, :on => :create
 
   scope :for_user, lambda {|user| any_of({taker_id: user._id}, {offerer_id: user._id}) }
   scope :for_offerer, lambda {|user| where(offerer_id: user._id) }
@@ -16,7 +16,7 @@ class Bet
   scope :pending, where(outcome: :undetermined)
   scope :unaccepted, where(taker_id: nil)
 
-  attr_accessible :offerer_wager, :taker_odds
+  attr_accessible :offerer_wager, :offerer_odds
 
   after_create :publish_bet_created
   after_update :publish_bet_updated
@@ -89,9 +89,9 @@ class Bet
 
   def display_odds(user)
     if user._id === offerer_id
-      self.taker_odds
-    else
       self.offerer_odds
+    else
+      self.taker_odds
     end
   end
 
@@ -124,8 +124,8 @@ class Bet
 private
 
   def populate_taker_wager
-    return unless self.offerer_wager.is_a?(Fixnum) && self.taker_odds.present?
-    pieces = self.taker_odds.split(":").map(&:to_i)
+    return unless self.offerer_wager.is_a?(Fixnum) && self.offerer_odds.present?
+    pieces = self.offerer_odds.split(":").map(&:to_i)
 
     if pieces.first === 0
       # this shouldn't happen, but it will prevent division by 0
@@ -135,10 +135,10 @@ private
     end
   end
 
-  def populate_offerer_odds
-    return unless self.taker_odds
-    pieces = self.taker_odds.split(":")
-    self.offerer_odds = "#{pieces.last}:#{pieces.first}"
+  def populate_taker_odds
+    return unless self.offerer_odds
+    pieces = self.offerer_odds.split(":")
+    self.taker_odds = "#{pieces.last}:#{pieces.first}"
   end
 
   def check_match_state

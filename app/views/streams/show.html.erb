@@ -77,7 +77,7 @@
                     <td><%= b.offerer_choice.try(:display_name) %></td>
                     <td><%= b.taker_choice.try(:display_name) %></td>
                     <td><%= b.offerer_wager %></td>
-                    <td><%= b.display_odds(current_user) %></td>
+                    <td><%= b.offerer_odds %></td>
                     <td class="actions">
                       <% if b.taker %>
                         Accepted: <%= b.taker.try(:username) %>

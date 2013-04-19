@@ -39,7 +39,7 @@ PointGaming.BetsController.prototype.appendBet = function(bet, tooltip, url) {
   message += "<td>" + bet.offerer_choice_name + "</td>";
   message += "<td>" + bet.taker_choice_name + "</td>";
   message += "<td>" + bet.offerer_wager + "</td>";
-  message += "<td>" + bet.taker_odds + "</td>";
+  message += "<td>" + bet.offerer_odds + "</td>";
   message += '<td class="actions">' + actions + "</td>";
 
   var message_window = $(this.bet_window_selector);
@@ -111,7 +111,7 @@ PointGaming.BetsController.prototype.handleBetDestroyed = function(data) {
 
 PointGaming.BetsController.prototype.recalculateBetDetails = function() {
   var bet_amount = $('input[data-hook=offerer-amount]').val() || 0,
-      odds_pieces = $('select[data-hook=taker-odds]').val().split(":") || [0, 0];
+      odds_pieces = $('select[data-hook=offerer-odds]').val().split(":") || [0, 0];
       bet_odds_divisor = odds_pieces[0],
       bet_odds_multiplier = odds_pieces[1];
 
@@ -130,7 +130,7 @@ PointGaming.BetsController.prototype.registerHandlers = function() {
 
   $('body').on('keyup', 'input#bet_offerer_wager', this.recalculateBetDetails.bind(this));
   $('body').on('change', 'input#bet_offerer_wager', this.recalculateBetDetails.bind(this));
-  $('body').on('change', 'select#bet_taker_odds', this.recalculateBetDetails.bind(this));
+  $('body').on('change', 'select#bet_offerer_odds', this.recalculateBetDetails.bind(this));
 
   $('body').popover({
     selector: this.bet_selector,

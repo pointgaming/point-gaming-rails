@@ -16,9 +16,9 @@
         </div>
 
         <div class="control-group">
-          <%= f.label :taker_odds, t(:odds), :class => 'control-label' %>
+          <%= f.label :offerer_odds, t(:odds), :class => 'control-label' %>
           <div class="controls">
-            <%= f.select :taker_odds, f.object.odds_options, {}, { 'data-hook' => 'taker-odds' } %>
+            <%= f.select :offerer_odds, f.object.odds_options, {}, { 'data-hook' => 'offerer-odds' } %>
           </div>
         </div>
       </div>
