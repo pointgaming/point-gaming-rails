@@ -116,7 +116,9 @@ class FriendRequestsController < ApplicationController
 
   def ensure_friend_request_sent_to_current_user
     unless @friend_request.friend_request_user_id === current_user._id
-      raise ::PermissionDenied
+      if !(@friend_request.user_id === current_user._id && params[:friend_request][:action] === "reject")
+        raise ::PermissionDenied
+      end
     end
   end
 
