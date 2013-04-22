@@ -2,6 +2,8 @@ class User
   include Mongoid::Document
   include Rails.application.routes.url_helpers
   include Mongoid::Paperclip
+  include Tire::Model::Search
+  include Tire::Model::Callbacks
 
   has_mongoid_attached_file :avatar, :default_url => "/:class/:attachment/missing_:style.png"
 
@@ -109,13 +111,13 @@ class User
   end
 
   def profile_url
-    user_path(self)
+    user_url(self)
   end
 
   def as_json(options={})
-    super(options.merge({
+    super({
       methods: [:profile_url, :age]
-    }))
+    }.merge(options))
   end
 
   def display_name
@@ -139,7 +141,28 @@ class User
       Friend.where(user_id: user.id, friend_user_id: id).exists?
   end
 
-  protected
+  def store_sort
+    90
+  end
+
+  def main_sort
+    0
+  end
+
+  def forum_sort
+    90
+  end
+
+  mapping do
+    indexes :display_name, type: 'string', boost: 10, analyzer: 'snowball', as: 'username'
+    indexes :url, type: 'string', :index => 'no', as: 'profile_url'
+
+    indexes :store_sort, type: 'short', :index => 'not_analyzed', as: 'store_sort'
+    indexes :main_sort, type: 'short', :index => 'not_analyzed', as: 'main_sort'
+    indexes :forum_sort, type: 'short', :index => 'not_analyzed', as: 'forum_sort'
+  end
+
+protected
 
   def populate_slug
     self.slug = username.downcase.gsub(/\s/, "_") if username.present?
@@ -213,4 +236,5 @@ class User
       # StoreUser was not found
     end
   end
+
 end

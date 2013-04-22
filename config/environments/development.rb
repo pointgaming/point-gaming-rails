@@ -38,4 +38,8 @@ Pointgaming::Application.configure do
   config.to_prepare do
     DeviseFilters.add_filters
   end
+
+  config.after_initialize do
+    Rails.application.routes.default_url_options = Rails.application.config.action_mailer.default_url_options
+  end
 end

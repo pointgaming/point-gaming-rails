@@ -62,6 +62,8 @@ Pointgaming::Application.configure do
   # compile fonts
   config.assets.precompile += %w( .svg .eot .woff .ttf )
 
+  config.action_mailer.default_url_options = { :host => 'dev.pointgaming.com' }
+
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false
 
@@ -75,4 +77,7 @@ Pointgaming::Application.configure do
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
 
+  config.after_initialize do
+    Rails.application.routes.default_url_options = Rails.application.config.action_mailer.default_url_options
+  end
 end

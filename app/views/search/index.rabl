@@ -4,8 +4,8 @@ node :name do |d|
   d.display_name
 end
 node :url do |d|
-  url_for d
+  d.url
 end
 node :type do |d|
-  d.class.name
+  d.type
 end

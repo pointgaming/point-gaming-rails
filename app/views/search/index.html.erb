@@ -8,8 +8,13 @@
   <tbody>
     <% @results.each do |result| %>
       <tr>
-        <td><%= link_to result.display_name, result %></td>
-        <td><%= result.class.name %></td>
+        <td>
+          <%= link_to result.display_name, result.url %>
+          <% if result.description %>
+            <p><%= result.description %></p>
+          <% end %>
+        </td>
+        <td><%= result.type %></td>
       </tr>
     <% end %>
   </tbody>

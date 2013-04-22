@@ -6,6 +6,7 @@ gem 'bunny', '>= 0.9.0.pre6'
 gem 'mongoid', "~> 3.0.0"
 gem 'redis-rails'
 gem 'active_hash'
+gem 'tire'
 
 gem 'stripe'
 gem 'resque'
