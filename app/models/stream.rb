@@ -60,14 +60,32 @@ class Stream
     90
   end
 
-  mapping do
-    indexes :display_name, type: 'string', boost: 10, analyzer: 'snowball', as: 'name'
-    indexes :description, type: 'string', analyzer: 'snowball', as: 'details'
-    indexes :url, type: 'string', :index => 'no', as: 'url'
+  settings analysis: {
+      analyzer: {
+        partial_match: {
+          tokenizer: :whitespace,
+          filter: [:lowercase, :edge_ngram]
+        }
+      },
+      filter: {
+        edge_ngram: {
+            side: :front,
+            max_gram: 20,
+            min_gram: 1,
+            type: :edgeNGram
+        }
+      }
+    } do
+    mapping do
+      indexes :display_name, type: 'string', boost: 10, analyzer: 'snowball', as: 'name'
+      indexes :prefix, type: 'string', index_analyzer: 'partial_match', search_analyzer: 'snowball', boost: 2, as: 'name'
+      indexes :description, type: 'string', analyzer: 'snowball', as: 'details'
+      indexes :url, type: 'string', :index => 'no', as: 'url'
 
-    indexes :store_sort, type: 'short', :index => 'not_analyzed', as: 'store_sort'
-    indexes :main_sort, type: 'short', :index => 'not_analyzed', as: 'main_sort'
-    indexes :forum_sort, type: 'short', :index => 'not_analyzed', as: 'forum_sort'
+      indexes :store_sort, type: 'short', :index => 'not_analyzed', as: 'store_sort'
+      indexes :main_sort, type: 'short', :index => 'not_analyzed', as: 'main_sort'
+      indexes :forum_sort, type: 'short', :index => 'not_analyzed', as: 'forum_sort'
+    end
   end
 
 private

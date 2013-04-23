@@ -27,3 +27,11 @@ en:
         created_at: 'Joined at'
       tournament:
         start_datetime: 'Start Date'
+  search:
+    type:
+      spree/product: "Store"
+      forem/post: "Forum"
+      game: "Game"
+      stream: "Stream"
+      team: "Team"
+      user: "User"

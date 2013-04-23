@@ -42,7 +42,11 @@
   background-color: #CE2027;
 }
 
-.dropdown-menu li > a:hover, .dropdown-menu li > a:focus, .dropdown-submenu:hover > a {
+.dropdown-menu li.active > a,
+.dropdown-menu li.active > a:hover,
+.dropdown-menu li > a:hover,
+.dropdown-menu li > a:focus,
+.dropdown-submenu:hover > a {
   background-color:#e9323d;
   background-image: -moz-linear-gradient(top,#e9323d 0%,#ce2027 100%);
   background-image: -webkit-gradient(linear,0 0,0 100%,from(#e9323d 0%),to(#ce2027 100%));

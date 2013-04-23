@@ -11,7 +11,9 @@ class SearchController < ApplicationController
     @results = Tire.search(["games", "streams", "teams", "users", "forem_posts", "spree_products"]) do |search|
       if options[:query].present?
         search.query do
-          string options[:query] 
+          boolean do
+            must { string "prefix:#{options[:query]} OR #{options[:query]}" }
+          end
         end
       end
       search.highlight '_all'

@@ -11,6 +11,15 @@ PointGaming.ToolbarController = function(options){
 PointGaming.ToolbarController.prototype.registerHandlers = function() {
   var self = this;
 
+  $('form.navbar-search.search-form').submit(function(e){
+    if ( $('input.search-query', this).val() === '') {
+      e.preventDefault();
+      return false;
+    } else {
+      return true;
+    }
+  });
+
   $(this.search_field_selector, this.toolbar_selector).typeahead({
     ajax: { url: '/search.json', triggerLength: 1, method: 'get', contentType: 'application/json', dataType: 'json' },
     display: 'name', 

@@ -14,7 +14,7 @@
             <p><%= result.description %></p>
           <% end %>
         </td>
-        <td><%= result.type %></td>
+        <td><%= t result.type, scope: [:search, :type] %></td>
       </tr>
     <% end %>
   </tbody>

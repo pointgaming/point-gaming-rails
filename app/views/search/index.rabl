@@ -7,5 +7,5 @@ node :url do |d|
   d.url
 end
 node :type do |d|
-  d.type
+  t d.type, scope: [:search, :type]
 end

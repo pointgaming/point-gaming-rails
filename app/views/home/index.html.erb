@@ -6,7 +6,9 @@
     <% @news.each do |news| %>
       <div class="post">
         <h1><%= link_to news.title, '#' %></h1>
-        <%= image_tag news.image.url(:medium), width: "633" %>
+        <% if news.image.present? %>
+          <%= image_tag news.image.url(:medium), width: "633" %>
+        <% end %>
         <div class="text-block">
           <p><%= news.content %></p>
         </div>
