@@ -5,7 +5,7 @@ class User
   include Tire::Model::Search
   include Tire::Model::Callbacks
 
-  has_mongoid_attached_file :avatar, :default_url => "/:class/:attachment/missing_:style.png", styles: {thumb: '50x50', medium: '200'}
+  has_mongoid_attached_file :avatar, :default_url => "/system/:class/:attachment/missing_:style.png", styles: {thumb: '50x50', medium: '200'}
 
   before_validation :populate_slug
 
@@ -188,7 +188,7 @@ protected
   end
 
   def create_forum_user
-    forum_user = ForumUser.new :email => self.email, :username => self.username, :admin => self.admin
+    forum_user = ForumUser.new :email => self.email, :username => self.username, :admin => self.admin, avatar_thumb_url: self.avatar.url(:thumb)
     if forum_user.save
       true
     else
@@ -198,11 +198,12 @@ protected
   end
 
   def update_forum_user
-    if self.email_changed? || self.username_changed? || self.admin_changed?
+    if self.email_changed? || self.username_changed? || self.admin_changed? || self.avatar_updated_at_changed?
       forum_user = ForumUser.find self.email_was
       forum_user.email = self.email
       forum_user.username = self.username
       forum_user.admin = self.admin
+      forum_user.avatar_thumb_url = self.avatar.url(:thumb)
       if forum_user.save
         true
       else

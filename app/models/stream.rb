@@ -8,7 +8,7 @@ class Stream
   before_validation :populate_slug
   before_save :sanitize_embedded_html
 
-  has_mongoid_attached_file :thumbnail, :default_url => ":class/:attachment/missing_:style.png", :styles => {:tiny => '50x50!', :thumb => '300x200!'}
+  has_mongoid_attached_file :thumbnail, :default_url => "/system/:class/:attachment/missing_:style.png", :styles => {:tiny => '50x50!', :thumb => '300x200!'}
 
   field :name, :type => String, :default => ''
   field :slug, :type => String, :default => ''
