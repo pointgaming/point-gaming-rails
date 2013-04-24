@@ -84,6 +84,10 @@ Pointgaming::Application.routes.draw do
 
   get '/desktop_client/version', to: 'site#desktop_version'
 
+  resources :news, only: [:show] do
+    resources :comments, except: [:index], controller: 'news_comments'
+  end
+
   root :to => 'home#index'
 
   get "/search", :to => "search#index"

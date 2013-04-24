@@ -1,0 +1,84 @@
+<%= javascript_include_tag "news" %>
+
+<div class="container-fluid">
+  <div class="row-fluid">
+    <section id="content" class="full-width clearfix">
+      <div class="post">
+        <h1>
+          <%= @news.title %>
+
+          <% if can? :manage, News %>
+            <div class="pull-right" style="padding-right: 23px;">
+              <%= link_to 'Edit News', edit_admin_news_path(@news), :class => 'btn btn-mini' %>
+            </div>
+          <% end %>
+        </h1>
+
+        <% if @news.image.present? %>
+          <%= image_tag @news.image.url(:large), width: "920" %>
+        <% end %>
+        <div class="text-block">
+          <p><%= @news.content %></p>
+        </div>
+        <div class="panel">
+          <time class="date" datetime="<%= ldate @news.created_at, :format => :long %>"><%= ldate @news.created_at.to_date, :format => :long %></time>
+          <nav class="share-icons">
+            <ul>
+              <li><a href="#"><%= image_tag "ico-facebook-share.png", alt: "facebook share", width: "61", height: "20" %></a></li>
+              <li><a href="#"><%= image_tag "ico-tweet.png", alt: "tweet", width: "55", height: "20" %></a></li>
+              <li><a href="#"><%= image_tag "ico-google+1.png", alt: "google+1", width: "32", height: "20" %></a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </section>
+
+    <section class="full-width clearfix">
+      <h1><%= t 'helpers.titles.new', model: NewsComment.model_name.human, default: "New #{NewsComment.model_name.human}" %></h1>
+
+      <%= render partial: 'news_comments/form', locals: { hide_cancel_button: true} %>
+    </section>
+
+    <section class="full-width clearfix">
+      <h1>
+        <%= link_to '', '#comments', name: 'comments' %>
+        <%=t 'helpers.titles.all', model: NewsComment.model_name.human, default: "All #{NewsComment.model_name.human.pluralize}" %> (<%= @news.comment_count %>)
+      </h1>
+      <% @news.comments.each_with_index do |comment, index| %>
+        <div class="comment row-fluid <%= (index % 2 === 0 ? 'even' : 'odd') %>">
+          <div class="user">
+            <div class="username">
+              <%= link_to comment.user.username, comment.user %>
+            </div>
+            <div class="icon">
+              <%= image_tag comment.user.avatar.url(:thumb) %>
+            </div>
+          </div>
+
+          <div class="contents">
+            <a name="comment-<%= comment._id %>" href="#comment-<%= comment._id %>">
+              <time class="date" datetime="<%= ldate comment.created_at, format: :long %>"><%= ldate comment.created_at, format: :long %></time>
+            </a>
+
+            <p><%= comment.text %></p>
+
+            <ul class="actions">
+              <% if can?(:edit, comment) || can?(:manage, News) %>
+                <li><%= link_to t('.edit', :default => t("helpers.links.edit")), edit_news_comment_path(comment.news, comment), :class => 'btn btn-mini' %></li>
+              <% end %>
+              <% if can?(:destroy, comment) || can?(:manage, News) %>
+                <li>
+                  <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                              news_comment_path(@news, comment),
+                              :method => :delete,
+                              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                              :class => 'btn btn-danger btn-mini' %>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      <% end %>
+    </section>
+  </div>
+</div>

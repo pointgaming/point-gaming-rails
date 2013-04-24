@@ -4,6 +4,10 @@ class Permission < ActiveHash::Base
     {id: :manage_news, ability: [:manage, News]},
     {id: :manage_groups, ability: [:manage, Group]},
     {id: :forums_admin, ability: [:admin, :forums]},
-    {id: :store_admin, ability: [:admin, :store]}
+    {id: :store_admin, ability: [:admin, :store]},
+
+    # default abilities
+    {id: :edit_news_comment, default: true, check_owner: :user_id, ability: [:edit, NewsComment]},
+    {id: :destroy_news_comment, default: true, check_owner: :user_id, ability: [:destroy, NewsComment]},
   ]
 end

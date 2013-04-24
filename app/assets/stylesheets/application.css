@@ -93,3 +93,7 @@ div.header-toolbar .dropdown-menu > li > a:hover {
 div.header-toolbar .dropdown-menu > li > a:visited {
   color: #333;
 }
+
+#content.full-width {
+  width: 100%;
+}

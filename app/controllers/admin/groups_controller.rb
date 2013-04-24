@@ -50,6 +50,6 @@ protected
   end
 
   def ensure_permissions
-    @permissions = Permission.all
+    @permissions = Permission.where(default: nil)
   end
 end

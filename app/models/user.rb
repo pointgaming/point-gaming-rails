@@ -5,7 +5,7 @@ class User
   include Tire::Model::Search
   include Tire::Model::Callbacks
 
-  has_mongoid_attached_file :avatar, :default_url => "/:class/:attachment/missing_:style.png"
+  has_mongoid_attached_file :avatar, :default_url => "/:class/:attachment/missing_:style.png", styles: {thumb: '50x50', medium: '200'}
 
   before_validation :populate_slug
 

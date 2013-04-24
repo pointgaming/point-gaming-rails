@@ -21,6 +21,8 @@ en:
       match:
         player_1_name: 'Player or Team 1'
         player_2_name: 'Player or Team 2'
+      comment:
+        text: 'Comment'
       team:
         tag: 'Nick Name'
       team_member:
