@@ -5,7 +5,7 @@
 
 #chatbox.pre-scrollable {
   height: 395px;
-  max-height: 395px;
+  max-height: 330px;
   background-color: #fff;
   border: 1px solid #ccc;
 }
