@@ -14,17 +14,37 @@
 </h1>
 
 <% if @stream_owner.user_id === current_user.id || @collaborator.present? %>
-  <div class="breadcrumb" style="margin: 0">
+  <div id="match-admin-actions" class="breadcrumb" style="margin: 0">
     <%= link_to_modal 'Admin', user_stream_path(@stream), 'data-width' => "950", 'data-height' =>"600", 'data-title' => "Stream Admin", :remote => true, :class => 'btn' %>
 
     <% if @stream.match.blank? %>
       <%= link_to_modal t('.new_match'), new_polymorphic_path([@stream, Match.new]),
             remote: true, data: {'modal-target' => '#match-modal'},
-            :id => 'manage-match', :class => 'btn' %>
+            :id => 'new-match', :class => 'btn' %>
     <% else %>
-      <%= link_to_modal t('.manage_match'), polymorphic_path([@stream, @stream.match]),
-            remote: true, data: {'modal-target' => '#match-modal', 'match-id' => @stream.match._id.to_s},
-            :id => 'manage-match', :class => 'btn' %>
+      <% if @stream.match.state === 'new' %>
+        <%= link_to_modal t('.manage_match'), polymorphic_path([@stream, @stream.match]),
+              remote: true, data: {'modal-target' => '#match-modal', 'match-id' => @stream.match._id.to_s},
+              :id => 'manage-match', :class => 'btn' %>
+      <% end %>
+
+      <% if @stream.match.can_start? %>
+        <%= link_to t('.start_match'), start_match_path(@stream.match), method: 'put', 
+              :data => {type: :json, remote: :true, 'dismiss-modal' => :true}, 
+              :class => 'btn btn-success', id: 'start-match' %>
+      <% end %>
+
+      <% if @stream.match.can_finalize? %>
+        <%= link_to_modal t('.finalize_match'), edit_match_path(@stream.match),
+              :data => {'modal-target' => '#match-modal'},
+              remote: true, :class => 'btn', id: 'finalize-match' %>
+      <% end %>
+
+      <% if @stream.match.can_cancel? %>
+        <%= link_to t('.cancel_match'), cancel_match_path(@stream.match), method: 'put', 
+              :data => {type: :json, remote: :true, 'dismiss-modal' => :true}, 
+              :class => 'btn btn-danger', id: 'cancel-match' %>
+      <% end %>
     <% end %>
   </div>
 <% end %>

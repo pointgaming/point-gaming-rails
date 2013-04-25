@@ -3,30 +3,6 @@
   <h2><%=t '.title', :default => model_class.model_name.human %></h2>
 </div>
 
-<% @breadcrumbs = capture do %>
-  <% if @match.can_start? %>
-    <%= link_to t('.start'), start_match_path(@match), method: 'put', 
-          :data => {type: :json, remote: :true, 'dismiss-modal' => :true}, 
-          :class => 'btn' %>
-  <% end %>
-  <% if @match.can_finalize? %>
-    <%= link_to t('.finalize'), edit_match_path(@match), method: 'get', 
-          :data => {type: :json, remote: :true, 'modal-follow-link' => :true},
-          :class => 'btn' %>
-  <% end %>
-  <% if @match.can_cancel? %>
-    <div class="pull-right">
-      <%= link_to t('.cancel'), cancel_match_path(@match), method: 'put', 
-            :data => {type: :json, remote: :true, 'dismiss-modal' => :true}, 
-            :class => 'btn btn-danger' %>
-    </div>
-  <% end %>
-<% end %>
-
-<% unless @breadcrumbs.blank? %>
-  <div class="breadcrumb"><%= @breadcrumbs %></div>
-<% end %>
-
 <% if @match.state === 'new' %>
   <%= render partial: 'form' %>
 <% else %>

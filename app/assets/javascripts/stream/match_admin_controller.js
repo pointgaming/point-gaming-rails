@@ -4,6 +4,7 @@ PointGaming.MatchAdminController = function(match, options){
   this.match = match;
   this.options = options || {};
 
+  this.options.match_admin_actions_container = 'div#match-admin-actions';
   this.registerHandlers();
 };
 
@@ -40,11 +41,13 @@ PointGaming.MatchAdminController.prototype.openModal = function(modal){
 };
 
 PointGaming.MatchAdminController.prototype.handleMatchCreated = function(data){
-  this.addAlertToModal("A new match has been created by another user.", 'alert-info');
+    this.addAlertToModal("A new match has been created by another user.", 'alert-info');
 
-  $('a#manage-match').data('match-id', data.match._id)
-    .attr('href', this.options.polymorphic_match_path.replace(':match_id', data.match._id))
-    .html('Manage Match');
+    this.removeNewMatchLink();
+    this.addManageMatchLink(data);
+    this.addStartMatchLink(data);
+    this.addCancelMatchLink(data);
+    this.removeFinalizeMatchLink();
 };
 
 PointGaming.MatchAdminController.prototype.handleMatchUpdated = function(data){
@@ -65,7 +68,7 @@ PointGaming.MatchAdminController.prototype.handleMatchUpdated = function(data){
         // called changed method, if exists
         changed_trigger = key + "_changed";
         if (typeof(this[changed_trigger]) === "function") {
-          this[changed_trigger](oldValue, data.match[key]);
+          this[changed_trigger](oldValue, data.match[key], data);
         }
       }
     }
@@ -75,12 +78,85 @@ PointGaming.MatchAdminController.prototype.handleMatchUpdated = function(data){
   this.addAlertToModal("The match has been updated by another user.", 'alert-info');
 };
 
-PointGaming.MatchAdminController.prototype.state_changed = function(old_value, new_value) {
-  if (new_value === 'cancelled' || new_value === 'finalized') {
-    $('a#manage-match').data('match-id', '')
-      .attr('href', this.options.new_match_path)
-      .html('New Match');
-  }
+PointGaming.MatchAdminController.prototype.state_changed = function(old_value, new_value, data) {
+    if (new_value === 'cancelled' || new_value === 'finalized') {
+        this.addNewMatchLink();
+        this.removeManageMatchLink();
+        this.removeStartMatchLink();
+        this.removeCancelMatchLink();
+        this.removeFinalizeMatchLink();
+    } else if (new_value === 'started') {
+        this.removeNewMatchLink();
+        this.removeManageMatchLink();
+        this.removeStartMatchLink();
+        this.removeCancelMatchLink(data);
+        this.addFinalizeMatchLink(data);
+    }
+};
+
+PointGaming.MatchAdminController.prototype.addNewMatchLink = function(data){
+    this.removeNewMatchLink();
+
+    $('<a id="new-match" class="btn" data-modal-target="#match-modal" rel="modal:open:ajaxpost"></a>').data('match-id', '')
+        .attr('href', this.options.new_match_path)
+        .html('New Match')
+        .appendTo($(this.options.match_admin_actions_container)).after(" ");
+};
+
+PointGaming.MatchAdminController.prototype.addManageMatchLink = function(data){
+    this.removeManageMatchLink();
+
+    $('<a id="manage-match" class="btn" data-modal-target="#match-modal" rel="modal:open:ajaxpost"></a>').data('match-id', data.match._id)
+        .attr('href', this.options.polymorphic_match_path.replace(':match_id', data.match._id))
+        .html('Manage Match')
+        .appendTo($(this.options.match_admin_actions_container)).after(" ");
+};
+
+PointGaming.MatchAdminController.prototype.addStartMatchLink = function(data){
+    this.removeStartMatchLink();
+
+    $('<a id="start-match" class="btn btn-success" data-method="put" data-remote="true" data-type="json"></a>')
+        .attr('href', this.options.match_path.replace(':match_id', data.match._id) + "/start")
+        .html('Start Match')
+        .appendTo($(this.options.match_admin_actions_container)).after(" ");
+};
+
+PointGaming.MatchAdminController.prototype.addCancelMatchLink = function(data){
+    this.removeCancelMatchLink();
+
+    $('<a id="cancel-match" class="btn btn-danger" data-method="put" data-remote="true" data-type="json"></a>')
+        .attr('href', this.options.match_path.replace(':match_id', data.match._id) + "/cancel")
+        .html('Cancel Match')
+        .appendTo($(this.options.match_admin_actions_container)).after(" ");
+};
+
+PointGaming.MatchAdminController.prototype.addFinalizeMatchLink = function(data){
+    this.removeFinalizeMatchLink();
+
+    $('<a id="finalize-match" class="btn" data-modal-target="#match-modal" rel="modal:open:ajaxpost"></a>')
+        .attr('href', this.options.match_path.replace(':match_id', data.match._id) + "/edit")
+        .html('Finalize Match')
+        .appendTo($(this.options.match_admin_actions_container)).after(" ");
+};
+
+PointGaming.MatchAdminController.prototype.removeNewMatchLink = function(){
+    $('a#new-match').remove();
+};
+
+PointGaming.MatchAdminController.prototype.removeManageMatchLink = function(){
+    $('a#manage-match').remove();
+};
+
+PointGaming.MatchAdminController.prototype.removeStartMatchLink = function(){
+    $('a#start-match').remove();
+};
+
+PointGaming.MatchAdminController.prototype.removeCancelMatchLink = function(){
+    $('a#cancel-match').remove();
+};
+
+PointGaming.MatchAdminController.prototype.removeFinalizeMatchLink = function(){
+    $('a#finalize-match').remove();
 };
 
 PointGaming.MatchAdminController.prototype.addAlertToModal = function(message, additional_class){
