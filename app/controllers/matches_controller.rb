@@ -21,10 +21,17 @@ class MatchesController < ApplicationController
   end
 
   def show
-    output = {}
-    @match = output[:match] = Match.find params[:id]
-    output[:bets] = @match.bets if params[:include_bets] === "true"
-    render :json => output
+    @match = Match.find params[:id]
+
+    respond_to do |format|
+      format.html
+      format.json do
+        output = {}
+        output[:match] = @match
+        output[:bets] = @match.bets if params[:include_bets] === "true"
+        render :json => output
+      end
+    end
   end
 
   def edit
