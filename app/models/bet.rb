@@ -45,9 +45,11 @@ class Bet
 
   # user who owns/offered the bet
   belongs_to :offerer, class_name: 'User'
+  delegate :username, :to => :offerer, :prefix => true, :allow_nil => true
 
   # user who accepted the bet
   belongs_to :taker, class_name: 'User'
+  delegate :username, :to => :taker, :prefix => true, :allow_nil => true
 
   validates :match_hash, :presence=>true
   validates :offerer_choice, :presence=>true
@@ -119,6 +121,12 @@ class Bet
     else
       nil
     end
+  end
+
+  def as_json(options={})
+    super({
+      methods: [:offerer_username, :taker_username]
+    }.merge(options))
   end
 
 private
