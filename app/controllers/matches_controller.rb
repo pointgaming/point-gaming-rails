@@ -123,7 +123,7 @@ protected
   def ensure_player_or_team
     begin
       [:player_1, :player_2].each do |player|
-        if params[:match]["#{player}_id"].present? && ['User', 'Team'].include?(params[:match]["#{player}_type"])
+        if params[:match]["#{player}_id"].present? && ['user', 'team'].include?(params[:match]["#{player}_type"].downcase)
           # mongoid should throw an exception if this is not found
           record = params[:match]["#{player}_type"].constantize.find params[:match]["#{player}_id"]
           instance_variable_set "@#{player}".to_sym, record
