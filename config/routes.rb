@@ -1,7 +1,7 @@
 require 'resque/server'
 
 Pointgaming::Application.routes.draw do
-  resources :matches, only: [:edit, :update] do
+  resources :matches, only: [:show, :edit, :update] do
     member do
       put 'start'
       put 'cancel'
