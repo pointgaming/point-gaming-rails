@@ -40,6 +40,7 @@ class Match
   validates :player_2, :presence=>true
   validates :map, :presence=>true
   validates :game, :presence=>true
+  validate :check_winner
 
   attr_writer :player_1_name, :player_2_name
   
@@ -52,7 +53,8 @@ class Match
   end
 
   def player_options
-    [[player_1.display_name, :player_1], [player_2.display_name, :player_2]]
+    [[player_1.display_name, player_1._id, {:'data-type' => player_1.class.name}],
+     [player_2.display_name, player_2._id, {:'data-type' => player_2.class.name}]]
   end
 
   def start
@@ -74,6 +76,16 @@ class Match
   end
 
 private
+
+  def check_winner
+    if self.state != 'new'
+      if self.winner.present?
+        errors.add(:winner_id, "is invalid") unless [self.player_1, self.player_2].include?(self.winner)
+      else
+        errors.add(:winner_id, "is required")
+      end
+    end
+  end
 
   def calculate_match_hash
     data = match_criteria.map{|column| self.send(column)}

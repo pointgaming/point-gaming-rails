@@ -119,6 +119,14 @@ PointGaming.BetsController.prototype.recalculateBetDetails = function() {
   $('span[data-hook=win-amount]').html(Math.floor( (bet_amount * bet_odds_multiplier) / bet_odds_divisor ));
 };
 
+PointGaming.BetsController.prototype.populateOffererChoiceType = function(jqEvent) {
+  $('input#bet_offerer_choice_type').val( $(':selected', jqEvent.target).data('type') || '' );
+};
+
+PointGaming.BetsController.prototype.populateTakerChoiceType = function(jqEvent) {
+  $('input#bet_taker_choice_type').val( $(':selected', jqEvent.target).data('type') || '' );
+};
+
 PointGaming.BetsController.prototype.registerHandlers = function() {
   var self = this;
 
@@ -127,6 +135,9 @@ PointGaming.BetsController.prototype.registerHandlers = function() {
   this.socket.on("Bet.destroy", this.handleBetDestroyed.bind(this));
 
   this.socket.on("Bet.Taker.new", this.handleNewTaker.bind(this));
+
+  $('body').on('change', 'select#bet_offerer_choice_id', this.populateOffererChoiceType.bind(this));
+  $('body').on('change', 'select#bet_taker_choice_id', this.populateTakerChoiceType.bind(this));
 
   $('body').on('keyup', 'input#bet_offerer_wager', this.recalculateBetDetails.bind(this));
   $('body').on('change', 'input#bet_offerer_wager', this.recalculateBetDetails.bind(this));

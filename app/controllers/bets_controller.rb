@@ -66,18 +66,14 @@ protected
   end
 
   def ensure_offerer_choice
-    if ['player_1', 'player_2'].include?(params[:bet][:offerer_choice])
-      @offerer_choice = @match.send(params[:bet][:offerer_choice])
-    else
-      nil
+    if ['team', 'user'].include?(params[:bet][:offerer_choice_type].downcase)
+      @offerer_choice = params[:bet][:offerer_choice_type].classify.constantize.find(params[:bet][:offerer_choice_id])
     end
   end
 
   def ensure_taker_choice
-    if ['player_1', 'player_2'].include?(params[:bet][:taker_choice])
-      @taker_choice = @match.send(params[:bet][:taker_choice])
-    else
-      nil
+    if ['team', 'user'].include?(params[:bet][:taker_choice_type].downcase)
+      @taker_choice = params[:bet][:taker_choice_type].classify.constantize.find(params[:bet][:taker_choice_id])
     end
   end
 

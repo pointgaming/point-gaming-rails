@@ -2,8 +2,10 @@
   <div class="modal-body">
     <%= hidden_field_tag :match_hash, @match.match_hash %>
     <div class="control-group">
-      <%= f.select :offerer_choice, @match.player_options, include_blank: '- Select -', :class => 'text_field' %> will beat 
-      <%= f.select :taker_choice, @match.player_options, include_blank: '- Select -', :class => 'text_field' %> on map <%= @match.map %>
+      <%= f.select :offerer_choice_id, @match.player_options, include_blank: '- Select -', :class => 'text_field' %> will beat 
+      <%= f.select :taker_choice_id, @match.player_options, include_blank: '- Select -', :class => 'text_field' %> on map <%= @match.map %>
+      <%= f.hidden_field :offerer_choice_type %>
+      <%= f.hidden_field :taker_choice_type %>
     </div>
 
     <div class="row-fluid">

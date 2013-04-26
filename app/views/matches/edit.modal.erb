@@ -9,9 +9,10 @@
       <%= render partial: 'shared/form_errors', locals: {model: f.object} %>
 
       <div class="control-group">
-        <%= f.label :winner, :class => 'control-label' %>
+        <%= f.label :winner_id, :class => 'control-label' %>
         <div class="controls">
-          <%= f.select :winner, @match.player_options %>
+          <%= f.select :winner_id, @match.player_options, include_blank: '- Select -' %>
+          <%= f.hidden_field :winner_type %>
         </div>
       </div>
     </div>

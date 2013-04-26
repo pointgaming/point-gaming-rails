@@ -63,10 +63,9 @@ protected
   end
 
   def update_match_winner
-    if params[:match][:winner] === 'player_1'
-      @match.winner = @match.player_1 
-    elsif params[:match][:winner] === 'player_2'
-      @match.winner = @match.player_2
+    if ['team', 'user'].include?(params[:match][:winner_type].downcase)
+      winner = params[:match][:winner_type].classify.constantize.find(params[:match][:winner_id])
+      @match.winner = winner
     end
 
     @match.save && @match.finalize!
