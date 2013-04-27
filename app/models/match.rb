@@ -23,6 +23,7 @@ class Match
     end 
     state :started do
       event :finalize, transitions_to: :finalized
+      event :cancel, transitions_to: :cancelled
     end 
     state :cancelled
     state :finalized
@@ -62,8 +63,10 @@ class Match
   end
 
   def cancel
-    self.room.match = nil;
-    self.room.save
+    if self.room.present?
+      self.room.match = nil;
+      self.room.save
+    end
 
     Resque.enqueue FinalizeBetsJob, self._id
   end

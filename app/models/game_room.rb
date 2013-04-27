@@ -6,6 +6,7 @@ class GameRoom
   after_create :publish_created
   after_update :publish_updated
   after_destroy :publish_destroyed
+  after_destroy :cancel_match
 
   field :position, type: Integer
   field :is_advertising, type: Boolean, default: false
@@ -42,4 +43,9 @@ private
   def publish_destroyed()
     BunnyClient.instance.publish_fanout("c.#{self.game.mq_exchange}", ::RablRails.render(self, 'api/v1/game_rooms/socket_destroy'))
   end
+
+  def cancel_match
+    self.match.cancel! if self.match.present?
+  end
+
 end

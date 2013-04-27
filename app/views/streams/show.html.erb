@@ -40,7 +40,7 @@
               remote: true, :class => 'btn', id: 'finalize-match' %>
       <% end %>
 
-      <% if @stream.match.can_cancel? %>
+      <% if @stream.match.state === 'new' && @stream.match.can_cancel? %>
         <%= link_to t('.cancel_match'), cancel_match_path(@stream.match), method: 'put', 
               :data => {type: :json, remote: :true, 'dismiss-modal' => :true}, 
               :class => 'btn btn-danger', id: 'cancel-match' %>

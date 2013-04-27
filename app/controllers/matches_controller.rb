@@ -6,6 +6,7 @@ class MatchesController < ApplicationController
   before_filter :ensure_room_has_no_match, only: [:new, :create]
   before_filter :ensure_room_controller, except: [:index, :show]
   before_filter :ensure_player_or_team, only: [:create]
+  before_filter :ensure_can_cancel_match, only: [:cancel]
 
   respond_to :html, :json
 
@@ -106,6 +107,10 @@ protected
       # TODO: handle this better
       raise ::PermissionDenied
     end
+  end
+
+  def ensure_can_cancel_match
+    raise ::PermissionDenied unless @match.state === 'new' && @match.can_cancel?
   end
 
   def ensure_room_controller

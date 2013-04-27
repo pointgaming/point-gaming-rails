@@ -8,6 +8,10 @@ class Stream
   before_validation :populate_slug
   before_save :sanitize_embedded_html
 
+  after_update :publish_updated
+  after_destroy :publish_destroyed
+  after_destroy :cancel_match
+
   has_mongoid_attached_file :thumbnail, :default_url => "/system/:class/:attachment/missing_:style.png", :styles => {:tiny => '50x50!', :thumb => '300x200!'}
 
   field :name, :type => String, :default => ''
@@ -99,6 +103,27 @@ private
     if self.embedded_html_changed? && self.embedded_html.present?
       self.embedded_html = Sanitize.clean(self.embedded_html, Sanitize::Config::EMBEDDED_CONTENT)
     end
+  end
+
+  def publish_updated
+    BunnyClient.instance.publish_fanout("c.#{self.mq_exchange}", {
+      :action => 'Stream.update',
+      :data => {
+        :stream => self,
+        :thumbnail => self.thumbnail.url(:tiny)
+      }
+    }.to_json)
+  end
+
+  def publish_destroyed()
+    BunnyClient.instance.publish_fanout("c.#{self.mq_exchange}", {
+      :action => 'Stream.destroy',
+      :data => { :stream => self }
+    }.to_json)
+  end
+
+  def cancel_match
+    self.match.cancel! if self.match.present?
   end
 
 end
