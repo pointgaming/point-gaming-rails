@@ -16,7 +16,7 @@ class Bet
   scope :pending, where(outcome: :undetermined)
   scope :unaccepted, where(taker_id: nil)
 
-  attr_accessible :offerer_wager, :offerer_odds
+  attr_accessible :offerer_wager, :offerer_odds, :match_hash
 
   after_create :publish_bet_created
   after_update :publish_bet_updated

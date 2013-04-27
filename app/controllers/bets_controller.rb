@@ -23,7 +23,6 @@ class BetsController < ApplicationController
     @bet = Bet.new(params[:bet])
     @bet.offerer = current_user
     @bet.match = @match
-    @bet.match_hash = params[:match_hash]
 
     @bet.offerer_choice = @offerer_choice
     @bet.offerer_choice_name = @offerer_choice.try(:display_name)
