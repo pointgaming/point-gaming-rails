@@ -1,0 +1,20 @@
+<%= javascript_include_tag "desktop_client" %>
+
+<div id="desktop-client-required-modal" class="modal hide fade" tabindex="-1">
+  <div class="modal-header">
+    <h2><%=t '.desktop_client_required_modal.title' %></h2>
+  </div>
+
+  <div id="desktop-client-action-container" class="hidden"></div>
+
+  <div class="modal-body">
+    <p>This action requires the Point Gaming desktop client to be installed on your computer.</p>
+    <p>Please download and install the desktop client, then try again.</p>
+  </div>
+
+  <div class="modal-footer">
+    <%= link_to t('.try_again', default: t("helpers.links.try_again")), '#', :class => 'btn pull-left', 'data-action' => 'tryAgain' %>
+    <%= link_to t('.download', default: t("helpers.links.download")), '/system/desktop_client/PointGamingDesktop.msi', :class => 'btn' %>
+    <%= link_to t('.cancel', default: t("helpers.links.cancel")), '#', :class => 'btn', 'data-dismiss' => 'modal' %>
+  </div>
+</div>

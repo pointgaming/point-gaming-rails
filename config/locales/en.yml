@@ -37,3 +37,7 @@ en:
       stream: "Stream"
       team: "Team"
       user: "User"
+  shared:
+    desktop_client_helper:
+      desktop_client_required_modal:
+        title: 'Desktop Client Required'

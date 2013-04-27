@@ -28,8 +28,11 @@
       }
 
       PointGaming.socketio_uri = "<%= APP_CONFIG['socketio_uri'] %>";
-      <% if current_user && session[:auth_token] %>
-        PointGaming.authToken = "<%= session[:auth_token] %>";
+      <% if current_user %>
+        <% if session[:auth_token] %>
+          PointGaming.authToken = "<%= session[:auth_token] %>";
+        <% end %>
+        PointGaming.username = "<%= current_user.username %>";
       <% end %>
     <% end %>
   </head>

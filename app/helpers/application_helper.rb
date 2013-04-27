@@ -19,6 +19,10 @@ module ApplicationHelper
       APP_CONFIG['store_url']
     end
 
+    def lobby_path(game)
+      "PointGaming:lobby:#{game._id}"
+    end
+
     def devise_mapping
       @devise_mapping ||= Devise.mappings[:user]
     end

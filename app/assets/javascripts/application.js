@@ -13,6 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require jquery.remotipart
+//= require jquery.cookie
 //= require twitter/bootstrap/bootstrap-dropdown
 //= require twitter/bootstrap/bootstrap-tooltip
 //= require twitter/bootstrap/bootstrap-popover
@@ -28,4 +29,5 @@
 
 $(function(){
   new PointGaming.ToolbarController();
+  new PointGaming.DesktopController();
 });

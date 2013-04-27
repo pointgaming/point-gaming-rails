@@ -1,5 +1,7 @@
 <%- model_class = Game -%>
 
+<%= render partial: 'shared/desktop_client_helper' %>
+
 <table class="table table-bordered table-striped">
   <thead>
     <tr>
@@ -11,7 +13,7 @@
   <tbody>
     <% @games.each do |game| %>
       <tr>
-        <td><%= link_to game.name, game_path(game) %></td>
+        <td><%= link_to game.name, lobby_path(game), :class => 'requires-desktop-client', :'data-action' => 'joinLobby' %></td>
         <td><%= game.player_count %></td>
         <td><%= "n/a" %></td>
       </tr>
