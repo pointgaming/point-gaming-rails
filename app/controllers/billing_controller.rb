@@ -1,4 +1,5 @@
 class BillingController < ApplicationController
+  ssl_required :new, :edit, :show, :create, :update
   before_filter :authenticate_user!
   before_filter :ensure_stripe_token, only: [:create, :update]
   before_filter :ensure_user_needs_new_token, only: [:new, :create]

@@ -22,13 +22,13 @@
               <li><%= link_to "Friends", friends_path %></li>
               <li><%= link_to "Settings", settings_path %></li>
               <li class="divider"></li>
-              <li><%= link_to "Logout", destroy_user_session_path, :method=>'delete' %></li>
+              <li><%= link_to "Logout", destroy_user_session_path(secure: true), :method=>'delete' %></li>
             </ul>
         </li>
       <% else %>
-        <li><%= link_to("Login", new_user_session_path, :class => "") %></li>
+        <li><%= link_to("Login", new_user_session_path(secure: true), :class => "") %></li>
         <%- if devise_mapping.registerable? && controller_name != 'registrations' %>
-          <li><%= link_to("Register", new_user_registration_path, :class => "") %></li>
+          <li><%= link_to("Register", new_user_registration_path(secure: true), :class => "") %></li>
         <% end %>
       <% end %>
     </ul>

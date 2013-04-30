@@ -1,9 +1,14 @@
 class Api::ApplicationController < ActionController::Base
+  include ::SslRequirement
   rescue_from ::PermissionDenied, :with => :render_permission_denied
   rescue_from ::UnprocessableEntity, :with => :render_unprocessable_entity
   rescue_from ::Mongoid::Errors::DocumentNotFound, :with => :render_not_found
 
-private
+protected
+
+  def ssl_required?
+    true
+  end
 
   def authenticate_node_api
     params[:api_token] && params[:api_token] === APP_CONFIG['node_api_auth_token']

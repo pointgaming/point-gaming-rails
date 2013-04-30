@@ -1,4 +1,6 @@
 class Admin::ApplicationController < ApplicationController
+  include ::SslRequirement
+
   before_filter :authenticate_user!
   before_filter :ensure_admin
 
@@ -6,7 +8,11 @@ class Admin::ApplicationController < ApplicationController
     "admin"
   end
 
-private
+protected
+
+  def ssl_required?
+    true
+  end
 
   def ensure_admin
     raise ::PermissionDenied unless current_user.admin?

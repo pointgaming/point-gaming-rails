@@ -2,6 +2,8 @@ source 'https://rubygems.org'
 
 gem 'rails', '3.2.12'
 
+gem 'bartt-ssl_requirement', '~>1.4.0', :require => 'ssl_requirement'
+
 gem 'bunny', '>= 0.9.0.pre6'
 gem 'mongoid', "~> 3.0.0"
 gem 'redis-rails'
