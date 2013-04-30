@@ -19,10 +19,10 @@ test:
 production:
   <<: *DEFAULTS
   socketio_uri: https://socket.pointgaming.com/
-  store_url: https://store.pointgaming.com/
+  store_url: http://store.pointgaming.com/
   store_api_url: https://store.pointgaming.com/private/api/
   store_api_auth_token: '25ds-45p56q63-56b75s5m-ndma2fd86gkjo4n6-5124z5568-68f9s'
-  forum_url: https://forums.pointgaming.com/
+  forum_url: http://forums.pointgaming.com/
   forum_api_url: https://forums.pointgaming.com/private/api/
   forum_api_auth_token: '25ds-45p56q63-56b75s5m-ndma2fd86gkjo4n6-5124z5568-68f9s'
   node_api_auth_token: '25ds-45p56q63-56b75s5m-ndma2fd86gkjo4n6-5124z5568-68f9s'
