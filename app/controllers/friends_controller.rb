@@ -3,7 +3,7 @@ class FriendsController < ApplicationController
     @friends = current_user.friends.all
     @incoming_friend_requests = FriendRequest.where(friend_request_user_id: current_user.id)
     @outgoing_friend_requests = FriendRequest.where(user_id: current_user.id)
-    @blocked_users = []
+    @blocked_users = current_user.blocked_users.all
   end
 
   def destroy

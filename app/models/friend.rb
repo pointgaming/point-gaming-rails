@@ -1,7 +1,7 @@
 class Friend
   include Mongoid::Document
 
-  field :_id, :type => String, :default => proc{ self.user_id + "-" + self.friend_user_id }
+  field :_id, :type => String, :default => proc{ "#{self.user_id}-#{self.friend_user_id}" }
 
   validates :_id, :uniqueness=>true
 

@@ -11,6 +11,7 @@ Pointgaming::Application.routes.draw do
   end
   resources :friend_requests
   resources :friends
+  resources :blocked_users, only: [:index, :create, :destroy]
   resources :leagues
   resources :tournaments
   resources :streams, controller: 'streams', as: 'streams', only: [:index, :create]
@@ -63,7 +64,6 @@ Pointgaming::Application.routes.draw do
       resources :sessions
       resources :friends
       resources :friend_requests
-      resources :ignores
       resources :matches, only: [:update] do
         member do
           put 'start'

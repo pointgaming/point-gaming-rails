@@ -94,7 +94,7 @@ class User
   has_many :auth_tokens, :validate=>false
   has_many :coins, :validate=>false
   has_many :friends, :validate=>false
-  has_many :ignores, :validate=>false
+  has_many :blocked_users, :validate=>false
   has_many :configs, class_name: 'UserConfig'
 
   accepts_nested_attributes_for :profile
@@ -132,6 +132,10 @@ class User
 
   def stream_limit
     50
+  end
+
+  def blocked_user?(user)
+    BlockedUser.where(user_id: self._id, blocked_user_id: user._id).exists?
   end
 
   def friend_request_sent?(user)
