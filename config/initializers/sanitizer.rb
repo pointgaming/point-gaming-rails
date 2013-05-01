@@ -8,8 +8,10 @@ embedded_transformer = lambda {|options|
 
 Sanitize::Config::EMBEDDED_CONTENT = {
   :elements => %w[
-    iframe object param a
+    iframe object param
   ],
+
+  remove_contents: true,
 
   :attributes => {
     :all => ['dir', 'lang', 'title'],
