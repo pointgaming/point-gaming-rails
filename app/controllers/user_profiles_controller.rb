@@ -5,6 +5,9 @@ class UserProfilesController < ApplicationController
   before_filter :ensure_user_profile, except: [:subregion_options]
   before_filter :ensure_friends, except: [:subregion_options]
   before_filter :ensure_user_id_is_current_user, only: [:edit, :update]
+  before_filter :lookup_game, only: [:update]
+
+  respond_to :html, :json
 
   def show
     @matches = []
@@ -15,18 +18,17 @@ class UserProfilesController < ApplicationController
   end
 
   def update
+    params[:user].delete("username")
     if params[:user][:password].blank?
       params[:user].delete("password")
       params[:user].delete("password_confirmation")
     end
 
-    params[:user].delete("username")
+    params[:user][:game] = @game
 
-    if @user.update_attributes(params[:user])
-      redirect_to user_path(@user)
-    else
-      render :action => :edit
-    end
+    @user.update_attributes(params[:user])
+
+    respond_with(@user)
   end
 
   def subregion_options
@@ -59,4 +61,11 @@ protected
       raise ::PermissionDenied
     end
   end
+
+  def lookup_game
+    @game = Game.find params[:user][:game_id] if params[:user][:game_id].present?
+  rescue Mongoid::Errors::DocumentNotFound
+    # @game is not required; no big deal
+  end
+
 end

@@ -91,6 +91,12 @@
           <%= model.time_zone %>
         </div>
       </div>
+      <div class="control-group span4">
+        <label><%= User.human_attribute_name(:game_id) %></label>
+        <div class="controls">
+          <%= model.game.try(:display_name) %>
+        </div>
+      </div>
     </div>
   </div>
 </div>

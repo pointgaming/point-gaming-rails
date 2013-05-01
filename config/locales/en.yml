@@ -29,6 +29,8 @@ en:
         created_at: 'Joined at'
       tournament:
         start_datetime: 'Start Date'
+      user:
+        game_id: 'Primary Game'
   search:
     type:
       spree/product: "Store"

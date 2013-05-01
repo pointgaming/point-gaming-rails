@@ -105,6 +105,12 @@
           <%= f.time_zone_select :time_zone %>
         </div>
       </div>
+      <div class="control-group span4">
+        <%= f.label :game_id %>
+        <div class="controls">
+          <%= f.select :game_id, Game.all.collect {|g| [g.display_name, g._id] }, include_blank: '- Select -' %>
+        </div>
+      </div>
     </div>
   </div>
 </div>

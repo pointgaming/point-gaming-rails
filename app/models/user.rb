@@ -76,7 +76,7 @@ class User
 
   attr_accessible :username, :first_name, :last_name, :email, :password, :password_confirmation, 
                   :remember_me, :status, :birth_date, :age, :phone, :profile_attributes, 
-                  :avatar, :country, :state
+                  :avatar, :country, :state, :game
 
   validates_presence_of :username, :slug, :first_name, :last_name
   validates_uniqueness_of :username, :slug, :email, :case_sensitive => false
@@ -84,6 +84,8 @@ class User
   validates :username, :format => {:with => APP_CONFIG[:display_name_regex], message: APP_CONFIG[:display_name_regex_message]}
 
   belongs_to :profile
+
+  belongs_to :game
 
   belongs_to :team
 
