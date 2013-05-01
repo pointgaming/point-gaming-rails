@@ -42,6 +42,8 @@
       <%= render 'shared/navbar', :locals => {:current_path => @current_path} %>
 
       <div id="main">
+        <%= render partial: 'shared/desktop_client_helper' %>
+
         <% if controller.respond_to?(:sub_layout) && controller.sub_layout %>
           <%= render :partial=>"layouts/#{controller.sub_layout}" %>
         <% else %>

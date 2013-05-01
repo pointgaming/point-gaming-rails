@@ -18,7 +18,7 @@ class Game
   end
 
   def url
-    game_url(self)
+    "PointGaming:lobby:#{self._id}"
   end
 
   def mq_exchange

@@ -53,6 +53,7 @@ function ($) {
         this.source = this.options.source || this.source;        
         this.next = this.options.next || this.next;        
         this.prev = this.options.prev || this.prev;        
+        this.mouseenter = this.options.mouseenter || this.mouseenter;        
                 
         if (!this.source.length) {
             var ajax = this.options.ajax;

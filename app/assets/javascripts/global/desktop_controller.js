@@ -1,65 +1,80 @@
 var PointGaming = PointGaming || {};
 
 PointGaming.DesktopController = function(){
-  this.PageDecorator = {
-    clientInstalled: function() {
-      this.removeClasses();
-      $('.requires-desktop-client').addClass('client-installed');
+  this.client_checker = new PointGaming.ClientChecker({});
+
+  this.element_decorator = {
+    clientInstalled: function(element) {
+      this.removeClasses(element);
+      element.addClass('client-installed');
     },
-    clientNotInstalled: function() {
-      this.removeClasses();
-      $('.requires-desktop-client').addClass('client-not-installed');
+    clientNotInstalled: function(element) {
+      this.removeClasses(element);
+      element.addClass('client-not-installed');
     },
-    clientOutOfDate: function() {
-      this.removeClasses();
-      $('.requires-desktop-client').addClass('client-out-of-date');
+    clientOutOfDate: function(element) {
+      this.removeClasses(element);
+      element.addClass('client-out-of-date');
     },
-    removeClasses: function() {
-      $('.requires-desktop-client').removeClass('client-installed client-not-installed client-out-of-date');
+    removeClasses: function(element) {
+      element.removeClass('check-for-client client-installed client-not-installed client-out-of-date');
     }
   };
 
-  this.checkForClient();
+  if ($('a.requires-desktop-client').length > 0) {
+    this.checkForClient();
+  }
+
   this.registerHandlers();
 };
 
-PointGaming.DesktopController.prototype.checkForClient = function(callback) {
+PointGaming.DesktopController.prototype.decorateElement = function(element) {
+  element = element || $('.requires-desktop-client');
+  if (this.client_checker.clientInstalled) {
+    if (this.client_checker.clientOutOfDate) {
+      this.element_decorator.clientOutOfDate(element);
+    } else {
+      this.element_decorator.clientInstalled(element);
+    }
+  } else {
+    this.element_decorator.clientNotInstalled(element);
+  }
+};
+
+PointGaming.DesktopController.prototype.checkForClient = function(callback, recheck) {
   var self = this;
 
-  this.client_checker = new PointGaming.ClientChecker({}, function(err, client_checker){
-    if (client_checker.clientInstalled) {
-      if (client_checker.clientOutOfDate) {
-        self.PageDecorator.clientOutOfDate();
-      } else {
-        self.PageDecorator.clientInstalled();
-      }
-    } else {
-      self.PageDecorator.clientNotInstalled();
-    }
+  this.client_checker.checkClientInstalled(function(err, client_checker){
+    self.decorateElement();
 
     if (typeof(callback) === 'function') {
       callback(err, client_checker);
     }
-  });
+  }, recheck);
 };
 
 PointGaming.DesktopController.prototype.registerHandlers = function() {
+  var self = this;
+
   $(document).on('click', 'a.requires-desktop-client.client-installed[data-action="joinLobby"]', this.joinLobby.bind(this));
   $(document).on('click', 'a.requires-desktop-client.client-not-installed[data-action="joinLobby"]', this.displayClientRequiredModal.bind(this));
 
-  $(document).on('click', '#desktop-client-required-modal a[data-action="tryAgain"]', this.recheckForClient.bind(this));
-};
+  $(document).on('click', 'a.requires-desktop-client.check-for-client', function(e) {
+    var action = $(e.target);
 
-PointGaming.DesktopController.prototype.recheckForClient = function(e) {
-  var action = $('#desktop-client-required-modal #desktop-client-action-container :first-child');
+    self.checkForClient(function(err, client_checker) {
+      self.decorateElement(action);
+      action.click();
+    });
+  });
+  $(document).on('click', '#desktop-client-required-modal a[data-action="tryAgain"]', function() {
+    var action = $('#desktop-client-required-modal #desktop-client-action-container :first-child');
 
-  this.client_checker.setClientInstalled(false);
-  this.client_checker.setClientVersion(null);
+    $('#desktop-client-required-modal').modal('hide');
 
-  $('#desktop-client-required-modal').modal('hide');
-
-  this.checkForClient(function(err, client_checker) {
-    action.click();
+    self.checkForClient(function(err, client_checker) {
+      action.click();
+    }, true);
   });
 };
 
@@ -77,7 +92,6 @@ PointGaming.DesktopController.prototype.joinLobby = function(e) {
     .fail(function(jqXHR, textStatus){
       $('body').modalmanager('loading');
 
-      console.log('AJAX Request Failed: ' + textStatus);
       self.displayClientRequiredModal(e);
     });
 

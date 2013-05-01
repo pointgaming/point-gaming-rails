@@ -9,7 +9,11 @@
     <% @results.each do |result| %>
       <tr>
         <td>
-          <%= link_to result.display_name, result.url %>
+          <% if result.type === 'game' %>
+            <%= link_to_lobby result %>
+          <% else %>
+            <%= link_to result.display_name, result.url %>
+          <% end %>
           <% if result.description %>
             <p><%= result.description %></p>
           <% end %>
