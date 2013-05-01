@@ -14,6 +14,7 @@ class Match
   field :map, :type => String, :default => ''
   field :state, :type => String
   field :match_hash, :type => String
+  field :default_offerer_odds, :type => String
 
   workflow_column :state
   workflow do
@@ -42,6 +43,7 @@ class Match
   validates :map, :presence=>true
   validates :game, :presence=>true
   validate :check_winner
+  validate :check_default_offerer_odds
 
   attr_writer :player_1_name, :player_2_name
   
@@ -79,6 +81,10 @@ class Match
   end
 
 private
+
+  def check_default_offerer_odds
+    errors.add(:default_offerer_odds, "is required") if self.room_type === 'GameRoom' && self.default_offerer_odds.blank?
+  end
 
   def check_winner
     if self.state != 'new'

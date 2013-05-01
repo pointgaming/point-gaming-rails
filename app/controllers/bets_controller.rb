@@ -23,6 +23,7 @@ class BetsController < ApplicationController
     @bet = Bet.new(params[:bet])
     @bet.offerer = current_user
     @bet.match = @match
+    @bet.offerer_odds = @match.default_offerer_odds if @match.room_type === 'GameRoom'
 
     @bet.offerer_choice = @offerer_choice
     @bet.offerer_choice_name = @offerer_choice.try(:display_name)
