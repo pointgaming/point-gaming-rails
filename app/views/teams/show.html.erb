@@ -47,6 +47,12 @@
           <%= @team.member_count %>
         </div>
       </div>
+      <div class="control-group">
+        <label><%= model_class.human_attribute_name(:points) %></label>
+        <div class="controls">
+          <%= @team.members.all.map{|m| m.user.try(:points) }.reduce(:+) %>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -69,6 +75,7 @@
           <thead>
             <tr>
               <th><%= TeamMember.human_attribute_name(:user) %></th>
+              <th><%= User.human_attribute_name(:points) %></th>
               <th><%= TeamMember.human_attribute_name(:rank) %></th>
               <th><%= TeamMember.human_attribute_name(:created_at) %></th>
               <th><%=t '.actions', :default => t("helpers.actions") %></th>
@@ -78,6 +85,7 @@
             <% @team.members.each do |member| %>
               <tr>
                 <td><%= member.user.try(:username) %></td>
+                <td><%= member.user.try(:points) %></td>
                 <td><%= member.rank %></td>
                 <td><%= ldate member.created_at %></td>
                 <td>
