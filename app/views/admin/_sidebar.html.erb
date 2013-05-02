@@ -5,4 +5,8 @@
   <% if can? :manage, News %>
     <%= navItem "News", admin_news_index_path %>
   <% end %>
+  <% if can? :manage, SubscriptionFeature %>
+    <%= navItem "Subscription Features",  admin_subscription_features_path %>
+    <%= navItem "Subscription Types",  admin_subscription_types_path %>
+  <% end %>
 </ul>

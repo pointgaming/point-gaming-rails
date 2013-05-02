@@ -1,0 +1,34 @@
+<%= form_for [:admin, @subscription_type], :html => { :class => 'form-horizontal' } do |f| %>
+  <div class="control-group">
+    <%= f.label :name, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :name, :class => 'text_field' %>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <%= f.label :sort_order, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :sort_order, :class => 'text_field' %>
+    </div>
+  </div>
+
+  <fieldset>
+    <legend>Subscription Features</legend>
+
+    <% @subscription_features.each do |sub_feature| %>
+      <div class="control-group">
+        <%= label_tag "subscription_type_feature_values_#{sub_feature._id}", sub_feature.name, :class => 'control-label' %>
+        <div class="controls">
+          <%= text_field_tag "subscription_type[feature_values[#{sub_feature._id}]]", @subscription_type.value_for_feature(sub_feature), :class => 'text_field' %>
+        </div>
+      </div>
+    <% end %>
+  </fieldset>
+
+  <div class="form-actions">
+    <%= f.submit nil, :class => 'btn' %>
+    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                admin_subscription_types_path, :class => 'btn' %>
+  </div>
+<% end %>

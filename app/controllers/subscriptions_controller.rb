@@ -6,7 +6,8 @@ class SubscriptionsController < ApplicationController
   end
 
   def index
-
+    @subscription_features = SubscriptionFeature.order_by(:sort_order => 'ASC').all
+    @subscription_types = SubscriptionType.order_by(:sort_order => 'ASC').all
   end
 
   def new

@@ -53,6 +53,8 @@ Pointgaming::Application.routes.draw do
     resources :groups do
       resources :users, controller: 'group_users'
     end
+    resources :subscription_features
+    resources :subscription_types
     resources :news
   end
 

@@ -2,26 +2,20 @@
   <thead>
     <tr>
       <th></th>
-      <th>Free</th>
-      <th>Pro $5 or 550 Points</th>
+      <% @subscription_types.each do |sub_type| %>
+        <th><%= sub_type.name %></th>
+      <% end %>
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <td>Feature 1</td>
-      <td>Yes</td>
-      <td>Yes</td>
-    </tr>
-    <tr>
-      <td>Feature 2</td>
-      <td>Yes</td>
-      <td>Yes</td>
-    </tr>
-    <tr>
-      <td>Feature 3</td>
-      <td>No</td>
-      <td>Yes</td>
-    </tr>
+    <% @subscription_features.each do |sub_feature| %>
+      <tr>
+        <td><%= sub_feature.name %></td>
+        <% @subscription_types.each do |sub_type| %>
+          <td><%= sub_type.value_for_feature(sub_feature) %></td>
+        <% end %>
+      </tr>
+    <% end %>
   </tbody>
 </table>
 
