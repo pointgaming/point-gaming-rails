@@ -1,5 +1,6 @@
 class Admin::GroupUsersController < Admin::ApplicationController
   before_filter :ensure_group
+  before_filter :ensure_username_params, only: [:create]
   before_filter :ensure_user_lookup, only: [:create]
   before_filter :ensure_user, only: [:destroy]
   before_filter :ensure_user_not_in_group, only: [:create]
@@ -22,43 +23,36 @@ protected
 
   def ensure_group
     @group = Group.find params[:group_id]
-
-    unless @group
-      respond_to do |format|
-        format.html { redirect_to edit_admin_group_path(@group), alert: "Invalid gorup." }
-        format.json { render json: [], status: :unprocessable_entity }
-      end
+  rescue Mongoid::Errors::DocumentNotFound
+    respond_with(@group, status: :unprocessable_entity) do |format|
+      format.html { redirect_to :back, alert: "Invalid gorup" }
     end
   end
 
-  def ensure_user_lookup
+  def ensure_username_params
     params[:user][:username] ||= nil
-    @user = User.where(username: params[:user][:username]).first
+  end
 
-    unless @user
-      respond_to do |format|
-        format.html { redirect_to edit_admin_group_path(@group), alert: "The specified user was not found." }
-        format.json { render json: [], status: :unprocessable_entity }
-      end
+  def ensure_user_lookup
+    @user = User.find_by(username: params[:user][:username])
+  rescue Mongoid::Errors::DocumentNotFound
+    respond_with(@user, status: :unprocessable_entity) do |format|
+      format.html { redirect_to :back, alert: "The specified user was not found" }
     end
   end
 
   def ensure_user
     @user = User.find(params[:id])
-
-    unless @user
-      respond_to do |format|
-        format.html { redirect_to edit_admin_group_path(@group), alert: "The specified user was not found." }
-        format.json { render json: [], status: :unprocessable_entity }
-      end
+  rescue Mongoid::Errors::DocumentNotFound
+    respond_with(@user, status: :unprocessable_entity) do |format|
+      format.html { redirect_to :back, alert: "The specified user was not found" }
     end
   end
 
   def ensure_user_not_in_group
-    unless @user.group.nil?
-      respond_to do |format|
-        format.html { redirect_to edit_admin_group_path(@group), alert: "The specified user is already in a group." }
-        format.json { render json: [], status: :unprocessable_entity }
+    if @user.group.present?
+      respond_with(nil, status: :unprocessable_entity) do |format|
+        format.html { redirect_to :back, alert: "The specified user is already in a group" }
       end
     end
   end

@@ -10,36 +10,29 @@ protected
     true
   end
 
-  def authenticate_node_api
-    params[:api_token] && params[:api_token] === APP_CONFIG['node_api_auth_token']
+  def api_token_present?
+    params[:api_token].present?
+  end
+
+  def valid_api_token?(token)
+    api_token_present? && params[:api_token] === token
   end
 
   def authenticate_node_api!
-    render_unauthorized unless authenticate_node_api
-  end
-
-  def authenticate_store_api
-    params[:api_token] && params[:api_token] === APP_CONFIG['store_api_auth_token']
+    render_unauthorized unless valid_api_token?(APP_CONFIG['node_api_auth_token'])
   end
 
   def authenticate_store_api!
-    render_unauthorized unless authenticate_spree_api
-  end
-
-  def authenticate_forum_api
-    params[:api_token] && params[:api_token] === APP_CONFIG['forum_api_auth_token']
+    render_unauthorized unless valid_api_token?(APP_CONFIG['store_api_auth_token'])
   end
 
   def authenticate_forum_api!
-    render_unauthorized unless authenticate_forum_api
-  end
-
-  def authenticate_rails_app_api
-    authenticate_store_api || authenticate_forum_api
+    render_unauthorized unless valid_api_token?(APP_CONFIG['forum_api_auth_token'])
   end
 
   def authenticate_rails_app_api!
-    render_unauthorized unless authenticate_rails_app_api
+    render_unauthorized unless valid_api_token?(APP_CONFIG['store_api_auth_token']) || 
+                               valid_api_token?(APP_CONFIG['forum_api_auth_token'])
   end
 
   def render_not_found
