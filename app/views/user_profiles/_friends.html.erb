@@ -1,25 +1,25 @@
-<div class="widget widget-table action-table">
+<div id="friends-widget" class="widget widget-table action-table">
   <div class="widget-header">
     <i class="icon-th"></i>
     <h3>Friends</h3>
   </div>
-  <div class="widget-content">
+  <div class="widget-content scrollable">
     <table class="table table-bordered table-striped">
       <thead>
         <tr>
           <th>Username</th>
-          <th>Points</th>
-          <th>Team</th>
-          <th><%=t '.actions', :default => t("helpers.actions") %></th>
+          <th width="100">Points</th>
+          <th width="100">Team</th>
+          <th width="100"><%=t '.actions', :default => t("helpers.actions") %></th>
         </tr>
       </thead>
       <tbody>
         <% models.each do |friend| %>
           <tr>
-            <td><%= friend.username %></td>
-            <td><%= friend.points %></td>
-            <td><%= friend.team.try(:name) %></td>
-            <td>
+            <td><%= link_to friend.username, friend %></td>
+            <td width="100"><%= friend.points %></td>
+            <td width="100"><%= friend.team.try(:name) %></td>
+            <td width="100">
               <% unless friend._id === current_user._id || user._id === current_user._id %>
                 <%= link_to 'Send Friend Request',
                       friend_requests_path(username: friend.username),
