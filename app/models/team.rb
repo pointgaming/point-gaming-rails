@@ -51,15 +51,14 @@ class Team
       analyzer: {
         partial_match: {
           tokenizer: :whitespace,
-          filter: [:lowercase, :edge_ngram]
+          filter: [:lowercase, :ngram]
         }
       },
       filter: {
-        edge_ngram: {
-            side: :front,
+        ngram: {
             max_gram: 20,
             min_gram: 1,
-            type: :edgeNGram
+            type: :nGram
         }
       }
     } do
