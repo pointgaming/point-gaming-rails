@@ -23,6 +23,10 @@ class Team
     self.slug
   end
 
+  def points
+    self.members.all.map{|m| m.user.try(:points) }.reduce(:+)
+  end
+
   def display_name
     name
   end

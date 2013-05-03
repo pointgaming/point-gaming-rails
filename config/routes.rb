@@ -85,6 +85,7 @@ Pointgaming::Application.routes.draw do
   end
 
   get '/desktop_client/version', to: 'site#desktop_version'
+  get '/leaderboard', to: 'site#leaderboard'
 
   resources :news, only: [:show] do
     resources :comments, except: [:index], controller: 'news_comments'

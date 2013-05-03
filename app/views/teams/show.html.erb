@@ -50,7 +50,7 @@
       <div class="control-group">
         <label><%= model_class.human_attribute_name(:points) %></label>
         <div class="controls">
-          <%= @team.members.all.map{|m| m.user.try(:points) }.reduce(:+) %>
+          <%= @team.points %>
         </div>
       </div>
     </div>
