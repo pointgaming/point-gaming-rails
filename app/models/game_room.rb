@@ -23,14 +23,22 @@ class GameRoom
 
   # has_and_belongs_to_many :team_bots
 
-  validates :position, presence: true, uniqueness: true, numericality: {only_integer: true, greater_than: 0, less_than: 1000}
+  validates :position, presence: true, uniqueness: {scope: :game}, numericality: {only_integer: true, greater_than: 0, less_than: 1000}
   validates :max_member_count, :presence=>true
+
+  validate :check_game_room_owner_count
 
   def mq_exchange
     "GameRoom_#{_id}"
   end
 
 private
+
+  def check_game_room_owner_count
+    if GameRoom.where(game_id: self.game_id, owner_id: self.owner_id).nin(_id: self._id).exists?
+      self.errors[:base] << "User already owns a Game Room in this lobby"
+    end
+  end
 
   def publish_created
     BunnyClient.instance.publish_fanout("c.#{self.game.mq_exchange}", ::RablRails.render(self, 'api/v1/game_rooms/socket_new'))
