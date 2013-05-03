@@ -68,6 +68,9 @@ class User
   field :state
   field :points, type: Integer, default: 0
   field :stream_owner_count, :type => Integer, :default => 0
+  field :finalized_bets_count, :type => Integer, :default => 0
+  field :match_dispute_won_count, :type => Integer, :default => 0
+  field :match_dispute_lost_count, :type => Integer, :default => 0
   field :admin, :type => Boolean, :default => 0
   field :stripe_customer_token
 

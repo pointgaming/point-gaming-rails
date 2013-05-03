@@ -17,12 +17,16 @@ class FinalizeBetsJob
           bet.update_attribute(:outcome, :offerer_won)
 
           bet.offerer.inc(:points, bet.taker_wager)
+          bet.offerer.inc(:finalized_bets_count, 1)
           bet.taker.inc(:points, bet.taker_wager * -1)
+          bet.taker.inc(:finalized_bets_count, 1)
         else
           bet.update_attribute(:outcome, :taker_won)
 
           bet.taker.inc(:points, bet.offerer_wager)
+          bet.taker.inc(:finalized_bets_count, 1)
           bet.offerer.inc(:points, bet.offerer_wager * -1)
+          bet.offerer.inc(:finalized_bets_count, 1)
         end
       }
     elsif match.state === 'cancelled'
