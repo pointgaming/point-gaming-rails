@@ -66,32 +66,20 @@
         <h2>Leaderboard</h2>
       </div>
       <table>
-        <tbody><tr>
-          <th class="title">Nickname</th>
-          <th>Points</th>
-        </tr>
-        <tr>
-          <td><a href="#">Andy Lurs</a></td>
-          <td><span class="item">18 940</span></td>
-        </tr>
-        <tr>
-          <td><a href="#">Highlight Joe</a></td>
-          <td><span class="item">16 435</span></td>
-        </tr>
-        <tr>
-          <td><a href="#">Ronaldinio</a></td>
-          <td><span class="item">13 991</span></td>
-        </tr>
-        <tr>
-          <td><a href="#">FallenLeaf</a></td>
-          <td><span class="item">12 703</span></td>
-        </tr>
-        <tr class="bottom">
-          <td><a href="#">Anonimous</a></td>
-          <td><span class="item">12698</span></td>
-        </tr>
-      </tbody></table>
-      <a href="#" class="link">View all players</a>
+        <tbody>
+          <tr>
+            <th class="title"><%= User.human_attribute_name(:username) %></th>
+            <th><%= User.human_attribute_name(:points) %></th>
+          </tr>
+          <% @players.each do |user| %>
+            <tr class="<%= 'bottom' if @players.last === user %>">
+              <td><%= link_to user.display_name, user %></td>
+              <td class="item"><%= user.points %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <%= link_to "View all players", leaderboard_path, class: 'link' %>
     </div>
   </aside>
 </div>
