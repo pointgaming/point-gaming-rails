@@ -31,7 +31,7 @@ PointGaming.DesktopController = function(){
 PointGaming.DesktopController.prototype.decorateElement = function(element) {
   element = element || $('.requires-desktop-client');
   if (this.client_checker.clientInstalled) {
-    if (this.client_checker.clientOutOfDate) {
+    if (this.client_checker.isOutOfDate()) {
       this.element_decorator.clientOutOfDate(element);
     } else {
       this.element_decorator.clientInstalled(element);
@@ -57,7 +57,8 @@ PointGaming.DesktopController.prototype.registerHandlers = function() {
   var self = this;
 
   $(document).on('click', 'a.requires-desktop-client.client-installed[data-action="joinLobby"]', this.joinLobby.bind(this));
-  $(document).on('click', 'a.requires-desktop-client.client-not-installed[data-action="joinLobby"]', this.displayClientRequiredModal.bind(this));
+  $(document).on('click', 'a.requires-desktop-client.client-not-installed', this.displayClientRequiredModal.bind(this));
+  $(document).on('click', 'a.requires-desktop-client.client-out-of-date', this.displayClientOutOfDateModal.bind(this));
 
   $(document).on('click', 'a.requires-desktop-client.check-for-client', function(e) {
     var action = $(e.target);
@@ -67,10 +68,11 @@ PointGaming.DesktopController.prototype.registerHandlers = function() {
       action.click();
     });
   });
-  $(document).on('click', '#desktop-client-required-modal a[data-action="tryAgain"]', function() {
-    var action = $('#desktop-client-required-modal #desktop-client-action-container :first-child');
 
-    $('#desktop-client-required-modal').modal('hide');
+  $(document).on('click', 'a.desktop-client-required[data-action="tryAgain"]', function() {
+    var action = $('#desktop-client-action-container :first-child');
+
+    $(this).closest('.modal').modal('hide');
 
     self.checkForClient(function(err, client_checker) {
       action.click();
@@ -100,12 +102,19 @@ PointGaming.DesktopController.prototype.joinLobby = function(e) {
 
 PointGaming.DesktopController.prototype.displayClientRequiredModal = function(e) {
   e.preventDefault();
+  this.displayModal($('#desktop-client-required-modal'), $(e.target).clone());
+};
 
-  var modal = $('#desktop-client-required-modal'),
-      actionContainer = $('#desktop-client-action-container', modal);
+PointGaming.DesktopController.prototype.displayClientOutOfDateModal = function(e) {
+  e.preventDefault();
+  this.displayModal($('#desktop-client-out-of-date-modal'), $(e.target).clone());
+};
+
+PointGaming.DesktopController.prototype.displayModal = function(modal, link) {
+  var actionContainer = $('#desktop-client-action-container');
 
   actionContainer.html('');
-  actionContainer.append($(e.target).clone());
+  actionContainer.append(link);
 
   modal.modal({});
   return false;

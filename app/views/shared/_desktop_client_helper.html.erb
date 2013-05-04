@@ -1,9 +1,9 @@
+<div id="desktop-client-action-container" class="hidden"></div>
+
 <div id="desktop-client-required-modal" class="modal hide fade" tabindex="-1">
   <div class="modal-header">
     <h2><%=t '.desktop_client_required_modal.title' %></h2>
   </div>
-
-  <div id="desktop-client-action-container" class="hidden"></div>
 
   <div class="modal-body">
     <p>This action requires the Point Gaming desktop client to be installed on your computer.</p>
@@ -11,8 +11,25 @@
   </div>
 
   <div class="modal-footer">
-    <%= link_to t('.try_again', default: t("helpers.links.try_again")), '#', :class => 'btn pull-left', 'data-action' => 'tryAgain' %>
+    <%= link_to t('.try_again', default: t("helpers.links.try_again")), '#', :class => 'btn pull-left desktop-client-required', 'data-action' => 'tryAgain' %>
     <%= link_to t('.install', default: t("helpers.links.install")), '/system/desktop_client/PointGamingDesktop.msi', :class => 'btn' %>
+    <%= link_to t('.cancel', default: t("helpers.links.cancel")), '#', :class => 'btn', 'data-dismiss' => 'modal' %>
+  </div>
+</div>
+
+<div id="desktop-client-out-of-date-modal" class="modal hide fade" tabindex="-1">
+  <div class="modal-header">
+    <h2><%=t '.desktop_client_out_of_date_modal.title' %></h2>
+  </div>
+
+  <div class="modal-body">
+    <p>Your installed Point Gaming desktop client is out of date and must be updated to perform this action.</p>
+    <p>Please update your desktop client, then try again.</p>
+  </div>
+
+  <div class="modal-footer">
+    <%= link_to t('.try_again', default: t("helpers.links.try_again")), '#', :class => 'btn pull-left desktop-client-required', 'data-action' => 'tryAgain' %>
+    <%= link_to t('.update', default: t("helpers.links.update")), '/system/desktop_client/PointGamingDesktop.msp', :class => 'btn' %>
     <%= link_to t('.cancel', default: t("helpers.links.cancel")), '#', :class => 'btn', 'data-dismiss' => 'modal' %>
   </div>
 </div>

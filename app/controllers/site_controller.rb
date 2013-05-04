@@ -1,10 +1,7 @@
 class SiteController < ApplicationController
 
   def desktop_version
-    version = SiteSetting.find_by(key: 'desktop_version')
-    render json: {version: version.value}
-  rescue Mongoid::Errors::DocumentNotFound
-    render json: {}, status: 404
+    render json: {version: desktop_client_latest_version}
   end
 
   def leaderboard

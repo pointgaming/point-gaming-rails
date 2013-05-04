@@ -43,3 +43,5 @@ en:
     desktop_client_helper:
       desktop_client_required_modal:
         title: 'Desktop Client Required'
+      desktop_client_out_of_date_modal:
+        title: 'Desktop Client Upgrade Required'
