@@ -57,7 +57,7 @@ Pointgaming::Application.configure do
 
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
   # config.assets.precompile += %w( search.js )
-  config.assets.precompile += %w( profile.js stream.js team.js user_streams.js admin/groups.js billing.js news.js )
+  config.assets.precompile += %w( profile.js stream.js team.js user_streams.js admin/groups.js billing.js subscriptions.js news.js )
 
   # compile fonts
   config.assets.precompile += %w( .svg .eot .woff .ttf )
