@@ -1,0 +1,56 @@
+<%= javascript_include_tag "https://js.stripe.com/v1/" %>
+<%= javascript_include_tag "subscriptions" %>
+
+<%= form_for @subscription, html: { id: 'credit-card-form', :class => 'subscriptions form-horizontal' } do |f| %>
+  <fieldset>
+    <legend>Subscription Information</legend>
+
+    <span class="subscription-errors"></span>
+    <%= render partial: 'shared/form_errors', locals: {model: @subscription_order_processor} %>
+
+    <%= fields_for @subscription_order_processor do |order| %>
+      <div class="control-group">
+        <%= order.label :length, :class => 'control-label' %>
+        <div class="controls">
+          <%= order.select :length, term_options(@subscription.expiration_date), {include_blank: '- Select -'}, {:'data-hook' => 'subscription-term'} %>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="summary">
+      <% unless @subscription.new_record? %>
+        <div class="control-group">
+          <%= label_tag :expiration, 'Current Expiration Date', :class => 'control-label' %>
+          <div class="controls">
+            <%= ldate @subscription.expiration_date %>
+          </div>
+        </div>
+      <% end %>
+      <div class="control-group">
+        <%= label_tag :expiration, 'New Expiration Date', :class => 'control-label' %>
+        <div class="controls">
+          <span data-hook="subscription-expiration-date">
+            <% if @subscription_order_processor.length %>
+              <%= term_expiration_date(@subscription_order_processor.length.to_i, @subscription.expiration_date || Date.today) %>
+            <% else %>
+              No Change
+            <% end %>
+          </span>
+        </div>
+      </div>
+      <div class="control-group">
+        <%= label_tag :total, 'Total', :class => 'total control-label' %>
+        <div class="controls">
+          <span data-hook="subscription-total"><%= number_to_currency(@subscription_order_processor.order.try(:total) || 0) %></span>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+
+  <%= render partial: 'billing/fields', locals: { allow_payment_profile: true } %>
+
+  <div class="form-actions">
+    <%= submit_tag :Purchase, :class => 'btn' %>
+    <%= link_to t('.cancel', default: t("helpers.links.cancel")), subscriptions_path, :class => 'btn' %>
+  </div>
+<% end %>

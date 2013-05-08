@@ -5,10 +5,10 @@ en:
   hello: "Hello world"
   date:
     formats:
-      default: ! '%Y/%m/%d'
+      default: ! '%m/%d/%Y'
   time:
     formats:
-      default: ! '%Y/%m/%d %I:%M %p'
+      default: ! '%m/%d/%Y %I:%M %p'
   mongoid:
     models:
       team_member: 'Member'

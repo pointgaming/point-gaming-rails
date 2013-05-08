@@ -1,6 +1,15 @@
 jQuery(function($) {
   Stripe.setPublishableKey($('meta[name="stripe-key"]').attr('content'));
 
+  $(document).on('change', 'select[data-hook="subscription-term"]', function(){
+    var selected_option = $(':selected', this),
+        price = selected_option.data('price') || '$0.00',
+        expiration = selected_option.data('expiration-date') || 'No Change';
+
+    $('span[data-hook="subscription-expiration-date"]').html(expiration);
+    $('span[data-hook="subscription-total"]').html(price);
+  });
+
   var stripeResponseHandler = function (_status, response) {
     var form = $("#credit-card-form");
 
@@ -17,9 +26,24 @@ jQuery(function($) {
     }
   };
 
+  var validateForm = function(form) {
+    if ( $(':selected', 'select[data-hook="subscription-term"]').val() === '' ) {
+      form.find(".subscription-errors").text('Term is required.');
+      return false;
+    }
+    return true;
+  };
+
   $("#credit-card-form").submit(function () {
     var form = $(this),
         use_payment_profile_field = $('input[name="use_payment_profile"]', form);
+
+    form.find(".subscription-errors").text('');
+    form.find(".payment-errors").text('');
+
+    if (!validateForm(form)) {
+      return false;
+    }
 
     if (use_payment_profile_field.length && use_payment_profile_field.is(':checked')) {
       return true;

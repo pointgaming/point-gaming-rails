@@ -36,7 +36,12 @@ Pointgaming::Application.routes.draw do
   resources :settings
   resources :billing, except: [:index]
   resources :bet_history
-  resources :subscriptions, only: [:index, :new, :create]
+  resources :orders, only: [:show]
+  resources :subscriptions, only: [:index, :new, :create, :edit, :update] do
+    collection do
+      get 'current'
+    end
+  end
   resources :user_streams do
     resources :collaborators, only: [:index, :new, :create, :destroy]
     member do

@@ -1,0 +1,26 @@
+<%- model_class = Order -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => model_class.model_name.human.pluralize %></h1>
+</div>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th><%= model_class.human_attribute_name(:_id) %></th>
+      <th><%= model_class.human_attribute_name(:item_total) %></th>
+      <th><%= model_class.human_attribute_name(:tax) %></th>
+      <th><%= model_class.human_attribute_name(:total) %></th>
+      <th><%= model_class.human_attribute_name(:created_at) %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @orders.each do |order| %>
+      <tr>
+        <td><%= link_to order._id, order_path(order) %></td>
+        <td><%= order.item_total %></td>
+        <td><%= order.tax %></td>
+        <td><%= order.total %></td>
+        <td><%=l order.created_at %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -99,8 +99,25 @@ class User
   has_many :friends, :validate=>false
   has_many :blocked_users, :validate=>false
   has_many :configs, class_name: 'UserConfig'
+  has_many :subscriptions
+  has_many :orders
 
   accepts_nested_attributes_for :profile
+
+  def increment_points!(amount)
+    raise TypeError, "Amount must be a Fixnum." unless points.class.name === 'Fixnum'
+
+    point_transaction = PointTransaction.new(amount: amount, user: self)
+    if point_transaction.save
+      # FIXME: upgrade mongoid to >4.0.0 for this to work correctly
+      unless inc(:points, points)
+        point_transaction.destroy
+        raise 'Failed to increment points.'
+      end
+    else
+      raise 'Unable to increment points. Failed to log the point transaction.'
+    end
+  end
 
   def age
     return "" unless birth_date?
@@ -127,6 +144,10 @@ class User
 
   def display_name
     username
+  end
+
+  def has_active_subscription?
+    subscriptions.active.first.present?
   end
 
   def has_stripe_token?

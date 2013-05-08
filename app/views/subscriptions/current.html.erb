@@ -1,0 +1,37 @@
+<div class="widget">
+  <div class="widget-header">
+    <i class="icon-tag"></i>
+    <h3>Subscription Information</h3>
+    <%= link_to 'Extend Subscription', edit_subscription_path("current"), :class => 'btn' %>
+  </div>
+  <div class="widget-content">
+    <div class="container-fluid">
+      <div class="row-fluid">
+
+        <div class="span6">
+          <div class="control-group">
+            <label>Name</label>
+            <div class="controls">
+              Pro Subscription
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label>Expiration Date</label>
+            <div class="controls">
+              <%= ldate @subscription.expiration_date %>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label>Next Processing Date</label>
+            <div class="controls">
+              <%= ldate @subscription.next_processing_date %>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
