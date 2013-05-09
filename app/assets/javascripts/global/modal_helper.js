@@ -13,7 +13,11 @@ PointGaming.ModalHelper = {
       options.width = elem.data('width') || 'auto';
       options.height = elem.data('height') || 'auto';
 
-      modal.load(elem.attr('href'), '', function(){
+      modal.load(elem.attr('href'), '', function(response, xhrStatus){
+        if (xhrStatus === "error") {
+          modal.html('<div class="modal-body">Request Failed. Please try again.</div>');
+        }
+
         modal.modal(options);
         if (typeof(callback) === 'function'){
           callback();

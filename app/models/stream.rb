@@ -17,6 +17,7 @@ class Stream
   field :name, :type => String, :default => ''
   field :slug, :type => String, :default => ''
   field :details, :type => String, :default => ''
+  field :betting, :type => Boolean, :default => true
   field :streaming, :type => Boolean, :default => false
   field :embedded_html
 

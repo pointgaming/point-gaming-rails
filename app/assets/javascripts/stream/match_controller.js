@@ -36,11 +36,9 @@ PointGaming.MatchController.prototype.handleNewMatch = function(data) {
 
   this.removeOldBets(data.match._id);
 
-  if (data.match.betting) {
-    this.propose_bet_link.attr('href', this.new_bet_path.replace(/:match_id/, data.match._id));
-    this.stream_bet_container.show();
-    this.betting_changed(false, true);
-  }
+  this.propose_bet_link.attr('href', this.new_bet_path.replace(/:match_id/, data.match._id));
+  this.stream_bet_container.show();
+  this.propose_bet_link.show();
 };
 
 PointGaming.MatchController.prototype.removeOldBets = function(new_match_id) {
@@ -56,15 +54,6 @@ PointGaming.MatchController.prototype.state_changed = function(old_value, new_va
     this.propose_bet_link.hide();
   }
 }
-
-PointGaming.MatchController.prototype.betting_changed = function(old_value, new_value) {
-  if (new_value) {
-    this.stream_bet_container.show();
-    this.propose_bet_link.show();
-  } else {
-    this.stream_bet_container.hide();
-  }
-};
 
 PointGaming.MatchController.prototype.handleMatchUpdated = function(data) {
   var changed_trigger,

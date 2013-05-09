@@ -23,6 +23,13 @@
     </div>
 
     <div class="control-group">
+      <%= f.label :betting, :class => 'control-label' %>
+      <div class="controls">
+        <%= f.check_box :betting %>
+      </div>
+    </div>
+
+    <div class="control-group">
       <%= f.label :thumbnail, :class => 'control-label' %>
       <div class="controls">
         <%= f.file_field :thumbnail %>

@@ -20,7 +20,7 @@
     <% if @stream.match.blank? %>
       <%= link_to_modal t('.new_match'), new_polymorphic_path([@stream, Match.new]),
             remote: true, data: {'modal-target' => '#match-modal'},
-            :id => 'new-match', :class => 'btn' %>
+            :id => 'new-match', :class => 'btn', disabled: !@stream.betting %>
     <% else %>
       <% if @stream.match.state === 'new' %>
         <%= link_to_modal t('.manage_match'), polymorphic_path([@stream, @stream.match]),
@@ -73,7 +73,7 @@
 <div class="container-fluid">
   <div class="row-fluid">
     <div class="span12">
-      <%- show_bet_container = @stream.match.try(:betting) || !@bets.empty? %>
+      <%- show_bet_container = @stream.match.present? || !@bets.empty? %>
       <div id="stream-bet-container" style="<%= show_bet_container ? '' : 'display: none' %>">
         <div class="breadcrumb">
           <%= link_to_modal 'Propose a Bet', @stream.match ? new_match_bet_path(@stream.match) : '#', 

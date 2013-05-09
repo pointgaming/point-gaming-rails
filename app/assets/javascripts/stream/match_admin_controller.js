@@ -15,7 +15,8 @@ PointGaming.MatchAdminController.prototype.registerHandlers = function() {
 
   $(document).on('change', 'select#match_winner_id', this.populateWinnerType.bind(this));
 
-  $(document).on('click', 'a[rel="modal:open:ajaxpost"][data-modal-target="#match-modal"]', this.openModal(modal));
+  $(document).on('click', 'a[rel="modal:open:ajaxpost"][data-modal-target="#match-modal"]:not([disabled])', this.openModal(modal));
+  $(document).on('click', 'a[disabled]', function(e){ return false; });
   $(document).on('submit', '#match-modal form', PointGaming.ModalHelper.submitModalForm(modal));
 
   $(document).on('ajax:success', '#match-modal a[data-remote][data-dismiss-modal]', modal.modal.bind(modal, 'hide'));
@@ -86,7 +87,7 @@ PointGaming.MatchAdminController.prototype.handleMatchUpdated = function(data){
 
 PointGaming.MatchAdminController.prototype.state_changed = function(old_value, new_value, data) {
     if (new_value === 'cancelled' || new_value === 'finalized') {
-        this.addNewMatchLink();
+        this.addNewMatchLink(data);
         this.removeManageMatchLink();
         this.removeStartMatchLink();
         this.removeCancelMatchLink();
@@ -103,10 +104,13 @@ PointGaming.MatchAdminController.prototype.state_changed = function(old_value, n
 PointGaming.MatchAdminController.prototype.addNewMatchLink = function(data){
     this.removeNewMatchLink();
 
-    $('<a id="new-match" class="btn" data-modal-target="#match-modal" rel="modal:open:ajaxpost"></a>').data('match-id', '')
+    var link = $('<a id="new-match" class="btn" data-modal-target="#match-modal" rel="modal:open:ajaxpost"></a>').data('match-id', '')
         .attr('href', this.options.new_match_path)
-        .html('New Match')
-        .appendTo($(this.options.match_admin_actions_container)).after(" ");
+        .html('New Match');
+    if (data.match.room.betting === false) {
+      link.attr('disabled', 'disabled');
+    }
+    link.appendTo($(this.options.match_admin_actions_container)).after(" ");
 };
 
 PointGaming.MatchAdminController.prototype.addManageMatchLink = function(data){

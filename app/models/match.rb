@@ -10,7 +10,6 @@ class Match
   after_update :publish_updated
   after_update :void_bets
 
-  field :betting, :type => Boolean, :default => true
   field :map, :type => String, :default => ''
   field :state, :type => String
   field :match_hash, :type => String
@@ -102,7 +101,7 @@ private
   end
 
   def match_criteria
-    ['betting', 'player_1_id', 'player_1_type', 'player_2_id', 'player_2_type']
+    ['player_1_id', 'player_1_type', 'player_2_id', 'player_2_type']
   end
 
   def match_criteria_changed?
@@ -114,7 +113,7 @@ private
     BunnyClient.instance.publish_fanout("c.#{self.room.mq_exchange}", {
       :action => 'Match.new',
       :data => {
-        :match => self,
+        :match => self.as_json(:methods => [:room]),
         :match_details => match_details(self)
       }
     }.to_json)
@@ -125,7 +124,7 @@ private
     BunnyClient.instance.publish_fanout("c.#{self.room.mq_exchange}", {
       :action => 'Match.update',
       :data => {
-        :match => self,
+        :match => self.as_json(:methods => [:room]),
         :match_details => match_details(self)
       }
     }.to_json)

@@ -1,6 +1,7 @@
 class MatchesController < ApplicationController
   before_filter :authenticate_user!
   before_filter :ensure_room, only: [:index, :new, :create]
+  before_filter :ensure_room_betting_enabled, only: [:new, :create]
   before_filter :load_games, only: [:new, :create, :show, :edit, :update]
   before_filter :ensure_match, except: [:index, :new, :create]
   before_filter :ensure_room_has_no_match, only: [:new, :create]
@@ -96,6 +97,10 @@ protected
     unless @room
       raise ::PermissionDenied
     end
+  end
+
+  def ensure_room_betting_enabled
+    raise ::PermissionDenied unless @room.betting === true
   end
 
   def load_games

@@ -18,6 +18,12 @@ PointGaming.StreamsController.prototype.registerHandlers = function() {
 PointGaming.StreamsController.prototype.handleStreamUpdated = function(data) {
   this.details_container.html(data.stream.details);
   this.thumbnail.attr('src', data.thumbnail);
+
+  if (data.stream.betting === false) {
+    $('a#new-match').attr('disabled', 'disabled');
+  } else {
+    $('a#new-match').removeAttr('disabled');
+  }
 };
 
 PointGaming.StreamsController.prototype.handleStreamDestroyed = function(data) {

@@ -13,6 +13,7 @@ class GameRoom
 
   attr_accessor :takeover_position
 
+  field :betting, :type => Boolean, :default => true
   field :position, type: Integer
   field :is_advertising, type: Boolean, default: false
   field :is_locked, type: Boolean, default: false
