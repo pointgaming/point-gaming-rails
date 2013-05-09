@@ -1,7 +1,9 @@
 require 'capistrano/ext/multistage'
 require "bundler/capistrano"
-require "whenever/capistrano"
 load 'deploy/assets'
+
+set :whenever_command, "bundle exec whenever"
+require "whenever/capistrano"
 
 set :deploy_via, :remote_cache
 set :bundle_without, [:development, :test]
