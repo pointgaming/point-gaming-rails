@@ -56,6 +56,7 @@ GEM
     carmen-rails (1.0.0.beta3)
       carmen (~> 1.0.0.beta2)
       rails
+    chronic (0.9.1)
     cocaine (0.4.2)
     coderay (1.0.9)
     coffee-rails (3.2.2)
@@ -228,6 +229,9 @@ GEM
       rack (>= 1.0.0)
     warden (1.2.1)
       rack (>= 1.0)
+    whenever (0.8.2)
+      activesupport (>= 2.3.4)
+      chronic (>= 0.6.3)
     workflow (0.8.7)
     workflow_on_mongoid (0.8.0.7)
       mongoid
@@ -268,4 +272,5 @@ DEPENDENCIES
   twitter-bootstrap-rails
   uglifier (>= 1.0.3)
   uuidtools
+  whenever
   workflow_on_mongoid

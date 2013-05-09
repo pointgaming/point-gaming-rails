@@ -1,5 +1,6 @@
 require 'capistrano/ext/multistage'
 require "bundler/capistrano"
+require "whenever/capistrano"
 load 'deploy/assets'
 
 set :deploy_via, :remote_cache

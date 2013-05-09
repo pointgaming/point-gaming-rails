@@ -37,6 +37,7 @@ group :development do
   gem 'meta_request'
 end
 
+gem 'whenever', require: false
 gem 'capistrano'
 gem 'capistrano-ext'
 
