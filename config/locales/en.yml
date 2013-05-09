@@ -45,3 +45,5 @@ en:
         title: 'Desktop Client Required'
       desktop_client_out_of_date_modal:
         title: 'Desktop Client Upgrade Required'
+  reports:
+    point_audit: "Point Auditing Report"

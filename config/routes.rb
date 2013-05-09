@@ -60,6 +60,11 @@ Pointgaming::Application.routes.draw do
     end
     resources :subscription_features
     resources :subscription_types
+    resources :reports, only: [:index] do
+      collection do
+        get 'point_audit'
+      end
+    end
     resources :news
   end
 
