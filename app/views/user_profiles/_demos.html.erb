@@ -1,0 +1,47 @@
+<%- edit ||= false %>
+<div id="demos-widget" class="widget widget-table action-table">
+  <div class="widget-header">
+    <i class="icon-facetime-video"></i>
+    <h3>Demos</h3>
+    <% if edit %>
+      <%= link_to_modal 'Upload Demo', new_user_demo_path(@user), remote: true,
+        :data => { title: "Upload Demo" }, 
+        :class => 'btn btn-mini' %>
+    <% end %>
+  </div>
+  <div class="widget-content scrollable">
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th width="150"><%= Demo.human_attribute_name(:updated_at) %></th>
+          <th><%= Demo.human_attribute_name(:game) %></th>
+          <th width="100"><%= Demo.human_attribute_name(:game_type) %></th>
+          <th><%= Demo.human_attribute_name(:participants) %></th>
+          <th width="50"><%= Demo.human_attribute_name(:size) %></th>
+          <th width="135"><%=t '.actions', :default => t("helpers.actions") %></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% models.each do |demo| %>
+          <tr>
+            <td><%= ldate demo.updated_at %></td>
+            <td><%= demo.game.display_name %></td>
+            <td><%= demo.game_type.name %></td>
+            <td><%= demo.participants %></td>
+            <td><%= number_to_human_size demo.attachment.size %></td>
+            <td>
+              <%= link_to :Download, demo.attachment.url, :class => 'btn btn-mini' %>
+              <% if edit %>
+                <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                      user_demo_path(@user, demo),
+                      :method => :delete,
+                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                      :class => 'btn btn-mini btn-danger' %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

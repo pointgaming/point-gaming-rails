@@ -1,0 +1,36 @@
+<%- model_class = Demo -%>
+<h1><%=t '.title', :default => model_class.model_name.human.pluralize %></h1>
+<div class="pull-right">
+  Sort by: 
+  <% unless params[:sort] === 'download_count' %>
+    <%= link_to 'Most Downloaded', demos_path(sort: :download_count), :class => 'btn btn-mini' %>
+  <% else %>
+    <%= link_to 'Most Recent', demos_path, :class => 'btn btn-mini'  %>
+  <% end %>
+</div>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th><%= model_class.human_attribute_name(:updated_at) %></th>
+      <th><%= model_class.human_attribute_name(:game) %></th>
+      <th><%= model_class.human_attribute_name(:game_type) %></th>
+      <th><%= model_class.human_attribute_name(:participants) %></th>
+      <th><%= model_class.human_attribute_name(:size) %></th>
+      <th><%=t '.actions', :default => t("helpers.actions") %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @demos.each do |demo| %>
+      <tr>
+        <td><%=l demo.created_at %></td>
+        <td><%= demo.game.display_name %></td>
+        <td><%= demo.game_type.name %></td>
+        <td><%= demo.participants %></td>
+        <td><%= number_to_human_size demo.attachment.size %></td>
+        <td>
+          <%= link_to :Download, demo.attachment.url, :class => 'btn btn-mini' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -7,6 +7,8 @@
   <%= link_to 'View Profile', user_path(@user), :class => 'btn' %>
 </div>
 
+<div id="ajax-modal" class="modal hide fade" tabindex="-1"></div>
+
 <%= form_for @user, url: user_path(@user) do |f| %>
   <div class="row-fluid">
     <div class="span3">
@@ -47,6 +49,12 @@
       </div>
     </div>
   <% end %>
+
+  <div class="row-fluid">
+    <div class="span12">
+      <%= render partial: 'user_profiles/demos', locals: {models: @user.demos.order_by(updated_at: :desc), edit: true} %>
+    </div>
+  </div>
 
   <div class="form-actions">
     <%= f.submit 'Update Profile', :class => 'btn' %>

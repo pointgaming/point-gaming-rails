@@ -108,6 +108,11 @@ Pointgaming::Application.routes.draw do
 
   get "/users/search", :to => "users#search"
 
+  resources :demos, only: [:index]
+  get "/u/:user_id/demos/new", :to => "demos#new", as: 'new_user_demo'
+  post "/u/:user_id/demos", :to => "demos#create", as: 'user_demos'
+  delete "/u/:user_id/demos/:id(.:format)", :to => "demos#destroy", as: 'user_demo'
+
   get "/u/:user_id/configs/new", :to => "user_configs#new", as: 'new_user_config'
   post "/u/:user_id/configs", :to => "user_configs#create", as: 'user_configs'
   delete "/u/:user_id/configs/:id(.:format)", :to => "user_configs#destroy", as: 'user_config'
@@ -119,7 +124,7 @@ Pointgaming::Application.routes.draw do
   get "/u/:user_id", :to => "user_profiles#show", as: 'user'
   put "/u/:user_id", :to => "user_profiles#update"
   get "/u/:user_id/profile", :to => "user_profiles#show", as: 'user_profile'
-  get '/u/subregion_options' => 'user_profiles#subregion_options'
+  get '/users/subregion_options' => 'user_profiles#subregion_options'
 
   devise_for :users
 

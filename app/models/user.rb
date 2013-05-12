@@ -101,6 +101,7 @@ class User
   has_many :configs, class_name: 'UserConfig'
   has_many :subscriptions
   has_many :orders
+  has_many :demos
 
   accepts_nested_attributes_for :profile
 

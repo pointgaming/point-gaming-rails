@@ -61,3 +61,9 @@
     <%= render partial: 'user_profiles/bio', locals: {model: @user.profile} %>
   </div>
 </div>
+
+<div class="row-fluid">
+  <div class="span12">
+    <%= render partial: 'user_profiles/demos', locals: {models: @user.demos.order_by(updated_at: :desc)} %>
+  </div>
+</div>

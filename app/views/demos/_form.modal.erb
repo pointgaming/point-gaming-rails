@@ -1,0 +1,56 @@
+<%= form_for [:user, @demo], :html => { :class => 'form-horizontal', multipart: true, remote: true, :'data-type' => 'json', autocomplete: 'off' } do |f| %>
+  <div class="modal-body">
+
+    <div class="control-group">
+      <%= f.label :game_id, :class => 'control-label' %>
+      <div class="controls">
+        <%= f.select :game_id, Game.all.collect{|g| [g.name, g.id]}, include_blank: '- Select -' %>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <%= f.label :game_type_id, :class => 'control-label' %>
+      <div class="controls">
+        <%= f.select :game_type_id, GameType.all.collect{|gt| [gt.name, gt.id]}, include_blank: '- Select -' %>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <%= f.label :map, :class => 'control-label' %>
+      <div class="controls">
+        <%= f.text_field :map, :class => 'text_field' %>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <%= f.label :winner_name, :class => 'control-label' %>
+      <div class="controls">
+        <%= f.text_field :winner_name, :class => 'text_field playable-search' %>
+        <%= f.hidden_field :winner_id %>
+        <%= f.hidden_field :winner_type %>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <%= f.label :loser_name, :class => 'control-label' %>
+      <div class="controls">
+        <%= f.text_field :loser_name, :class => 'text_field playable-search' %>
+        <%= f.hidden_field :loser_id %>
+        <%= f.hidden_field :loser_type %>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <%= f.label :attachment, :class => 'control-label' %>
+      <div class="controls">
+        <%= f.file_field :attachment %>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <%= f.submit nil, :class => 'btn btn-primary' %>
+    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                edit_user_profile_path(current_user), :class => 'btn' %>
+  </div>
+<% end %>
