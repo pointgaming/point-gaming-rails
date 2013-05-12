@@ -1,4 +1,5 @@
 class DemosController < ApplicationController
+  ssl_allowed :new, :create, :destroy
   before_filter :authenticate_user!
   before_filter :ensure_demo, only: [:destroy]
   before_filter :ensure_user_id_is_current_user, only: [:new, :create, :destroy]
