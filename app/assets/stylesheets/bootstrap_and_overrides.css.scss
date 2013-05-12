@@ -1,9 +1,11 @@
 /*
-  =require bootstrap.min
-  =require bootstrap-responsive.min
   =require bootstrap-datetimepicker
   =require twitter-bootstrap-static/fontawesome
   */
+
+@import "bootstrap";
+@import "bootstrap-responsive";
+
 .modal form { margin-bottom: 0; }
 
 .form-actions.modal-actions {

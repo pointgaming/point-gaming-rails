@@ -40,6 +40,8 @@ GEM
       erubis (>= 2.6.6)
     binding_of_caller (0.7.1)
       debug_inspector (>= 0.0.1)
+    bootstrap-sass (2.3.1.0)
+      sass (~> 3.2)
     builder (3.0.4)
     bunny (0.9.0.pre7)
       amq-protocol (>= 1.2.0)
@@ -245,6 +247,7 @@ DEPENDENCIES
   bartt-ssl_requirement (~> 1.4.0)
   better_errors (>= 0.3.2)
   binding_of_caller (>= 0.6.8)
+  bootstrap-sass (~> 2.3.1.0)
   bunny (>= 0.9.0.pre6)
   cancan
   capistrano
