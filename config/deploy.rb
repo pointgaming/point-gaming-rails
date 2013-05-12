@@ -12,7 +12,7 @@ set :stages, ["production"]
 set :default_stage, "production"
 
 set :application, "Pointgaming"
-set :repository,  "git@whitepaperclip.com:point-gaming-rails.git"
+set :repository,  "git@github.com:pointgaming/point-gaming-rails.git"
 
 set :scm, :git
 set :scm_passphrase, ""
