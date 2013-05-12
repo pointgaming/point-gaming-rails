@@ -38,35 +38,35 @@ class GameRoomsController < ApplicationController
 protected
 
   def ensure_game_params
-    raise ::UnprocessableEntity if params[:game_id].blank?
+    raise ::UnprocessableEntity, "Missing game_id parameter" if params[:game_id].blank?
 
     @game = Game.find(params[:game_id])
-    raise ::UnprocessableEntity unless @game
+    raise ::UnprocessableEntity, "Invalid game_id. A game with that game_id was not found." unless @game
   end
 
   def ensure_game
-    raise ::UnprocessableEntity if params[:game_room][:game_id].blank?
+    raise ::UnprocessableEntity, "Missing game_id parameter" if params[:game_room][:game_id].blank?
 
     @game = Game.find(params[:game_room][:game_id])
-    raise ::UnprocessableEntity unless @game
+    raise ::UnprocessableEntity, "Invalid game_id. A game with that game_id was not found." unless @game
   end
 
   def ensure_game_room
-    raise ::UnprocessableEntity if params[:id].blank?
+    raise ::UnprocessableEntity, "Missing id parameter" if params[:id].blank?
 
     @game_room = GameRoom.find params[:id]
-    raise ::UnprocessableEntity unless @game_room
+    raise ::UnprocessableEntity, "Invalid id. A game_room with that id was not found." unless @game_room
   end
 
   def check_owner_params
     return unless params[:game_room][:owner_id]
 
     @owner = User.find(params[:game_room][:owner_id])
-    raise ::UnprocessableEntity unless @owner
+    raise ::UnprocessableEntity, "Invalid owner_id. A user with that id was not found." unless @owner
   end
 
   def ensure_params
-    raise ::UnprocessableEntity if params[:game_room].blank?
+    raise ::UnprocessableEntity, "Missing game_room parameter" if params[:game_room].blank?
   end
 
 end

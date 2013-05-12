@@ -62,11 +62,13 @@ private
     self.action_has_layout = false if @is_ajax_request
   end
 
-  def render_unprocessable_entity
+  def render_unprocessable_entity(exception)
+    message = "::UnprocessableEntity raised with message: #{exception.message}"
+    Rails.logger.info message
     respond_to do |format|
       # TODO: this is not a good html implementation
       format.html { redirect_to root_path, alert: 'Invalid or missing parameters.' }
-      format.json { render json: [], status: :unprocessable_entity }
+      format.json { render json: {message: message}, status: :unprocessable_entity }
     end
   end
 

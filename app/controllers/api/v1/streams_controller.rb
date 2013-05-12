@@ -9,7 +9,7 @@ class Api::V1::StreamsController < Api::ApplicationController
   end
 
   def incrementViewerCount
-    raise ::UnprocessableEntity if params[:count].blank?
+    raise ::UnprocessableEntity, "Missing count parameter" if params[:count].blank?
 
     @stream.inc :viewer_count, params[:count]
 
@@ -19,7 +19,7 @@ class Api::V1::StreamsController < Api::ApplicationController
 protected
 
   def ensure_stream
-    raise ::UnprocessableEntity if params[:id].blank?
+    raise ::UnprocessableEntity, "Missing id parameter" if params[:id].blank?
 
     @stream = Stream.find params[:id]
   end

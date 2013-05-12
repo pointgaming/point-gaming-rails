@@ -16,7 +16,7 @@ class Api::V1::GameRoomsController < Api::ApplicationController
 protected
 
   def ensure_game_room
-    raise ::UnprocessableEntity if params[:id].blank?
+    raise ::UnprocessableEntity, "Missing id parameter" if params[:id].blank?
 
     @game_room = GameRoom.find params[:id]
   end
