@@ -7,7 +7,7 @@ class BetHistoryController < ApplicationController
   end
 
   def index
-    @bets = Bet.for_user(current_user).order_by(created_at: 'DESC').all
+    @bets = Bet.for_user(current_user).order_by(updated_at: 'DESC').all
   end
 
   def show

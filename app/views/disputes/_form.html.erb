@@ -1,0 +1,18 @@
+<%= form_for [@match, @dispute], :html => { :class => 'form-horizontal' } do |f| %>
+  <%= render partial: 'shared/form_errors', locals: {model: f.object} %>
+
+  <%= fields_for @dispute.messages.build do |message| %>
+    <div class="control-group">
+      <%= message.label :text, :class => 'control-label' %>
+      <div class="controls">
+        <%= message.text_area :text, rows: 8, style: "width: 500px" %>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="form-actions">
+    <%= f.submit nil, :class => 'btn btn-primary' %>
+    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                disputes_path, :class => 'btn' %>
+  </div>
+<% end %>

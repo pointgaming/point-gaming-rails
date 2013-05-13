@@ -1,0 +1,23 @@
+<%- model_class = Dispute -%>
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th><%= model_class.human_attribute_name(:id) %></th>
+      <th><%= model_class.human_attribute_name(:owner_id) %></th>
+      <th><%= model_class.human_attribute_name(:match_id) %></th>
+      <th><%= model_class.human_attribute_name(:state) %></th>
+      <th><%= model_class.human_attribute_name(:updated_at) %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @disputes.each do |dispute| %>
+      <tr>
+        <td><%= link_to dispute.id, dispute_path(dispute) %></td>
+        <td><%= link_to dispute.owner.try(:username), dispute.owner %></td>
+        <td><%= link_to match_details(dispute.match, :short), match_path(dispute.match) %></td>
+        <td><%= dispute.state %></td>
+        <td><%=ldate dispute.updated_at %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

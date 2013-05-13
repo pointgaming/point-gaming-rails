@@ -14,6 +14,7 @@ class Match
   field :state, :type => String
   field :match_hash, :type => String
   field :default_offerer_odds, :type => String
+  field :finalized_at, :type => DateTime
 
   workflow_column :state
   workflow do
@@ -35,6 +36,8 @@ class Match
   belongs_to :player_2, :polymorphic => true
   belongs_to :winner, :polymorphic => true
 
+  has_many :disputes
+
   has_many :bets
 
   validates :player_1, :presence=>true
@@ -46,6 +49,10 @@ class Match
 
   attr_writer :player_1_name, :player_2_name
   
+  def dispute
+    disputes.active.first
+  end
+
   def player_1_name
     player_1 ? player_1.display_name : read_attribute("player_1_name")
   end
@@ -73,10 +80,15 @@ class Match
   end
 
   def finalize
+    self.finalized_at = DateTime.now
     self.room.match = nil;
     self.room.save
 
     Resque.enqueue FinalizeBetsJob, self._id
+  end
+
+  def is_disputable?
+    self.state === 'finalized' && DateTime.now <= 48.hours.since(self.finalized_at)
   end
 
 private

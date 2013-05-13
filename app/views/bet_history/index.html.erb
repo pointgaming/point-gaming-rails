@@ -3,21 +3,31 @@
 <table class="table table-striped">
   <thead>
     <tr>
-      <th><%= model_class.human_attribute_name(:created_at) %></th>
+      <th><%= model_class.human_attribute_name(:updated_at) %></th>
       <th><%= model_class.human_attribute_name(:bet_amount) %></th>
       <th><%= model_class.human_attribute_name(:participants) %></th>
       <th><%= model_class.human_attribute_name(:against_user) %></th>
       <th><%= model_class.human_attribute_name(:outcome) %></th>
+      <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
   </thead>
   <tbody>
     <% @bets.each do |bet| %>
       <tr>
-        <td><%= link_to ldate(bet.created_at), bet_history_path(bet) %></td>
+        <td><%= link_to ldate(bet.updated_at), bet_history_path(bet) %></td>
         <td class="number"><%= bet.outcome_amount(current_user) || bet.bet_amount(current_user) %></td>
         <td><%= bet.participants(current_user) %></td>
         <td><%= bet.against_user(current_user).try(:username) %></td>
         <td><%= bet.outcome %></td>
+        <td>
+          <% if bet.match.dispute.present? %>
+            <%= link_to t('.show_dispute'), dispute_path(bet.match.dispute),
+                        :class => 'btn btn-mini' %>
+          <% elsif bet.match.is_disputable? %>
+            <%= link_to t('.dispute_match'), new_match_dispute_path(bet.match),
+                        :class => 'btn btn-mini' %>
+          <% end %>
+        </td>
       </tr>
     <% end %>
   </tbody>

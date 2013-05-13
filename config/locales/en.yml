@@ -27,6 +27,10 @@ en:
         player_2_name: 'Player or Team 2'
       comment:
         text: 'Comment'
+      dispute:
+        owner: 'Filed by'
+      message:
+        text: 'Message'
       team:
         tag: 'Nick Name'
       team_member:

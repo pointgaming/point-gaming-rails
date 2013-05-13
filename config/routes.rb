@@ -8,10 +8,17 @@ Pointgaming::Application.routes.draw do
       put 'finalize'
     end
     resources :bets, only: [:new, :show, :create, :update, :destroy]
+    resources :disputes, only: [:new, :create]
   end
   resources :friend_requests
   resources :friends
   resources :blocked_users, only: [:index, :create, :destroy]
+  resources :disputes, only: [:index, :show] do
+    resources :messages, controller: 'dispute_messages', only: [:new, :create]
+    member do
+      put 'cancel'
+    end
+  end
   resources :leagues
   resources :tournaments
   resources :streams, controller: 'streams', as: 'streams', only: [:index, :create]
