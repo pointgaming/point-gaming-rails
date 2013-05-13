@@ -16,7 +16,7 @@ class Demo
 
   has_mongoid_attached_file :attachment
 
-  validates_attachment :attachment, presence: true, size: { :in => 0..4.megabytes }
+  validates_attachment :attachment, presence: true, size: { :in => 0..20.megabytes }
   validates :loser_name, presence: true
   validates :winner_name, presence: true
   validates :map, presence: true
