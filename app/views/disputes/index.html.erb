@@ -7,6 +7,7 @@
       <th><%= model_class.human_attribute_name(:match_id) %></th>
       <th><%= model_class.human_attribute_name(:state) %></th>
       <th><%= model_class.human_attribute_name(:updated_at) %></th>
+      <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
   </thead>
   <tbody>
@@ -17,6 +18,10 @@
         <td><%= link_to match_details(dispute.match, :short), match_path(dispute.match) %></td>
         <td><%= dispute.state %></td>
         <td><%=ldate dispute.updated_at %></td>
+        <td>
+          <%= link_to t('.view'), dispute_path(dispute),
+                      :class => 'btn btn-mini' %>
+        </td>
       </tr>
     <% end %>
   </tbody>
