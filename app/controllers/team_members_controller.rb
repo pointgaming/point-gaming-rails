@@ -21,7 +21,7 @@ class TeamMembersController < ApplicationController
     respond_to do |format|
       if @team_member.save
         format.html { redirect_to team_path(@team), notice: 'Member was added successfully.' }
-        format.json { head :no_content }
+        format.json { render json: true }
       else
         format.html { redirect_to team_path(@team), alert: 'Failed to add the user to the team.' }
         format.json { render json: @team_member.errors.full_messages, status: :unprocessable_entity }
@@ -33,7 +33,7 @@ class TeamMembersController < ApplicationController
     respond_to do |format|
       if @team_member.update_attributes(params[:team_member])
         format.html { redirect_to team_path(@team), notice: 'Member was updated successfully.' }
-        format.json { head :no_content }
+        format.json { render json: true }
       else
         format.html { redirect_to team_path(@team), alert: 'Failed to update the team member.' }
         format.json { render json: @team_member.errors.full_messages, status: :unprocessable_entity }
@@ -46,7 +46,7 @@ class TeamMembersController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to team_url(@team) }
-      format.json { head :no_content }
+      format.json { render json: true }
     end
   end
 

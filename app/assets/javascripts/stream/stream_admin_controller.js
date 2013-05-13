@@ -10,7 +10,32 @@ PointGaming.StreamAdminController = function(options){
 };
 
 PointGaming.StreamAdminController.prototype.registerHandlers = function() {
-  var self = this;
+  var self = this,
+      $modal = $('#ajax-modal');
+
+  $(document).on('click', 'a[rel="modal:open:ajaxpost"]:not([data-modal-target])', PointGaming.ModalHelper.openModal($modal));
+  $(document).on('submit', '#ajax-modal form', function(){ $('body').modalmanager('loading'); });
+  $(document).on('ajax:success', '#ajax-modal form', function(){
+    $('body').modalmanager('loading');
+    $modal.modal('hide');
+  });
+  $(document).on('ajax:error', '#ajax-modal form', function(event, response, status_text){
+    var form = $(event.target),
+        container = form.find('div.modal-body'),
+        errors;
+
+    form.find(".alert-error").remove()
+    $('body').modalmanager('loading');
+
+    if (response.status === 500) {
+      container.prepend('<div class="alert alert-error">Internal Server Error</div>');
+    } else {
+      errors = $.parseJSON(response.responseText).errors;
+      $.each(errors, function(key, value){
+        container.prepend('<div class="alert alert-error">'+ value + '</div>');
+      });
+    }
+  });
 
   // prevent the user from submitting the Stream Admin Collaborators form
   $(document).on('submit', this.container_selector + ' form', preventFormSubmission.bind(this));

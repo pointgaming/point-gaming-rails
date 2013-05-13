@@ -42,7 +42,7 @@ class UserStreamsController < ApplicationController
     respond_to do |format|
       if @stream.update_attributes(params[:stream])
         format.html { redirect_to user_stream_path(@stream), notice: 'The stream was successfully updated.' }
-        format.json { head :no_content }
+        format.json { render json: true }
       else
         format.html { render action: "edit" }
         format.json { render json: @stream.errors, status: :unprocessable_entity }
@@ -59,7 +59,7 @@ class UserStreamsController < ApplicationController
     respond_to do |format|
       if current_owner.id === @collaborator.id || (current_owner.save && @collaborator.save)
         format.html { redirect_to user_stream_path(@stream), notice: 'The stream owner was changed successfully.' }
-        format.json { head :no_content }
+        format.json { render json: true }
       else
         format.html { redirect_to user_stream_path(@stream), alert: 'Failed to change the stream owner.' }
         format.json { render json: @stream.errors, status: :unprocessable_entity }
@@ -71,7 +71,7 @@ class UserStreamsController < ApplicationController
     respond_to do |format|
       if @stream.update_attributes({streaming: true})
         format.html { redirect_to user_stream_path(@stream), notice: 'The stream was started successfully.' }
-        format.json { head :no_content }
+        format.json { render json: true }
       else
         format.html { redirect_to user_stream_path(@stream), alert: 'Failed to start the stream.' }
         format.json { render json: @stream.errors, status: :unprocessable_entity }
@@ -83,7 +83,7 @@ class UserStreamsController < ApplicationController
     respond_to do |format|
       if @stream.update_attributes({streaming: false})
         format.html { redirect_to user_stream_path(@stream), notice: 'The stream was stopped successfully.' }
-        format.json { head :no_content }
+        format.json { render json: true }
       else
         format.html { redirect_to user_stream_path(@stream), alert: 'Failed to stop the stream.' }
         format.json { render json: @stream.errors, status: :unprocessable_entity }
@@ -96,7 +96,7 @@ class UserStreamsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to user_streams_url }
-      format.json { head :no_content }
+      format.json { render json: true }
     end
   end
 

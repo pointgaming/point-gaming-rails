@@ -25,7 +25,7 @@ class Admin::NewsController < Admin::ApplicationController
     respond_to do |format|
       if @news.save
         format.html { redirect_to admin_news_index_path(@stream), notice: 'News was created successfully.' }
-        format.json { head :no_content }
+        format.json { render json: true }
       else
         format.html { render action: :new }
         format.json { render json: @news.errors, status: :unprocessable_entity }
@@ -37,7 +37,7 @@ class Admin::NewsController < Admin::ApplicationController
     respond_to do |format|
       if @news.update_attributes(params[:news])
         format.html { redirect_to admin_news_index_path(@stream), notice: 'News was updated.' }
-        format.json { head :no_content }
+        format.json { render json: true }
       else
         format.html { render action: :edit }
         format.json { render json: @news.errors, status: :unprocessable_entity }
@@ -49,7 +49,7 @@ class Admin::NewsController < Admin::ApplicationController
     @news.destroy
     respond_to do |format|
       format.html { redirect_to admin_news_index_url(@stream) }
-      format.json { head :no_content }
+      format.json { render json: true }
     end
   end
 

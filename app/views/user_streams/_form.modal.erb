@@ -1,4 +1,4 @@
-<%= form_for [:user, @stream], :html => { :multipart => true, }, remote: true do |f| %>
+<%= form_for [:user, @stream], :html => { multipart: true, remote: true, :'data-type' => :json } do |f| %>
   <fieldset>
     <legend>Stream Information</legend>
 

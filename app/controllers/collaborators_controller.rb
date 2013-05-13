@@ -20,7 +20,7 @@ class CollaboratorsController < ApplicationController
     respond_to do |format|
       if @collaborator.save
         format.html { redirect_to user_stream_path(@stream), notice: 'Collaborator was added successfully.' }
-        format.json { head :no_content }
+        format.json { render json: true }
       else
         format.html { redirect_to user_stream_path(@stream), alert: 'Failed to add the user as a collaborator.' }
         format.json { render json: @collaborator.errors, status: :unprocessable_entity }
@@ -33,7 +33,7 @@ class CollaboratorsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to user_stream_url(@stream) }
-      format.json { head :no_content }
+      format.json { render json: true }
     end
   end
 
