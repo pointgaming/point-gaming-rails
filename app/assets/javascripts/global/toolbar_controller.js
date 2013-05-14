@@ -1,9 +1,8 @@
 var PointGaming = PointGaming || {};
 
-PointGaming.ToolbarController = function(options){
-  options = options || {};
-  this.toolbar_selector = options.toolbar_selector || 'header';
-  this.search_field_selector = options.search_field_selector || 'input#navbar-search-button';
+PointGaming.ToolbarController = function(){
+  this.search_form_selector = 'form.navbar-search.search-form';
+  this.search_field_selector = 'input#navbar-search-button';
 
   this.registerHandlers();
 };
@@ -11,8 +10,8 @@ PointGaming.ToolbarController = function(options){
 PointGaming.ToolbarController.prototype.registerHandlers = function() {
   var self = this;
 
-  $('form.navbar-search.search-form').submit(function(e){
-    if ( $('input#navbar-search-button', this).val() === '') {
+  $(this.search_form_selector).submit(function(e){
+    if ( $(self.search_field_selector, this).val() === '') {
       e.preventDefault();
       return false;
     } else {
@@ -20,7 +19,7 @@ PointGaming.ToolbarController.prototype.registerHandlers = function() {
     }
   });
 
-  $(this.search_field_selector, this.toolbar_selector).typeahead({
+  $(this.search_field_selector, this.search_form_selector).typeahead({
     ajax: { url: '/search.json', triggerLength: 1, method: 'get', contentType: 'application/json', dataType: 'json' },
     display: 'name', 
     val: 'url',
