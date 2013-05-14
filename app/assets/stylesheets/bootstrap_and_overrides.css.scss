@@ -5,6 +5,9 @@
 
 @import "bootstrap";
 @import "bootstrap-responsive";
+@import "settings";
+@import "mixins";
+@import "header";
 
 .modal form { margin-bottom: 0; }
 
