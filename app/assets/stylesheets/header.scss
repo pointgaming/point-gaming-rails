@@ -1,24 +1,3 @@
-$primaryColor: #8c0000;
-$secondaryColor: #1c1c1c;
-
-$headerColor1: $primaryColor;
-$headerColor2: $secondaryColor;
-
-@mixin border-radius($number) {
-	-moz-border-radius: $number;
-	-webkit-border-radius: $number;
-	border-radius: $number;
-}
-
-@mixin box-shadow($number1, $number2, $number3) {
-	-moz-box-shadow: $number1 $number2 $number3 #000000;
-	-webkit-box-shadow: $number1 $number2 $number3 #000000;
-	box-shadow: $number1 $number2 $number3 #000000;
-}
-
-h1, h2, h3 { color: $headerColor1; font-family: 'Oxygen', sans-serif; }
-h4, h5, h6 { color: $headerColor2; }
-
 .navbar {
 	.navbar-inner { height: 80px; @include border-radius(0px); background: url(image_path('nav-shadow.png')) repeat-x 0 100%; border: 0; @include box-shadow(0px, 0px, 0px);
 		.container { max-width: 1170px; 
@@ -26,11 +5,20 @@ h4, h5, h6 { color: $headerColor2; }
 				.nav.primary { margin-top: 8px;
 					li {
 						a { padding: 10px 40px 10px;}
+						&.active {
+							a { color: $primaryColor; @include box-shadow(0px, 0px, 0px); background: none;}
+						}
 					} 
 				}
 				.nav.admin { margin-top: 12px;
 					li {
+						.divider {margin: 0;}
 						a.dropdown-toggle { padding: 0 0 0 10px; margin-left: 10px; border-left: 1px solid #ccc; margin-top: 11px; margin-top: 0;}
+						ul {
+							li {
+								a {padding: 5px 10px;}
+							}
+						}
 					}
 					li.dropdown.open > .dropdown-toggle {background: none;}
 				}
