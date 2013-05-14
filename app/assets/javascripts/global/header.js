@@ -1,31 +1,13 @@
 jQuery(function($) {
   $('#appendedInputButton').focus(function(){
-    $(this).animate({
-	    width: '+=50'
-	  }, 500, function() {
-	    // Animation complete.
-	});
-
-	$('.nav.primary li').animate({
-	     width: '-=10'
-	   }, 500, function() {
-	     // Animation complete.
-	 });
+    $(this).addClass('focused');
+    $('.nav.primary').addClass('focused');
 
   });
 
   $('#appendedInputButton').blur(function(){
-    $(this).animate({
-	    width: '-=50'
-	  }, 500, function() {
-	    // Animation complete.
-	});
-
-	$('.nav.primary li').animate({
-	     width: '+=10'
-	   }, 500, function() {
-	     // Animation complete.
-	 });
+    $(this).removeClass('focused');
+    $('.nav.primary').removeClass('focused');
 
   });
 });
