@@ -1,11 +1,11 @@
 jQuery(function($) {
-  $('#appendedInputButton').focus(function(){
+  $('#navbar-search-button').focus(function(){
     $(this).addClass('focused');
     $('.nav.primary').addClass('focused');
 
   });
 
-  $('#appendedInputButton').blur(function(){
+  $('#navbar-search-button').blur(function(){
     $(this).removeClass('focused');
     $('.nav.primary').removeClass('focused');
 
