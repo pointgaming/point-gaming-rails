@@ -7,8 +7,12 @@ class Ability
 
     unless user.group.nil? || user.group.permissions.nil?
       user.group.permissions.each do |permission_id|
-        permission = Permission.find(permission_id)
-        can *permission.ability unless permission.nil?
+        begin
+          permission = Permission.find(permission_id)
+          can *permission.ability unless permission.nil?
+        rescue ActiveHash::RecordNotFound
+          # no big deal
+        end
       end
     end
 
