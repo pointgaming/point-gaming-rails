@@ -13,6 +13,7 @@
     <![endif]-->
 
     <%= stylesheet_link_tag "application", :media => "all" %>
+    <link href='http://fonts.googleapis.com/css?family=Oxygen' rel='stylesheet' type='text/css'>
 
     <%#= favicon_link_tag 'images/apple-touch-icon-144x144-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png', :sizes => '144x144' %>
     <%#= favicon_link_tag 'images/apple-touch-icon-114x114-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png', :sizes => '114x114' %>
@@ -42,9 +43,8 @@
     <div id="wrapper">
       <%= render 'shared/navbar', :locals => {:current_path => @current_path} %>
 
-      <div id="main">
+      <div id="main" class="container">
         <%= render partial: 'shared/desktop_client_helper' %>
-
         <% if controller.respond_to?(:sub_layout) && controller.sub_layout %>
           <%= render :partial=>"layouts/#{controller.sub_layout}" %>
         <% else %>
