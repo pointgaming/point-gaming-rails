@@ -1,8 +1,8 @@
 <%- model_class = News -%>
 <h1>Point Gaming News</h1>
 
-<div id="twocolumns">
-  <section id="content">
+<div id="twocolumns" class="row">
+  <section id="content" class="span9">
     <% @news.each do |news| %>
       <div class="post">
         <h1><%= link_to news.title, news %></h1>
@@ -31,11 +31,11 @@
       </div>
     <% end %>
   </section>
-  <aside id="sidebar">
+  <aside id="sidebar" class="span3">
     <div class="widget">
       <div class="visual">
-        <%= image_tag "img02.jpg", alt: "image description", width: "287", height: "121" %>
-        <h2>Last Tournaments</h2>
+        <%= image_tag "img02.jpg", alt: "image description" %>
+        <h3>Last Tournaments</h3>
       </div>
       <table>
         <tbody>
@@ -62,8 +62,8 @@
 
     <div class="widget leaderboard">
       <div class="visual">
-        <%= image_tag "img03.jpg", alt: "image description", width: "284", height: "120" %>
-        <h2>Leaderboard</h2>
+        <%= image_tag "img03.jpg", alt: "image description" %>
+        <h3>Leaderboard</h3>
       </div>
       <table>
         <tbody>

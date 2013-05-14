@@ -2,9 +2,12 @@
   =require bootstrap-datetimepicker
   =require twitter-bootstrap-static/fontawesome
   */
-
+@import "settings";
+@import "mixins";
 @import "bootstrap";
 @import "bootstrap-responsive";
+@import "globals";
+@import "header";
 
 .modal form { margin-bottom: 0; }
 
