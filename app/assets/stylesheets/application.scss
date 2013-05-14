@@ -11,6 +11,7 @@
  *=require bootstrap_and_overrides
  *=require bootstrap-modal
  *= require_self
+ *= require_tree ./global
 */
 #logo-container {
   margin-bottom: 15px;
