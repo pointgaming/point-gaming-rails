@@ -3,7 +3,7 @@ var PointGaming = PointGaming || {};
 PointGaming.ToolbarController = function(options){
   options = options || {};
   this.toolbar_selector = options.toolbar_selector || 'header';
-  this.search_field_selector = options.search_field_selector || 'input.search-query';
+  this.search_field_selector = options.search_field_selector || 'input#appendedInputButton';
 
   this.registerHandlers();
 };
@@ -12,7 +12,7 @@ PointGaming.ToolbarController.prototype.registerHandlers = function() {
   var self = this;
 
   $('form.navbar-search.search-form').submit(function(e){
-    if ( $('input.search-query', this).val() === '') {
+    if ( $('input#appendedInputButton', this).val() === '') {
       e.preventDefault();
       return false;
     } else {
@@ -39,7 +39,7 @@ PointGaming.ToolbarController.prototype.registerHandlers = function() {
           .addClass('requires-desktop-client check-for-client')
           .click();
 
-        $('input.search-query', 'form.navbar-search.search-form').val('');
+        $('input#appendedInputButton', 'form.navbar-search.search-form').val('');
       } else {
         window.location.href = val;
       }
