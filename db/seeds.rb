@@ -19,11 +19,6 @@ games = [
 games.each {|game_name| 
   game = Game.create! :name => game_name, :player_count => 0
   puts 'New game created: ' << game.name
-
-  puts 'Creating 100 game rooms...'
-  100.times { |i|
-    game.rooms.create!({:description => "Room #{i}"})
-  }
 }
 
 
