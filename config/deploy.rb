@@ -27,6 +27,24 @@ namespace :deploy do
     run "cd #{latest_release}; bundle install --deployment --without development test"
   end
 
+  desc "Restart God gracefully"
+  task "restart_god", :roles => :app do
+    god_config_path = File.join(release_path, 'config', 'resque.god')
+    begin
+      # Throws an exception if god is not running.
+      run "cd #{release_path}; bundle exec god status && RAILS_ENV=#{rails_env} RAILS_ROOT=#{release_path} bundle exec god load #{god_config_path} && bundle exec god start resque"
+
+      # Kill resque processes and have god restart them with the newly loaded config.
+      try_killing_resque_workers
+    rescue => ex
+      # god is dead, workers should be as well, but who knows.
+      try_killing_resque_workers
+
+      # Start god.
+      run "cd #{release_path}; RAILS_ENV=#{rails_env} bundle exec god -c #{god_config_path}"
+    end
+  end
+
   namespace :assets do
     task :update_asset_mtimes do ; end
   end
@@ -50,3 +68,11 @@ task :tail, :roles => :app do
     break if stream == :err
   end
 end
+
+def try_killing_resque_workers
+  run "pkill -3 -f resque"
+rescue
+  nil
+end
+
+after :"deploy:restart", :"deploy:restart_god"

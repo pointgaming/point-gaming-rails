@@ -40,6 +40,7 @@ group :development do
 end
 
 gem 'whenever', require: false
+gem 'god', require: false
 gem 'capistrano'
 gem 'capistrano-ext'
 
