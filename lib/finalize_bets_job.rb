@@ -16,16 +16,14 @@ class FinalizeBetsJob
         elsif bet.offerer_choice_id === match.winner_id && bet.offerer_choice_type === match.winner_type
           bet.update_attribute(:outcome, :offerer_won)
 
-          bet.offerer.inc(:points, bet.taker_wager)
+          bet.taker.transfer_points_to_user(bet.offerer, bet.taker_wager)
           bet.offerer.inc(:finalized_bets_count, 1)
-          bet.taker.inc(:points, bet.taker_wager * -1)
           bet.taker.inc(:finalized_bets_count, 1)
         else
           bet.update_attribute(:outcome, :taker_won)
 
-          bet.taker.inc(:points, bet.offerer_wager)
+          bet.offerer.transfer_points_to_user(bet.taker, bet.offerer_wager)
           bet.taker.inc(:finalized_bets_count, 1)
-          bet.offerer.inc(:points, bet.offerer_wager * -1)
           bet.offerer.inc(:finalized_bets_count, 1)
         end
       }

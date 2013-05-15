@@ -55,3 +55,8 @@ en:
         title: 'Desktop Client Upgrade Required'
   reports:
     point_audit: "Point Auditing Report"
+  dispute:
+    state:
+      new: 'New'
+      cancelled: 'Cancelled'
+      finalized: 'Finalized'

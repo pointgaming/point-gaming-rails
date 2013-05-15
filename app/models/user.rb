@@ -138,6 +138,17 @@ class User
     self.slug
   end
 
+  # FIXME: add error checking to the inc() methods, upgrade mongoid >4.0.0 for this to work correctly
+  def transfer_points_to_user(user, amount)
+    raise TypeError, "user must be an instance of User" unless user.class.name === 'User'
+    raise TypeError, "amount must be an instance of Fixnum" unless amount.class.name === 'Fixnum'
+
+    inc(:points, amount * -1)
+    user.inc(:points, amount)
+
+    true
+  end
+
   def profile_url
     user_url(self)
   end

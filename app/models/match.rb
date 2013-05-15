@@ -27,7 +27,10 @@ class Match
       event :cancel, transitions_to: :cancelled
     end 
     state :cancelled
-    state :finalized
+    state :finalized do
+      event :dispute_finalized, transition_to: :disputed
+    end
+    state :disputed
   end
 
   belongs_to :game
@@ -46,11 +49,18 @@ class Match
   validates :game, :presence=>true
   validate :check_winner
   validate :check_default_offerer_odds
+  validate :player_1_and_player_2_validation
 
+  attr_accessor :void_match
   attr_writer :player_1_name, :player_2_name
   
   def dispute
     disputes.active.first
+  end
+
+  def loser
+    return nil unless winner.present?
+    winner === player_1 ? player_2 : player_1
   end
 
   def player_1_name
@@ -97,8 +107,14 @@ private
     errors.add(:default_offerer_odds, "is required") if self.room_type === 'GameRoom' && self.default_offerer_odds.blank?
   end
 
+  def player_1_and_player_2_validation
+    if (player_1 === player_2)
+      self.errors[:base] << "#{self.class.human_attribute_name(:player_1)} and #{self.class.human_attribute_name(:player_2)} cannot be the same"
+    end
+  end
+
   def check_winner
-    if self.state != 'new'
+    if self.state === 'started'
       if self.winner.present?
         errors.add(:winner_id, "is invalid") unless [self.player_1, self.player_2].include?(self.winner)
       else

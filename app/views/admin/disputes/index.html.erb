@@ -1,0 +1,28 @@
+<%- model_class = Dispute -%>
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th><%= model_class.human_attribute_name(:id) %></th>
+      <th><%= model_class.human_attribute_name(:owner_id) %></th>
+      <th><%= model_class.human_attribute_name(:match_id) %></th>
+      <th><%= model_class.human_attribute_name(:state) %></th>
+      <th><%= model_class.human_attribute_name(:updated_at) %></th>
+      <th><%=t '.actions', :default => t("helpers.actions") %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @disputes.each do |dispute| %>
+      <tr>
+        <td><%= link_to dispute.id, admin_dispute_path(dispute) %></td>
+        <td><%= link_to dispute.owner.try(:username), dispute.owner %></td>
+        <td><%= link_to match_details(dispute.match, :short), match_path(dispute.match) %></td>
+        <td><%=t dispute.state, scope: [:dispute, :state] %></td>
+        <td><%=ldate dispute.updated_at %></td>
+        <td>
+          <%= link_to t('.view'), admin_dispute_path(dispute),
+                      :class => 'btn btn-mini' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

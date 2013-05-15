@@ -1,0 +1,19 @@
+<%= form_for [:admin, @dispute, @dispute_message], :html => { :class => 'form-horizontal' } do |f| %>
+  <%= render partial: 'shared/form_errors', locals: {model: f.object} %>
+
+  <div class="control-group">
+    <%= f.label :text, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_area :text, rows: 8, style: "width: 500px" %>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <%= f.submit nil, :class => 'btn btn-primary' %>
+    <%- hide_cancel_button = hide_cancel_button || false %>
+    <% unless hide_cancel_button %>
+      <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                  admin_dispute_messages_path, :class => 'btn' %>
+    <% end %>
+  </div>
+<% end %>

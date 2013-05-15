@@ -9,6 +9,10 @@ class DisputesController < ApplicationController
 
   respond_to :html, :json
 
+  def sub_layout
+    "settings" if action_name === 'index'
+  end
+
   def index
     match_ids = current_user.bets.map(&:match_id).uniq
     @disputes = match_ids.length > 0 ? Dispute.in(match_id: match_ids).all : []

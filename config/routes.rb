@@ -62,6 +62,12 @@ Pointgaming::Application.routes.draw do
 
   namespace :admin do
     root :to => "dashboard#index"
+    resources :disputes, only: [:index, :show, :edit, :update] do
+      resources :messages, controller: 'dispute_messages', only: [:new, :create]
+      member do
+        put 'cancel'
+      end
+    end
     resources :groups do
       resources :users, controller: 'group_users'
     end

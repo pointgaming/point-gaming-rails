@@ -4,6 +4,7 @@ class Permission < ActiveHash::Base
     {id: :manage_news, ability: [:manage, News]},
     {id: :manage_groups, ability: [:manage, Group]},
     {id: :manage_subscription_features, ability: [:manage, SubscriptionFeature]},
+    {id: :manage_disputes, ability: [:manage, Dispute]},
     {id: :forums_admin, ability: [:admin, :forums]},
     {id: :store_admin, ability: [:admin, :store]},
 
