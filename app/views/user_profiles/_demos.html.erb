@@ -1,7 +1,6 @@
 <%- edit ||= false %>
 <div id="demos-widget" class="widget widget-table action-table">
   <div class="widget-header">
-    <i class="icon-facetime-video"></i>
     <h3>Demos</h3>
     <% if edit %>
       <%= link_to_modal 'Upload Demo', new_user_demo_path(@user), remote: true,
