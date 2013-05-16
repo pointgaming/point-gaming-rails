@@ -9,6 +9,7 @@ class ProcessDisputeOutcomeJob
   end
 
   def self.update_match(dispute)
+    match_log = dispute.match_logs.build({original: dispute.match.attributes.dup, action: dispute.outcome})
     if dispute.outcome === 'new_match_winner'
       raise "dispute.winner required when dispute.outcome is :new_match_winner" unless dispute.winner.present?
 
@@ -18,6 +19,8 @@ class ProcessDisputeOutcomeJob
       dispute.match.winner = nil
       raise "Failed to save or finalize_dispute match" unless dispute.match.save && dispute.match.dispute_finalized!
     end
+    match_log.modified = dispute.match.attributes.dup
+    match_log.save
   end
 
   def self.update_bets(dispute)

@@ -27,6 +27,8 @@ class Dispute
 
   has_many :messages, class_name: 'DisputeMessage'
 
+  embeds_many :match_logs, class_name: 'DisputeMatchLog'
+
   validates :match, :presence=>true
   validates :owner, :presence=>true
   validate :message_presence, on: :create

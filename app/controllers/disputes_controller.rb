@@ -29,6 +29,10 @@ class DisputesController < ApplicationController
     @message = @dispute.messages.build(params[:message].merge!({user_id: current_user._id}))
     @dispute.save
     @message.save
+
+    match_log = @dispute.match_logs.build({action: :create_dispute, modified: @dispute.attributes.dup})
+    match_log.save
+
     respond_with(@message, location: @dispute)
   end
 
