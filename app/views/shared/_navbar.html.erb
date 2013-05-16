@@ -14,14 +14,24 @@
           <div class="nav-collapse collapse navbar-responsive-collapse"> 
             
             <!-- .nav, .navbar-search, .navbar-form, etc -->
-            <ul class="nav primary">
+            <ul class="nav primary span6">
               <%= navItem "Games", games_path %>
               <%= navItem "Tournaments", tournaments_path %>
               <%= navItem "Streams", streams_path %>
               <%= navItem "Store", store_path %>
               <%= navItem "Forums", forum_path %>
             </ul>
-            <ul class="nav admin pull-right">
+
+            <%= form_tag search_path, method: :get, autocomplete: :off, :class => "navbar-search search-form span2" do %>
+            <fieldset>
+              <div class="input-append">
+                <input class="span2" id="navbar-search-button" placeholder="Search" type="text" name="query">
+                <button class="btn" type="submit" value="submit"><%= link_to image_tag('mag-glass.png') %></button>
+              </div>
+            </fieldset>
+            <% end %>
+
+            <ul class="nav admin span2 pull-right">
               <% if user_signed_in? %>
               <li class="dropdown"> 
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -57,14 +67,6 @@
               <% end %>
               <% end %>
             </ul>
-            <%= form_tag search_path, method: :get, autocomplete: :off, :class => "navbar-search search-form pull-right" do %>
-            <fieldset>
-              <div class="input-append">
-                <input class="span2" id="navbar-search-button" placeholder="Search" type="text" name="query">
-                <button class="btn" type="submit" value="submit"><%= link_to image_tag('mag-glass.png') %></button>
-              </div>
-            </fieldset>
-            <% end %>
           </div>
         </div>
       </div>
