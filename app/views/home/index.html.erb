@@ -37,7 +37,7 @@
         <%= image_tag "img02.jpg", alt: "image description" %>
         <h3>Last Tournaments</h3>
       </div>
-      <table>
+      <table class="table table-bordered table-striped">
         <tbody>
           <tr>
             <th class="title">Tournament</th>
@@ -65,7 +65,7 @@
         <%= image_tag "img03.jpg", alt: "image description" %>
         <h3>Leaderboard</h3>
       </div>
-      <table>
+      <table class="table table-bordered table-striped">
         <tbody>
           <tr>
             <th class="title"><%= User.human_attribute_name(:username) %></th>
