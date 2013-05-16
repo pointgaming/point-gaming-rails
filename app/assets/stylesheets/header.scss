@@ -1,102 +1,35 @@
-@media (min-width: 1200px) {
-	.navbar {
-		.navbar-inner { height: 80px; @include border-radius(0px); background: url(image_path('nav-shadow.png')) repeat-x 0 100%; border: 0; @include box-shadow(none);
-			.container { max-width: 1170px; 
-				.row { margin-top: 10px; 
-					.nav.primary { margin-top: 8px;
-						li { 
-							width: 130px;
-							-o-transition: width 0.3s ease-in-out;
-							-ms-transition: width 0.3s ease-in-out;
-							-moz-transition: width 0.3s ease-in-out;
-							-webkit-transition: width 0.3s ease-in-out;
-							a { padding: 10px 10%; text-align: center;}
-							&.active {
-								a { color: $primaryColor; @include box-shadow(none); background: none;}
-							}
-						} 
-					}
 
-					.nav.primary.focused { margin-top: 8px;
-						li { 
-							width: 120px;
-							-o-transition: width 0.3s ease-in-out;
-							-ms-transition: width 0.3s ease-in-out;
-							-moz-transition: width 0.3s ease-in-out;
-							-webkit-transition: width 0.3s ease-in-out;
-						} 
-					}
-
-					.nav.admin { margin-top: 12px;
-						li {
-							.divider {margin: 0;}
-							a.dropdown-toggle { padding: 0 0 0 10px; margin-left: 10px; border-left: 1px solid #ccc; margin-top: 11px; margin-top: 0;}
-							ul {
-								li {
-									a {padding: 5px 10px;}
-								}
-							}
+.navbar {
+	.navbar-inner { @include border-radius(0px); @include box-shadow(none);
+		.container { max-width: 1170px; 
+			.row { padding: 10px 0;
+				.nav.primary { margin-top: 8px;
+					li {
+						a { padding: 10px 30px;}
+						&.active {
+							a { color: $primaryColor; @include box-shadow(none); background: none;}
 						}
-						li.dropdown.open > .dropdown-toggle {background: none;}
-					}
-					.input-append { margin-top: 6px;
-						input[type="text"] { 
-								width: 100px;
-								-o-transition: width 0.3s ease-in-out;
-								-ms-transition: width 0.3s ease-in-out;
-								-moz-transition: width 0.3s ease-in-out;
-								-webkit-transition: width 0.3s ease-in-out;
-							&.focused {
-								width: 150px;
-								-o-transition: width 0.3s ease-in-out;
-								-ms-transition: width 0.3s ease-in-out;
-								-moz-transition: width 0.3s ease-in-out;
-								-webkit-transition: width 0.3s ease-in-out;
-							}
-
-						}
-					}
-					a.dropdown-toggle { line-height: 10px; }
+					} 
 				}
+
+				.nav.admin { margin-top: 12px; max-width: 120px;
+					li {
+						.divider {margin: 0;}
+						a.dropdown-toggle { padding: 0 0 0 10px;}
+						ul {
+							li {
+								a {padding: 5px 10px;}
+							}
+						}
+					}
+				}
+				.input-append { margin-top: 6px;
+					input[type="text"] { width: 150px; }
+				}
+				a.dropdown-toggle { line-height: 10px; }
 			}
 		}
 	}
 }
 
 
-@media (max-width: 480px) { 
-	body {padding: 0;}
-	.container {padding: 0 10px; width: 100%;}
-	.navbar {
-		.navbar-inner {height: 80px; @include border-radius(0px); background: url(image_path('nav-shadow.png')) repeat-x 0 100%; border: 0; @include box-shadow(none); padding: 0;}
-		.btn-navbar { margin-top: 20px; }
-		.nav-collapse {background: #f2f2f2; z-index: 1; top: 16px;
-
-			.nav.primary { margin-top: 8px;
-				li { 
-					width: 100%;
-					a { padding: 10px 10px; text-align: left; border-bottom: 1px dotted #ccc;}
-				} 
-			}
-
-			.nav.primary.focused { margin-top: 8px;
-				li { 
-					width: 100%;
-				} 
-			}
-
-			.input-append { margin-top: 6px;
-				input[type="text"] { 
-						width: 100%;
-				}
-			}
-
-			.nav.admin { margin-top: 12px;
-				li {
-					.divider {margin: 0;}
-					a.dropdown-toggle { padding: 0 0 0 10px; margin-left: 0; border: 0px; margin-top: 11px; margin-top: 0;}
-				}
-			}
-		}
-	}
-}
