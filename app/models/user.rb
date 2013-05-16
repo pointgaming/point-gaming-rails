@@ -111,12 +111,12 @@ class User
   end
 
   def increment_points!(amount)
-    raise TypeError, "Amount must be a Fixnum." unless points.class.name === 'Fixnum'
+    raise TypeError, "Amount must be a Fixnum." unless amount.class.name === 'Fixnum'
 
     point_transaction = PointTransaction.new(amount: amount, user: self)
     if point_transaction.save
       # FIXME: upgrade mongoid to >4.0.0 for this to work correctly
-      unless inc(:points, points)
+      unless inc(:points, amount)
         point_transaction.destroy
         raise 'Failed to increment points.'
       end
