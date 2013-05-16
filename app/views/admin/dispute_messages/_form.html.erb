@@ -1,10 +1,17 @@
-<%= form_for [:admin, @dispute, @dispute_message], :html => { :class => 'form-horizontal' } do |f| %>
+<%= form_for [:admin, @dispute, @dispute_message], :html => { multipart: true, :class => 'form-horizontal' } do |f| %>
   <%= render partial: 'shared/form_errors', locals: {model: f.object} %>
 
   <div class="control-group">
     <%= f.label :text, :class => 'control-label' %>
     <div class="controls">
       <%= f.text_area :text, rows: 8, style: "width: 500px" %>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <%= f.label :attachment, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.file_field :attachment %>
     </div>
   </div>
 

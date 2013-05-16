@@ -1,15 +1,19 @@
 class DisputeMessage
   include Mongoid::Document
   include Mongoid::Timestamps
+  include Mongoid::Paperclip
 
   after_create :increment_message_count
   after_destroy :decrement_message_count
 
   field :text, :type => String
 
+  has_mongoid_attached_file :attachment
+
   validates :text, :presence=>true
   validates :user, :presence=>true
   validates :dispute, :presence=>true
+  validates_attachment :attachment, :size => { :in => 0..20.megabytes }
 
   belongs_to :user
   belongs_to :dispute
