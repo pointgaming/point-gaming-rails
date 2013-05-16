@@ -13,7 +13,9 @@ class DisputeMessagesController < ApplicationController
 
   def create
     @dispute_message = DisputeMessage.new(params[:message].merge!({user_id: current_user._id, dispute: @dispute}))
-    @dispute_message.save
+    if @dispute_message.save && !@dispute_message.dispute.has_admin_viewers?
+      DisputeMailer.new_message(@dispute_message).deliver
+    end
     respond_with(@dispute_message, location: dispute_url(@dispute, anchor: "message-#{@dispute_message._id}"))
   end
 

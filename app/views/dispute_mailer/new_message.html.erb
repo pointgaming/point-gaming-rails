@@ -1,0 +1,10 @@
+<h1>New Dispute Message</h1>
+
+<p><%= @dispute_message.user.username %> added a new message to a dispute.</p>
+
+<p>
+Message:<br />
+<%= @dispute_message.text %>
+</p>
+
+<%= link_to "View Dispute", dispute_url(@dispute_message.dispute) %>

@@ -92,6 +92,11 @@ class Stream
     end
   end
 
+  def increment_viewer_count!(amount)
+    raise TypeError, "Amount must be a Fixnum." unless amount.class.name === 'Fixnum'
+    inc(:viewer_count, amount)
+  end
+
 private
 
   def populate_slug

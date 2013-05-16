@@ -11,7 +11,7 @@ class Api::V1::StreamsController < Api::ApplicationController
   def incrementViewerCount
     raise ::UnprocessableEntity, "Missing count parameter" if params[:count].blank?
 
-    @stream.inc :viewer_count, params[:count]
+    @stream.increment_viewer_count!(params[:count])
 
     respond_with(@stream)
   end

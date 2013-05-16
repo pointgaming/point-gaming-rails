@@ -1,0 +1,8 @@
+New Dispute Message
+
+<%= @dispute_message.user.username %> added a new message to a dispute.
+
+Message:
+<%= @dispute_message.text %>
+
+<%= dispute_url(@dispute_message.dispute) %>

@@ -9,6 +9,7 @@ gem 'mongoid', "~> 3.0.0"
 gem 'redis-rails'
 gem 'active_hash'
 gem 'tire'
+gem 'mail'
 
 gem 'stripe'
 gem 'resque'

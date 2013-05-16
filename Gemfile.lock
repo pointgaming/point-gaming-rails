@@ -263,6 +263,7 @@ DEPENDENCIES
   jquery-rails
   jquery-ui-rails
   kaminari
+  mail
   meta_request
   mongoid (~> 3.0.0)
   mongoid-paperclip

@@ -10,6 +10,8 @@ class Dispute
   field :state, :type => String
   field :outcome, :type => String, default: 'pending'
   field :message_count, :type => Integer, default: 0
+  field :user_viewer_count, :type => Integer, :default => 0
+  field :admin_viewer_count, :type => Integer, :default => 0
 
   workflow_column :state
   workflow do
@@ -41,6 +43,24 @@ class Dispute
 
   def finalize
     Resque.enqueue ProcessDisputeOutcomeJob, self._id unless outcome === 'rejected'
+  end
+
+  def has_user_viewers?
+    user_viewer_count > 0
+  end
+
+  def has_admin_viewers?
+    admin_viewer_count > 0
+  end
+
+  def increment_admin_viewer_count!(amount)
+    raise TypeError, "Amount must be a Fixnum." unless amount.class.name === 'Fixnum'
+    inc(:admin_viewer_count, amount)
+  end
+
+  def increment_user_viewer_count!(amount)
+    raise TypeError, "Amount must be a Fixnum." unless amount.class.name === 'Fixnum'
+    inc(:user_viewer_count, amount)
   end
 
 protected

@@ -97,6 +97,12 @@ Pointgaming::Application.routes.draw do
         end
         resources :bets, only: [:new, :show, :create, :update, :destroy]
       end
+      resources :disputes, only: [:show] do
+        member do
+          put 'incrementAdminViewerCount'
+          put 'incrementUserViewerCount'
+        end
+      end
       resources :streams, only: [:show] do
         member do
           put 'incrementViewerCount'
