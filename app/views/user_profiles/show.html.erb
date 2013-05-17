@@ -1,15 +1,15 @@
 <%- model_class = Profile -%>
 
-<div class="row">
+<div class="row-fluid" id="user-profile">
   <div class="span3">
-    <div class="row">
+    <div class="row-fluid">
 
-      <div class="span3">
+      <div class="span12">
         <%= render partial: 'user_profiles/user_image', locals: {model: @user} %>
       </div>
 
-      <div class="span3">
-        <div class="breadcrumb">
+      <div class="span12">
+        <div class="well">
           <% if @user._id === current_user._id %>
             <%= link_to 'Edit Profile', edit_user_profile_path(@user), :class => 'btn btn-block' %>
           <% else %>
@@ -35,14 +35,25 @@
         </div>
       </div>
 
-      <div class="span3">
-        <h3><%= User.human_attribute_name(:game_id) %></h3>
-        <div class="controls">
-          <%= @user.game.try(:display_name) %>
+      <div class="span12">
+        <div class="row-fluid">
+          <div class="span6 well">
+            <div class="span12"><p><i class="icon-map-marker"></i><%= @user.country %></p></div>
+          </div>
+
+          <div class="span6 well">
+            <div class="span12"><p><i class="icon-user"></i>Friends <%= link_to @user.friends.sum(:count), friends_path %></p></div>
+          </div>
         </div>
       </div>
 
-      <div class="span3">
+      <div class="span12" id="primary-game">
+        <%= image_tag "counterstrikego.png" %>
+        <h3><%= User.human_attribute_name(:game_id) %></h3>
+        <h4><%= @user.game.try(:display_name) %></h4>
+      </div>
+
+      <div class="span12">
         <%= render partial: 'user_profiles/bio', locals: {model: @user.profile} %>
       </div>
 
@@ -50,52 +61,62 @@
   </div>
 
   <div class="span9">
-    <div class="row">
-      <div class="span9">
-        <div class="row">
-          <div class="span5">
-            <h1><%= @user.username %></h1>
-            <p><%= @user.points %> Points</p>
-            <p>Friends <%= link_to @user.friends.sum(:count), friends_path %></p>
-            <p><%= @user.country %></p>
+    <div class="row-fluid" id="profile-top-bar">
+      <div class="span12">
+        <div class="row-fluid">
+          <div class="span8" id="username-container">
+            <div class="row-fluid">
+
+              <div class="span9">
+                <h2><%= @user.username %></h2>
+                <h4><%= @user.points %> Points</h4>
+              </div>
+
+            </div>
+            
           </div>
-          <div class="span4">
-            <h1>Team</h1>
-            <% unless @user.team.nil? %>
-              <p><%= link_to @user.team.try(:name), team_path(@user.team) %></p>
-            <% end %>
+          <div class="span4" id="team-container">
+            <div class="row-fluid">
+              <div class="span3" id="team-logo">
+                <%= image_tag "team-logo.png" %>
+              </div>
+              <div class="span9">
+                <h2>Team</h2>
+                <% unless @user.team.nil? %>
+                  <h4><%= link_to @user.team.try(:name), team_path(@user.team) %></h4>
+                <% end %>
+              </div> 
+            </div>
           </div>
         </div>
       </div>
-
-      <div class="span2 pull-right">
-        <h3>Sponsors</h3>
-        <%= image_tag @user.avatar.url, :class => 'thumbnail' %>
-        <%= image_tag @user.avatar.url, :class => 'thumbnail' %>
-        <%= image_tag @user.avatar.url, :class => 'thumbnail' %>
-        <%= image_tag @user.avatar.url, :class => 'thumbnail' %>
-        <%= image_tag @user.avatar.url, :class => 'thumbnail' %>
-        <%= image_tag @user.avatar.url, :class => 'thumbnail' %>
-        <%= image_tag @user.avatar.url, :class => 'thumbnail' %>
-      </div>
-
-      <div class="span7">
-        <%= render partial: 'user_profiles/match_history', locals: {models: @matches} %>
-      </div>
-
-      <div class="span7">
-        <%= render partial: 'user_profiles/rig', locals: {model: @user.profile.try(:rig)} %>
-      </div>
-
-      <div class="span7">
-        <%= render partial: 'user_profiles/demos', locals: {models: @user.demos.order_by(updated_at: :desc)} %>
-      </div>
-
-      <div class="span7">
-        <%= render partial: 'user_profiles/configs', locals: {models: @user.configs} %>
-      </div>
-        
     </div>
-    
+
+    <div class="row-fluid">
+      <div class="span12">
+          <div class="row-fluid">
+
+            <div class="span9">
+              <%= render partial: 'user_profiles/match_history', locals: {models: @matches} %>
+              <%= render partial: 'user_profiles/rig', locals: {model: @user.profile.try(:rig)} %>
+              <% if @user.demos.exists? %>
+                <%= render partial: 'user_profiles/demos', locals: {models: @user.demos.order_by(updated_at: :desc)} %>
+              <% end %>
+              <% if @user.configs.exists? %>
+                <%= render partial: 'user_profiles/configs', locals: {models: @user.configs} %>
+              <% end %>
+            </div>
+
+            <div class="span3">
+              <h4>Sponsors</h4>
+              <%= image_tag @user.avatar.url, :class => 'thumbnail' %>
+              <%= image_tag @user.avatar.url, :class => 'thumbnail' %>
+              <%= image_tag @user.avatar.url, :class => 'thumbnail' %>
+              <%= image_tag @user.avatar.url, :class => 'thumbnail' %>
+            </div>
+
+          </div>
+        </div>
+      </div>
   </div>
 </div>
