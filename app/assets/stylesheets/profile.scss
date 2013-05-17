@@ -1,19 +1,36 @@
-#profile-top-bar {background: $lightGrey;
-	h2 {margin: 0; font-weight: bold;}
-	h4 {font-weight: normal; margin: 0;}
-	#username-container {padding: 10px}
-	#team-container { padding: 10px; background: $darkGrey;
-		h2 {color: $white;}
-	}
-}
 
-.widget { border: 1px solid $midGrey; background: $lightGrey; margin-top: 10px;
-	.widget-header {background: $darkGrey;
-		h3 {font-size: 14px; color: $lightGrey; margin: 0; line-height: 20px; padding: 10px;}
+#user-profile {
+	.well {padding: 10px; margin-bottom: 10px;
+		div {min-height: auto;}
+		p {margin: 0;}
 	}
-	.widget-content {padding: 10px;
-		h3 {margin-top: 0;}
-		table {margin-bottom: 0;}
+	h4 {font-weight: normal;}
+	#primary-game {position: relative;
+		h3, h4 {position: absolute; bottom: 0; color: $white; padding: 0 10px;}
+		h3 {bottom: 20px;}
 	}
 
+	#profile-top-bar {background: $lightGrey; border: 1px solid $midGrey;
+		h2 {margin: 0; font-weight: bold;}
+		h4 {margin: 0;}
+		#username-container {padding: 10px}
+		#team-container { padding: 10px; background: $darkGrey;
+			h2 {color: $white;}
+			#team-logo {background: $white;}
+		}
+	}
+
+	.widget { border: 1px solid $midGrey; background: $lightGrey; margin-top: 10px;
+		.widget-header {background: $darkGrey;
+			h3 {font-size: 14px; color: $lightGrey; margin: 0; line-height: 20px; padding: 10px;}
+		}
+		.widget-content {padding: 10px;
+			h3 {margin-top: 0;}
+			table {margin-bottom: 0;}
+		}
+
+	}
+
 }
+
+

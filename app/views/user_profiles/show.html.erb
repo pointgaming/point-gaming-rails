@@ -1,6 +1,6 @@
 <%- model_class = Profile -%>
 
-<div class="row-fluid">
+<div class="row-fluid" id="user-profile">
   <div class="span3">
     <div class="row-fluid">
 
@@ -36,10 +36,21 @@
       </div>
 
       <div class="span12">
-        <h3><%= User.human_attribute_name(:game_id) %></h3>
-        <div class="controls">
-          <%= @user.game.try(:display_name) %>
+        <div class="row-fluid">
+          <div class="span6 well">
+            <div class="span12"><p><i class="icon-map-marker"></i><%= @user.country %></p></div>
+          </div>
+
+          <div class="span6 well">
+            <div class="span12"><p><i class="icon-user"></i>Friends <%= link_to @user.friends.sum(:count), friends_path %></p></div>
+          </div>
         </div>
+      </div>
+
+      <div class="span12" id="primary-game">
+        <%= image_tag "counterstrikego.png" %>
+        <h3><%= User.human_attribute_name(:game_id) %></h3>
+        <h4><%= @user.game.try(:display_name) %></h4>
       </div>
 
       <div class="span12">
@@ -60,19 +71,22 @@
                 <h2><%= @user.username %></h2>
                 <h4><%= @user.points %> Points</h4>
               </div>
-              <div class="span3">
-                <p><%= @user.country %></p>
-                <p>Friends <%= link_to @user.friends.sum(:count), friends_path %></p>
-              </div>
 
             </div>
             
           </div>
           <div class="span4" id="team-container">
-            <h2>Team</h2>
-            <% unless @user.team.nil? %>
-              <h4><%= link_to @user.team.try(:name), team_path(@user.team) %></h4>
-            <% end %>
+            <div class="row-fluid">
+              <div class="span3" id="team-logo">
+                <%= image_tag "team-logo.png" %>
+              </div>
+              <div class="span9">
+                <h2>Team</h2>
+                <% unless @user.team.nil? %>
+                  <h4><%= link_to @user.team.try(:name), team_path(@user.team) %></h4>
+                <% end %>
+              </div> 
+            </div>
           </div>
         </div>
       </div>
@@ -94,7 +108,7 @@
             </div>
 
             <div class="span3">
-              <h3>Sponsors</h3>
+              <h4>Sponsors</h4>
               <%= image_tag @user.avatar.url, :class => 'thumbnail' %>
               <%= image_tag @user.avatar.url, :class => 'thumbnail' %>
               <%= image_tag @user.avatar.url, :class => 'thumbnail' %>
