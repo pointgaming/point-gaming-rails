@@ -50,14 +50,9 @@ namespace :deploy do
   end
 end
 
-before 'deploy:update_code' do
-  run "#{try_sudo} chown -R nobody:nogroup #{deploy_to}"
-  run "#{try_sudo} /bin/chmod -R g+rw #{deploy_to}"
-end
-
 before 'deploy:restart' do
-  run "#{try_sudo} chown -R nobody:nogroup #{deploy_to}"
-  run "#{try_sudo} /bin/chmod -R g+rw #{deploy_to}"
+  run "#{try_sudo} chown -R nobody:nogroup #{release_path}"
+  run "#{try_sudo} /bin/chmod -R g+rw #{release_path}"
 end
 
 desc "tail log files"
