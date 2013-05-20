@@ -221,6 +221,9 @@ GEM
     treetop (1.4.12)
       polyglot
       polyglot (>= 0.3.1)
+    turbo-sprockets-rails3 (0.3.6)
+      railties (> 3.2.8, < 4.0.0)
+      sprockets (>= 2.0.0)
     twitter-bootstrap-rails (2.2.3)
       actionpack (>= 3.1)
       execjs
@@ -278,6 +281,7 @@ DEPENDENCIES
   sass-rails (~> 3.2.3)
   stripe
   tire
+  turbo-sprockets-rails3
   twitter-bootstrap-rails
   uglifier (>= 1.0.3)
   uuidtools
