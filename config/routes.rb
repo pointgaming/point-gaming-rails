@@ -83,7 +83,11 @@ Pointgaming::Application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :users
+      resources :users do
+        member do
+          put 'increment_points'
+        end
+      end
       resources :coins
       resources :games, only: [:index]
       resources :sessions
