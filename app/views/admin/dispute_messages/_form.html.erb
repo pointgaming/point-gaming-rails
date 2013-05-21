@@ -1,4 +1,5 @@
-<%= form_for [:admin, @dispute, @dispute_message], :html => { multipart: true, :class => 'form-horizontal' } do |f| %>
+<%- remote ||= false %>
+<%= form_for [:admin, @dispute, @dispute_message], :html => { multipart: true, :class => 'form-horizontal', remote: remote, :'data-type' => :json } do |f| %>
   <%= render partial: 'shared/form_errors', locals: {model: f.object} %>
 
   <div class="control-group">

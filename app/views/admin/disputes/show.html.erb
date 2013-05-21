@@ -1,4 +1,5 @@
 <%- model_class = Dispute -%>
+<%= javascript_include_tag "disputes" %>
 <%= javascript_include_tag "admin/disputes" %>
 <h1><%=t '.title', :default => model_class.model_name.human %> <%= @dispute.id %></h1>
 
@@ -49,10 +50,10 @@
 
 <br />
 
-<div class="row-fluid">
+<div id="messages" class="row-fluid">
   <h1>
     <%= link_to '', '#messages', name: 'messages' %>
-    <%=t 'helpers.titles.all', model: DisputeMessage.model_name.human, default: "All #{DisputeMessage.model_name.human.pluralize}" %> (<%= @dispute.message_count %>)
+    All Messages (<span data-hook="message_count"><%= @dispute.message_count %></span>)
   </h1>
   <% @dispute.messages.each_with_index do |message, index| %>
     <div class="message row-fluid <%= (index % 2 === 0 ? 'even' : 'odd') %>">
@@ -84,5 +85,28 @@
 <section class="full-width clearfix">
   <h1><%= t 'helpers.titles.new', model: DisputeMessage.model_name.human, default: "New #{DisputeMessage.model_name.human}" %></h1>
 
-  <%= render partial: 'admin/dispute_messages/form', locals: { hide_cancel_button: true} %>
+  <%= render partial: 'admin/dispute_messages/form', locals: { hide_cancel_button: true, remote: true} %>
 </section>
+
+<%= javascript_tag do %>
+  $(function () {
+    if (PointGaming.authToken) {
+      PointGaming.socket = io.connect(PointGaming.socketio_uri);
+      PointGaming.socket.on("ready", function(){
+        // send auth request
+        PointGaming.socket.emit("auth", {auth_token: PointGaming.authToken});
+      });
+
+      // register listener for auth callback
+      PointGaming.socket.on("auth_resp", function(data){
+        if (data.success === true && data.user) {
+          PointGaming.user = data.user;
+        }
+      });
+
+      new PointGaming.DisputeMessagesController({
+        chat_room: "<%= @dispute.mq_exchange %>"
+      });
+    }
+  });
+<% end %>
