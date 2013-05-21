@@ -1,5 +1,5 @@
 class Admin::SubscriptionTypesController < Admin::ApplicationController
-  authorize_resource :SubscriptionFeature, :parent => false
+  authorize_resource
   before_filter :ensure_subscription_type, except: [:index, :new, :create]
   before_filter :ensure_subscription_features, only: [:new, :create, :edit, :update]
 
