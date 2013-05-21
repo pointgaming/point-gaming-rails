@@ -3,32 +3,34 @@
   <div class="widget-header">
     <h3>Configs</h3>
   </div>
-  <div class="widget-content">
+  <div class="widget-content clearfix">
+    <% unless models.blank? %>
+      <table class="span12 table table-bordered table-striped">
+        <tbody>
+          <% models.each do |c| %>
+          <tr class="span12">
+            <td class="span10"><%= c.name %></td>
+            <td class="span2">
+              <%= link_to :Download, c.attachment.url, :class => 'btn span12' %>
+              <% if edit && current_user._id === c.user_id %>
+                <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                  user_config_path(@user, c),
+                  :method => :delete,
+                  :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                  :class => 'btn btn-mini btn-danger span12' %>
+              <% end %>
+            </td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% end %>
+
     <% if edit %>
       <div class="row-fluid control-group">
         <%= link_to 'Upload (Max Size 1MB)', new_user_config_path(@user), :class => 'span12 btn' %>
       </div>
     <% end %>
-    <% unless models.blank? %>
-      <% models.each do |c| %>
-        <div class="row-fluid control-group">
-          <div class="span8">
-            <%= c.name %>
-          </div>
-          <div class="span4">
-            <div class="pull-right">
-              <%= link_to :Download, c.attachment.url, :class => 'btn btn-mini' %>
-              <% if edit && current_user._id === c.user_id %>
-                <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                      user_config_path(@user, c),
-                      :method => :delete,
-                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-                      :class => 'btn btn-mini btn-danger' %>
-              <% end %>
-            </div>
-          </div>
-        </div>
-      <% end %>
-    <% end %>
+      
   </div>
 </div>
