@@ -38,18 +38,21 @@
       <div class="span12">
         <div class="row-fluid">
           <div class="span6 well">
-            <div class="span12"><p><i class="icon-map-marker"></i><%= @user.country %></p></div>
+            <div class="span12">
+              <div class="f16">
+                <p><i class="flag <%= @user.country.downcase %>"></i><%= @user.country %></p>
+              </div>
+            </div>
           </div>
 
           <div class="span6 well">
-            <div class="span12"><p><i class="icon-user"></i>Friends <%= link_to @user.friend_count, friends_path %></p></div>
+            <div class="span12"><p><i class="icon-user"></i>Friends <%= link_to @user.friends.sum(:count), friends_path %></p></div>
           </div>
         </div>
       </div>
 
       <% if @user.game.present? %>
-        <div class="span12" id="primary-game">
-          <%= image_tag "counterstrikego.png" %>
+        <div class="span12 game-badge <%= game_css_class(@user.game) %>" id="primary-game">
           <h3><%= User.human_attribute_name(:game_id) %></h3>
           <h4><%= @user.game.try(:display_name) %></h4>
         </div>

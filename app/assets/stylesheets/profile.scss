@@ -8,6 +8,12 @@
 	}
 	h4 {font-weight: normal;}
 	#primary-game {position: relative;
+		&.Quake3 {height: 150px; background: url(image_path('quake3.png')) no-repeat 50% 25%}
+		&.QuakeLive {height: 150px; background: url(image_path('quakelive.png')) no-repeat 50% 50%}
+		&.CounterStrikeGo {height: 150px; background: url(image_path('counterstrikego.png')) no-repeat 50% 50%}
+		&.CounterStrikeSource {height: 150px; background: url(image_path('counterstrikesource.png')) no-repeat 50% 50%}
+		&.StarCraftII {height: 150px; background: url(image_path('starcrafttwo.png')) no-repeat 50% 50%}
+		&.LeagueofLegends {height: 150px; background: url(image_path('leagueoflegends.png')) no-repeat 50% 50%}
 		h3, h4 {position: absolute; bottom: 0; color: $white; padding: 0 10px;}
 		h3 {bottom: 20px;}
 	}
