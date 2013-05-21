@@ -42,7 +42,7 @@
           </div>
 
           <div class="span6 well">
-            <div class="span12"><p><i class="icon-user"></i>Friends <%= link_to @user.friends.sum(:count), friends_path %></p></div>
+            <div class="span12"><p><i class="icon-user"></i>Friends <%= link_to @user.friend_count, friends_path %></p></div>
           </div>
         </div>
       </div>
