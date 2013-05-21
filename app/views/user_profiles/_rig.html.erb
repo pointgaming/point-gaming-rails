@@ -3,139 +3,135 @@
     <h3>Rig</h3>
   </div>
   <div class="widget-content">
-    <div class="controls controls-row">
-      <div class="control-group span3">
-        <label>Manufacturer</label>
-        <div class="controls">
-          <%= model.manufacturer %>
-        </div>
-      </div>
-      <div class="control-group span3">
-        <label>Case</label>
-        <div class="controls">
-          <%= model.case %>
-        </div>
-      </div>
-      <div class="control-group span3">
-        <label>Power Supply</label>
-        <div class="controls">
-          <%= model.power_supply %>
-        </div>
-      </div>
-      <div class="control-group span3">
-        <label>OS</label>
-        <div class="controls">
-          <%= model.operating_system %>
-        </div>
-      </div>
-    </div>
-
-    <div class="controls controls-row">
-      <div class="control-group span3">
-        <label>Motherboard</label>
-        <div class="controls">
-          <%= model.motherboard %>
-        </div>
-      </div>
-      <div class="control-group span3">
-        <label>CPU</label>
-        <div class="controls">
-          <%= model.cpu %>
-        </div>
-      </div>
-      <div class="control-group span3">
-        <label>Memory</label>
-        <div class="controls">
-          <%= model.memory %>
-        </div>
-      </div>
-      <div class="control-group span3">
-        <label>Hard Drive</label>
-        <div class="controls">
-          <%= model.hard_drive %>
-        </div>
-      </div>
-    </div>
-
-    <div class="controls controls-row">
-      <div class="control-group span3">
-        <label>Hard Drive 2</label>
-        <div class="controls">
-          <%= model.hard_drive_2 %>
-        </div>
-      </div>
-      <div class="control-group span3">
-        <label>Hard Drive 3</label>
-        <div class="controls">
-          <%= model.hard_drive_3 %>
-        </div>
-      </div>
-      <div class="control-group span3">
-        <label>Video Card</label>
-        <div class="controls">
-          <%= model.video_card %>
-        </div>
-      </div>
-      <div class="control-group span3">
-        <label>Sound Card</label>
-        <div class="controls">
-          <%= model.sound_card %>
-        </div>
-      </div>
-    </div>
-
-    <div class="controls controls-row">
-      <div class="control-group span3">
-        <label>Headphones</label>
-        <div class="controls">
-          <%= model.headphones %>
-        </div>
-      </div>
-      <div class="control-group span3">
-        <label>Headphone Amp</label>
-        <div class="controls">
-          <%= model.headphone_amp %>
-        </div>
-      </div>
-      <div class="control-group span3">
-        <label>Headset</label>
-        <div class="controls">
-          <%= model.headset %>
-        </div>
-      </div>
-      <div class="control-group span3">
-        <label>Microphone</label>
-        <div class="controls">
-          <%= model.microphone %>
-        </div>
-      </div>
-    </div>
-
-    <div class="controls controls-row">
-      <div class="control-group span3">
-        <label>Monitor</label>
-        <div class="controls">
-          <%= model.monitor %>
-        </div>
-      </div>
-      <div class="control-group span3">
-        <label>Mouse</label>
-        <div class="controls">
-          <%= model.mouse %>
-        </div>
-      </div>
-      <div class="control-group span3">
-        <label>Mousepad</label>
-        <div class="controls">
-          <%= model.mousepad %>
-        </div>
-      </div>
-      <div class="control-group span3">
-        <label>Keyboard</label>
-        <div class="controls">
-          <%= model.keyboard %>
-        </div>
-      </div>
-    </div>
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if model.manufacturer.present? %>
+          <tr>
+            <td><label>Manufacturer</label></td>
+            <td><%= model.manufacturer %></td>
+          </tr>
+        <% end %>
+        <% if model.case.present? %>
+          <tr>
+            <td><label>Case</label></td>
+            <td><%= model.case %></td>
+          </tr>
+        <% end %>
+        <% if model.power_supply.present? %>
+          <tr>
+            <td><label>Power Supply</label></td>
+            <td><%= model.power_supply %></td>
+          </tr>
+        <% end %>
+        <% if model.operating_system.present? %>
+          <tr>
+            <td><label>OS</label></td>
+            <td><%= model.operating_system %></td>
+          </tr>
+        <% end %>
+        <% if model.motherboard.present? %>
+          <tr>
+            <td><label>Motherboard</label></td>
+            <td><%= model.motherboard %></td>
+          </tr>
+        <% end %>
+        <% if model.cpu.present? %>
+          <tr>
+            <td><label>CPU</label></td>
+            <td><%= model.cpu %></td>
+          </tr>
+        <% end %>
+        <% if model.memory.present? %>
+          <tr>
+            <td><label>Memory</label></td>
+            <td><%= model.memory %></td>
+          </tr>
+        <% end %>
+        <% if model.hard_drive.present? %>
+          <tr>
+            <td><label>Hard Drive</label></td>
+            <td><%= model.hard_drive %></td>
+          </tr>
+        <% end %>
+        <% if model.hard_drive_2.present? %>
+          <tr>
+            <td><label>Hard Drive 2</label></td>
+            <td><%= model.hard_drive_2 %></td>
+          </tr>
+        <% end %>
+        <% if model.hard_drive_3.present? %>
+          <tr>
+            <td><label>Hard Drive 3</label></td>
+            <td><%= model.hard_drive_3 %></td>
+          </tr>
+        <% end %>
+        <% if model.video_card.present? %>
+          <tr>
+            <td><label>Video Card</label></td>
+            <td><%= model.video_card %></td>
+          </tr>
+        <% end %>
+        <% if model.sound_card.present? %>
+          <tr>
+            <td><label>Sound Card</label></td>
+            <td><%= model.sound_card %></td>
+          </tr>
+        <% end %>
+        <% if model.headphones.present? %>
+          <tr>
+            <td><label>Headphones</label></td>
+            <td><%= model.headphones %></td>
+          </tr>
+        <% end %>
+        <% if model.headset.present? %>
+          <tr>
+            <td><label>Headset</label></td>
+            <td><%= model.headset %></td>
+          </tr>
+        <% end %>
+        <% if model.microphone.present? %>
+          <tr>
+            <td><label>Microphone</label></td>
+            <td><%= model.microphone %></td>
+          </tr>
+        <% end %>
+        <% if model.monitor.present? %>
+          <tr>
+            <td><label>Monitor</label></td>
+            <td><%= model.monitor %></td>
+          </tr>
+        <% end %>
+        <% if model.microphone.present? %>
+          <tr>
+            <td><label>Microphone</label></td>
+            <td><%= model.microphone %></td>
+          </tr>
+        <% end %>
+        <% if model.mouse.present? %>
+          <tr>
+            <td><label>Mouse</label></td>
+            <td><%= model.mouse %></td>
+          </tr>
+        <% end %>
+        <% if model.mousepad.present? %>
+          <tr>
+            <td><label>Mousepad</label></td>
+            <td><%= model.mousepad %></td>
+          </tr>
+        <% end %>
+        <% if model.keyboard.present? %>
+          <tr>
+            <td><label>Keyboard</label></td>
+            <td><%= model.keyboard %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
   </div>
 </div>
