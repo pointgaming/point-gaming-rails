@@ -9,6 +9,7 @@ class Game
   field :player_count, :type => Integer, :default => 0
 
   has_many :rooms, class_name: 'GameRoom'
+  has_many :types, class_name: 'GameType'
 
   validates :name, :presence=>true, :uniqueness=>true
   validates :player_count, :presence=>true

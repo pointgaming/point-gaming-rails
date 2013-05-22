@@ -6,6 +6,7 @@ class Permission < ActiveHash::Base
     {id: :manage_subscription_features, ability: [:manage, SubscriptionFeature]},
     {id: :manage_subscription_types, ability: [:manage, SubscriptionType]},
     {id: :manage_disputes, ability: [:manage, Dispute]},
+    {id: :manage_game_types, ability: [:manage, GameType]},
     {id: :forums_admin, ability: [:admin, :forums]},
     {id: :store_admin, ability: [:admin, :store]},
 

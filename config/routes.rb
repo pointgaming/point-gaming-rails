@@ -71,6 +71,7 @@ Pointgaming::Application.routes.draw do
     resources :groups do
       resources :users, controller: 'group_users'
     end
+    resources :game_types
     resources :subscription_features
     resources :subscription_types
     resources :reports, only: [:index] do
@@ -131,7 +132,12 @@ Pointgaming::Application.routes.draw do
 
   get "/users/search", :to => "users#search"
 
-  resources :demos, only: [:index, :show]
+  resources :demos, only: [:index, :show] do
+    collection do
+      get 'game_type_options'
+    end
+  end
+
   get "/u/:user_id/demos/new", :to => "demos#new", as: 'new_user_demo'
   post "/u/:user_id/demos", :to => "demos#create", as: 'user_demos'
   delete "/u/:user_id/demos/:id(.:format)", :to => "demos#destroy", as: 'user_demo'

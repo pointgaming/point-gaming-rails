@@ -11,6 +11,9 @@
   <% if can? :manage, SubscriptionType %>
     <%= navItem "Subscription Types",  admin_subscription_types_path %>
   <% end %>
+  <% if can? :manage, GameType %>
+    <%= navItem "Game Types",  admin_game_types_path %>
+  <% end %>
   <% if can? :manage, Dispute %>
     <%= navItem "Disputes",  admin_disputes_path %>
   <% end %>

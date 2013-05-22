@@ -11,7 +11,7 @@
     <div class="control-group">
       <%= f.label :game_type_id, :class => 'control-label' %>
       <div class="controls">
-        <%= f.select :game_type_id, GameType.all.collect{|gt| [gt.name, gt.id]}, include_blank: '- Select -' %>
+        <%= render partial: 'game_type_select', locals: { game: f.object.game } %>
       </div>
     </div>
 

@@ -7,6 +7,7 @@ PointGaming.ProfileController = function(options){
 PointGaming.ProfileController.prototype.registerHandlers = function() {
   $(document).on("click", "[data-behavior~='datepicker']", this.showDateTimePicker);
   $(document).on("change", "select#user_country", this.updateStateOptions);
+  $(document).on("change", "select#demo_game_id", this.updateGameTypeOptions);
   $(document).on("change", "input#user_birth_date", this.calculateUserAge.bind(this));
 
   // setup the modal events for Demos
@@ -71,6 +72,17 @@ PointGaming.ProfileController.prototype.updateStateOptions = function(event) {
   $('select', select_wrapper).attr('disabled', true);
 
   url = "/users/subregion_options?parent_region=" + country_code;
+  select_wrapper.load(url);
+};
+
+PointGaming.ProfileController.prototype.updateGameTypeOptions = function(event) {
+  var game_id = $(this).val(),
+      select_wrapper = $('#demo_game_type_wrapper'),
+      url;
+
+  $('select', select_wrapper).attr('disabled', true).val('');
+
+  url = "/demos/game_type_options?game_id=" + game_id;
   select_wrapper.load(url);
 };
 

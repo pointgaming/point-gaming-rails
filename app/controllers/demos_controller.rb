@@ -1,8 +1,9 @@
 class DemosController < ApplicationController
-  ssl_allowed :new, :create, :destroy
+  ssl_allowed :new, :create, :destroy, :game_type_options
   before_filter :authenticate_user!
   before_filter :ensure_demo, only: [:show]
   before_filter :ensure_user_demo, only: [:destroy]
+  before_filter :ensure_game, only: [:game_type_options]
   before_filter :ensure_user_id_is_current_user, only: [:new, :create, :destroy]
 
   respond_to :html, :json, :js
@@ -33,6 +34,10 @@ class DemosController < ApplicationController
     respond_with(@demo, location: edit_user_profile_path(current_user))
   end
 
+  def game_type_options
+    render partial: 'game_type_select', locals: {game: @game}
+  end
+
 protected
 
   def sort_params
@@ -48,6 +53,10 @@ protected
 
   def ensure_user_demo
     @demo = current_user.demos.find params[:id]
+  end
+
+  def ensure_game
+    @game = Game.find params[:game_id] if params[:game_id].present?
   end
 
   def ensure_user_id_is_current_user
