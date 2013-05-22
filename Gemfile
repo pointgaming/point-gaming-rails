@@ -13,6 +13,7 @@ gem 'mail'
 
 gem 'stripe'
 gem 'resque'
+gem 'resque-loner'
 gem 'devise'
 gem 'cancan'
 gem 'carmen'

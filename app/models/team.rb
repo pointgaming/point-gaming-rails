@@ -11,9 +11,12 @@ class Team
   field :slug, :type => String, :default => ''
   field :tag, :type => String, :default => ''
 
+  field :points, :type => Integer, default: 0
+  field :game_points, :type => Hash, default: {}
   field :member_count, :type => Integer, :default => 0
 
   has_many :members, class_name: 'TeamMember', dependent: :destroy
+  has_many :active_users, class_name: 'User'
 
   validates :name, presence: true, uniqueness: true, :format => {:with => APP_CONFIG[:display_name_regex], message: APP_CONFIG[:display_name_regex_message]}
   validates :slug, presence: true, uniqueness: true
@@ -21,10 +24,6 @@ class Team
 
   def to_param
     self.slug
-  end
-
-  def points
-    self.members.all.map{|m| m.user.try(:points) }.reduce(:+)
   end
 
   def display_name

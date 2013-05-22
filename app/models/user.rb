@@ -15,6 +15,7 @@ class User
   before_update :update_store_user
   after_destroy :destroy_forum_user
   after_destroy :destroy_store_user
+  after_save :update_team_points
 
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
@@ -304,6 +305,15 @@ protected
       store_user.destroy
     rescue ActiveResource::ResourceNotFound
       # StoreUser was not found
+    end
+  end
+
+  def update_team_points
+    if team_id_changed?
+      Resque.enqueue RecalculateTeamPointsJob, team_id_was if team_id_was.present?
+      Resque.enqueue RecalculateTeamPointsJob, team_id if team_id.present?
+    elsif team_id.present? && game_id_changed?
+      Resque.enqueue RecalculateTeamPointsJob, team_id
     end
   end
 
