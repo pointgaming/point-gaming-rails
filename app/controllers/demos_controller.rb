@@ -1,7 +1,7 @@
 class DemosController < ApplicationController
   ssl_allowed :new, :create, :destroy
   before_filter :authenticate_user!
-  before_filter :ensure_demo, only: [:destroy]
+  before_filter :ensure_demo, only: [:show, :destroy]
   before_filter :ensure_user_id_is_current_user, only: [:new, :create, :destroy]
 
   respond_to :html, :json, :js
@@ -9,6 +9,11 @@ class DemosController < ApplicationController
   def index
     @demos = Demo.order_by(sort_params).all
     respond_with(@demos)
+  end
+
+  def show
+    DemoDownloadCounter.new(@demo, current_user).count_download
+    redirect_to @demo.attachment.url
   end
 
   def new

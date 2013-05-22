@@ -131,7 +131,7 @@ Pointgaming::Application.routes.draw do
 
   get "/users/search", :to => "users#search"
 
-  resources :demos, only: [:index]
+  resources :demos, only: [:index, :show]
   get "/u/:user_id/demos/new", :to => "demos#new", as: 'new_user_demo'
   post "/u/:user_id/demos", :to => "demos#create", as: 'user_demos'
   delete "/u/:user_id/demos/:id(.:format)", :to => "demos#destroy", as: 'user_demo'

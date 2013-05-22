@@ -28,7 +28,7 @@
         <td><%= demo.participants %></td>
         <td><%= number_to_human_size demo.attachment.size %></td>
         <td>
-          <%= link_to :Download, demo.attachment.url, :class => 'btn btn-mini' %>
+          <%= link_to :Download, demo_path(demo), :class => 'btn btn-mini' %>
         </td>
       </tr>
     <% end %>

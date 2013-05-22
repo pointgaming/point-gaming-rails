@@ -14,6 +14,8 @@ class Demo
   belongs_to :winner, polymorphic: true
   belongs_to :loser, polymorphic: true
 
+  has_many :downloads, class_name: 'DemoDownload'
+
   has_mongoid_attached_file :attachment
 
   validates_attachment :attachment, presence: true, size: { :in => 0..20.megabytes }
@@ -26,6 +28,14 @@ class Demo
 
   def participants
     "#{winner_name} vs #{loser_name}"
+  end
+
+  def downloaded_by_user?(user)
+    downloads.where(user_id: user._id).exists?
+  end
+
+  def increment_download_count!(amount=1)
+    inc :download_count, amount
   end
 
 end
