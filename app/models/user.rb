@@ -107,6 +107,10 @@ class User
 
   accepts_nested_attributes_for :profile
 
+  def birth_date=(value)
+    write_attribute(:birth_date, Date.strptime(value, '%m/%d/%Y')) if value.present?
+  end
+
   def bets
     Bet.for_user(self).all
   end
