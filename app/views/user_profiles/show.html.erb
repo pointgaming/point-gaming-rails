@@ -37,6 +37,7 @@
 
       <div class="span12">
         <div class="row-fluid">
+          <% if @user.country.present? %>
           <div class="span6 well">
             <div class="span12">
               <div class="f16">
@@ -44,9 +45,10 @@
               </div>
             </div>
           </div>
+          <% end %>
 
           <div class="span6 well">
-            <div class="span12"><p><i class="icon-user"></i>Friends <%= link_to @user.friends.sum(:count), friends_path %></p></div>
+            <div class="span12"><p><i class="icon-user"></i>Friends <%= link_to @user.friend_count, friends_path %></p></div>
           </div>
         </div>
       </div>
