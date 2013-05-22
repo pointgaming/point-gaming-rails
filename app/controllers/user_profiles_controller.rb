@@ -1,5 +1,6 @@
 class UserProfilesController < ApplicationController
   ssl_required :edit, :update
+  ssl_allowed :subregion_options
   before_filter :authenticate_user!, except: [:subregion_options]
   before_filter :ensure_user, except: [:subregion_options]
   before_filter :ensure_user_profile, except: [:subregion_options]
