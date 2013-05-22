@@ -1,4 +1,4 @@
-<%= form_for [@match, @dispute], :html => { :class => 'form-horizontal' } do |f| %>
+<%= form_for [@match, @dispute], :html => { multipart: true, :class => 'form-horizontal' } do |f| %>
   <%= render partial: 'shared/form_errors', locals: {model: f.object} %>
 
   <%= fields_for @dispute.messages.build do |message| %>
@@ -6,6 +6,13 @@
       <%= message.label :text, :class => 'control-label' %>
       <div class="controls">
         <%= message.text_area :text, rows: 8, style: "width: 500px" %>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <%= message.label :attachment, :class => 'control-label' %>
+      <div class="controls">
+        <%= message.file_field :attachment %>
       </div>
     </div>
   <% end %>
