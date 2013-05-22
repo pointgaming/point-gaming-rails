@@ -1,7 +1,8 @@
 class DemosController < ApplicationController
   ssl_allowed :new, :create, :destroy
   before_filter :authenticate_user!
-  before_filter :ensure_demo, only: [:show, :destroy]
+  before_filter :ensure_demo, only: [:show]
+  before_filter :ensure_user_demo, only: [:destroy]
   before_filter :ensure_user_id_is_current_user, only: [:new, :create, :destroy]
 
   respond_to :html, :json, :js
@@ -42,6 +43,10 @@ protected
   end
 
   def ensure_demo
+    @demo = Demo.find params[:id]
+  end
+
+  def ensure_user_demo
     @demo = current_user.demos.find params[:id]
   end
 
