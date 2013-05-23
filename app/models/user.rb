@@ -4,6 +4,7 @@ class User
   include Mongoid::Paperclip
   include Tire::Model::Search
   include Tire::Model::Callbacks
+  require 'obscenity/active_model'
 
   has_mongoid_attached_file :avatar, :default_url => "/system/:class/:attachment/missing_:style.png", styles: {thumb: '50x50', medium: '200'}
 
@@ -20,9 +21,11 @@ class User
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable,
+  devise :database_authenticatable, :registerable,
          :multi_token_authenticatable, :recoverable, 
          :rememberable, :trackable, :validatable
+
+  attr_accessor :registration_pin
 
   field :_id, :type => String, :default => proc{ UUIDTools::UUID.random_create.to_s }
 
@@ -81,12 +84,19 @@ class User
 
   attr_accessible :username, :first_name, :last_name, :email, :password, :password_confirmation, 
                   :remember_me, :status, :birth_date, :age, :phone, :profile_attributes, 
-                  :avatar, :country, :state, :game, :time_zone
+                  :avatar, :country, :state, :game, :time_zone, :registration_pin
 
   validates_presence_of :username, :slug, :first_name, :last_name
   validates_uniqueness_of :username, :slug, :email, :case_sensitive => false
 
-  validates :username, :format => {:with => APP_CONFIG[:display_name_regex], message: APP_CONFIG[:display_name_regex_message]}
+  validates :username, :format => {:with => APP_CONFIG[:display_name_regex], message: APP_CONFIG[:display_name_regex_message]}, obscenity: true
+  validates :registration_pin, presence: true, on: :create
+  validate :confirm_registration_pin, on: :create
+
+  def confirm_registration_pin
+    correct_pin = SiteSetting.where(key: :registration_pin).first.try(:value) || 'pgrpin'
+    self.errors[:base] << "Invalid Registration pin" unless registration_pin === correct_pin
+  end
 
   belongs_to :profile
 

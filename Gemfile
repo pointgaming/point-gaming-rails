@@ -26,6 +26,7 @@ gem 'oj'
 gem 'uuidtools'
 gem 'remotipart', '~> 1.0'
 gem 'sanitize'
+gem 'obscenity'
 
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
