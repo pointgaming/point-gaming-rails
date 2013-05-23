@@ -1,4 +1,5 @@
 class UserSponsorsController < ApplicationController
+  ssl_allowed :new, :edit, :create, :update, :destroy
   before_filter :authenticate_user!
   before_filter :ensure_user
   before_filter :ensure_sponsor, only: [:edit, :update, :destroy]
