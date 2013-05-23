@@ -32,37 +32,9 @@
     <% end %>
   </section>
   <aside id="sidebar" class="span3">
-    <div class="widget">
-      <div class="visual">
-        <%= image_tag "img02.jpg", alt: "image description" %>
-        <h3>Last Tournaments</h3>
-      </div>
-      <table class="table table-bordered table-striped">
-        <tbody>
-          <tr>
-            <th class="title">Tournament</th>
-            <th>Date</th>
-          </tr>
-          <% if @tournaments.nil? || @tournaments.empty? %>
-            <tr class="bottom">
-              <td colspan="2">No results were found.</td>
-            </tr>
-          <% else %>
-            <% @tournaments.each do |tournament, index| %>
-              <tr class="<%= 'bottom' if index == (@tournaments.length - 1) %>">
-                <td><%= link_to tournament.game.name, tournament_path(tournament) %></td>
-                <td><span class="item"><time datetime="<%= ldate tournament.start_datetime %>"><%= ldate tournament.start_datetime.to_date %></time></span></td>
-              </tr>
-            <% end %>
-          <% end %>
-        </tbody>
-      </table>
-      <%= link_to "View all tournaments", tournaments_path, :class => 'link' %>
-    </div>
-
     <div class="widget leaderboard">
       <div class="visual">
-        <%= image_tag "img03.jpg", alt: "image description" %>
+        <%= image_tag "Leaderboard287x190.jpg", alt: "image description" %>
         <h3>Leaderboard</h3>
       </div>
       <table class="table table-bordered table-striped">
@@ -80,6 +52,34 @@
         </tbody>
       </table>
       <%= link_to "View all players", leaderboard_path, class: 'link' %>
+    </div>
+
+    <div class="widget">
+      <div class="visual">
+        <%= image_tag "Demo287x174.jpg", alt: "image description" %>
+        <h3>Last Demos</h3>
+      </div>
+      <table class="table table-bordered table-striped">
+        <tbody>
+          <tr>
+            <th class="title">Demos</th>
+            <th>Action</th>
+          </tr>
+          <% if @demos.present? %>
+            <% @demos.each do |demo, index| %>
+              <tr class="<%= 'bottom' if index == (@demos.length - 1) %>">
+                <td><%= demo.participants %></td>
+                <td><%= link_to t(:download), demo_path(demo), :class => 'btn btn-mini' %></td>
+              </tr>
+            <% end %>
+          <% else %>
+            <tr class="bottom">
+              <td colspan="2">No results were found.</td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <%= link_to "View all demos", demos_path, :class => 'link' %>
     </div>
   </aside>
 </div>
