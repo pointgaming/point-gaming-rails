@@ -9,65 +9,68 @@
         <div class="span2"> 
           <!-- Be sure to leave the brand out there if you want it shown --> 
           <%= link_to image_tag('logo_full.png'), root_path, :class => 'brand' %> </div>
-        <div class="span10"> 
-          <!-- Everything you want hidden at 940px or less, place within here -->
-          <div class="nav-collapse collapse navbar-responsive-collapse"> 
-            
-            <!-- .nav, .navbar-search, .navbar-form, etc -->
-            <ul class="nav primary span6">
-              <%= navItem "Games", games_path %>
-              <%= navItem "Tournaments", tournaments_path %>
-              <%= navItem "Streams", streams_path %>
-              <%= navItem "Store", store_path %>
-              <%= navItem "Forums", forum_path %>
-            </ul>
-
-            <%= form_tag search_path, method: :get, autocomplete: :off, :class => "navbar-search search-form span2" do %>
-            <fieldset>
-              <div class="input-append">
-                <input class="span2" id="navbar-search-button" placeholder="Search" type="text" name="query">
-                <button class="btn" type="submit" value="submit"><%= link_to image_tag('mag-glass.png') %></button>
-              </div>
-            </fieldset>
-            <% end %>
-
-            <ul class="nav admin span2 pull-right">
-              <% if user_signed_in? %>
-              <li class="dropdown"> 
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  <%= "#{current_user.username}" %>
-                  <b class="caret"></b>
-                  <br>
-                  <%= "#{current_user.points} points" %>
-                </a>
-                <ul class="dropdown-menu">
-                  <% if current_order %>
-                  <li><%= link_to "Cart: (#{current_order.item_count}) $#{current_order.total}", "#{store_path}cart" %></li>
-                  <li class="divider"></li>
-                  <% end %>
-                  <% if can? :show, :admin_link %>
-                  <li><%= link_to "Admin", admin_root_path %></li>
-                  <li class="divider"></li>
-                  <% end %>
-                  <li><%= link_to "Streams", user_streams_path %></li>
-                  <li><%= link_to "Teams", teams_path %></li>
-                  <li><%= link_to "Tournaments", "#" %></li>
-                  <li class="divider"></li>
-                  <li><%= link_to "Profile", user_profile_path(current_user) %></li>
-                  <li><%= link_to "Friends", friends_path %></li>
-                  <li><%= link_to "Settings", settings_path %></li>
-                  <li class="divider"></li>
-                  <li><%= link_to "Logout", destroy_user_session_path(secure: true), :method=>'delete' %></li>
+          <% unless @hide_nav %>
+            <div class="span10"> 
+              <!-- Everything you want hidden at 940px or less, place within here -->
+              <div class="nav-collapse collapse navbar-responsive-collapse"> 
+                
+                <!-- .nav, .navbar-search, .navbar-form, etc -->
+                <ul class="nav primary span6">
+                  <%= navItem "Games", games_path %>
+                  <%= navItem "Tournaments", tournaments_path %>
+                  <%= navItem "Streams", streams_path %>
+                  <%= navItem "Store", store_path %>
+                  <%= navItem "Forums", forum_path %>
                 </ul>
-              </li>
-              <% else %>
-              <li><%= link_to("Login", new_user_session_path(secure: true), :class => "") %></li>
-              <%- if devise_mapping.registerable? && controller_name != 'registrations' %>
-              <li><%= link_to("Register", new_user_registration_path(secure: true), :class => "") %></li>
-              <% end %>
-              <% end %>
-            </ul>
-          </div>
+
+                <%= form_tag search_path, method: :get, autocomplete: :off, :class => "navbar-search search-form span2" do %>
+                  <fieldset>
+                    <div class="input-append">
+                      <input class="span2" id="navbar-search-button" placeholder="Search" type="text" name="query">
+                      <button class="btn" type="submit" value="submit"><%= link_to image_tag('mag-glass.png') %></button>
+                    </div>
+                  </fieldset>
+                <% end %>
+
+                <ul class="nav admin span2 pull-right">
+                  <% if user_signed_in? %>
+                    <li class="dropdown"> 
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <%= "#{current_user.username}" %>
+                        <b class="caret"></b>
+                        <br>
+                        <%= "#{current_user.points} points" %>
+                      </a>
+                      <ul class="dropdown-menu">
+                        <% if current_order %>
+                        <li><%= link_to "Cart: (#{current_order.item_count}) $#{current_order.total}", "#{store_path}cart" %></li>
+                        <li class="divider"></li>
+                        <% end %>
+                        <% if can? :show, :admin_link %>
+                        <li><%= link_to "Admin", admin_root_path %></li>
+                        <li class="divider"></li>
+                        <% end %>
+                        <li><%= link_to "Streams", user_streams_path %></li>
+                        <li><%= link_to "Teams", teams_path %></li>
+                        <li><%= link_to "Tournaments", "#" %></li>
+                        <li class="divider"></li>
+                        <li><%= link_to "Profile", user_profile_path(current_user) %></li>
+                        <li><%= link_to "Friends", friends_path %></li>
+                        <li><%= link_to "Settings", settings_path %></li>
+                        <li class="divider"></li>
+                        <li><%= link_to "Logout", destroy_user_session_path(secure: true), :method=>'delete' %></li>
+                      </ul>
+                    </li>
+                  <% else %>
+                    <li><%= link_to("Login", new_user_session_path(secure: true), :class => "") %></li>
+                    <%- if devise_mapping.registerable? && controller_name != 'registrations' %>
+                      <li><%= link_to("Register", new_user_registration_path(secure: true), :class => "") %></li>
+                    <% end %>
+                  <% end %>
+                </ul>
+              </div>
+            </div>
+          <% end %>
         </div>
       </div>
     </div>
