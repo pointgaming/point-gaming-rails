@@ -146,6 +146,12 @@ Pointgaming::Application.routes.draw do
   post "/u/:user_id/configs", :to => "user_configs#create", as: 'user_configs'
   delete "/u/:user_id/configs/:id(.:format)", :to => "user_configs#destroy", as: 'user_config'
 
+  get "/u/:user_id/sponsors/new", :to => "user_sponsors#new", as: 'new_user_sponsor'
+  post "/u/:user_id/sponsors", :to => "user_sponsors#create", as: 'user_sponsors'
+  get "/u/:user_id/sponsors/:id(.:format)", :to => "user_sponsors#edit", as: 'edit_user_sponsor'
+  put "/u/:user_id/sponsors/:id(.:format)", :to => "user_sponsors#update", as: 'user_sponsor'
+  delete "/u/:user_id/sponsors/:id(.:format)", :to => "user_sponsors#destroy"
+
   get "/u/:user_id/avatar/edit", :to => "user_avatar#edit", as: 'edit_user_avatar'
   put "/u/:user_id/avatar", :to => "user_avatar#update", as: 'user_avatar'
 

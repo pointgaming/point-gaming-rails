@@ -115,6 +115,7 @@ class User
   has_many :orders
   has_many :disputes, inverse_of: :owner
   has_many :demos
+  has_many :sponsors, class_name: 'UserSponsor'
 
   accepts_nested_attributes_for :profile
 

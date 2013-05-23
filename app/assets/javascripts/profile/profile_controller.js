@@ -10,6 +10,9 @@ PointGaming.ProfileController.prototype.registerHandlers = function() {
   $(document).on("change", "select#demo_game_id", this.updateGameTypeOptions);
   $(document).on("change", "input#user_birth_date", this.calculateUserAge.bind(this));
 
+  $(document).on('mouseenter', 'div[data-hook=sponsor]', function(){ $('ul.actions', this).show(); });
+  $(document).on('mouseleave', 'div[data-hook=sponsor]', function(){ $('ul.actions', this).hide(); });
+
   // setup the modal events for Demos
   var $modal = $('#ajax-modal');
   $(document).on('click', 'a[rel="modal:open:ajaxpost"]:not([data-modal-target]):not([disabled])', this.openModal($modal));

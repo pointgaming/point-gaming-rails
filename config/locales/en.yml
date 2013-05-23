@@ -12,6 +12,7 @@ en:
   mongoid:
     models:
       team_member: 'Member'
+      user_sponsor: 'Sponsor'
     attributes:
       bet:
         offerer_choice_name: 'Winner'

@@ -1,62 +1,70 @@
 <%- model_class = Profile -%>
 <%= javascript_include_tag "profile" %>
-<h1><%=t '.title', :default => t('helpers.titles.edit', :model => model_class.model_name.human,
-                    :default => "Edit #{model_class.model_name.human}") %></h1>
+<div class="row-fluid" id="user-profile">
+  <h1><%=t '.title', :default => t('helpers.titles.edit', :model => model_class.model_name.human,
+                      :default => "Edit #{model_class.model_name.human}") %></h1>
 
-<div class="breadcrumb">
-  <%= link_to 'View Profile', user_path(@user), :class => 'btn' %>
-</div>
-
-<div id="ajax-modal" class="modal hide fade" tabindex="-1"></div>
-
-<%= form_for @user, url: user_path(@user) do |f| %>
-  <div class="row-fluid">
-    <div class="span3">
-      <%= render partial: 'user_profiles/user_image_fields', locals: {model: @user} %>
-    </div>
-    <div class="span9">
-      <%= render partial: 'user_profiles/user_info_fields', locals: {f: f} %>
-    </div>
+  <div class="breadcrumb">
+    <%= link_to 'View Profile', user_path(@user), :class => 'btn' %>
   </div>
 
-  <div class="row-fluid">
-    <div class="span12">
-      <%= render partial: 'user_profiles/friends', locals: {models: @friends, user: @user} %>
-    </div>
-  </div>
+  <div id="ajax-modal" class="modal hide fade" tabindex="-1"></div>
 
-  <div class="row-fluid">
-    <div class="span12">
-      <%= render partial: 'user_profiles/match_history', locals: {models: @matches} %>
+  <%= form_for @user, url: user_path(@user) do |f| %>
+    <div class="row-fluid">
+      <div class="span3">
+        <%= render partial: 'user_profiles/user_image_fields', locals: {model: @user} %>
+      </div>
+      <div class="span9">
+        <%= render partial: 'user_profiles/user_info_fields', locals: {f: f} %>
+      </div>
     </div>
-  </div>
 
-  <%= f.fields_for :profile do |profile| %>
+    <div class="row-fluid">
+      <div class="span12">
+        <%= render partial: 'user_profiles/friends', locals: {models: @friends, user: @user} %>
+      </div>
+    </div>
+
+    <div class="row-fluid">
+      <div class="span12">
+        <%= render partial: 'user_profiles/match_history', locals: {models: @matches} %>
+      </div>
+    </div>
+
+    <%= f.fields_for :profile do |profile| %>
+      <div class="row-fluid">
+        <div class="span12">
+          <%= profile.fields_for :rig do |rig| %>
+            <%= render partial: 'user_profiles/rig_fields', locals: {f: rig} %>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="row-fluid">
+        <div class="span6">
+          <%= render partial: 'user_profiles/configs', locals: {models: @user.configs, edit: true} %>
+        </div>
+        <div class="span6">
+          <%= render partial: 'user_profiles/bio_fields', locals: {f: profile} %>
+        </div>
+      </div>
+    <% end %>
+
     <div class="row-fluid">
       <div class="span12">
-        <%= profile.fields_for :rig do |rig| %>
-          <%= render partial: 'user_profiles/rig_fields', locals: {f: rig} %>
-        <% end %>
+        <%= render partial: 'user_profiles/demos', locals: {models: @user.demos.order_by(updated_at: :desc), edit: true} %>
       </div>
     </div>
 
     <div class="row-fluid">
-      <div class="span6">
-        <%= render partial: 'user_profiles/configs', locals: {models: @user.configs, edit: true} %>
+      <div class="span12">
+        <%= render partial: 'user_profiles/sponsors', locals: {edit: true} %>
       </div>
-      <div class="span6">
-        <%= render partial: 'user_profiles/bio_fields', locals: {f: profile} %>
-      </div>
+    </div>
+
+    <div class="form-actions">
+      <%= f.submit 'Update Profile', :class => 'btn' %>
     </div>
   <% end %>
-
-  <div class="row-fluid">
-    <div class="span12">
-      <%= render partial: 'user_profiles/demos', locals: {models: @user.demos.order_by(updated_at: :desc), edit: true} %>
-    </div>
-  </div>
-
-  <div class="form-actions">
-    <%= f.submit 'Update Profile', :class => 'btn' %>
-  </div>
-<% end %>
+</div>
