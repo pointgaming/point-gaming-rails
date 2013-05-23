@@ -81,7 +81,7 @@ class User
 
   attr_accessible :username, :first_name, :last_name, :email, :password, :password_confirmation, 
                   :remember_me, :status, :birth_date, :age, :phone, :profile_attributes, 
-                  :avatar, :country, :state, :game
+                  :avatar, :country, :state, :game, :time_zone
 
   validates_presence_of :username, :slug, :first_name, :last_name
   validates_uniqueness_of :username, :slug, :email, :case_sensitive => false

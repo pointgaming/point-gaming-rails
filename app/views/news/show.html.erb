@@ -21,7 +21,7 @@
           <p><%= @news.content %></p>
         </div>
         <div class="panel">
-          <time class="date" datetime="<%= ldate @news.created_at, :format => :long %>"><%= ldate @news.created_at.to_date, :format => :long %></time>
+          <time class="date" datetime="<%= ldate @news.created_at %>"><%= ldate @news.created_at.to_date %></time>
           <nav class="share-icons">
             <ul>
               <li><a href="#"><%= image_tag "ico-facebook-share.png", alt: "facebook share", width: "61", height: "20" %></a></li>
@@ -57,7 +57,7 @@
 
           <div class="contents">
             <a name="comment-<%= comment._id %>" href="#comment-<%= comment._id %>">
-              <time class="date" datetime="<%= ldate comment.created_at, format: :long %>"><%= ldate comment.created_at, format: :long %></time>
+              <time class="date" datetime="<%= ldate comment.created_at %>"><%= ldate comment.created_at %></time>
             </a>
 
             <p><%= comment.text %></p>

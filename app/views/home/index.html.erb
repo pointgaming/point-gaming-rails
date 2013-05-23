@@ -13,7 +13,7 @@
           <p><%= truncate(news.content, :length => 255, :omission => '...') %></p>
         </div>
         <div class="panel">
-          <time class="date" datetime="<%= ldate news.created_at, :format => :long %>"><%= ldate news.created_at.to_date, :format => :long %></time>
+          <time class="date" datetime="<%= ldate news.created_at %>"><%= ldate news.created_at.to_date %></time>
           <nav class="sub-nav">
             <ul>
               <li><%= link_to "Learn More", news %></li>
@@ -51,7 +51,7 @@
             <% @tournaments.each do |tournament, index| %>
               <tr class="<%= 'bottom' if index == (@tournaments.length - 1) %>">
                 <td><%= link_to tournament.game.name, tournament_path(tournament) %></td>
-                <td><span class="item"><time datetime="<%= tournament.start_datetime %>"><%= ldate tournament.start_datetime.to_date, format: :short %></time></span></td>
+                <td><span class="item"><time datetime="<%= ldate tournament.start_datetime %>"><%= ldate tournament.start_datetime.to_date %></time></span></td>
               </tr>
             <% end %>
           <% end %>

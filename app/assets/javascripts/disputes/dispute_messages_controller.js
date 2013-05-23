@@ -77,7 +77,7 @@ PointGaming.DisputeMessagesController.prototype.handleDisputeMessageCreated = fu
         '<div class="icon"><img src="' + data.dispute_message.user.avatar_url + '"></div>',
       '</div>',
       '<div class="contents">',
-        '<a name="' + data.dispute_message.anchor + '" href="' + data.dispute_message.url + '"><time class="date">' + data.dispute_message.created_at + '</time></a>',
+        '<a name="' + data.dispute_message.anchor + '" href="' + data.dispute_message.url + '"><time class="date">' + PointGaming.formatDateTime(data.dispute_message.created_at) + '</time></a>',
         '<p>' + data.dispute_message.text + '</p>',
         attachment_message,
       '</div>',

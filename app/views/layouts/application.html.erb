@@ -28,6 +28,7 @@
       }
 
       PointGaming.socketio_uri = "<%= APP_CONFIG['socketio_uri'] %>";
+      PointGaming.timezone_offset = "<%= time_zone_offset(current_user.try(:time_zone)) %>";
       PointGaming.desktop_client_latest_version = "<%= desktop_client_latest_version %>";
       <% if current_user %>
         <% if session[:auth_token] %>

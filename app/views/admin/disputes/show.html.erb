@@ -68,7 +68,7 @@
 
       <div class="contents">
         <a name="message-<%= message._id %>" href="#message-<%= message._id %>">
-          <time class="date" datetime="<%= ldate message.created_at, format: :long %>"><%= ldate message.created_at, format: :long %></time>
+          <time class="date" datetime="<%= ldate message.created_at %>"><%= ldate message.created_at %></time>
         </a>
 
         <p><%= message.text %></p>
