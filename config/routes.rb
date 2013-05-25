@@ -142,6 +142,7 @@ Pointgaming::Application.routes.draw do
     resources :demos, only: [:new, :create, :destroy]
     resources :configs, only: [:new, :create, :destroy]
     resources :sponsors, except: [:index, :show]
+    resources :friends, controller: 'user_friends', only: [:index]
   end
 
   get "/u/:user_id/avatar/edit", :to => "user_avatar#edit", as: 'edit_user_avatar'
