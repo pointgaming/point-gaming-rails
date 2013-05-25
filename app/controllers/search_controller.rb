@@ -1,5 +1,5 @@
 class SearchController < ApplicationController
-  ssl_allowed :index, :playable
+  ssl_allowed :index, :playable, :store
   before_filter :authenticate_user!
 
   respond_to :html, :json
