@@ -138,19 +138,11 @@ Pointgaming::Application.routes.draw do
     end
   end
 
-  get "/u/:user_id/demos/new", :to => "demos#new", as: 'new_user_demo'
-  post "/u/:user_id/demos", :to => "demos#create", as: 'user_demos'
-  delete "/u/:user_id/demos/:id(.:format)", :to => "demos#destroy", as: 'user_demo'
-
-  get "/u/:user_id/configs/new", :to => "user_configs#new", as: 'new_user_config'
-  post "/u/:user_id/configs", :to => "user_configs#create", as: 'user_configs'
-  delete "/u/:user_id/configs/:id(.:format)", :to => "user_configs#destroy", as: 'user_config'
-
-  get "/u/:user_id/sponsors/new", :to => "user_sponsors#new", as: 'new_user_sponsor'
-  post "/u/:user_id/sponsors", :to => "user_sponsors#create", as: 'user_sponsors'
-  get "/u/:user_id/sponsors/:id(.:format)", :to => "user_sponsors#edit", as: 'edit_user_sponsor'
-  put "/u/:user_id/sponsors/:id(.:format)", :to => "user_sponsors#update", as: 'user_sponsor'
-  delete "/u/:user_id/sponsors/:id(.:format)", :to => "user_sponsors#destroy"
+  resources :users, path: "/u", only: [] do
+    resources :demos, only: [:new, :create, :destroy]
+    resources :configs, only: [:new, :create, :destroy]
+    resources :sponsors, except: [:index, :show]
+  end
 
   get "/u/:user_id/avatar/edit", :to => "user_avatar#edit", as: 'edit_user_avatar'
   put "/u/:user_id/avatar", :to => "user_avatar#update", as: 'user_avatar'
