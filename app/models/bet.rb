@@ -14,6 +14,7 @@ class Bet
   scope :available_for_user, lambda {|user| any_of({:taker_id.in => [user._id, nil]}, {offerer_id: user._id}) }
   scope :for_match, lambda {|match| where(match_id: match._id) }
   scope :pending, where(outcome: :undetermined)
+  scope :accepted_and_finalized, lambda { self.in(outcome: [:taker_won, :offerer_won]) }
   scope :unaccepted, where(taker_id: nil)
 
   attr_accessible :offerer_wager, :offerer_odds, :match_hash

@@ -12,21 +12,13 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>Jochs</td>
-          <td>Zar</td>
-          <td>Quake</td>
-        </tr>
-        <tr>
-          <td>Jochs</td>
-          <td>Zar</td>
-          <td>Life</td>
-        </tr>
-        <tr>
-          <td>Jochs</td>
-          <td>Zar</td>
-          <td>Sports</td>
-        </tr>
+        <% @user.bets.accepted_and_finalized.each do |bet| %>
+          <tr>
+            <td><%= bet.match.winner.display_name %></td>
+            <td><%= bet.match.loser.display_name %></td>
+            <td><%= bet.match.game.display_name %></td>
+          </tr>
+        <% end %>
       </tbody>
     </table>
   </div>
