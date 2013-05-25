@@ -14,121 +14,229 @@
         <% if model.manufacturer.present? %>
           <tr>
             <td><label>Manufacturer</label></td>
-            <td><%= model.manufacturer %></td>
+            <td>
+              <% if model.manufacturer_url.present? %>
+                <%= link_to model.manufacturer, model.manufacturer_url %>
+              <% else %>
+                <%= model.manufacturer %>
+              <% end %>
+            </td>
           </tr>
         <% end %>
         <% if model.case.present? %>
           <tr>
             <td><label>Case</label></td>
-            <td><%= model.case %></td>
+            <td>
+              <% if model.case_url.present? %>
+                <%= link_to model.case, model.case_url %>
+              <% else %>
+                <%= model.case %>
+              <% end %>
+            </td>
           </tr>
         <% end %>
         <% if model.power_supply.present? %>
           <tr>
             <td><label>Power Supply</label></td>
-            <td><%= model.power_supply %></td>
+            <td>
+              <% if model.power_supply_url.present? %>
+                <%= link_to model.power_supply, model.power_supply_url %>
+              <% else %>
+                <%= model.power_supply %>
+              <% end %>
+            </td>
           </tr>
         <% end %>
         <% if model.operating_system.present? %>
           <tr>
             <td><label>OS</label></td>
-            <td><%= model.operating_system %></td>
+            <td>
+              <% if model.operating_system_url.present? %>
+                <%= link_to model.operating_system, model.operating_system_url %>
+              <% else %>
+                <%= model.operating_system %>
+              <% end %>
+            </td>
           </tr>
         <% end %>
         <% if model.motherboard.present? %>
           <tr>
             <td><label>Motherboard</label></td>
-            <td><%= model.motherboard %></td>
+            <td>
+              <% if model.motherboard_url.present? %>
+                <%= link_to model.motherboard, model.motherboard_url %>
+              <% else %>
+                <%= model.motherboard %>
+              <% end %>
+            </td>
           </tr>
         <% end %>
         <% if model.cpu.present? %>
           <tr>
             <td><label>CPU</label></td>
-            <td><%= model.cpu %></td>
+            <td>
+              <% if model.cpu_url.present? %>
+                <%= link_to model.cpu, model.cpu_url %>
+              <% else %>
+                <%= model.cpu %>
+              <% end %>
+            </td>
           </tr>
         <% end %>
         <% if model.memory.present? %>
           <tr>
             <td><label>Memory</label></td>
-            <td><%= model.memory %></td>
+            <td>
+              <% if model.memory_url.present? %>
+                <%= link_to model.memory, model.memory_url %>
+              <% else %>
+                <%= model.memory %>
+              <% end %>
+            </td>
           </tr>
         <% end %>
         <% if model.hard_drive.present? %>
           <tr>
             <td><label>Hard Drive</label></td>
-            <td><%= model.hard_drive %></td>
+            <td>
+              <% if model.hard_drive_url.present? %>
+                <%= link_to model.hard_drive, model.hard_drive_url %>
+              <% else %>
+                <%= model.hard_drive %>
+              <% end %>
+            </td>
           </tr>
         <% end %>
         <% if model.hard_drive_2.present? %>
           <tr>
             <td><label>Hard Drive 2</label></td>
-            <td><%= model.hard_drive_2 %></td>
+            <td>
+              <% if model.hard_drive_2_url.present? %>
+                <%= link_to model.hard_drive_2, model.hard_drive_2_url %>
+              <% else %>
+                <%= model.hard_drive_2 %>
+              <% end %>
+            </td>
           </tr>
         <% end %>
         <% if model.hard_drive_3.present? %>
           <tr>
             <td><label>Hard Drive 3</label></td>
-            <td><%= model.hard_drive_3 %></td>
+            <td>
+              <% if model.hard_drive_3_url.present? %>
+                <%= link_to model.hard_drive_3, model.hard_drive_3_url %>
+              <% else %>
+                <%= model.hard_drive_3 %>
+              <% end %>
+            </td>
           </tr>
         <% end %>
         <% if model.video_card.present? %>
           <tr>
             <td><label>Video Card</label></td>
-            <td><%= model.video_card %></td>
+            <td>
+              <% if model.video_card_url.present? %>
+                <%= link_to model.video_card, model.video_card_url %>
+              <% else %>
+                <%= model.video_card %>
+              <% end %>
+            </td>
           </tr>
         <% end %>
         <% if model.sound_card.present? %>
           <tr>
             <td><label>Sound Card</label></td>
-            <td><%= model.sound_card %></td>
+            <td>
+              <% if model.sound_card_url.present? %>
+                <%= link_to model.sound_card, model.sound_card_url %>
+              <% else %>
+                <%= model.sound_card %>
+              <% end %>
+            </td>
           </tr>
         <% end %>
         <% if model.headphones.present? %>
           <tr>
             <td><label>Headphones</label></td>
-            <td><%= model.headphones %></td>
+            <td>
+              <% if model.headphones_url.present? %>
+                <%= link_to model.headphones, model.headphones_url %>
+              <% else %>
+                <%= model.headphones %>
+              <% end %>
+            </td>
           </tr>
         <% end %>
         <% if model.headset.present? %>
           <tr>
             <td><label>Headset</label></td>
-            <td><%= model.headset %></td>
+            <td>
+              <% if model.headset_url.present? %>
+                <%= link_to model.headset, model.headset_url %>
+              <% else %>
+                <%= model.headset %>
+              <% end %>
+            </td>
           </tr>
         <% end %>
         <% if model.microphone.present? %>
           <tr>
             <td><label>Microphone</label></td>
-            <td><%= model.microphone %></td>
+            <td>
+              <% if model.microphone_url.present? %>
+                <%= link_to model.microphone, model.microphone_url %>
+              <% else %>
+                <%= model.microphone %>
+              <% end %>
+            </td>
           </tr>
         <% end %>
         <% if model.monitor.present? %>
           <tr>
             <td><label>Monitor</label></td>
-            <td><%= model.monitor %></td>
-          </tr>
-        <% end %>
-        <% if model.microphone.present? %>
-          <tr>
-            <td><label>Microphone</label></td>
-            <td><%= model.microphone %></td>
+            <td>
+              <% if model.monitor_url.present? %>
+                <%= link_to model.monitor, model.monitor_url %>
+              <% else %>
+                <%= model.monitor %>
+              <% end %>
+            </td>
           </tr>
         <% end %>
         <% if model.mouse.present? %>
           <tr>
             <td><label>Mouse</label></td>
-            <td><%= model.mouse %></td>
+            <td>
+              <% if model.mouse_url.present? %>
+                <%= link_to model.mouse, model.mouse_url %>
+              <% else %>
+                <%= model.mouse %>
+              <% end %>
+            </td>
           </tr>
         <% end %>
         <% if model.mousepad.present? %>
           <tr>
             <td><label>Mousepad</label></td>
-            <td><%= model.mousepad %></td>
+            <td>
+              <% if model.mousepad_url.present? %>
+                <%= link_to model.mousepad, model.mousepad_url %>
+              <% else %>
+                <%= model.mousepad %>
+              <% end %>
+            </td>
           </tr>
         <% end %>
         <% if model.keyboard.present? %>
           <tr>
             <td><label>Keyboard</label></td>
-            <td><%= model.keyboard %></td>
+            <td>
+              <% if model.keyboard_url.present? %>
+                <%= link_to model.keyboard, model.keyboard_url %>
+              <% else %>
+                <%= model.keyboard %>
+              <% end %>
+            </td>
           </tr>
         <% end %>
       </tbody>

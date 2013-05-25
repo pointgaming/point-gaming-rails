@@ -13,6 +13,10 @@ PointGaming.ProfileController.prototype.registerHandlers = function() {
   $(document).on('mouseenter', 'div[data-hook=sponsor]', function(){ $('ul.actions', this).show(); });
   $(document).on('mouseleave', 'div[data-hook=sponsor]', function(){ $('ul.actions', this).hide(); });
 
+  // setup the typeahead for all of the rig fields
+  $(document).on('change', 'div[data-hook=rig_fields] input:text', this.clearRelatedUrlHiddenFields);
+  this.setupStoreTypeahead();
+
   // setup the modal events for Demos
   var $modal = $('#ajax-modal');
   $(document).on('click', 'a[rel="modal:open:ajaxpost"]:not([data-modal-target]):not([disabled])', this.openModal($modal));
@@ -50,7 +54,7 @@ PointGaming.ProfileController.prototype.openModal = function(modal){
     var match_id = $(this).data('match-id') || "",
         callback = function(){
           modal.data('match-id', match_id);
-          self.setupTypeahead();
+          self.setupModalTypeahead();
         };
     PointGaming.ModalHelper.openModal(modal, callback).bind(this)(e);
   };
@@ -65,6 +69,14 @@ PointGaming.ProfileController.prototype.clearRelatedHiddenFields = function(e){
     text_field.val('');
     id_field.val('');
     type_field.val('');
+};
+
+// clears hidden id/type fields if the user changes the field value themself
+PointGaming.ProfileController.prototype.clearRelatedUrlHiddenFields = function(e){
+    var text_field = $(this),
+        url_field = text_field.parent().find('input[name$="url]"]');
+
+    url_field.val('');
 };
 
 PointGaming.ProfileController.prototype.updateStateOptions = function(event) {
@@ -111,7 +123,7 @@ PointGaming.ProfileController.prototype.calculateUserAge = function(event) {
 };
 
 // configures typeahead functionality for the player or team fields
-PointGaming.ProfileController.prototype.setupTypeahead = function(){
+PointGaming.ProfileController.prototype.setupModalTypeahead = function(){
   var elements = $('#ajax-modal input.playable-search');
 
   elements.each(function(index, elem){
@@ -136,6 +148,42 @@ PointGaming.ProfileController.prototype.setupTypeahead = function(){
         items = $(items).map(function (i, item) {
           i = $(that.options.item).attr('data-value', item[that.options.val])
                                   .attr('data-type', item['type']);
+          i.find('a').html(that.highlighter(item[that.options.display], item));
+          return i[0];
+        });
+
+        items.first().addClass('active');
+        this.$menu.html(items);
+        return this;
+      }
+    });
+  });
+};
+
+// configures typeahead functionality to search the store
+PointGaming.ProfileController.prototype.setupStoreTypeahead = function(){
+  var elements = $('div[data-hook="rig_fields"] input:text');
+
+  elements.each(function(index, elem){
+    elem = $(elem);
+    elem.typeahead({
+      ajax: { url: '/search/store.json', triggerLength: 0, method: 'get' },
+      display: 'name', 
+      itemSelected: function(item, val, text){
+        var text_field = elem,
+            url_field = text_field.parent().find('input[type=hidden]');
+
+        text_field.val(text);
+        url_field.val($(item).data('url'));
+      },
+      val: '_id',
+      // We will create a custom render function so that we can store the items type (for use in itemSelected)
+      render: function (items) {
+        var that = this;
+
+        items = $(items).map(function (i, item) {
+          i = $(that.options.item).attr('data-value', item[that.options.val])
+                                  .attr('data-url', item['url']);
           i.find('a').html(that.highlighter(item[that.options.display], item));
           return i[0];
         });

@@ -22,5 +22,14 @@ class Rig
   field :mousepad, type: String
   field :keyboard, type: String
 
+  # add a _url field and validation for all of the fields above (except a few)
+  attribute_names.select{|x| [:_type, :_id].include?(x.to_sym) === false}.each do |field_name|
+    field :"#{field_name}_url", type: String
+    validates_each :"#{field_name}_url" do |record, attr, value|
+      record.send("#{attr}=", "") unless value =~ Regexp.new("^#{APP_CONFIG[:store_url]}")
+    end
+  end
+
   embedded_in :profile
+
 end

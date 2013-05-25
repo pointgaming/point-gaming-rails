@@ -129,6 +129,7 @@ Pointgaming::Application.routes.draw do
 
   get "/search", :to => "search#index"
   get "/search/playable", :to => "search#playable"
+  get "/search/store", :to => "search#store"
 
   get "/users/search", :to => "users#search"
 

@@ -10,7 +10,7 @@
 
   <div id="ajax-modal" class="modal hide fade" tabindex="-1"></div>
 
-  <%= form_for @user, url: user_path(@user) do |f| %>
+  <%= form_for @user, url: user_path(@user), html: {autocomplete: :off} do |f| %>
     <div class="row-fluid">
       <div class="span3">
         <%= render partial: 'user_profiles/user_image_fields', locals: {model: @user} %>
