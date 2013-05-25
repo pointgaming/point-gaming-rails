@@ -1,12 +1,14 @@
 <%- edit ||= false %>
 <div id="demos-widget" class="widget widget-table action-table">
   <div class="widget-header">
-    <h3>Demos</h3>
-    <% if edit %>
-      <%= link_to_modal 'Upload Demo', new_user_demo_path(@user), remote: true,
-        :data => { title: "Upload Demo" }, 
-        :class => 'btn btn-mini' %>
-    <% end %>
+    <h3>
+      Demos 
+      <% if edit %>
+        <%= link_to_modal 'Upload Demo', new_user_demo_path(@user), remote: true,
+          :data => { title: "Upload Demo" }, 
+          :class => 'btn btn-mini' %>
+      <% end %>
+    </h3>
   </div>
   <div class="widget-content scrollable">
     <table class="table table-bordered table-striped">
