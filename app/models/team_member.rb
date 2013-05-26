@@ -12,16 +12,23 @@ class TeamMember
   belongs_to :user
 
   validates :rank, :presence=>true
+  validate :validate_leader_limit
 
   def leader?
     rank === 'Leader'
   end
 
   def rank_options
-    ['Recruit', 'Member', 'Officer', 'Leader']
+    ['Member', 'Manager', 'Leader']
   end
 
 private
+
+  def validate_leader_limit
+    if leader? && team.members.nin(_id: _id).where(rank: 'Leader').exists?
+      self.errors[:base] << "There can only be one team leader at a time"
+    end
+  end
 
   def increment_team_member_count
     self.team.inc :member_count, 1
