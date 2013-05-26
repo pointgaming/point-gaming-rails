@@ -1,5 +1,6 @@
 class User
   include Mongoid::Document
+  include Mongoid::Timestamps
   include Rails.application.routes.url_helpers
   include Mongoid::Paperclip
   include Tire::Model::Search

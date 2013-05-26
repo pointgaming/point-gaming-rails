@@ -39,6 +39,7 @@ en:
       tournament:
         start_datetime: 'Start Date'
       user:
+        created_at: 'Joined on'
         game_id: 'Primary Game'
   search:
     type:
