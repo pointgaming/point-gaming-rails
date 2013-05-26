@@ -1,51 +1,56 @@
 <%= form_for [:user, @stream] do |f| %>
-  <fieldset>
-    <legend>Stream Information</legend>
+  <div id="stream-info-top" class="span4">
+    <fieldset>
+      <legend>Stream Information</legend>
 
-    <%= render partial: 'shared/form_errors', locals: {model: f.object} %>
+      <%= render partial: 'shared/form_errors', locals: {model: f.object} %>
 
-    <div class="control-group">
-      <%= f.label :name, :class => 'control-label' %>
-      <div class="controls">
-        <% if f.object.new_record? %>
-          <%= f.text_field :name, :class => 'text_field' %>
-        <% else %>
-          <%= f.object.name %>
-        <% end %>
+      <div class="control-group">
+        <%= f.label :name, :class => 'control-label' %>
+        <div class="controls">
+          <% if f.object.new_record? %>
+            <%= f.text_field :name, :class => 'text_field' %>
+          <% else %>
+            <%= f.object.name %>
+          <% end %>
+        </div>
       </div>
-    </div>
 
-    <div class="control-group">
-      <%= f.label :details, :class => 'control-label' %>
-      <div class="controls">
-        <%= f.text_area :details, :rows => 8 %>
+      <div class="control-group">
+        <%= f.label :details, :class => 'control-label' %>
+        <div class="controls">
+          <%= f.text_area :details, :rows => 8 %>
+        </div>
       </div>
-    </div>
 
-    <div class="control-group">
-      <%= f.label :betting, :class => 'control-label' %>
-      <div class="controls">
-        <%= f.check_box :betting %>
+      <div class="control-group">
+        <%= f.label :betting, :class => 'control-label' %>
+        <div class="controls">
+          <%= f.check_box :betting %>
+        </div>
       </div>
-    </div>
 
-    <div class="control-group">
-      <%= f.label :thumbnail, :class => 'control-label' %>
-      <div class="controls">
-        <%= f.file_field :thumbnail %>
+      <div class="control-group">
+        <%= f.label :thumbnail, :class => 'control-label' %>
+        <div class="controls">
+          <%= f.file_field :thumbnail %>
+        </div>
       </div>
-    </div>
-
-    <div class="control-group">
-      <%= f.label :embedded_html, :class => 'control-label' %>
-      <div class="controls">
-        <%= f.text_area :embedded_html, :rows => 2 %>
+    </fieldset>
+  </div>
+  <div id="stream-info-bottom" class="span12">
+    <fieldset>
+      <div class="control-group">
+        <%= f.label :embedded_html, :class => 'control-label' %>
+        <div class="controls">
+          <%= f.text_area :embedded_html, :rows => 2 %>
+        </div>
       </div>
-    </div>
-  </fieldset>
+    </fieldset>
 
-  <div class="form-actions">
-    <%= f.submit nil, :class => 'btn' %>
-    <%= link_to t('.cancel', default: t("helpers.links.cancel")), user_streams_path, :class => 'btn', 'data-dismiss' => 'modal' %>
+    <div class="form-actions">
+      <%= f.submit nil, :class => 'btn' %>
+      <%= link_to t('.cancel', default: t("helpers.links.cancel")), user_streams_path, :class => 'btn', 'data-dismiss' => 'modal' %>
+    </div>
   </div>
 <% end %>

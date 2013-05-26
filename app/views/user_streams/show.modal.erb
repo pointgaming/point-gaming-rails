@@ -1,63 +1,62 @@
 <%- model_class = Stream -%>
 <%- user_is_stream_owner = @stream_owner.try(:user_id) === current_user.id -%>
-<div class="modal-header">
-  <h2><%=t '.title', :default => model_class.model_name.human %>: <%= @stream.name %></h2>
-</div>
-
-<% if user_is_stream_owner %>
-  <div class="breadcrumb">
-    <% if @stream.streaming %>
-      <%= link_to t('.stop_streaming'), stop_user_stream_path(@stream), method: 'put', 
-              'data-type'=>'json', 'data-remote' => 'true', 'data-modal' => 'true', 
-              :class => 'btn btn-danger streaming-toggle' %>
-    <% else %>
-      <%= link_to t('.start_streaming'), start_user_stream_path(@stream), method: 'put', 
-              'data-type'=>'json', 'data-remote' => 'true', 'data-modal' => 'true', 
-              :class => 'btn streaming-toggle' %>
-    <% end %>
+<div id="user-stream-modal">
+  <div class="modal-header">
+    <h2><%=t '.title', :default => model_class.model_name.human %>: <%= @stream.name %></h2>
   </div>
-<% end %>
 
-<div class="span6">
-  <%= render partial: 'form' %>
-</div>
-
-<div id="stream-admin-collaborators" class="span3">
-  <fieldset>
-    <legend>Collaborators</legend>
-    <div class="control-group"></div>
-  </fieldset>
-  <div class="thumbnail">
-    <div class="caption">
-      <% if user_is_stream_owner %>
-        <%= form_for :collaborator, url: user_stream_collaborators_path(@stream), html: {autocomplete: :off, :class => 'typeahead'} do |f| %>
-          <div class="control-group">
-            <%= f.text_field :username, :class => 'search-query', placeholder: 'Add Collaborator' %>
-          </div>
-          <%= f.submit nil, style: "position: absolute; left: -9999px; width: 1px; height: 1px;" %>
-        <% end %>
-      <% end %>
-      <% unless @collaborators.empty? %>
-        <ul>
-          <% @collaborators.each do |collaborator| %>
-            <li>
-              <div class="control-group">
-                <%= collaborator.user.try(:username) %>
-                <div class="pull-right">
-                  <% if user_is_stream_owner && collaborator.owner != true %>
-                    <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                            user_stream_collaborator_path(@stream, collaborator),
-                            :method => 'delete', 'data-remote' => 'true', 'data-type' => 'json',
-                            'data-modal' => 'true',
-                            :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-                            :class => 'btn btn-mini btn-danger' %>
-                  <% end %>
-                </div>
-              </div>
-            </li>
-          <% end %>
-        </ul>
+  <% if user_is_stream_owner %>
+    <div class="breadcrumb">
+      <% if @stream.streaming %>
+        <%= link_to t('.stop_streaming'), stop_user_stream_path(@stream), method: 'put', 
+                'data-type'=>'json', 'data-remote' => 'true', 'data-modal' => 'true', 
+                :class => 'btn btn-danger streaming-toggle' %>
+      <% else %>
+        <%= link_to t('.start_streaming'), start_user_stream_path(@stream), method: 'put', 
+                'data-type'=>'json', 'data-remote' => 'true', 'data-modal' => 'true', 
+                :class => 'btn streaming-toggle' %>
       <% end %>
     </div>
+  <% end %>
+
+  <div id="stream-admin-collaborators" class="span3 pull-right">
+    <fieldset>
+      <legend>Collaborators</legend>
+    </fieldset>
+    <div class="thumbnail">
+      <div class="caption">
+        <% if user_is_stream_owner %>
+          <%= form_for :collaborator, url: user_stream_collaborators_path(@stream), html: {autocomplete: :off, :class => 'typeahead'} do |f| %>
+            <div class="control-group">
+              <%= f.text_field :username, :class => 'search-query', placeholder: 'Add Collaborator' %>
+            </div>
+            <%= f.submit nil, style: "position: absolute; left: -9999px; width: 1px; height: 1px;" %>
+          <% end %>
+        <% end %>
+        <% unless @collaborators.empty? %>
+          <ul>
+            <% @collaborators.each do |collaborator| %>
+              <li>
+                <div class="control-group">
+                  <%= collaborator.user.try(:username) %>
+                  <div class="pull-right">
+                    <% if user_is_stream_owner && collaborator.owner != true %>
+                      <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                              user_stream_collaborator_path(@stream, collaborator),
+                              :method => 'delete', 'data-remote' => 'true', 'data-type' => 'json',
+                              'data-modal' => 'true',
+                              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                              :class => 'btn btn-mini btn-danger' %>
+                    <% end %>
+                  </div>
+                </div>
+              </li>
+            <% end %>
+          </ul>
+        <% end %>
+      </div>
+    </div>
   </div>
+
+  <%= render partial: 'form' %>
 </div>
