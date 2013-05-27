@@ -43,6 +43,15 @@ group :development do
   gem 'quiet_assets'
 end
 
+group :test, :development do
+  gem 'fabrication', require: false
+  gem 'guard-rspec', require: false
+  gem 'rb-fsevent', require: RUBY_PLATFORM =~ /darwin/i ? 'rb-fsevent' : false
+  gem 'rspec-rails', require: false
+  gem 'shoulda', require: false
+  gem 'simplecov', require: false
+end
+
 gem 'whenever', require: false
 gem 'god', require: false
 gem 'capistrano'
