@@ -1,4 +1,4 @@
-<%= form_for @team do |f| %>
+<%= form_for @team, html: {:multipart => true, :class => 'form-horizontal'} do |f| %>
   <div class="modal-body">
     <fieldset>
       <legend>Team Information</legend>
@@ -18,10 +18,17 @@
           <%= f.text_field :tag, :class => 'text_field' %>
         </div>
       </div>
+
+      <div class="control-group">
+        <%= f.label :logo, :class => 'control-label' %>
+        <div class="controls">
+          <%= f.file_field :logo, :class => 'file_field' %>
+        </div>
+      </div>
     </fieldset>
   </div>
 
-  <div class="form-actions modal-actions">
+  <div class="modal-footer">
     <%= f.submit nil, :class => 'btn' %>
     <%= link_to t('.cancel', default: t("helpers.links.cancel")), teams_path, :class => 'btn', 'data-dismiss' => 'modal' %>
   </div>

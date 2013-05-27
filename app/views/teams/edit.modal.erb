@@ -1,0 +1,24 @@
+<%- model_class = Team -%>
+<div class="modal-header">
+  <h2>Upload Logo</h2>
+</div>
+
+<%= form_for @team, remote: true, html: {:multipart => true, :class => 'form-horizontal', :'data-type' => :json} do |f| %>
+  <div class="modal-body">
+    <fieldset>
+      <%= render partial: 'shared/form_errors', locals: {model: f.object} %>
+
+      <div class="control-group">
+        <%= f.label :logo, :class => 'control-label' %>
+        <div class="controls">
+          <%= f.file_field :logo, :class => 'file_field' %>
+        </div>
+      </div>
+    </fieldset>
+  </div>
+
+  <div class="modal-footer">
+    <%= f.submit :Upload, :class => 'btn' %>
+    <%= link_to t('.cancel', default: t("helpers.links.cancel")), edit_team_path(@team), :class => 'btn', 'data-dismiss' => 'modal' %>
+  </div>
+<% end %>

@@ -1,0 +1,12 @@
+.widget { border: 1px solid $midGrey; background: $lightGrey; margin-bottom: 10px;
+  .widget-header {background: $darkGrey;
+    [class^="icon-"], [class*=" icon-"] { margin-left: 10px; }
+    h1, h2, h3, h4, h5, h6 { display: inline-block; }
+    h3 {font-size: 14px; color: $lightGrey; margin: 0; line-height: 20px; padding: 10px;}
+  }
+  .widget-content {padding: 10px;
+    h3 {margin-top: 0;}
+    table {margin-bottom: 0;}
+    form {margin-bottom: 0;}
+  }
+}

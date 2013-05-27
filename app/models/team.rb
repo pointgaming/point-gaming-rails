@@ -1,9 +1,12 @@
 class Team
   include Mongoid::Document
   include Mongoid::Timestamps
+  include Mongoid::Paperclip
   include Tire::Model::Search
   include Tire::Model::Callbacks
   include Rails.application.routes.url_helpers
+
+  has_mongoid_attached_file :logo, :default_url => "/system/:class/:attachment/missing_:style.png", styles: {thumb: '50x50', medium: '240'}
 
   before_validation :populate_slug
 
@@ -44,6 +47,15 @@ class Team
 
   def forum_sort
     90
+  end
+
+  def game_points_with_games
+    return {} if game_points === {}
+
+    game_points.map do |game_id, points|
+      game = game_id.present? ? Game.find(game_id) : nil
+      {game: game, points: points}
+    end
   end
 
   settings analysis: {

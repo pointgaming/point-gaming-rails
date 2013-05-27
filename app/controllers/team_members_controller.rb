@@ -59,7 +59,7 @@ protected
 
   def ensure_team_owner
     @member = TeamMember.where(user_id: current_user._id, team_id: @team._id).first
-    unless @member.leader?
+    unless @member.is_leader?
       respond_to do |format|
         format.html { redirect_to team_path(@team), alert: 'You do not have permission to add users to that team.' }
         format.json { render json: ['You do not have permission to add users to that team'], status: :unprocessable_entity }

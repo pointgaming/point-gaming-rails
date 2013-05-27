@@ -6,44 +6,44 @@
 
 <div class="widget widget-nopad">
   <div class="widget-header">
-    <i class="icon-user"></i>
+    <i class="icon-user icon-white"></i>
     <h3>Active Team</h3>
   </div>
   <div class="widget-content">
-    <%= form_for current_user, url: change_active_teams_path, html: {method: :put } do |f| %>
-      <div class="widget-padding-container">
-        <div class="control-group"> 
-          <%= f.label :team_id, :class => 'control-label' %>
-          <div class="controls">
-            <%= f.select :team_id, 
-                  @team_members.collect {|t| [ t.team.name, t.team.id ]},  
-                  include_blank: '- Select -'
-            %>
-          </div>
-        </div>
-      </div>
-      <div class="form-actions">
-        <%= f.submit :Change, :class => 'btn' %>
-      </div>
+    <%= form_for current_user, url: change_active_teams_path, html: {method: :put, :class => 'form-inline' } do |f| %>
+    <%= f.label :team_id, :class => 'control-label' %>
+      <%= f.select :team_id, 
+            @team_members.collect {|t| [ t.team.name, t.team.id ]},  
+            include_blank: '- Select -'
+      %>
+    <%= f.submit :Change, :class => 'btn' %>
     <% end %>
   </div>
 </div>
 
-<table class="table table-bordered table-striped">
-  <thead>
-    <tr>
-      <th><%= model_class.human_attribute_name(:name) %></th>
-      <th><%= model_class.human_attribute_name(:member_count) %></th>
-      <th><%= TeamMember.human_attribute_name(:rank) %></th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @team_members.each do |team_member| %>
-      <tr>
-        <td><%= link_to team_member.team.name, team_path(team_member.team) %></td>
-        <td><%= team_member.team.member_count %></td>
-        <td><%= team_member.rank %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<div class="widget widget-nopad">
+  <div class="widget-header">
+    <i class="icon-th icon-white"></i>
+    <h3>Teams</h3>
+  </div>
+  <div class="widget-content">
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th><%= model_class.human_attribute_name(:name) %></th>
+          <th><%= model_class.human_attribute_name(:member_count) %></th>
+          <th><%= TeamMember.human_attribute_name(:rank) %></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @team_members.each do |team_member| %>
+          <tr>
+            <td><%= link_to team_member.team.name, team_path(team_member.team) %></td>
+            <td><%= team_member.team.member_count %></td>
+            <td><%= team_member.rank %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

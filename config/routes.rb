@@ -32,7 +32,7 @@ Pointgaming::Application.routes.draw do
     resources :matches, only: [:index, :new, :show, :create, :destroy]
   end
   resources :teams, controller: 'teams', as: 'teams', only: [:index, :create]
-  resources :t, controller: 'teams', as: 'teams', except: [:index, :create, :edit, :update] do
+  resources :t, controller: 'teams', as: 'teams', except: [:index, :create] do
     collection do
       put 'change_active'
     end

@@ -28,7 +28,7 @@
 		}
 	}
 
-	.widget { border: 1px solid $midGrey; background: $lightGrey; margin-top: 10px;
+	.widget { border: 1px solid $midGrey; background: $lightGrey; margin-top: 10px; margin-bottom: 0;
 		.widget-header {background: $darkGrey;
 			h3 {font-size: 14px; color: $lightGrey; margin: 0; line-height: 20px; padding: 10px;}
 		}

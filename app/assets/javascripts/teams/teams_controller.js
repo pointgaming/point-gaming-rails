@@ -10,85 +10,53 @@ PointGaming.TeamsController.prototype.registerHandlers = function() {
   var self = this,
     $modal = $('#ajax-modal');
 
-  $(document).on('click', 'a[rel="modal:open:ajaxpost"]', function(event){
-    var that = this;
-
-    event.preventDefault();
+  $(document).on('click', 'a[rel="modal:open:ajaxpost"][data-typeahead-modal]:not([disabled])', this.openModal($modal));
+  $(document).on('click', 'a[rel="modal:open:ajaxpost"]:not([data-typeahead-modal]):not([disabled])', PointGaming.ModalHelper.openModal($modal));
+  $(document).on('submit', '#ajax-modal form', function(){ $('body').modalmanager('loading'); });
+  $(document).on('ajax:success', '#ajax-modal form', function(){ window.location.reload(); });
+  $(document).on('ajax:error', '#ajax-modal form', function(event, response){
+    var form = $(event.target),
+        container = form.find('div.modal-body'),
+        errors;
+    form.find(".alert-error").remove()
 
     $('body').modalmanager('loading');
 
-    var options = {};
-    options.width = $(this).data('width') || 'auto';
-    options.height = $(this).data('height') || 'auto';
-
-    $modal.load($(that).attr('href'), '', function(){
-      $modal.modal(options);
-    });
-
-    return false;
-  });
-
-  // configure the submit handler
-  $(document).on('submit', '#ajax-modal form', function(){
-    // save the current form
-    var current_form = $(this);
-
-    if (current_form.is('.typeahead')) {
-        return;
+    if (response.status === 500) {
+      container.prepend('<div class="alert alert-error">Internal Server Error</div>');
+    } else {
+      errors = $.parseJSON(response.responseText).errors;
+      $.each(errors, function(key, value){
+        container.prepend('<div class="alert alert-error">'+ value + '</div>');
+      });
     }
-
-    // show the spinner
-    $('body').modalmanager('loading');
-
-    // send the ajax call
-    $.ajax({
-      type: this.method,
-      url: this.action + '.json',
-      data: $(this).serialize(),
-      dataType: 'html',
-      success: function(data) {
-        // hide the spinner
-        $('body').modalmanager('loading');
-
-        // close the dialog
-        $modal.modal('hide');
-
-        window.location.reload();
-      },
-      error: function(data) {
-        // hide the spinner
-        $('body').modalmanager('loading');
-
-        // remove the older error message
-        current_form.find(".alert-error").remove()
-
-        // parse the result
-        var obj = jQuery.parseJSON(data.responseText);
-
-        if (obj.length < 1) {
-          obj = ['There was a problem submitting the form data.'];
-        }
-
-        $.each(obj, function(key, value){
-          current_form.find('.modal-body').prepend('<div class="alert alert-error">'+ value + '</div>');
-        });
-      }
-    });
-    return false;
   });
+};
 
-  $(document).on('ajax:success', 'a[data-remote][data-modal]', function(data, status, xhr){
-    // close the modal
-    $modal.modal('hide');
-  });
+// this method will return a handler used to open a modal window and setup 
+// typeahead functionality
+PointGaming.TeamsController.prototype.openModal = function(modal){
+  var self = this;
 
-  $(document).on('click', this.search_field_selector, function(e){
-    var self = this;
-    $(this).typeahead({
-      ajax: { url: '/users/search.json', triggerLength: 1, method: 'get' },
+  return function(e) {
+    var callback = function(){
+          self.setupModalTypeahead();
+        };
+    PointGaming.ModalHelper.openModal(modal, callback).bind(this)(e);
+  };
+};
+
+
+// configures typeahead functionality for the player or team fields
+PointGaming.TeamsController.prototype.setupModalTypeahead = function(){
+  var elements = $(this.search_field_selector);
+
+  elements.each(function(index, elem){
+    elem = $(elem);
+    elem.typeahead({
+      ajax: { url: '/users/search.json', triggerLength: 0, method: 'get' },
       display: 'username', 
-      val: 'username'
+      val: 'username', 
     });
   });
-
 };

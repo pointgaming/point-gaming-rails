@@ -1,21 +1,35 @@
 class TeamsController < ApplicationController
   before_filter :authenticate_user!
   before_filter :ensure_team, except: [:index, :new, :create, :change_active]
+  before_filter :lookup_team_member, only: [:show, :edit, :update]
   before_filter :ensure_change_active_params, only: [:change_active]
+  before_filter :ensure_params, only: [:update]
   before_filter :ensure_user_is_team_member, only: [:change_active]
+  before_filter :ensure_edit_team_permission, only: [:edit, :update]
 
   respond_to :html, :json
 
   def index
     @team_members = TeamMember.where(user_id: current_user.id).all
+    respond_with(@team_members)
   end
 
   def new
     @team = Team.new
+    respond_with(@team)
   end
 
   def show
-    @member = TeamMember.where(user_id: current_user._id, team_id: @team._id).first
+    respond_with(@team)
+  end
+
+  def edit
+    respond_with(@team)
+  end
+
+  def update
+    @team.update_attributes(update_params)
+    respond_with(@team, location: edit_team_path(@team))
   end
 
   def create
@@ -63,4 +77,29 @@ protected
       redirect_to teams_path, alert: 'Invalid team specified.' if @team_member.nil?
     end
   end
+
+  def ensure_params
+    unless params[:team].present?
+      respond_with({errors: ['Missing team param']}, status: 422) do |format|
+        format.html { redirect_to :back, alert: 'Missing team param' }
+      end
+    end
+  end
+
+  def update_params
+    params[:team].slice(:logo)
+  end
+
+  def lookup_team_member
+    @member = TeamMember.where(user_id: current_user._id, team_id: @team._id).first
+  end
+
+  def ensure_edit_team_permission
+    unless @member.is_leader? || @member.is_manager?
+      respond_with(nil, status: 403) do |format|
+        format.html { redirect_to :back, alert: 'You do not have permission to do that' }
+      end
+    end
+  end
+
 end

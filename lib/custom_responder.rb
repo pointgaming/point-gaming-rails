@@ -11,7 +11,7 @@ class CustomResponder < ActionController::Responder
     elsif post?
       display resource, :status => :created, :location => api_location
     else
-      display true
+      display resource || true
     end 
   end
 end
