@@ -9,11 +9,13 @@
         <%= image_tag @team.logo.url(:medium), :class => 'thumbnail' %>
       </div>
 
-      <div class="span12">
-        <div class="well">
-          <%= link_to_modal 'Upload Logo', edit_team_path(@team), :'data-title' => "Upload Logo", remote: true, :class => 'btn btn-block' %>
+      <% if @member.present? && @member.can_edit_team? %>
+        <div class="span12">
+          <div class="well">
+            <%= link_to_modal 'Upload Logo', edit_team_path(@team), :'data-title' => "Upload Logo", remote: true, :class => 'btn btn-block' %>
+          </div>
         </div>
-      </div>
+      <% end %>
 
       <div class="span12 well">
         <p><%= Team.human_attribute_name(:created_at) %> <%= ldate @team.created_at.to_date %></p>

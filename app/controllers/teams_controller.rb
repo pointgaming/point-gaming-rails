@@ -95,7 +95,7 @@ protected
   end
 
   def ensure_edit_team_permission
-    unless @member.is_leader? || @member.is_manager?
+    unless @member.can_edit_team?
       respond_with(nil, status: 403) do |format|
         format.html { redirect_to :back, alert: 'You do not have permission to do that' }
       end

@@ -22,6 +22,10 @@ class TeamMember
     rank === 'Manager'
   end
 
+  def can_edit_team?
+    is_leader? || is_manager?
+  end
+
   def rank_options
     ['Member', 'Manager', 'Leader']
   end
