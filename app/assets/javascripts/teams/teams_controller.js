@@ -10,6 +10,9 @@ PointGaming.TeamsController.prototype.registerHandlers = function() {
   var self = this,
     $modal = $('#ajax-modal');
 
+  $(document).on('mouseenter', 'div[data-hook=sponsor]', function(){ $('ul.actions', this).show(); });
+  $(document).on('mouseleave', 'div[data-hook=sponsor]', function(){ $('ul.actions', this).hide(); });
+
   $(document).on('click', 'a[rel="modal:open:ajaxpost"][data-typeahead-modal]:not([disabled])', this.openModal($modal));
   $(document).on('click', 'a[rel="modal:open:ajaxpost"]:not([data-typeahead-modal]):not([disabled])', PointGaming.ModalHelper.openModal($modal));
   $(document).on('submit', '#ajax-modal form', function(){ $('body').modalmanager('loading'); });

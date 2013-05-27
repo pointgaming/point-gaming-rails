@@ -1,0 +1,36 @@
+<%- form_url = @sponsor.new_record? ? team_sponsors_path : team_sponsor_path(@sponsor.team.slug, @sponsor) %>
+<%= form_for @sponsor, url: form_url, :html => { :class => 'form-horizontal', multipart: true, remote: true, :'data-type' => 'json' } do |f| %>
+  <div class="modal-body">
+    <div class="control-group">
+      <%= f.label :name, :class => 'control-label' %>
+      <div class="controls">
+        <%= f.text_field :name, :class => 'text_field' %>
+      </div>
+    </div>
+    <div class="control-group">
+      <%= f.label :url, :class => 'control-label' %>
+      <div class="controls">
+        <%= f.text_field :url, :class => 'text_field' %>
+      </div>
+    </div>
+    <div class="control-group">
+      <%= f.label :image, :class => 'control-label' %>
+      <div class="controls">
+        <%= f.file_field :image %>
+      </div>
+    </div>
+    <div class="control-group">
+      <%= f.label :sort_order, :class => 'control-label' %>
+      <div class="controls">
+        <%= f.text_field :sort_order, :class => 'text_field' %>
+      </div>
+    </div>
+  </div>
+ 
+  <div class="modal-footer">
+    <%= f.submit nil, :class => 'btn btn-primary' %>
+    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                team_path(@team), 
+                :class => 'btn', :'data-dismiss' => :modal %>
+  </div>
+<% end %>

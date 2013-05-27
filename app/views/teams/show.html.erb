@@ -23,7 +23,6 @@
     </div>
 
     <div class="span9">
-
       <div class="row-fluid">
         <div class="span12" id="team-information">
           <h4 class="pull-right"><%= @team.points %> Points</h4>
@@ -39,81 +38,92 @@
         </div>
       </div>
 
-      <% unless @team.game_points.empty? %>
-        <div class="widget widget-table action-table">
-          <div class="widget-header">
-            <i class="icon-th icon-white"></i>
-            <h3>Game Points</h3>
-          </div>
-          <div class="widget-content">
-            <table class="table table-bordered table-striped">
-              <thead>
-                <tr>
-                  <th><%= Team.human_attribute_name(:game_id) %></th>
-                  <th><%= Team.human_attribute_name(:points) %></th>
-                </tr>
-              </thead>
-              <tbody>
-                <% @team.game_points_with_games.sort{|a, b| b[:points] <=> a[:points]}.each do |game_point| %>
-                  <tr>
-                    <td><%= game_point[:game].try(:display_name) || t(:no_active_game) %></td>
-                    <td><%= game_point[:points] %></td>
-                  </tr>
-                <% end %>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      <% end %>
-
-      <div class="widget widget-table action-table">
-        <div class="widget-header">
-          <i class="icon-th icon-white"></i>
-          <h3>Members (<%= @team.member_count %>)</h3>
-          <% if @member.try(:is_leader?) %>
-            <%= link_to_modal t('.add_member', :default => t("helpers.links.add_member")),
-                        new_team_member_path(@team), remote: true,
-                        :data => {width: '320px', :'typeahead-modal' => :true},
-                        :class => 'btn btn-mini' %>
-          <% end %>
-        </div>
-        <div class="widget-content">
-          <% unless @team.members.empty? %>
-            <table class="table table-bordered table-striped">
-              <thead>
-                <tr>
-                  <th><%= TeamMember.human_attribute_name(:user) %></th>
-                  <th><%= User.human_attribute_name(:points) %></th>
-                  <th><%= TeamMember.human_attribute_name(:rank) %></th>
-                  <th><%= TeamMember.human_attribute_name(:created_at) %></th>
-                  <th><%=t '.actions', :default => t("helpers.actions") %></th>
-                </tr>
-              </thead>
-              <tbody>
-                <% @team.members.each do |member| %>
-                  <tr>
-                    <td><%= member.user.try(:username) %></td>
-                    <td><%= member.user.try(:points) %></td>
-                    <td><%= member.rank %></td>
-                    <td><%= ldate member.created_at %></td>
-                    <td>
-                      <% if @member.try(:is_leader?) %>
-                        <%= link_to_modal t('.edit', :default => t("helpers.links.edit")),
-                                          edit_team_member_path(@team, member),
-                                          :data => {width: '320px'},
-                                          :class => 'btn btn-mini', remote: true %>
-                        <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                                team_member_path(@team, member),
-                                :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-                                :method => 'delete', :class => 'btn btn-mini btn-danger' %>
+      <div class="row-fluid">
+        <div class="row-fluid span12">
+          <div class="<%= @team.sponsors.present? || @member.can_edit_team? ? :span9 : :span12 %>">
+            <% unless @team.game_points.empty? %>
+              <div class="widget widget-table action-table">
+                <div class="widget-header">
+                  <i class="icon-th icon-white"></i>
+                  <h3>Game Points</h3>
+                </div>
+                <div class="widget-content">
+                  <table class="table table-bordered table-striped">
+                    <thead>
+                      <tr>
+                        <th><%= Team.human_attribute_name(:game_id) %></th>
+                        <th><%= Team.human_attribute_name(:points) %></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% @team.game_points_with_games.sort{|a, b| b[:points] <=> a[:points]}.each do |game_point| %>
+                        <tr>
+                          <td><%= game_point[:game].try(:display_name) || t(:no_active_game) %></td>
+                          <td><%= game_point[:points] %></td>
+                        </tr>
                       <% end %>
-                    </td>
-                  </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            <% end %>
+
+            <div class="widget widget-table action-table">
+              <div class="widget-header">
+                <i class="icon-th icon-white"></i>
+                <h3>Members (<%= @team.member_count %>)</h3>
+                <% if @member.try(:is_leader?) %>
+                  <%= link_to_modal t('.add_member', :default => t("helpers.links.add_member")),
+                              new_team_member_path(@team), remote: true,
+                              :data => {width: '320px', :'typeahead-modal' => :true},
+                              :class => 'btn btn-mini' %>
                 <% end %>
-              </tbody>
-            </table>
-          <% end %>
-        </div>
+              </div>
+              <div class="widget-content">
+                <% unless @team.members.empty? %>
+                  <table class="table table-bordered table-striped">
+                    <thead>
+                      <tr>
+                        <th><%= TeamMember.human_attribute_name(:user) %></th>
+                        <th><%= User.human_attribute_name(:points) %></th>
+                        <th><%= TeamMember.human_attribute_name(:rank) %></th>
+                        <th><%= TeamMember.human_attribute_name(:created_at) %></th>
+                        <th><%=t '.actions', :default => t("helpers.actions") %></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% @team.members.each do |member| %>
+                        <tr>
+                          <td><%= member.user.try(:username) %></td>
+                          <td><%= member.user.try(:points) %></td>
+                          <td><%= member.rank %></td>
+                          <td><%= ldate member.created_at.to_date %></td>
+                          <td>
+                            <% if @member.try(:is_leader?) %>
+                              <%= link_to_modal t('.edit', :default => t("helpers.links.edit")),
+                                                edit_team_member_path(@team, member),
+                                                :data => {width: '320px'},
+                                                :class => 'btn btn-mini', remote: true %>
+                              <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                                      team_member_path(@team, member),
+                                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                                      :method => 'delete', :class => 'btn btn-mini btn-danger' %>
+                            <% end %>
+                          </td>
+                        </tr>
+                      <% end %>
+                    </tbody>
+                  </table>
+                <% end %>
+              </div>
+            </div>
+          </div>
+
+        <% if @team.sponsors.present? || @member.can_edit_team? %>
+          <div class="span3">
+            <%= render partial: 'teams/sponsors' %>
+          </div>
+        <% end %>
       </div>
     </div>
 

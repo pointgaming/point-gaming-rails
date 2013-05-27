@@ -13,6 +13,7 @@ en:
     models:
       team_member: 'Member'
       user_sponsor: 'Sponsor'
+      team_sponsor: 'Team'
     attributes:
       bet:
         offerer_choice_name: 'Winner'
@@ -35,7 +36,7 @@ en:
       team:
         tag: 'Nick Name'
       team_member:
-        created_at: 'Joined at'
+        created_at: 'Joined on'
       tournament:
         start_datetime: 'Start Date'
       user:

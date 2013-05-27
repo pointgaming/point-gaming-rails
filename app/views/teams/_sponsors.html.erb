@@ -1,0 +1,36 @@
+<h4>Sponsors</h4>
+<% @team.sponsors.order_by(sort_order: :asc).each do |sponsor| %>
+  <div data-hook="sponsor" class="sponsor">
+    <%= link_to image_tag(sponsor.image.url(:medium), alt: sponsor.name, :class => 'thumbnail'),
+                sponsor.url %>
+    <%- if @member.can_edit_team? %>
+      <ul class="actions" style="display: none;">
+        <li>
+          <%= link_to_modal t('.edit', :default => t("helpers.links.edit")), 
+            edit_team_sponsor_path(@team.slug, sponsor), remote: true,
+            :data => { title: "Edit Sponsor" }, 
+            :class => 'btn btn-mini' %>
+        </li>
+        <li>
+          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+            team_sponsor_path(@team.slug, sponsor),
+            :method => :delete,
+            :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+            :class => 'btn btn-mini btn-danger' %>
+        </li>
+      </ul>
+    <% end %>
+  </div>
+<% end %>
+<% if @member.can_edit_team? %>
+  <div data-hook="sponsor" class="sponsor">
+    <%= image_tag TeamSponsor.new.image.url(:medium), :class => 'thumbnail' %>
+    <ul class="actions" style="display: none;">
+      <li>
+        <%= link_to_modal t('.new', :default => t("helpers.links.new")),
+          new_team_sponsor_path(@team), :data => { title: "New Sponsor" },
+          :class => 'btn btn-mini', remote: true %>
+      </li>
+    </ul>
+  </div>
+<% end %>

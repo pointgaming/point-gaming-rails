@@ -37,6 +37,7 @@ Pointgaming::Application.routes.draw do
       put 'change_active'
     end
     resources :members, controller: 'team_members'
+    resources :sponsors, controller: 'team_sponsors', except: [:index, :show]
   end
   resources :store
   resources :faq
