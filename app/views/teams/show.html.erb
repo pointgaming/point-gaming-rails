@@ -9,7 +9,7 @@
         <%= image_tag @team.logo.url(:medium), :class => 'thumbnail' %>
       </div>
 
-      <% if @member.present? && @member.can_edit_team? %>
+      <% if @member.try(:can_edit_team?) %>
         <div class="span12">
           <div class="well">
             <%= link_to_modal 'Upload Logo', edit_team_path(@team), :'data-title' => "Upload Logo", remote: true, :class => 'btn btn-block' %>
@@ -40,7 +40,7 @@
 
       <div class="row-fluid">
         <div class="row-fluid span12">
-          <div class="<%= @team.sponsors.present? || @member.can_edit_team? ? :span9 : :span12 %>">
+          <div class="<%= @team.sponsors.present? || @member.try(:can_edit_team?) ? :span9 : :span12 %>">
             <% unless @team.game_points.empty? %>
               <div class="widget widget-table action-table">
                 <div class="widget-header">
@@ -119,7 +119,7 @@
             </div>
           </div>
 
-        <% if @team.sponsors.present? || @member.can_edit_team? %>
+        <% if @team.sponsors.present? || @member.try(:can_edit_team?) %>
           <div class="span3">
             <%= render partial: 'teams/sponsors' %>
           </div>

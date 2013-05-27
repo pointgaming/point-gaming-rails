@@ -56,7 +56,7 @@ protected
   end
 
   def ensure_edit_sponsor_permission
-    unless @member.can_edit_team?
+    unless @member.try(:can_edit_team?)
       respond_with({errors: ['You do not have permission to do that']}, status: 403) do |format|
         format.html { redirect_to :back, alert: 'You do not have permission to do that' }
       end

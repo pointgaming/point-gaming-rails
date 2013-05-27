@@ -3,7 +3,7 @@
   <div data-hook="sponsor" class="sponsor">
     <%= link_to image_tag(sponsor.image.url(:medium), alt: sponsor.name, :class => 'thumbnail'),
                 sponsor.url %>
-    <%- if @member.can_edit_team? %>
+    <%- if @member.try(:can_edit_team?) %>
       <ul class="actions" style="display: none;">
         <li>
           <%= link_to_modal t('.edit', :default => t("helpers.links.edit")), 
@@ -22,7 +22,7 @@
     <% end %>
   </div>
 <% end %>
-<% if @member.can_edit_team? %>
+<% if @member.try(:can_edit_team?) %>
   <div data-hook="sponsor" class="sponsor">
     <%= image_tag TeamSponsor.new.image.url(:medium), :class => 'thumbnail' %>
     <ul class="actions" style="display: none;">
