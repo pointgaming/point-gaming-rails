@@ -39,6 +39,13 @@ class ApplicationController < ActionController::Base
   end
   helper_method :current_order
 
+  def desktop_client_latest_version
+    SiteSetting.find_by(key: 'desktop_version').value
+  rescue Mongoid::Errors::DocumentNotFound
+    '0.0.0'
+  end
+  helper_method :desktop_client_latest_version
+
 private
 
   def requested_private_url?

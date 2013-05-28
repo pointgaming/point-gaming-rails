@@ -48,12 +48,6 @@ module ApplicationHelper
       APP_CONFIG['store_url']
     end
 
-    def desktop_client_latest_version
-      SiteSetting.find_by(key: 'desktop_version').value
-    rescue Mongoid::Errors::DocumentNotFound
-      '0.0.0'
-    end
-
     def devise_mapping
       @devise_mapping ||= Devise.mappings[:user]
     end
