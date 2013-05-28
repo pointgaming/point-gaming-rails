@@ -5,7 +5,9 @@ class Dispute
 
   OUTCOMES = [:new_match_winner, :rejected, :void_match]
 
-  scope :active, lambda { nin(state: [:cancelled]) }
+  scope :active, lambda { where(state: :new) }
+  scope :available, lambda { nin(state: [:cancelled]) }
+  scope :historical, lambda { self.in(state: [:cancelled, :finalized]) }
 
   field :state, :type => String
   field :outcome, :type => String, default: 'pending'

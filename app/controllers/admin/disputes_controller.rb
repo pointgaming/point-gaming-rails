@@ -6,7 +6,16 @@ class Admin::DisputesController < Admin::ApplicationController
   respond_to :html, :json
 
   def index
-    @disputes = Dispute.order_by(updated_at: :desc).all
+    dispute = Dispute
+
+    if params[:history].present? && params[:history] === "1"
+      dispute = dispute.historical
+    else
+      dispute = dispute.active
+    end
+
+    @disputes = dispute.order_by(updated_at: :desc).all
+
     respond_with(@disputes)
   end
 

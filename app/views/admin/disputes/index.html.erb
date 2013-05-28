@@ -1,4 +1,10 @@
 <%- model_class = Dispute -%>
+
+<ul class="nav nav-pills">
+  <%= navItem :Active, admin_disputes_path, exact: true %>
+  <%= navItem :History, admin_disputes_path(history: 1) %>
+</ul>
+
 <table class="table table-bordered table-striped">
   <thead>
     <tr>

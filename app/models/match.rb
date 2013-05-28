@@ -55,7 +55,7 @@ class Match
   attr_writer :player_1_name, :player_2_name
   
   def dispute
-    disputes.active.first
+    disputes.available.first
   end
 
   def loser
