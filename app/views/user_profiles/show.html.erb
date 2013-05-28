@@ -54,7 +54,7 @@
       </div>
 
       <div class="span12 well">
-        <p><%= User.human_attribute_name(:created_at) %> <%= ldate @user.created_at %></p>
+        <p><%= User.human_attribute_name(:created_at) %> <%= ldate @user.created_at.to_date %></p>
       </div>
         
       <% if @user.game.present? %>
