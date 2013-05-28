@@ -91,9 +91,11 @@
           </div>
           <div class="span6" id="team-container">
             <div class="row-fluid">
-              <div class="span2" id="team-logo">
-                <%= image_tag "team-logo.png" %>
-              </div>
+              <% if @user.team.present? && @user.team.logo.present? %>
+                <div class="span2" id="team-logo">
+                  <%= link_to image_tag(@user.team.logo.url(:thumb)), team_path(@user.team) %>
+                </div>
+              <% end %>
               <div class="span10">
                 <h2>Team</h2>
                 <% unless @user.team.nil? %>

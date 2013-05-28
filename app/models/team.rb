@@ -6,7 +6,7 @@ class Team
   include Tire::Model::Callbacks
   include Rails.application.routes.url_helpers
 
-  has_mongoid_attached_file :logo, :default_url => "/system/:class/:attachment/missing_:style.png", styles: {thumb: '50x50', medium: '240'}
+  has_mongoid_attached_file :logo, :default_url => "/system/:class/:attachment/missing_:style.png", styles: {thumb: '60x60!', medium: '240'}
 
   before_validation :populate_slug
 
