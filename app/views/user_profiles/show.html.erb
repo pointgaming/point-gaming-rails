@@ -1,4 +1,5 @@
 <%- model_class = Profile -%>
+<%= javascript_include_tag "profile" %>
 
 <div class="row-fluid" id="user-profile">
   <div class="span3">
@@ -55,6 +56,13 @@
 
       <div class="span12 well">
         <p><%= User.human_attribute_name(:created_at) %> <%= ldate @user.created_at.to_date %></p>
+      </div>
+
+      <div id="user-reputation" class="span12 well" title="Reputation Details" data-content="<%= reputation_tooltip(@user).html_safe %>">
+  	    <h4>Reputation</h4>
+        <div class="progress <%= reputation_progress_class(@user.reputation) %>">
+          <div class="bar" style="width: <%= @user.reputation.to_i > 0 ? @user.reputation.to_i : 1 %>%"></div>
+        </div>
       </div>
         
       <% if @user.game.present? %>

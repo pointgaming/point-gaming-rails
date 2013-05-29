@@ -17,7 +17,8 @@ class User
   before_update :update_store_user
   after_destroy :destroy_forum_user
   after_destroy :destroy_store_user
-  after_save :update_team_points
+  after_save :enqueue_team_points_recalculation
+  after_save :enqueue_reputation_recalculation
 
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
@@ -74,9 +75,10 @@ class User
   field :points, type: Integer, default: 0
   field :friend_count, :type => Integer, :default => 0
   field :stream_owner_count, :type => Integer, :default => 0
-  field :finalized_bets_count, :type => Integer, :default => 0
-  field :match_dispute_won_count, :type => Integer, :default => 0
-  field :match_dispute_lost_count, :type => Integer, :default => 0
+  field :reputation, :type => BigDecimal, :default => BigDecimal.new("100")
+  field :match_participation_count, type: Integer, default: 0
+  field :dispute_won_count, :type => Integer, :default => 0
+  field :dispute_lost_count, :type => Integer, :default => 0
   field :admin, :type => Boolean, :default => 0
   field :stripe_customer_token
 
@@ -143,6 +145,14 @@ class User
     end
   end
 
+  def increment_dispute_lost_count!(amount=1)
+    inc :dispute_lost_count, amount
+  end
+
+  def increment_dispute_won_count!(amount=1)
+    inc :dispute_won_count, amount
+  end
+
   def age
     return "" unless birth_date?
 
@@ -191,6 +201,15 @@ class User
 
   def stream_limit
     50
+  end
+
+  def update_reputation
+    self.reputation = BigDecimal.new("100") - (BigDecimal.new("100") * 
+                      (BigDecimal.new(dispute_lost_count) / BigDecimal.new(match_participation_count)) )
+  end
+
+  def update_match_participation_count
+    self.match_participation_count = self.bets.group_by(&:match_id).length
   end
 
   def blocked_user?(user)
@@ -320,7 +339,13 @@ protected
     end
   end
 
-  def update_team_points
+  def enqueue_reputation_recalculation
+    if match_participation_count_changed? || dispute_won_count_changed? || dispute_lost_count_changed?
+      Resque.enqueue RecalculateUserReputationJob, _id
+    end
+  end
+
+  def enqueue_team_points_recalculation
     if team_id_changed?
       Resque.enqueue RecalculateTeamPointsJob, team_id_was if team_id_was.present?
       Resque.enqueue RecalculateTeamPointsJob, team_id if team_id.present?

@@ -44,7 +44,12 @@ class Dispute
   end
 
   def finalize
-    Resque.enqueue ProcessDisputeOutcomeJob, self._id unless outcome === 'rejected'
+    if outcome === 'rejected'
+      owner.increment_dispute_lost_count!
+    else
+      owner.increment_dispute_won_count!
+      Resque.enqueue ProcessDisputeOutcomeJob, self._id
+    end
   end
 
   def has_user_viewers?

@@ -42,6 +42,9 @@ en:
       user:
         created_at: 'Joined on'
         game_id: 'Primary Game'
+        matches_participated_in_count: 'Matches participated in'
+        match_dispute_won_count: 'Disputes won'
+        match_dispute_lost_count: 'Disputes lost'
   search:
     type:
       spree/product: "Store"

@@ -17,14 +17,14 @@ class FinalizeBetsJob
           bet.update_attribute(:outcome, :offerer_won)
 
           bet.taker.transfer_points_to_user(bet.offerer, bet.taker_wager)
-          bet.offerer.inc(:finalized_bets_count, 1)
-          bet.taker.inc(:finalized_bets_count, 1)
+          Resque.enqueue RecalculateUserMatchesParticipatedInCountJob, bet.offerer._id
+          Resque.enqueue RecalculateUserMatchesParticipatedInCountJob, bet.taker._id
         else
           bet.update_attribute(:outcome, :taker_won)
 
           bet.offerer.transfer_points_to_user(bet.taker, bet.offerer_wager)
-          bet.taker.inc(:finalized_bets_count, 1)
-          bet.offerer.inc(:finalized_bets_count, 1)
+          Resque.enqueue RecalculateUserMatchesParticipatedInCountJob, bet.offerer._id
+          Resque.enqueue RecalculateUserMatchesParticipatedInCountJob, bet.taker._id
         end
       }
     elsif match.state === 'cancelled'

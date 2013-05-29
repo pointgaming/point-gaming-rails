@@ -42,6 +42,11 @@ PointGaming.ProfileController.prototype.registerHandlers = function() {
 
   // setup playable search fields
   $(document).on('change', '#ajax-modal input.playable-search', this.clearRelatedHiddenFields);
+
+  $('body').popover({
+    selector: "div#user-reputation",
+    placement: 'bottom', trigger: 'hover', html: true
+  });
 };
 
 // this method will return the handler used to setup match modal windows.

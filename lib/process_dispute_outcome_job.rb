@@ -18,6 +18,8 @@ class ProcessDisputeOutcomeJob
     elsif dispute.outcome === 'void_match'
       dispute.match.winner = nil
       raise "Failed to save or finalize_dispute match" unless dispute.match.save && dispute.match.dispute_finalized!
+    else
+      raise "Invalid dispute.outcome"
     end
     match_log.modified = dispute.match.attributes.dup
     match_log.save
@@ -51,8 +53,8 @@ class ProcessDisputeOutcomeJob
       lambda {|bet|
         original_outcome = bet.outcome
         bet.update_attribute(:outcome, :void)
-        bet.taker.inc(:finalized_bets_count, -1)
-        bet.offerer.inc(:finalized_bets_count, -1)
+        Resque.enqueue RecalculateUserMatchesParticipatedInCountJob, bet.offerer._id
+        Resque.enqueue RecalculateUserMatchesParticipatedInCountJob, bet.taker._id
         if original_outcome === 'taker_won'
           bet.taker.transfer_points_to_user(bet.offerer, bet.offerer_wager)
         elsif original_outcome === 'offerer_won'

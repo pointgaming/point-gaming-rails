@@ -51,4 +51,49 @@ describe User do
     end
   end
 
+  describe "reputation" do
+    describe '.update_reputation' do
+      let(:user) { Fabricate.build(:user) }
+
+      it 'calculates reputation correctly' do
+        user.match_participation_count = 100
+        user.dispute_lost_count = 10
+        user.update_reputation
+        user.reputation.should === BigDecimal.new("90")
+      end
+    end
+  end
+
+  context '.update_match_participation_count' do
+    let(:user) { Fabricate.build(:user) }
+
+    context 'without any bets' do
+      it "doesn't increase the match_participation_count" do
+        lambda { user.update_match_participation_count }.should_not change(user, :match_participation_count)
+      end
+    end
+
+    context 'with finalized bets for one match' do
+      let(:match) { Fabricate.build(:match) }
+      let(:first_bet) { Fabricate.build(:finalized_bet, taker: user, match: match) }
+      let(:second_bet) { Fabricate.build(:finalized_bet, taker: user, match: match) }
+
+      it "increases the match_participation_count by 1" do
+        user.stub(:bets).and_return([first_bet, second_bet])
+        lambda { user.update_match_participation_count }.should change(user, :match_participation_count).by(1)
+      end
+    end
+
+    context 'with finalized bets for two matches' do
+      let(:first_bet) { Fabricate.build(:finalized_bet, taker: user) }
+      let(:second_bet) { Fabricate.build(:finalized_bet, taker: user) }
+
+      it "increases the match_participation_count by 2" do
+        user.stub(:bets).and_return([first_bet, second_bet])
+        lambda { user.update_match_participation_count }.should change(user, :match_participation_count).by(2)
+      end
+    end
+
+  end
+
 end
