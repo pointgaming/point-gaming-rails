@@ -147,6 +147,8 @@ class User
 
   def increment_dispute_lost_count!(amount=1)
     inc :dispute_lost_count, amount
+
+    Resque.enqueue RecalculateUserReputationJob, _id
   end
 
   def increment_dispute_won_count!(amount=1)
@@ -340,7 +342,7 @@ protected
   end
 
   def enqueue_reputation_recalculation
-    if match_participation_count_changed? || dispute_won_count_changed? || dispute_lost_count_changed?
+    if match_participation_count_changed? || dispute_lost_count_changed?
       Resque.enqueue RecalculateUserReputationJob, _id
     end
   end
