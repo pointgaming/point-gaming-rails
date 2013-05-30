@@ -61,7 +61,7 @@
       <div id="user-reputation" class="span12 well" title="Reputation Details" data-content="<%= reputation_tooltip(@user).html_safe %>">
   	    <h4>Reputation</h4>
         <div class="progress <%= reputation_progress_class(@user.reputation) %>">
-          <div class="bar" style="width: <%= @user.reputation.to_i > 0 ? @user.reputation.to_i : 1 %>%"></div>
+          <div class="bar" style="width: <%= @user.reputation.to_i %>%"><%= @user.reputation.to_i %>%</div>
         </div>
       </div>
         
