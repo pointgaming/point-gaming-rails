@@ -26,6 +26,12 @@
   <dl class="dl-horizontal">
     <dt><strong><%= model_class.human_attribute_name(:owner) %>:</strong></dt>
     <dd><%= link_to @dispute.owner.try(:username), @dispute.owner %></dd>
+    <dt><strong><%= model_class.human_attribute_name(:reason) %>:</strong></dt>
+    <dd><%= t @dispute.reason %></dd>
+    <% if @dispute.reason.to_sym === :cheating_player %>
+      <dt><strong><%= model_class.human_attribute_name(:cheater) %>:</strong></dt>
+      <dd><%= link_to @dispute.cheater.try(:display_name), @dispute.cheater %></dd>
+    <% end %>
     <dt><strong><%= model_class.human_attribute_name(:created_at) %>:</strong></dt>
     <dd><%=ldate @dispute.created_at %></dd>
     <dt><strong><%= model_class.human_attribute_name(:updated_at) %>:</strong></dt>

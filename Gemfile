@@ -45,11 +45,14 @@ end
 
 group :test, :development do
   gem 'fabrication', require: false
+  gem 'mocha', require: false, require: 'mocha/api'
   gem 'guard-rspec', require: false
   gem 'rb-fsevent', require: RUBY_PLATFORM =~ /darwin/i ? 'rb-fsevent' : false
-  gem 'rspec-rails', require: false
+  gem 'rspec-core', require: false
+  gem 'rspec-expectations', require: false
   gem 'shoulda', require: false
   gem 'simplecov', require: false
+  gem 'database_cleaner', require: false
 end
 
 gem 'whenever', require: false

@@ -21,6 +21,9 @@ Pointgaming::Application.configure do
   config.consider_all_requests_local       = true
   config.action_controller.perform_caching = false
 
+  # set mailer default url options
+  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+
   # Raise exceptions instead of rendering exception templates
   config.action_dispatch.show_exceptions = false
 
@@ -35,4 +38,8 @@ Pointgaming::Application.configure do
 
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
+
+  config.after_initialize do
+    Rails.application.routes.default_url_options = Rails.application.config.action_mailer.default_url_options
+  end
 end

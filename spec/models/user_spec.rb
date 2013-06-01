@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe User do
+  before(:each) { stub_user_sync_methods }
+  after(:each) { unstub_user_sync_methods }
 
   describe "points" do
     it "defaults to 0 points" do
@@ -79,7 +81,7 @@ describe User do
       let(:second_bet) { Fabricate.build(:finalized_bet, taker: user, match: match) }
 
       it "increases the match_participation_count by 1" do
-        user.stub(:bets).and_return([first_bet, second_bet])
+        user.stubs(:bets).returns([first_bet, second_bet])
         lambda { user.update_match_participation_count }.should change(user, :match_participation_count).by(1)
       end
     end
@@ -89,11 +91,28 @@ describe User do
       let(:second_bet) { Fabricate.build(:finalized_bet, taker: user) }
 
       it "increases the match_participation_count by 2" do
-        user.stub(:bets).and_return([first_bet, second_bet])
+        user.stubs(:bets).returns([first_bet, second_bet])
         lambda { user.update_match_participation_count }.should change(user, :match_participation_count).by(2)
       end
     end
 
+  end
+
+  context '.team_member?' do
+    let(:user) { Fabricate(:user) }
+    let(:team) { Fabricate(:team) }
+
+    context 'when user is not on team' do
+      it 'is false' do
+        user.team_member?(team).should be_false
+      end
+    end
+
+    it 'is true when user is added to the team' do
+      member = user.team_members.build team: team, rank: 'Member'
+      member.save
+      user.team_member?(team).should be_true
+    end
   end
 
 end

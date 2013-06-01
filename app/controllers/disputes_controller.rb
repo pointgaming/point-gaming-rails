@@ -1,7 +1,8 @@
 class DisputesController < ApplicationController
   before_filter :authenticate_user!
   before_filter :ensure_match, :only=>[:new, :create]
-  before_filter :ensure_params_exist, :only=>[:create]
+  before_filter :ensure_user_can_dispute_match, only: [:new, :create]
+  before_filter :ensure_params, :only=>[:create]
   before_filter :ensure_dispute, :only=>[:show, :cancel]
   before_filter :ensure_user_can_view_dispute, only: [:show]
   before_filter :ensure_dispute_owner, only: [:cancel]
@@ -25,7 +26,7 @@ class DisputesController < ApplicationController
   end
 
   def create
-    @dispute = Dispute.new({owner_id: current_user._id, match: @match})
+    @dispute = Dispute.new(create_params)
     @message = @dispute.messages.build(params[:message].merge!({user_id: current_user._id}))
     @dispute.save
     @message.save
@@ -47,10 +48,17 @@ class DisputesController < ApplicationController
 
 protected
 
-  def ensure_params_exist
-    if params[:message].blank?
-      respond_with(nil, status: 422) do |format|
-        format.html { redirect_to new_match_dispute_path(@match), alert: 'Missing message parameter' }
+  def create_params
+    params[:dispute].slice(:reason, :cheater_id).merge(owner_id: current_user._id, match: @match)
+  end
+
+  def ensure_params
+    message = 'Missing dispute parameter' if params[:dispute].blank?
+    message = 'Missing message parameter' if params[:message].blank?
+
+    if message.present?
+      respond_with({errors: [message]}, status: 422) do |format|
+        format.html { redirect_to new_match_dispute_path(@match), alert: message }
       end
     end
   end
@@ -71,18 +79,29 @@ protected
     end
   end
 
+  def ensure_user_can_dispute_match
+    unless @match.is_disputable? && @match.can_be_disputed_by?(current_user)
+      message = 'You do not have permission to dispute that match'
+      respond_with({errors: [message]}, status: 403) do |format|
+        format.html { redirect_to disputes_path, alert: message }
+      end
+    end
+  end
+
   def ensure_user_can_view_dispute
-    unless Bet.for_user(current_user).for_match(@dispute.match).length > 0
-      respond_with(nil, status: 404) do |format|
-        format.html { redirect_to disputes_path, alert: 'The dispute was not found' }
+    unless @dispute.can_be_viewed_by?(current_user)
+      message = 'That dispute was not found'
+      respond_with({errors: [message]}, status: 404) do |format|
+        format.html { redirect_to disputes_path, alert: message }
       end
     end
   end
 
   def ensure_dispute_owner
     unless @dispute.owner_id === current_user._id
-      respond_with(nil, status: 403) do |format|
-        format.html { redirect_to disputes_path, alert: 'Permission denied' }
+      message = 'Permission Denied'
+      respond_with({errors: [message]}, status: 403) do |format|
+        format.html { redirect_to disputes_path, alert: message }
       end
     end
   end

@@ -119,6 +119,7 @@ class User
   has_many :disputes, inverse_of: :owner
   has_many :demos
   has_many :sponsors, class_name: 'UserSponsor'
+  has_many :team_members
 
   accepts_nested_attributes_for :profile
 
@@ -225,6 +226,10 @@ class User
   def friends_with?(user)
     Friend.where(user_id: id, friend_user_id: user.id).exists? &&
       Friend.where(user_id: user.id, friend_user_id: id).exists?
+  end
+
+  def team_member?(team)
+    team_members.for_team(team).exists?
   end
 
   def store_sort

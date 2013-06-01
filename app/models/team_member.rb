@@ -2,6 +2,8 @@ class TeamMember
   include Mongoid::Document
   include Mongoid::Timestamps
 
+  scope :for_team, lambda {|team| where(team_id: team._id)}
+
   after_create :increment_team_member_count
   after_destroy :decrement_team_member_count
 

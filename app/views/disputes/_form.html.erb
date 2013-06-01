@@ -1,6 +1,40 @@
 <%= form_for [@match, @dispute], :html => { multipart: true, :class => 'form-horizontal' } do |f| %>
   <%= render partial: 'shared/form_errors', locals: {model: f.object} %>
 
+  <div class="control-group">
+    <%= f.label :reason, :class => 'control-label' %>
+    <div class="controls">
+      <%- can_assign_cheater = @match.can_user_assign_cheater?(current_user) %>
+      <% if can_assign_cheater %>
+        <%= label_tag nil, nil, :class => "radio" do %>
+          <%= f.radio_button :reason, :incorrect_match_outcome %> <%= t(:incorrent_match_outcome) %>
+        <% end %>
+      <% else %>
+        <span class="help-inline"><%= t(:incorrent_match_outcome) %></span>
+        <%= f.hidden_field :reason, value: :incorrect_match_outcome %>
+      <% end %>
+      <% if can_assign_cheater %>
+        <%= label_tag nil, nil, :class => "radio" do %>
+          <%= f.radio_button :reason, :cheating_player, :'data-hook' => 'toggle-cheater' %> <%= t(:cheating_player) %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+
+  <%- cheater_container_style = (@dispute.reason === 'cheating_player') ? '' : 'display: none;' %>
+  <div class="control-group" data-hook="cheater-container" style="<%= cheater_container_style %>">
+    <%= f.label :cheater, :class => 'control-label' %>
+    <div class="controls">
+      <%- possible_cheaters = @dispute.match.all_users(current_user).map{|p| [p.display_name, p._id]} %>
+      <% if possible_cheaters.length === 1 %>
+        <span class="help-inline"><%= possible_cheaters.first[0] %></span>
+        <%= f.hidden_field :cheater_id, value: possible_cheaters.first[1] %>
+      <% else %>
+        <%= f.select :cheater_id, possible_cheaters, include_blank: '- Select -' %>
+      <% end %>
+    </div>
+  </div>
+
   <%= fields_for @dispute.messages.build do |message| %>
     <div class="control-group">
       <%= message.label :text, :class => 'control-label' %>

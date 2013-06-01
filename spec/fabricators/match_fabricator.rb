@@ -9,13 +9,24 @@ Fabricator(:match) do
   state 'new'
 end
 
-Fabricator(:one, from: :match) do
-  map "Xel'Naga Towers"
+Fabricator(:user_vs_user_match, from: :match) do
+  player_1(fabricator: :user)
+  player_2(fabricator: :user)
 end
 
-Fabricator(:team, from: :match) do
-  player_1(fabricator: :team)
-  player_2(fabricator: :team)
+Fabricator(:user_vs_team_match, from: :match) do
+  player_1(fabricator: :user)
+  player_2(fabricator: :team_with_members)
+end
+
+Fabricator(:team_vs_user_match, from: :match) do
+  player_1(fabricator: :team_with_members)
+  player_2(fabricator: :user)
+end
+
+Fabricator(:team_vs_team_match, from: :match) do
+  player_1(fabricator: :team_with_members)
+  player_2(fabricator: :team_with_members)
 end
 
 Fabricator(:finalized_match, from: :match) do

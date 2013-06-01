@@ -76,6 +76,63 @@ class Match
      [player_2.display_name, player_2._id, {:'data-type' => player_2.class.name}]]
   end
 
+  def is_team_vs_mode?
+    !(player_1_type === "User" && player_2_type === "User")
+  end
+
+  def can_be_disputed_by?(user)
+    return true if includes_bet_participant?(user)
+    can_user_assign_cheater?(user)
+  end
+
+  def can_user_assign_cheater?(user)
+    participant = find_participant_for_user(user)
+    if participant.class.name === "User"
+      return true
+    elsif participant.class.name === "TeamMember"
+      return ["Leader", "Manager"].include?(participant.rank)
+    end
+    false
+  end
+
+  def find_participant_for_user(user)
+    return player_1 if user === player_1
+    return player_2 if user === player_2
+    if player_1_type === "Team"
+      team_member = user.team_members.for_team(player_1).first
+      return team_member if team_member.present?
+    end
+    if player_2_type === "Team"
+      team_member = user.team_members.for_team(player_2).first
+      return team_member if team_member.present?
+    end
+  end
+
+  def includes_participant?(player)
+    (player_1 === player || (player_1_type === "Team" && player.team_member?(player_1))) ||
+       (player_2 === player || (player_2_type === "Team" && player.team_member?(player_2)))
+  end
+
+  def includes_bet_participant?(user)
+    bets.for_user(user).exists?
+  end
+
+  def all_users(except_user=nil)
+    users = (users_for_player(player_1) + users_for_player(player_2)).uniq
+    users.reject!{|user| user === except_user} if except_user.present?
+    users
+  end
+
+  def users_for_player(player)
+    users = []
+    if player.class.name === "Team"
+      users.push *player.members.all.map(&:user)
+    elsif player.class.name === "User"
+      users.push player
+    end
+    users
+  end
+
   def start
     Resque.enqueue VoidUnacceptedBetsJob, self._id
   end

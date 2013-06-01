@@ -3,6 +3,7 @@ class Dispute
   include Mongoid::Timestamps
   include Workflow
 
+  REASONS = [:cheating_player, :incorrect_match_outcome]
   OUTCOMES = [:new_match_winner, :rejected, :void_match]
 
   scope :active, lambda { where(state: :new) }
@@ -10,6 +11,7 @@ class Dispute
   scope :historical, lambda { self.in(state: [:cancelled, :finalized]) }
 
   field :state, :type => String
+  field :reason, :type => String
   field :outcome, :type => String, default: 'pending'
   field :message_count, :type => Integer, default: 0
   field :user_viewer_count, :type => Integer, :default => 0
@@ -26,6 +28,7 @@ class Dispute
   end
 
   belongs_to :owner, class_name: 'User'
+  belongs_to :cheater, class_name: 'User'
   belongs_to :match
   belongs_to :winner, :polymorphic => true
 
@@ -33,11 +36,14 @@ class Dispute
 
   embeds_many :match_logs, class_name: 'DisputeMatchLog'
 
+  validates :reason, :presence=>true
   validates :match, :presence=>true
   validates :owner, :presence=>true
   validate :message_presence, on: :create
   validate :check_outcome, on: :update
+  validate :check_reason
   validate :winner_played_in_match, on: :update
+  validate :check_cheater
 
   def mq_exchange
     "Dispute_#{_id}"
@@ -70,6 +76,10 @@ class Dispute
     inc(:user_viewer_count, amount)
   end
 
+  def can_be_viewed_by?(user)
+    match.includes_participant?(user) || match.includes_bet_participant?(user)
+  end
+
 protected
 
   def message_presence
@@ -80,6 +90,17 @@ protected
     return unless outcome.present?
 
     self.errors[:base] << 'Outcome is invalid' unless OUTCOMES.include?(outcome.to_sym)
+  end
+
+  def check_reason
+    return unless reason.present?
+    self.errors[:base] << 'Reason is invalid' unless REASONS.include?(reason.to_sym)
+  end
+
+  def check_cheater
+    if reason.try(:to_sym) === :cheating_player && !cheater.present?
+      self.errors[:cheater_id] << 'is required'
+    end
   end
 
   def winner_played_in_match
