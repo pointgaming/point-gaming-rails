@@ -1,0 +1,203 @@
+Matches
+
+Implementation Details:
+
+A stream admin or game room admin is able to create a new match for the room when betting is enabled and another match does not already exist.
+
+When creating a new match, the user can select an existing User or Team for the player_1 and player_2 fields, they can specify a map and they can specify a game.
+
+When a new match is created, users should be able to place bets for the match. The game room admin user should be able to edit the match details, start the match or cancel the match.
+
+When a match is edited by an admin, if certain fields are changed, all bets that have been placed for the match will be voided.
+
+When a match is started, users can no longer place bets for the match. The game room admin can no longer edit the match details, but they should have the options to finalize or cancel the match.
+
+When finalizing a match, the admin user should be able to select which player won the match.
+
+When a match is cancelled or finalized, a game room admin should have the ability to create a new match.
+
+All bets belonging to a match that was cancelled or finalied will be updated in the background and events will be emitted to connected websockets. 
+
+
+
+List Matches for a specific stream or game room:
+http://dev.pointgaming.com/s/STREAM_SLUG/matches?auth_token=AUTH_TOKEN_ID
+http://dev.pointgaming.com/game_rooms/GAME_ROOM_ID/matches?auth_token=AUTH_TOKEN_ID
+
+HTTP Method: GET
+
+Parameters:
+STREAM_SLUG: (Conditionally Required) The slug of the stream you want to view matches for
+GAME_ROOM_ID: (Conditionally Required) The id of the game room you want to view matches for
+auth_token: (Required)
+
+Response:
+A collection of Match objects
+
+Example JSON Response:
+[{"_id":"51a9c8124e6d462b120000bf","created_at":"2013-06-01T05:08:18-05:00","default_offerer_odds":null,"finalized_at":null,"game_id":"510090394e6d46607f0000cb","map":"test 1","match_hash":"ccae8d04c0b8d98b41d4f22b6f3f3bf2","player_1_field":null,"player_1_id":"512bf1354e6d46af1900000f","player_1_type":"Team","player_2_field":null,"player_2_id":"0df30f7b-4043-462f-aad2-cf5c8b9878ef","player_2_type":"User","room_field":null,"room_id":"5143b3544e6d46ee3d00000d","room_type":"Stream","state":"new","updated_at":"2013-06-01T05:08:18-05:00","winner_field":null,"winner_id":null,"winner_type":null},{"_id":"51a9c2db4e6d46fbf8000099","created_at":"2013-06-01T04:46:03-05:00","default_offerer_odds":null,"finalized_at":"2013-06-01T04:46:24-05:00","game_id":"510090394e6d46607f0000cb","map":"rawr","match_hash":"2ba829120a8939c4dee2bb688c8219bf","player_1_field":null,"player_1_id":"d391e0af-ee5f-4f5f-a95f-0ed5b55779a7","player_1_type":"User","player_2_field":null,"player_2_id":"0df30f7b-4043-462f-aad2-cf5c8b9878ef","player_2_type":"User","room_field":null,"room_id":"5143b3544e6d46ee3d00000d","room_type":"Stream","state":"finalized","updated_at":"2013-06-01T04:46:24-05:00","winner_field":null,"winner_id":"d391e0af-ee5f-4f5f-a95f-0ed5b55779a7","winner_type":"User"},{"_id":"51a70f4b4e6d469820000007","created_at":"2013-05-30T03:35:23-05:00","default_offerer_odds":null,"finalized_at":"2013-05-30T03:35:38-05:00","game_id":"510090394e6d46607f0000cb","map":"test 4","match_hash":"ccae8d04c0b8d98b41d4f22b6f3f3bf2","player_1_field":null,"player_1_id":"512bf1354e6d46af1900000f","player_1_type":"Team","player_2_field":null,"player_2_id":"0df30f7b-4043-462f-aad2-cf5c8b9878ef","player_2_type":"User","room_field":null,"room_id":"5143b3544e6d46ee3d00000d","room_type":"Stream","state":"finalized","updated_at":"2013-05-30T03:35:38-05:00","winner_field":null,"winner_id":"512bf1354e6d46af1900000f","winner_type":"Team"}]
+
+Socket.io events:
+No events are emitted.
+
+
+
+Show Match:
+http://dev.pointgaming.com/matches/MATCH_ID?auth_token=AUTH_TOKEN_ID
+
+This url will give you information about a specific match.
+
+HTTP Method: GET
+
+Parameters:
+MATCH_ID: (Required) The id of the match to get details for
+auth_token: (Required)
+
+Response fields:
+match: Contains details of the specified match
+
+Example JSON Response:
+{"match":{"_id":"51a9c8124e6d462b120000bf","created_at":"2013-06-01T05:08:18-05:00","default_offerer_odds":null,"finalized_at":null,"game_id":"510090394e6d46607f0000cb","map":"test 1","match_hash":"ccae8d04c0b8d98b41d4f22b6f3f3bf2","player_1_field":null,"player_1_id":"512bf1354e6d46af1900000f","player_1_type":"Team","player_2_field":null,"player_2_id":"0df30f7b-4043-462f-aad2-cf5c8b9878ef","player_2_type":"User","room_field":null,"room_id":"5143b3544e6d46ee3d00000d","room_type":"Stream","state":"new","updated_at":"2013-06-01T05:08:18-05:00","winner_field":null,"winner_id":null,"winner_type":null}}
+
+
+
+Create Match:
+http://dev.pointgaming.com/s/STREAM_SLUG/matches?auth_token=AUTH_TOKEN_ID
+http://dev.pointgaming.com/game_rooms/GAME_ROOM_ID/matches?auth_token=AUTH_TOKEN_ID
+
+Stream/GameRoom admins should be able to create a new match for the game room when there is not already an active match for the room.
+
+The parameter default_offerer_odds is required when the match belongs to a game room.
+
+HTTP Method: POST
+
+Parameters:
+STREAM_SLUG: (Conditionally Required) The slug of the stream you want to view matches for
+GAME_ROOM_ID: (Conditionally Required) The id of the game room you want to view matches for
+auth_token: (Required)
+match: (Required) contains parameters describing the match
+- game_id: (Required) The id of a Game that this match will belong to
+- map: (Required) The name of the map the match will be played on, supplied by the user
+- player_1_id: (Required) The id of a User or Team record
+- player_1_type: (Required) A string describing the class name of player_1 ("User" or "Team")
+- player_2_id: (Required) The id of a User or Team record
+- player_2_type: (Required) A string describing the class name of player_2 ("User" or "Team")
+- default_offerer_odds: (Conditionally Required) A string value representing the default odds selected when users create a new bet for the match (example: '1:1')
+
+Example JSON Request:
+{"match": {"game_id": "510090394e6d46607f000001", "map": "test", "player_1_id": "512bf1354e6d46af1900000f", "player_1_type": "Team", "player_2_id": "0df30f7b-4043-462f-aad2-cf5c8b9878ef", "player_2_type": "User", "default_offerer_odds": "1:1"}}
+
+Response fields:
+match: contains details of the match that was created
+match_details: a string describing the details of the match
+
+Example JSON Response:
+{"_id":"51ad45ff4e6d4665e0000006","created_at":"2013-06-03T20:42:23-05:00","default_offerer_odds":null,"finalized_at":null,"game_id":"510090394e6d46607f000066","map":"wat","match_hash":"61dd30db59df7294957704a4f4938125","player_1_field":null,"player_1_id":"0af783ba-199b-4aae-a50c-e3ca9109098c","player_1_type":"User","player_2_field":null,"player_2_id":"e8d37aad-9dd7-47fd-911a-df917ef7cbf2","player_2_type":"User","room_field":null,"room_id":"5155e4c74e6d461dd7000037","room_type":"Stream","state":"new","updated_at":"2013-06-03T20:42:23-05:00","winner_field":null,"winner_id":null,"winner_type":null}
+
+The following data will be emitted via socket.io as event "Match.new" to the chatroom "GameRoom_5147b18a4e6d466e8a000001":
+{"match":{"_id":"51ad46334e6d4665e0000009","created_at":"2013-06-03T20:43:16-05:00","default_offerer_odds":null,"finalized_at":null,"game_id":"510090394e6d46607f000066","map":"wat","match_hash":"5a851318f2a4e2b823cce24c6abd8ea0","player_1_field":null,"player_1_id":"512bf1354e6d46af1900000f","player_1_type":"Team","player_2_field":null,"player_2_id":"50ad778a-8b2e-49dc-90b9-ef2929277c5f","player_2_type":"User","room_field":null,"room_id":"5155e4c74e6d461dd7000037","room_type":"Stream","state":"new","updated_at":"2013-06-03T20:43:16-05:00","winner_field":null,"winner_id":null,"winner_type":null,"room":{"_id":"5155e4c74e6d461dd7000037","betting":true,"details":"Rawr This is my details\r\n\r\n\r\nsup :)\r\n\r\n\r\nhere's some more info:\r\n\r\n\r\n<a href=\"http://www.google.com\">One link</a>","embedded_html":"<object type=\"application/x-shockwave-flash\" height=\"360\" width=\"590\" data=\"http://www.twitch.tv/widgets/live_embed_player.swf?channel=azuretwilight\"><param name=\"allowFullScreen\" value=\"true\">\n<param name=\"allowScriptAccess\" value=\"always\">\n<param name=\"allowNetworking\" value=\"all\">\n<param name=\"movie\" value=\"http://www.twitch.tv/widgets/live_embed_player.swf\">\n<param name=\"flashvars\" value=\"hostname=www.twitch.tv&amp;channel=azuretwilight&amp;auto_play=true&amp;start_volume=25\"></object>","game_id":null,"match_id":"51ad46334e6d4665e0000009","name":"Azure Twilight","slug":"azure_twilight","streaming":true,"thumbnail_content_type":null,"thumbnail_file_name":null,"thumbnail_file_size":null,"thumbnail_updated_at":null,"viewer_count":1}},"match_details":"New Match: Azure Twilight vs tmp99 on wat"}
+
+
+
+Update Match:
+http://dev.pointgaming.com/matches/MATCH_ID?auth_token=AUTH_TOKEN_ID
+
+Game room admins should be able to change any of the match details when the matches state is 'new'.
+
+HTTP Method: PUT
+
+Parameters:
+MATCH_ID: (Required) The id of the match that you want to update
+auth_token: (Required)
+match: (Required) contains updated data for the match
+- game_id: The id of a Game that this match will belong to
+- map: The name of the map the match will be played on, supplied by the user
+- player_1_id: The id of a User or Team record
+- player_1_type: A string describing the class name of player_1 ("User" or "Team")
+- player_2_id: The id of a User or Team record
+- player_2_type: A string describing the class name of player_2 ("User" or "Team")
+- default_offerer_odds: A string value representing the default odds selected when users create a new bet for the match (example: '1:1')
+
+Example JSON Request:
+{"match": {"game_id": "510090394e6d46607f0001fa", "player_1_id": "512bf1354e6d46af1900000f", "player_1_type": "Team", "player_2_id": "0df30f7b-4043-462f-aad2-cf5c8b9878ef", "player_2_type": "User", "map": "test"}}
+
+Response fields:
+Contains details of the specified match (should have been wrapped in a container named 'match')
+
+Example JSON Response:
+{"_id":"51ad46334e6d4665e0000009","created_at":"2013-06-03T20:43:16-05:00","default_offerer_odds":null,"finalized_at":null,"game_id":"510090394e6d46607f000066","map":"Shattered Temple","match_hash":"7c3b4c72985903143e81036630403a50","player_1_field":null,"player_1_id":"0df30f7b-4043-462f-aad2-cf5c8b9878ef","player_1_type":"User","player_2_field":null,"player_2_id":"512bf1354e6d46af1900000f","player_2_type":"Team","room_field":null,"room_id":"5155e4c74e6d461dd7000037","room_type":"Stream","state":"new","updated_at":"2013-06-03T21:11:51-05:00","winner_field":null,"winner_id":null,"winner_type":null}
+
+The following data will be emitted via socket.io as event "Match.update" to the chatroom "Stream_511c057876bfef7474000001":
+{"match":{"_id":"51ad46334e6d4665e0000009","created_at":"2013-06-03T20:43:16-05:00","default_offerer_odds":null,"finalized_at":null,"game_id":"510090394e6d46607f000066","map":"Shattered Temple","match_hash":"7c3b4c72985903143e81036630403a50","player_1_field":null,"player_1_id":"0df30f7b-4043-462f-aad2-cf5c8b9878ef","player_1_type":"User","player_2_field":null,"player_2_id":"512bf1354e6d46af1900000f","player_2_type":"Team","room_field":null,"room_id":"5155e4c74e6d461dd7000037","room_type":"Stream","state":"new","updated_at":"2013-06-03T21:11:51-05:00","winner_field":null,"winner_id":null,"winner_type":null,"room":{"_id":"5155e4c74e6d461dd7000037","betting":true,"details":"Rawr This is my details\r\n\r\n\r\nsup :)\r\n\r\n\r\nhere's some more info:\r\n\r\n\r\n<a href=\"http://www.google.com\">One link</a>","embedded_html":"<object type=\"application/x-shockwave-flash\" height=\"360\" width=\"590\" data=\"http://www.twitch.tv/widgets/live_embed_player.swf?channel=azuretwilight\"><param name=\"allowFullScreen\" value=\"true\">\n<param name=\"allowScriptAccess\" value=\"always\">\n<param name=\"allowNetworking\" value=\"all\">\n<param name=\"movie\" value=\"http://www.twitch.tv/widgets/live_embed_player.swf\">\n<param name=\"flashvars\" value=\"hostname=www.twitch.tv&amp;channel=azuretwilight&amp;auto_play=true&amp;start_volume=25\"></object>","game_id":null,"match_id":"51ad46334e6d4665e0000009","name":"Azure Twilight","slug":"azure_twilight","streaming":true,"thumbnail_content_type":null,"thumbnail_file_name":null,"thumbnail_file_size":null,"thumbnail_updated_at":null,"viewer_count":1}},"match_details":"New Match: cbankston vs Azure Twilight on Shattered Temple"}
+
+
+
+Start Match:
+http://dev.pointgaming.com/matches/MATCH_ID/start?auth_token=AUTH_TOKEN_ID
+
+Game room admins should be able to start a match when the matches state is 'new'.
+
+HTTP Method: PUT
+
+Parameters:
+MATCH_ID: (Required) The id of the match that you want to start
+auth_token: (Required)
+
+Response fields:
+Contains details of the specified match (should have been wrapped in a container named 'match')
+
+Example JSON Response:
+{"_id":"51ad46334e6d4665e0000009","created_at":"2013-06-03T20:43:16-05:00","default_offerer_odds":null,"finalized_at":null,"game_id":"510090394e6d46607f000066","map":"Shattered Temple","match_hash":"7c3b4c72985903143e81036630403a50","player_1_field":null,"player_1_id":"0df30f7b-4043-462f-aad2-cf5c8b9878ef","player_1_type":"User","player_2_field":null,"player_2_id":"512bf1354e6d46af1900000f","player_2_type":"Team","room_field":null,"room_id":"5155e4c74e6d461dd7000037","room_type":"Stream","state":"started","updated_at":"2013-06-03T21:25:42-05:00","winner_field":null,"winner_id":null,"winner_type":null}
+
+The following data will be emitted via socket.io as event "Match.update" to the chatroom "Stream_511c057876bfef7474000001":
+{"match":{"_id":"51ad46334e6d4665e0000009","created_at":"2013-06-03T20:43:16-05:00","default_offerer_odds":null,"finalized_at":null,"game_id":"510090394e6d46607f000066","map":"Shattered Temple","match_hash":"7c3b4c72985903143e81036630403a50","player_1_field":null,"player_1_id":"0df30f7b-4043-462f-aad2-cf5c8b9878ef","player_1_type":"User","player_2_field":null,"player_2_id":"512bf1354e6d46af1900000f","player_2_type":"Team","room_field":null,"room_id":"5155e4c74e6d461dd7000037","room_type":"Stream","state":"started","updated_at":"2013-06-03T21:25:42-05:00","winner_field":null,"winner_id":null,"winner_type":null,"room":{"_id":"5155e4c74e6d461dd7000037","betting":true,"details":"Rawr This is my details\r\n\r\n\r\nsup :)\r\n\r\n\r\nhere's some more info:\r\n\r\n\r\n<a href=\"http://www.google.com\">One link</a>","embedded_html":"<object type=\"application/x-shockwave-flash\" height=\"360\" width=\"590\" data=\"http://www.twitch.tv/widgets/live_embed_player.swf?channel=azuretwilight\"><param name=\"allowFullScreen\" value=\"true\">\n<param name=\"allowScriptAccess\" value=\"always\">\n<param name=\"allowNetworking\" value=\"all\">\n<param name=\"movie\" value=\"http://www.twitch.tv/widgets/live_embed_player.swf\">\n<param name=\"flashvars\" value=\"hostname=www.twitch.tv&amp;channel=azuretwilight&amp;auto_play=true&amp;start_volume=25\"></object>","game_id":null,"match_id":"51ad46334e6d4665e0000009","name":"Azure Twilight","slug":"azure_twilight","streaming":true,"thumbnail_content_type":null,"thumbnail_file_name":null,"thumbnail_file_size":null,"thumbnail_updated_at":null,"viewer_count":1}},"match_details":"Match Started: cbankston vs Azure Twilight on Shattered Temple"}
+
+
+
+Cancel Match:
+http://dev.pointgaming.com/matches/MATCH_ID/cancel?auth_token=AUTH_TOKEN_ID
+
+Game room admins should be able to cancel a match when the matches state is 'new'.
+
+HTTP Method: PUT
+
+Parameters:
+MATCH_ID: (Required) The id of the match that you want to start
+auth_token: (Required)
+
+Response fields:
+Contains details of the specified match (should have been wrapped in a container named 'match')
+
+Example JSON Response:
+{"_id":"51ad5a024e6d46251200000b","created_at":"2013-06-03T22:07:46-05:00","default_offerer_odds":null,"finalized_at":null,"game_id":"510090394e6d46607f000066","map":"rawr","match_hash":"3e6252ec7f4aa44440e90c30c1514599","player_1_field":null,"player_1_id":"dd470b86-dc53-48b0-982e-867b201dd6d7","player_1_type":"User","player_2_field":null,"player_2_id":"512bf1354e6d46af1900000f","player_2_type":"Team","room_field":null,"room_id":"5155e4c74e6d461dd7000037","room_type":"Stream","state":"cancelled","updated_at":"2013-06-03T22:07:55-05:00","winner_field":null,"winner_id":null,"winner_type":null}
+
+The following data will be emitted via socket.io as event "Match.update" to the chatroom "Stream_511c057876bfef7474000001":
+{"match":{"_id":"51ad5a024e6d46251200000b","created_at":"2013-06-03T22:07:46-05:00","default_offerer_odds":null,"finalized_at":null,"game_id":"510090394e6d46607f000066","map":"rawr","match_hash":"3e6252ec7f4aa44440e90c30c1514599","player_1_field":null,"player_1_id":"dd470b86-dc53-48b0-982e-867b201dd6d7","player_1_type":"User","player_2_field":null,"player_2_id":"512bf1354e6d46af1900000f","player_2_type":"Team","room_field":null,"room_id":"5155e4c74e6d461dd7000037","room_type":"Stream","state":"cancelled","updated_at":"2013-06-03T22:07:55-05:00","winner_field":null,"winner_id":null,"winner_type":null,"room":{"_id":"5155e4c74e6d461dd7000037","betting":true,"details":"Rawr This is my details\r\n\r\n\r\nsup :)\r\n\r\n\r\nhere's some more info:\r\n\r\n\r\n<a href=\"http://www.google.com\">One link</a>","embedded_html":"<object type=\"application/x-shockwave-flash\" height=\"360\" width=\"590\" data=\"http://www.twitch.tv/widgets/live_embed_player.swf?channel=azuretwilight\"><param name=\"allowFullScreen\" value=\"true\">\n<param name=\"allowScriptAccess\" value=\"always\">\n<param name=\"allowNetworking\" value=\"all\">\n<param name=\"movie\" value=\"http://www.twitch.tv/widgets/live_embed_player.swf\">\n<param name=\"flashvars\" value=\"hostname=www.twitch.tv&amp;channel=azuretwilight&amp;auto_play=true&amp;start_volume=25\"></object>","game_id":null,"match_id":null,"name":"Azure Twilight","slug":"azure_twilight","streaming":true,"thumbnail_content_type":null,"thumbnail_file_name":null,"thumbnail_file_size":null,"thumbnail_updated_at":null,"viewer_count":1}},"match_details":"Match Cancelled: testU vs Azure Twilight on rawr"}
+
+
+
+Finalize Match:
+http://dev.pointgaming.com/matches/MATCH_ID?auth_token=AUTH_TOKEN_ID
+
+Game room admins should be able to finalize a match when the matches state is 'started'.
+
+HTTP Method: PUT
+
+Parameters:
+MATCH_ID: (Required) The id of the match that you want to update
+auth_token: (Required)
+match: (Required) contains winner data for the match
+- winner_id: (Required) The id of a User or Team record
+- winner_type: (Required) A string describing the class name of winner ("User" or "Team")
+
+Example JSON Request:
+{"match": {"winner_id": "512c345676bfefe032000001", "winner_type": "Team"}}
+
+Response fields:
+Contains details of the specified match (should have been wrapped in a container named 'match')
+
+Example JSON Response:
+{"_id":"51ad46334e6d4665e0000009","created_at":"2013-06-03T20:43:16-05:00","default_offerer_odds":null,"finalized_at":"2013-06-03T21:58:12-05:00","game_id":"510090394e6d46607f000066","map":"Shattered Temple","match_hash":"7c3b4c72985903143e81036630403a50","player_1_field":null,"player_1_id":"0df30f7b-4043-462f-aad2-cf5c8b9878ef","player_1_type":"User","player_2_field":null,"player_2_id":"512bf1354e6d46af1900000f","player_2_type":"Team","room_field":null,"room_id":"5155e4c74e6d461dd7000037","room_type":"Stream","state":"finalized","updated_at":"2013-06-03T21:58:12-05:00","winner_field":null,"winner_id":"0df30f7b-4043-462f-aad2-cf5c8b9878ef","winner_type":"User"}
+
+The following data will be emitted via socket.io as event "Match.update" to the chatroom "Stream_511c057876bfef7474000001":
+{"match":{"_id":"51ad46334e6d4665e0000009","created_at":"2013-06-03T20:43:16-05:00","default_offerer_odds":null,"finalized_at":"2013-06-03T21:58:12-05:00","game_id":"510090394e6d46607f000066","map":"Shattered Temple","match_hash":"7c3b4c72985903143e81036630403a50","player_1_field":null,"player_1_id":"0df30f7b-4043-462f-aad2-cf5c8b9878ef","player_1_type":"User","player_2_field":null,"player_2_id":"512bf1354e6d46af1900000f","player_2_type":"Team","room_field":null,"room_id":"5155e4c74e6d461dd7000037","room_type":"Stream","state":"finalized","updated_at":"2013-06-03T21:58:12-05:00","winner_field":null,"winner_id":"0df30f7b-4043-462f-aad2-cf5c8b9878ef","winner_type":"User","room":{"_id":"5155e4c74e6d461dd7000037","betting":true,"details":"Rawr This is my details\r\n\r\n\r\nsup :)\r\n\r\n\r\nhere's some more info:\r\n\r\n\r\n<a href=\"http://www.google.com\">One link</a>","embedded_html":"<object type=\"application/x-shockwave-flash\" height=\"360\" width=\"590\" data=\"http://www.twitch.tv/widgets/live_embed_player.swf?channel=azuretwilight\"><param name=\"allowFullScreen\" value=\"true\">\n<param name=\"allowScriptAccess\" value=\"always\">\n<param name=\"allowNetworking\" value=\"all\">\n<param name=\"movie\" value=\"http://www.twitch.tv/widgets/live_embed_player.swf\">\n<param name=\"flashvars\" value=\"hostname=www.twitch.tv&amp;channel=azuretwilight&amp;auto_play=true&amp;start_volume=25\"></object>","game_id":null,"match_id":null,"name":"Azure Twilight","slug":"azure_twilight","streaming":true,"thumbnail_content_type":null,"thumbnail_file_name":null,"thumbnail_file_size":null,"thumbnail_updated_at":null,"viewer_count":1}},"match_details":"Match Finalized: cbankston vs Azure Twilight on Shattered Temple"}

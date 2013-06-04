@@ -1,0 +1,128 @@
+Game Rooms
+
+TODO:
+- GameRoom.max_member_count validation should be improved to require an integer value with a min/max?
+- GameRoom.description validation should be improved to have a max length?
+- A game room should be able to advertise its existence within a Games chatroom (GameRoom.is_advertising)
+- A game room owner should be able to prevent other users from joining a game room by requiring a password or specify that the game room is invite only (GameRoom.is_locked)
+
+
+
+List Game Rooms:
+http://dev.pointgaming.com/game_rooms?game_id=GAME_ID&auth_token=AUTH_TOKEN_ID
+
+HTTP Method: GET
+
+Parameters:
+game_id: (Required) The id of the game you want to view game_rooms for
+auth_token: (Required)
+
+Response fields:
+game_rooms: A collection of game_room objects
+
+Example JSON Response:
+{"game_rooms":[
+{"_id":"5147baed4e6d46cf4f00000a","position":7,"is_advertising":true,"is_locked":true,"member_count":0,"max_member_count":123,"description":"another room","game_id":"510090394e6d46607f000001","owner":{"_id":"0df30f7b-4043-462f-aad2-cf5c8b9878ef","username":"cbankston"}},
+{"_id":"5148b95c4e6d465579000001","position":8,"is_advertising":true,"is_locked":true,"member_count":0,"max_member_count":123,"description":"another room","game_id":"510090394e6d46607f000001","owner":{"_id":"0df30f7b-4043-462f-aad2-cf5c8b9878ef","username":"cbankston"}},
+{"_id":"5148cfeb4e6d466f66000001","position":22,"is_advertising":false,"is_locked":false,"member_count":0,"max_member_count":25,"description":"updated again","game_id":"510090394e6d46607f000001","owner":{"_id":"0af783ba-199b-4aae-a50c-e3ca9109098c","username":"rawr23"}}]}
+
+Socket.io events:
+No events are emitted.
+
+
+
+Show Game Room:
+http://dev.pointgaming.com/game_rooms/GAME_ROOM_ID?auth_token=AUTH_TOKEN_ID
+
+HTTP Method: GET
+
+Parameters:
+GAME_ROOM_ID: (Required) The id of the game room to get details for
+auth_token: (Required)
+
+Response fields:
+game_room: Contains details of the specified game room
+
+Example JSON Response:
+{"game_room":{"_id":"5148cfeb4e6d466f66000001","position":22,"is_advertising":false,"is_locked":false,"member_count":0,"max_member_count":25,"description":"updated again","game_id":"510090394e6d46607f000001","owner":{"_id":"0af783ba-199b-4aae-a50c-e3ca9109098c","username":"rawr23"}}}
+
+Socket.io events:
+No events are emitted.
+
+
+
+Create Game Room:
+http://dev.pointgaming.com/game_rooms?auth_token=AUTH_TOKEN_ID
+
+This request is expected to fail with an error message if the current user already owns another game room with the same game_id.
+
+This request is expected to fail with an error message if the position is already taken by another game room with the same game_id. You can attempt to takeover an existing game room by submitting the request with the parameter game_room[takeover_position] set to true. If the takeover fails, the response will contain an error message.
+
+HTTP Method: POST
+
+Parameters:
+auth_token: (Required)
+game_room: (Required) contains parameters describing the game_room
+- game_id: (Required) The id of a Game that this room will belong to
+- position: (Required) The position that the game room should appear at within the game room list. Must be an integer greater than 0 and less than 1000.
+- betting: (Default: true) A boolean flag used to determine if betting is allowed within this game room
+- max_member_count: (Default: 99) The maximum number of users that can be in the game room at one time
+- description: (Default: '') A user supplied string describing the game room
+- takeover_position: A boolean flag used to determine if the game room should take over another game rooms position, when the specified position is in use by an existing game room
+
+Example JSON Request:
+{"game_room": {"description":"New game room","max_member_count":15,"position":12,"game_id":"510090394e6d46607f000001"}}
+
+Response fields:
+game_room: Contains details of the game room that was created
+
+Example JSON Response:
+{"game_room":{"_id":"5148cfeb4e6d466f66000001","position":12,"is_advertising":false,"is_locked":false,"member_count":0,"max_member_count":15,"description":"updated","game_id":"510090394e6d46607f000001","owner":{"_id":"0df30f7b-4043-462f-aad2-cf5c8b9878ef","username":"cbankston"}}}
+
+Socket.io events:
+Publishes event 'GameRoom.new' with the following data to chat room "Game_#{GAME_ID}" via socket.io:
+{"game_room":{"_id":"5148cfeb4e6d466f66000001","description":"updated","game_id":"510090394e6d46607f000001","is_advertising":false,"is_locked":false,"max_member_count":15,"member_count":0,"owner_id":"0df30f7b-4043-462f-aad2-cf5c8b9878ef","position":12,"owner":{"_id":"0df30f7b-4043-462f-aad2-cf5c8b9878ef","username":"cbankston"}}}
+
+
+
+Update Game Room:
+http://dev.pointgaming.com/game_rooms/GAME_ROOM_ID?auth_token=AUTH_TOKEN_ID
+
+This request is expected to fail with an error message if the owner_id parameter is present and the new owner (specified by owner_id) already owns another game room with the same game_id.
+
+This request is expected to fail with an error message if the position is already taken by another game room with the same game_id. You can attempt to takeover an existing game room by submitting the request with the parameter game_room[takeover_position] set to true. If the takeover fails, the response will contain an error message.
+
+HTTP Method: PUT
+
+Parameters:
+GAME_ROOM_ID: (Required) The id of the game room to update
+auth_token: (Required)
+game_room: (Required) contains updated data for the game room
+- owner_id: An id of a user that should become the owner of the game room
+- position: The position that the game room should appear at within the game room list
+- betting: A boolean flag used to determine if betting is allowed within this game room
+- max_member_count: The maximum number of users that can be in the game room at one time
+- description: A user supplied string describing the game room
+- takeover_position: A boolean flag used to determine if the game room should take over another game rooms position, when the specified position is in use by an existing game room
+
+Example JSON Request:
+{"game_room": {"description":"updated again","max_member_count":25,"owner_id":"0af783ba-199b-4aae-a50c-e3ca9109098c","position":22}}
+
+Response fields:
+game_room: Contains details of the game room that was created
+
+Example JSON Response:
+{"game_room":{"_id":"5148cfeb4e6d466f66000001","position":12,"is_advertising":false,"is_locked":false,"member_count":0,"max_member_count":15,"description":"updated","game_id":"510090394e6d46607f000001","owner":{"_id":"0df30f7b-4043-462f-aad2-cf5c8b9878ef","username":"cbankston"}}}
+
+Socket.io events:
+Publishes event 'GameRoom.update' with the following data to chat room "Game_#{GAME_ID}" via socket.io:
+{"game_room":{"_id":"5148cfeb4e6d466f66000001","description":"updated again","game_id":"510090394e6d46607f000001","is_advertising":false,"is_locked":false,"max_member_count":25,"member_count":0,"owner_id":"0af783ba-199b-4aae-a50c-e3ca9109098c","position":22,"owner":{"_id":"0af783ba-199b-4aae-a50c-e3ca9109098c","username":"rawr23"}}}
+
+
+
+Delete Game Room:
+Currently, there is no way for you to delete a game room. 
+
+A game room will be deleted when all users have left the room, or when the owner leaves the room and there are no users within the room that can take ownership of the room (due to ownership limitations).
+
+When a game room is deleted, the event 'GameRoom.destroy' is emitted to chat room "Game_#{GAME_ID}" with the same JSON Structure emitted in the other websocket events.
