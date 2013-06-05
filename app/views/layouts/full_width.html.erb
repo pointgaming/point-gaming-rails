@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="stripe-key" content="<%= STRIPE_PUBLISHABLE_KEY %>">
+    <title><%= content_for?(:title) ? yield(:title) : "Point Gaming" %></title>
+    <%= csrf_meta_tags %>
+
+    <!--[if lt IE 9]>
+      <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6.1/html5shiv.js" type="text/javascript"></script>
+    <![endif]-->
+
+    <%= stylesheet_link_tag "application", :media => "all" %>
+
+    <%#= favicon_link_tag 'images/apple-touch-icon-144x144-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png', :sizes => '144x144' %>
+    <%#= favicon_link_tag 'images/apple-touch-icon-114x114-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png', :sizes => '114x114' %>
+    <%#= favicon_link_tag 'images/apple-touch-icon-72x72-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png', :sizes => '72x72' %>
+    <%#= favicon_link_tag 'images/apple-touch-icon-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png' %>
+    <%#= favicon_link_tag 'favicon.ico', :rel => 'shortcut icon' %>
+
+    <%= javascript_include_tag "application" %>
+    <%= javascript_tag do %>
+      var PointGaming;
+      if (!PointGaming) {
+        PointGaming = {};
+      }
+
+      PointGaming.socketio_uri = "<%= APP_CONFIG['socketio_uri'] %>";
+      PointGaming.timezone_offset = "<%= time_zone_offset(current_user.try(:time_zone)) %>";
+      PointGaming.desktop_client_latest_version = "<%= desktop_client_latest_version %>";
+      <% if current_user %>
+        <% if session[:auth_token] %>
+          PointGaming.authToken = "<%= session[:auth_token] %>";
+        <% end %>
+        PointGaming.username = "<%= current_user.username %>";
+      <% end %>
+    <% end %>
+  </head>
+  <body>
+
+    <div id="wrapper">
+      <%= render 'shared/navbar', :locals => {:current_path => @current_path} %>
+
+      <div id="main" class="container-fluid">
+        <%= render partial: 'shared/desktop_client_helper' %>
+        <% if controller.respond_to?(:sub_layout) && controller.sub_layout %>
+          <%= render :partial=>"layouts/#{controller.sub_layout}" %>
+        <% else %>
+          <%= yield %>
+        <% end %>
+      </div>
+    </div>
+
+
+  </body>
+</html>
