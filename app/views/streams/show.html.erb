@@ -4,7 +4,7 @@
 <div id="match-modal" class="modal hide fade" tabindex="-1"></div>
 
 <div class="row-fluid">
-  <h1 class="span8" style="padding: 10px; background: #333; color: #fff; margin-top: 0;">
+  <h2 class="span8" style="padding: 10px; background: #333; color: #fff; margin-top: 0;">
     <%= image_tag @stream.thumbnail.url(:tiny), id: 'stream-thumbnail' %>
     <span id="stream-name" data-content="<%= @stream.details %>">
       <%= @stream.name %>
@@ -12,39 +12,39 @@
         <%= " - #{match_details(@stream.match)}" if @stream.match %>
       </span>
     </span>
-  </h1>
+  </h2>
 
 <% if @stream_owner.user_id === current_user.id || @collaborator.present? %>
   <div id="match-admin-actions" class="well span4">
-    <%= link_to_modal 'Admin', user_stream_path(@stream), 'data-width' => "950", 'data-title' => "Stream Admin", :remote => true, :class => 'btn' %>
+    <%= link_to_modal 'Admin', user_stream_path(@stream), 'data-width' => "950", 'data-title' => "Stream Admin", :remote => true, :class => 'btn btn-small' %>
 
     <% if @stream.match.blank? %>
       <%= link_to_modal t('.new_match'), new_polymorphic_path([@stream, Match.new]),
             remote: true, data: {'modal-target' => '#match-modal'},
-            :id => 'new-match', :class => 'btn', disabled: !@stream.betting %>
+            :id => 'new-match', :class => 'btn btn-small', disabled: !@stream.betting %>
     <% else %>
       <% if @stream.match.state === 'new' %>
         <%= link_to_modal t('.manage_match'), polymorphic_path([@stream, @stream.match]),
               remote: true, data: {'modal-target' => '#match-modal', 'match-id' => @stream.match._id.to_s},
-              :id => 'manage-match', :class => 'btn' %>
+              :id => 'manage-match', :class => 'btn btn-small' %>
         <% end %>
 
         <% if @stream.match.can_start? %>
           <%= link_to t('.start_match'), start_match_path(@stream.match), method: 'put', 
                 :data => {type: :json, remote: :true, 'dismiss-modal' => :true}, 
-                :class => 'btn btn-success', id: 'start-match' %>
+                :class => 'btn-small btn btn-success', id: 'start-match' %>
         <% end %>
 
         <% if @stream.match.can_finalize? %>
           <%= link_to_modal t('.finalize_match'), edit_match_path(@stream.match),
                 :data => {'modal-target' => '#match-modal'},
-                remote: true, :class => 'btn', id: 'finalize-match' %>
+                remote: true, :class => 'btn btn-small', id: 'finalize-match' %>
         <% end %>
 
         <% if @stream.match.state === 'new' && @stream.match.can_cancel? %>
           <%= link_to t('.cancel_match'), cancel_match_path(@stream.match), method: 'put', 
                 :data => {type: :json, remote: :true, 'dismiss-modal' => :true}, 
-                :class => 'btn btn-danger', id: 'cancel-match' %>
+                :class => 'btn btn-small btn-danger', id: 'cancel-match' %>
         <% end %>
       <% end %>
     </div>
