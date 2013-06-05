@@ -36,6 +36,8 @@ require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/core'
 require 'rspec/expectations'
 require 'rspec/autorun'
+require 'capybara/rails'
+require 'capybara/rspec'
 require 'mocha/api'
 require 'shoulda'
 
@@ -47,6 +49,7 @@ RSpec.configure do |config|
   config.mock_framework = :mocha
 
   config.include Helpers
+  config.include Features::SessionHelpers, type: :feature
 
   # Run specs in random order to surface order dependencies. If you find an
   # order dependency and want to debug it, you can fix the order by providing
