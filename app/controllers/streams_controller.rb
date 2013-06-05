@@ -1,4 +1,5 @@
 class StreamsController < ApplicationController
+  layout 'full_width', :only => [:show]
   before_filter :authenticate_user!, except: [:embedded_content]
   before_filter :ensure_stream, only: [:show, :embedded_content]
 
