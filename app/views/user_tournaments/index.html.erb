@@ -1,4 +1,8 @@
 <%- model_class = Tournament -%>
+
+<div class="breadcrumb">
+  <%= link_to t('.new', :default => t("helpers.links.new")), new_user_tournament_path, :class => 'btn' %>
+</div>
   
 <table class="table table-bordered table-striped">
   <thead>
@@ -14,7 +18,7 @@
   <tbody>
     <% @tournaments.each do |tournament| %>
       <tr>
-        <td><%= link_to "View Details", tournament_path(tournament) %></td>
+        <td><%= link_to "View Details", edit_user_tournament_path(tournament) %></td>
         <td><%= ldate tournament.start_datetime %></td>
         <td><%= tournament.game.name %></td>
         <td><%= tournament.game_type.name %></td>

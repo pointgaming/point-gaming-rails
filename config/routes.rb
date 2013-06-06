@@ -20,7 +20,8 @@ Pointgaming::Application.routes.draw do
     end
   end
   resources :leagues
-  resources :tournaments
+  resources :tournaments, only: [:index, :show]
+  resources :user_tournaments
   resources :streams, controller: 'streams', as: 'streams', only: [:index, :create]
   resources :s, controller: 'streams', as: 'streams', except: [:index, :create, :edit, :update] do
     resources :matches, only: [:index, :new, :show, :create, :destroy]
@@ -121,6 +122,7 @@ Pointgaming::Application.routes.draw do
 
   get '/desktop_client/version', to: 'site#desktop_version'
   get '/leaderboard', to: 'site#leaderboard'
+  get '/game_type_options', to: 'site#game_type_options'
 
   resources :news, only: [:show] do
     resources :comments, except: [:index], controller: 'news_comments'
@@ -134,11 +136,7 @@ Pointgaming::Application.routes.draw do
 
   get "/users/search", :to => "users#search"
 
-  resources :demos, only: [:index, :show] do
-    collection do
-      get 'game_type_options'
-    end
-  end
+  resources :demos, only: [:index, :show]
 
   resources :users, path: "/u", only: [] do
     resources :demos, only: [:new, :create, :destroy]

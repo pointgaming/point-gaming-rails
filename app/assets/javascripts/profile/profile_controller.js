@@ -97,12 +97,12 @@ PointGaming.ProfileController.prototype.updateStateOptions = function(event) {
 
 PointGaming.ProfileController.prototype.updateGameTypeOptions = function(event) {
   var game_id = $(this).val(),
-      select_wrapper = $('#demo_game_type_wrapper'),
+      select_wrapper = $('#game_type_wrapper'),
       url;
 
   $('select', select_wrapper).attr('disabled', true).val('');
 
-  url = "/demos/game_type_options?game_id=" + game_id;
+  url = "/game_type_options?for=demo&game_id=" + game_id;
   select_wrapper.load(url);
 };
 

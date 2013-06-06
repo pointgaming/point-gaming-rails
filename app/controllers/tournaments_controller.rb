@@ -2,10 +2,11 @@ class TournamentsController < ApplicationController
   before_filter :authenticate_user!
 
   def index
-    @tournaments = Tournament.all
+    @tournaments = []
   end
 
   def show
-
+    @tournament = Tournament.find params[:id]
   end
+
 end

@@ -1,19 +1,7 @@
 <%= form_for [:user, @demo], :html => { :class => 'form-horizontal', multipart: true, remote: true, :'data-type' => 'json', autocomplete: 'off' } do |f| %>
   <div class="modal-body">
 
-    <div class="control-group">
-      <%= f.label :game_id, :class => 'control-label' %>
-      <div class="controls">
-        <%= f.select :game_id, Game.all.collect{|g| [g.name, g.id]}, include_blank: '- Select -' %>
-      </div>
-    </div>
-
-    <div class="control-group">
-      <%= f.label :game_type_id, :class => 'control-label' %>
-      <div class="controls">
-        <%= render partial: 'game_type_select', locals: { game: f.object.game } %>
-      </div>
-    </div>
+    <%= render partial: 'shared/game_and_game_type_select', locals: { model_name: :demo, game: f.object.game } %>
 
     <div class="control-group">
       <%= f.label :map, :class => 'control-label' %>

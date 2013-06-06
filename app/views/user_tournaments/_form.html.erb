@@ -1,0 +1,100 @@
+<%= javascript_include_tag "tournaments" %>
+<%- edit ||= false %>
+<%= form_for [:user, @tournament], html: { :class => '' } do |f| %>
+  <%= render partial: 'shared/form_errors', locals: {model: f.object} %>
+
+  <div class="row-fluid">
+    <div class="span12">
+      <div class="control-group">
+        <%= f.label :name, :class => 'control-label' %>
+        <div class="controls">
+          <%= f.text_field :name, :class => 'text_field' %>
+        </div>
+      </div>
+      <div class="control-group">
+        <%= f.label :slug, :class => 'control-label' %>
+        <div class="controls">
+          <%= tournaments_path(only_path: false) %>/<%= f.text_field :slug, :class => 'text_field' %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row-fluid">
+    <div class="span6">
+      <div class="control-group">
+        <%= f.label :signup_start_datetime, :class => 'control-label' %>
+        <div class="controls">
+          <%= f.text_field :signup_start_datetime, value: ldate(f.object.signup_start_datetime), :class => 'text_field', :data => {behavior: 'datepicker'} %>
+        </div>
+      </div>
+      <div class="control-group">
+        <%= f.label :signup_end_datetime, :class => 'control-label' %>
+        <div class="controls">
+          <%= f.text_field :signup_end_datetime, value: ldate(f.object.signup_end_datetime), :class => 'text_field', :data => {behavior: 'datepicker'} %>
+        </div>
+      </div>
+      <div class="control-group">
+        <%= f.label :start_datetime, :class => 'control-label' %>
+        <div class="controls">
+          <%= f.text_field :start_datetime, value: ldate(f.object.start_datetime), :class => 'text_field', :data => {behavior: 'datepicker'} %>
+        </div>
+      </div>
+      <div class="control-group">
+        <%= f.label :player_limit, :class => 'control-label' %>
+        <div class="controls">
+          <%= f.text_field :player_limit, :class => 'text_field' %>
+        </div>
+      </div>
+      <div class="control-group">
+        <%= f.label :format, :class => 'control-label' %>
+        <div class="controls">
+          <%= f.select :format, @tournament.formats.collect{|format| [t(format), format]}, include_blank: '- Select -' %>
+        </div>
+      </div>
+      <div class="control-group">
+        <%= f.label :type, :class => 'control-label' %>
+        <div class="controls">
+          <%= f.select :type, @tournament.types.collect{|type| [t(type), type]}, include_blank: '- Select -' %>
+        </div>
+      </div>
+
+      <%= render partial: 'shared/game_and_game_type_select', locals: { model_name: :tournament, game: f.object.game } %>
+    </div>
+    <% if edit === true %>
+      <div class="span6">
+        @TODO add owner form
+        @TODO add collaborator form
+      </div>
+    <% end %>
+  </div>
+
+  <div class="row-fluid">
+    <div class="span6">
+      <div class="control-group">
+        <%= f.label :maps, :class => 'control-label' %>
+        <div class="controls">
+          <%= f.text_area :maps, rows: 8 %>
+        </div>
+      </div>
+    </div>
+    <div class="span6">
+      <div class="control-group">
+        <%= f.label :details, :class => 'control-label' %>
+        <div class="controls">
+          <%= f.text_area :details, rows: 8 %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row-fluid">
+    <div class="span12">
+      <div class="form-actions">
+        <%= f.submit nil, :class => 'btn btn-primary' %>
+        <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                    user_tournaments_path, :class => 'btn' %>
+      </div>
+    </div>
+  </div>
+<% end %>
