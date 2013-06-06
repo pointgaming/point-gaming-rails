@@ -1,26 +1,25 @@
 <%- model_class = News -%>
 <h1>Point Gaming News</h1>
-
-<div id="twocolumns" class="row">
+<div id="twocolumns" class="row-fluid">
   <section id="content" class="span9">
     <% @news.each do |news| %>
       <div class="post">
-        <h1><%= link_to news.title, news %></h1>
+        <h1 class="post-title"><%= link_to news.title, news %></h1>
         <% if news.image.present? %>
-          <%= image_tag news.image.url(:medium), width: "633" %>
+          <%= image_tag news.image.url(:medium) %>
         <% end %>
         <div class="text-block">
           <p><%= truncate(news.content, :length => 255, :omission => '...') %></p>
         </div>
-        <div class="panel">
-          <time class="date" datetime="<%= ldate news.created_at %>"><%= ldate news.created_at.to_date %></time>
-          <nav class="sub-nav">
+        <div class="well clearfix">
+          <time class="date well span2" datetime="<%= ldate news.created_at %>"><%= ldate news.created_at.to_date %></time>
+          <nav class="sub-nav span5">
             <ul>
               <li><%= link_to "Learn More", news %></li>
               <li><%= link_to "#{news.comment_count} Comments", news_path(news, anchor: 'comments') %></li>
             </ul>
           </nav>
-          <nav class="share-icons">
+          <nav class="share-icons span5">
             <ul>
               <li><a href="#"><%= image_tag "ico-facebook-share.png", alt: "facebook share", width: "61", height: "20" %></a></li>
               <li><a href="#"><%= image_tag "ico-tweet.png", alt: "tweet", width: "55", height: "20" %></a></li>
@@ -32,54 +31,58 @@
     <% end %>
   </section>
   <aside id="sidebar" class="span3">
-    <div class="leaderboard">
+    <div class="leaderboard clearfix">
       <div class="visual">
-        <%= image_tag "Leaderboard287x190.jpg", alt: "image description" %>
         <h3>Leaderboard</h3>
+        <%= image_tag "Leaderboard287x190.jpg", alt: "image description" %>
       </div>
-      <table class="table table-bordered table-striped">
-        <tbody>
-          <tr>
-            <th class="title"><%= User.human_attribute_name(:username) %></th>
-            <th><%= User.human_attribute_name(:points) %></th>
-          </tr>
-          <% @players.each do |user| %>
-            <tr class="<%= 'bottom' if @players.last === user %>">
-              <td><%= link_to user.display_name, user %></td>
-              <td class="item"><%= user.points %></td>
+      <div style="padding: 5px;" class="clearfix">
+        <table class="table table-bordered table-striped">
+          <tbody>
+            <tr>
+              <th class="title"><%= User.human_attribute_name(:username) %></th>
+              <th><%= User.human_attribute_name(:points) %></th>
             </tr>
-          <% end %>
-        </tbody>
-      </table>
-      <%= link_to "View all players", leaderboard_path, class: 'link' %>
-    </div>
-
-    <div class="demos">
-      <div class="visual">
-        <%= image_tag "Demo287x174.jpg", alt: "image description" %>
-        <h3>Last Demos</h3>
-      </div>
-      <table class="table table-bordered table-striped">
-        <tbody>
-          <tr>
-            <th class="title">Demos</th>
-            <th>Action</th>
-          </tr>
-          <% if @demos.present? %>
-            <% @demos.each do |demo, index| %>
-              <tr class="<%= 'bottom' if index == (@demos.length - 1) %>">
-                <td><%= demo.participants %></td>
-                <td><%= link_to t(:download), demo_path(demo), :class => 'btn btn-mini' %></td>
+            <% @players.each do |user| %>
+              <tr class="<%= 'bottom' if @players.last === user %>">
+                <td><%= link_to user.display_name, user %></td>
+                <td class="item"><%= user.points %></td>
               </tr>
             <% end %>
-          <% else %>
-            <tr class="bottom">
-              <td colspan="2">No results were found.</td>
+          </tbody>
+        </table>
+        <%= link_to "View all players", leaderboard_path, class: 'btn span12' %>
+      </div>
+    </div>
+
+    <div class="demos clearfix">
+      <div class="visual">
+        <h3>Last Demos</h3>
+        <%= image_tag "Demo287x174.jpg", alt: "image description" %>
+      </div>
+      <div style="padding: 5px;" class="clearfix">
+        <table class="table table-bordered table-striped">
+          <tbody>
+            <tr>
+              <th class="title">Demos</th>
+              <th>Action</th>
             </tr>
-          <% end %>
-        </tbody>
-      </table>
-      <%= link_to "View all demos", demos_path, :class => 'link' %>
+            <% if @demos.present? %>
+              <% @demos.each do |demo, index| %>
+                <tr class="<%= 'bottom' if index == (@demos.length - 1) %>">
+                  <td><%= demo.participants %></td>
+                  <td><%= link_to t(:download), demo_path(demo), :class => 'btn btn-mini' %></td>
+                </tr>
+              <% end %>
+            <% else %>
+              <tr class="bottom">
+                <td colspan="2">No results were found.</td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+        <%= link_to "View all demos", demos_path, :class => 'btn span12' %>
+      </div>
     </div>
   </aside>
 </div>

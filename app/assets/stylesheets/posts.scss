@@ -1,0 +1,30 @@
+.post { border: 1px solid $midGrey; background: $white; @include border-radius(0);
+	h1.post-title { border-bottom: 1px solid $midGrey; margin-top: 0; margin-bottom: 0; padding: 10px; padding-left: 60px; background: $lightGrey url(image_path('post-horn.png')) 10px 50% no-repeat; @include border-radius(0); font-size: 22px; line-height: 30px;
+		a {color: $secondaryColor;}
+	}
+	.text-block {padding: 10px;}
+	.well {padding: 10px; margin: 0; @include border-radius(0); border: 0; }
+	time {margin: 0; text-align: center; padding: 5px; @include border-radius(15px !important); border: 1px solid $midGrey; background: $white;}
+	.sub-nav { padding: 10px;
+		ul { list-style-type: none;
+			li {float: left;
+				&:first-child {border-right: 1px solid #ccc; margin-right: 10px; padding-right: 10px;}
+				a {color: $primaryColor}
+			}
+		}
+	}
+	.share-icons { padding: 10px;
+		ul {list-style-type: none; float: right; margin: 0;
+			li {float: left; margin-right: 10px;}
+		}
+	}
+}
+
+#sidebar {
+	.leaderboard, .demos { border: 1px solid $midGrey; margin-bottom: 20px;
+		table {margin-bottom: 10px;}
+		.btn {margin: 0;}
+		h3 {margin: 0; padding: 10px; background: $lightGrey; border-bottom: 1px solid $midGrey; line-height: 30px; font-size: 22px; color: $secondaryColor;}
+	}
+
+}
