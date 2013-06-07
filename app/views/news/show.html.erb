@@ -1,10 +1,10 @@
 <%= javascript_include_tag "news" %>
 
-<div class="container-fluid">
-  <div class="row-fluid">
-    <section id="content" class="full-width clearfix">
+<div class="row-fluid">
+  <div class="span12">
+    <section id="content">
       <div class="post">
-        <h1>
+        <h1 class="post-title">
           <%= @news.title %>
           <% if can? :manage, News %>
             <div class="pull-right" style="padding-right: 23px;">
@@ -19,9 +19,9 @@
         <div class="text-block">
           <p><%= @news.content %></p>
         </div>
-        <div class="panel">
-          <time class="date" datetime="<%= ldate @news.created_at %>"><%= ldate @news.created_at.to_date %></time>
-          <nav class="share-icons">
+        <div class="well clearfix">
+          <time class="date span2" datetime="<%= ldate @news.created_at %>"><%= ldate @news.created_at.to_date %></time>
+          <nav class="share-icons span10">
             <ul>
               <li><a href="#"><%= image_tag "ico-facebook-share.png", alt: "facebook share", width: "61", height: "20" %></a></li>
               <li><a href="#"><%= image_tag "ico-tweet.png", alt: "tweet", width: "55", height: "20" %></a></li>
@@ -32,19 +32,12 @@
       </div>
     </section>
 
-    <section class="full-width clearfix">
-      <h1><%= t 'helpers.titles.new', model: NewsComment.model_name.human, default: "New #{NewsComment.model_name.human}" %></h1>
+    <section>
 
       <%= render partial: 'news_comments/form', locals: { hide_cancel_button: true} %>
-    </section>
-
-    <section class="full-width clearfix">
-      <h1>
-        <%= link_to '', '#comments', name: 'comments' %>
-        <%=t 'helpers.titles.all', model: NewsComment.model_name.human, default: "All #{NewsComment.model_name.human.pluralize}" %> (<%= @news.comment_count %>)
-      </h1>
+      
       <% @news.comments.each_with_index do |comment, index| %>
-        <div class="comment row-fluid <%= (index % 2 === 0 ? 'even' : 'odd') %>">
+        <div class="comment row-fluid">
           <div class="user">
             <div class="username">
               <%= link_to comment.user.username, comment.user %>
