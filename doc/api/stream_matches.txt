@@ -1,20 +1,20 @@
-Matches
+Stream Matches
 
 Implementation Details:
 
-A stream admin or game room admin is able to create a new match for the room when betting is enabled and another match does not already exist.
+A stream admin is able to create a new match for the room when betting is enabled and another match does not already exist.
 
 When creating a new match, the user can select an existing User or Team for the player_1 and player_2 fields, they can specify a map and they can specify a game.
 
-When a new match is created, users should be able to place bets for the match. The game room admin user should be able to edit the match details, start the match or cancel the match.
+When a new match is created, users should be able to place bets for the match. The stream admin user should be able to edit the match details, start the match or cancel the match.
 
 When a match is edited by an admin, if certain fields are changed, all bets that have been placed for the match will be voided.
 
-When a match is started, users can no longer place bets for the match. The game room admin can no longer edit the match details, but they should have the options to finalize or cancel the match.
+When a match is started, users can no longer place bets for the match. The stream admin can no longer edit the match details, but they should have the options to finalize or cancel the match.
 
 When finalizing a match, the admin user should be able to select which player won the match.
 
-When a match is cancelled or finalized, a game room admin should have the ability to create a new match.
+When a match is cancelled or finalized, a stream admin should have the ability to create a new match.
 
 All bets belonging to a match that was cancelled or finalied will be updated in the background and events will be emitted to connected websockets. 
 

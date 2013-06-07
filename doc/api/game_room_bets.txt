@@ -1,0 +1,21 @@
+Game Room Bets
+
+Implementation Details:
+
+If user vs user betting is enabled, any user in the room is able to propose 1 bet. Other users will have the ability to view the details of the proposed bet and accept the bet.
+
+When creating a new bet, the user must provide details about the match as well as details about the bet. These details include a user or team they think will win, a user or team they think will lose, a map that the match is played on, the game that is being played, the wager amount and odds used to determine the takers wager amount.
+
+While it is possible for a user to create a team vs team bet, the matches created as the result of this will not require members of the team to check in.
+
+When the bet is created, it should be in the 'unaccepted' state.
+
+When the bet is in the 'new' state, other users should have the ability to view the details of the bet and accept the bet. The creator of the bet should be able to cancel the bet.
+
+When another user accepts the bet, it should move to the 'accepted' state.
+
+When the match is in the 'started' state, the game room admin can no longer edit the match details. The game room admin should still be able to cancel the match. The game room admin or any member that agreed to the match should be able to finalize the match.
+
+When the bet is in the 'accepted' state, the creator of the bet is no longer able to cancel the bet. The bet offerer and taker should be able to finalize the bet.
+
+When finalizing a bet, the user should be able to select which user/team won the match. The bet should move to the 'finalized' state.

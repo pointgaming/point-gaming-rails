@@ -1,0 +1,25 @@
+Game Room Matches
+
+Implementation Details:
+
+A game room admin is able to create a new team match for the game room when team_betting is enabled and another team_match does not already exist.
+
+When creating a new match, the admin must select an existing Team for both player_1 and player_2 fields. The admin must also specify a map, game, members required per team and the wager amount that each player must agree to.
+
+When the match is created, it should be in the 'new' state.
+
+When the match is in the 'new' state, members from each team will need to check in and agree to the bet amount. The game room admin user should be able to edit the match details or cancel the match.
+
+When a match is edited by an admin, if certain fields are changed, all team members will need to agree and check in to the match again.
+
+When all team members have agreed and checked in to the match, the match should move to the 'started' state.
+
+When the match is in the 'started' state, the game room admin can no longer edit the match details. The game room admin should still be able to cancel the match. The game room admin or any member that agreed to the match should be able to finalize the match.
+
+When a match is cancelled, it should move to the 'cancelled' state.
+
+When finalizing a match, the user should be able to select which team won the match. The match should move to the 'finalized' state.
+
+Once the game rooms active match moves to the 'cancelled' or 'finalized' state, a game room admin should have the ability to create a new team match.
+
+All bets belonging to a match that was cancelled or finalied should be updated in the background, causing events to be emitted via websockets.

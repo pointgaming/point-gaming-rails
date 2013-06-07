@@ -1,4 +1,4 @@
-Bets
+Stream Bets
 
 When a match is created or updated, a match_hash is generated based on the some of the matches values. When placing a bet, you must provide the match_hash of the match you are betting on. This match_hash is used to prevent bets being placed after a matches details have been changed and also to void bets when a matches details have changed.
 
