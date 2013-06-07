@@ -2,7 +2,7 @@ Game Room Matches
 
 Implementation Details:
 
-A game room admin is able to create a new team match for the game room when team_betting is enabled and another team_match does not already exist.
+A game room admin is able to create a new team match for the game room if they are a leader or manager of a team, if team_betting is enabled and if another team_match does not already exist.
 
 When creating a new match, the admin must select an existing Team for both player_1 and player_2 fields. The admin must also specify a map, game, members required per team and the wager amount that each player must agree to.
 
@@ -14,7 +14,7 @@ When a match is edited by an admin, if certain fields are changed, all team memb
 
 When all team members have agreed and checked in to the match, the match should move to the 'started' state.
 
-When the match is in the 'started' state, the game room admin can no longer edit the match details. The game room admin should still be able to cancel the match. The game room admin or any member that agreed to the match should be able to finalize the match.
+When the match is in the 'started' state, the game room admin can no longer edit the match details. The game room admin should still be able to cancel the match. A winner must be reported within 24 hours. If the outcome of a match is not reported the bet will be nullified. Only team leaders or managers can finalize a match unless one of the teams did not have a leader or manager participate in the match. Then any participating team member will have the option to finalize the match.
 
 When a match is cancelled, it should move to the 'cancelled' state.
 
