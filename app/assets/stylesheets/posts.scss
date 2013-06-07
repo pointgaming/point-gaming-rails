@@ -1,4 +1,4 @@
-.post { border: 1px solid $midGrey; background: $white; @include border-radius(0);
+.post { border: 1px solid $midGrey; background: $white; @include border-radius(0); margin-bottom: 20px;
 	h1.post-title { border-bottom: 1px solid $midGrey; margin-top: 0; margin-bottom: 0; padding: 10px; padding-left: 60px; background: $lightGrey url(image_path('post-horn.png')) 10px 50% no-repeat; @include border-radius(0); font-size: 22px; line-height: 30px;
 		a {color: $secondaryColor;}
 	}
