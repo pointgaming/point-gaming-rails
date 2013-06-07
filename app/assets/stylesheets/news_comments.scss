@@ -1,0 +1,25 @@
+div.comment { @include border-radius(5px); background: #f2f2f2; border: 1px solid #e5e5e5; clear: both; margin-bottom: 15px; position: relative;
+  .user { padding: 10px; border-right: 1px solid #ccc; float: left;
+    .username {
+      font-weight: bold;
+    }
+  }
+  .contents { padding: 10px; margin: 0; float: left;
+    time {
+      color: #777;
+      font-size: .7em;
+      line-height: 18px;
+      margin-bottom: 1em;
+    }
+    .actions {
+      display: none;
+      position: absolute;
+      right: 10px;
+      bottom: 0;
+      li a {
+        display: block;
+        margin-bottom: 5px;
+      }
+    }
+  }
+}
