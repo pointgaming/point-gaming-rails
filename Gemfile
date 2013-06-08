@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.12'
+gem 'rails', '3.2.13'
 
 gem 'bartt-ssl_requirement', '~>1.4.0', :require => 'ssl_requirement'
 
