@@ -54,6 +54,7 @@ group :test, :development do
   gem 'simplecov', require: false
   gem 'database_cleaner', require: false
   gem 'capybara', require: false
+  gem 'selenium-webdriver', require: false
 end
 
 gem 'whenever', require: false

@@ -49,7 +49,9 @@ RSpec.configure do |config|
   config.mock_framework = :mocha
 
   config.include Helpers
+  config.include DateHelpers
   config.include Features::SessionHelpers, type: :feature
+  config.include Features::FormHelpers, type: :feature
 
   # Run specs in random order to surface order dependencies. If you find an
   # order dependency and want to debug it, you can fix the order by providing
@@ -66,4 +68,7 @@ RSpec.configure do |config|
   config.before(:each) do
     DatabaseCleaner.clean
   end
+
+  config.before(:each) { stub_user_sync_methods }
+  config.after(:each) { unstub_user_sync_methods }
 end

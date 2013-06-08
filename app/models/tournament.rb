@@ -42,16 +42,22 @@ class Tournament
   validates :maps, presence: true
   validates :details, presence: true
 
+  def parse_datetime(string)
+    return nil unless string.present?
+    string = ["DateTime", "Date"].include?(string.class.name) ? string : DateTime.strptime(string, '%m/%d/%Y %I:%M %p')
+    string
+  end
+
   def start_datetime=(value)
-    write_attribute(:start_datetime, Date.strptime(value, '%m/%d/%Y %I:%M %p')) if value.present?
+    write_attribute(:start_datetime, parse_datetime(value))
   end
 
   def signup_start_datetime=(value)
-    write_attribute(:signup_start_datetime, Date.strptime(value, '%m/%d/%Y %I:%M %p')) if value.present?
+    write_attribute(:signup_start_datetime, parse_datetime(value))
   end
 
   def signup_end_datetime=(value)
-    write_attribute(:signup_end_datetime, Date.strptime(value, '%m/%d/%Y %I:%M %p')) if value.present?
+    write_attribute(:signup_end_datetime, parse_datetime(value))
   end
 
   def owner

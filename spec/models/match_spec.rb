@@ -31,9 +31,6 @@ describe Match do
   end
 
   describe '.can_be_disputed_by?' do
-    before(:each) { stub_user_sync_methods }
-    after(:each) { unstub_user_sync_methods }
-
     context 'when User vs User match' do
       let(:match) { Fabricate.build(:user_vs_user_match) }
 

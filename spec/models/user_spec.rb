@@ -1,9 +1,6 @@
 require 'spec_helper'
 
 describe User do
-  before(:each) { stub_user_sync_methods }
-  after(:each) { unstub_user_sync_methods }
-
   describe "points" do
     it "defaults to 0 points" do
       User.new.points.should == 0
