@@ -7,23 +7,37 @@
 <table class="table table-bordered table-striped">
   <thead>
     <tr>
-      <th></th>
+      <th><%= model_class.human_attribute_name(:name) %></th>
       <th><%= model_class.human_attribute_name(:start_datetime) %></th>
       <th><%= model_class.human_attribute_name(:game) %></th>
       <th><%= model_class.human_attribute_name(:game_type) %></th>
       <th><%= model_class.human_attribute_name(:prize_pool) %></th>
       <th><%= model_class.human_attribute_name(:players_or_teams) %></th>
+      <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
   </thead>
   <tbody>
     <% @tournaments.each do |tournament| %>
-      <tr>
-        <td><%= link_to "View Details", edit_user_tournament_path(tournament) %></td>
+      <tr id="tournament_<%= tournament._id %>">
+        <td><%= link_to tournament.name, tournament_path(tournament.slug) %></td>
         <td><%= ldate tournament.start_datetime %></td>
         <td><%= tournament.game.name %></td>
         <td><%= tournament.game_type.name %></td>
         <td><%#= tournament.prize_pool %></td>
         <td><%= tournament.player_count %>/<%= tournament.player_limit %></td>
+        <td>
+          <% if tournament.editable_by_user?(current_user) %>
+            <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                        edit_user_tournament_path(tournament),
+                        :class => 'btn btn-mini' %>
+          <% end %>
+          <% if tournament.destroyable_by_user?(current_user) %>
+            <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                        user_tournament_path(tournament),
+                        :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                        :method => 'delete', :class => 'btn btn-mini btn-danger' %>
+          <% end %>
+        </td>
       </tr>
     <% end %>
   </tbody>

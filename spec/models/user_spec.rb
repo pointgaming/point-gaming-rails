@@ -51,7 +51,7 @@ describe User do
   end
 
   describe "reputation" do
-    describe '.update_reputation' do
+    describe '#update_reputation' do
       let(:user) { Fabricate.build(:user) }
 
       it 'calculates reputation correctly' do
@@ -63,7 +63,7 @@ describe User do
     end
   end
 
-  context '.update_match_participation_count' do
+  context '#update_match_participation_count' do
     let(:user) { Fabricate.build(:user) }
 
     context 'without any bets' do
@@ -78,7 +78,7 @@ describe User do
       let(:second_bet) { Fabricate.build(:finalized_bet, taker: user, match: match) }
 
       it "increases the match_participation_count by 1" do
-        user.stubs(:bets).returns([first_bet, second_bet])
+        user.stub(:bets).and_return([first_bet, second_bet])
         lambda { user.update_match_participation_count }.should change(user, :match_participation_count).by(1)
       end
     end
@@ -88,14 +88,14 @@ describe User do
       let(:second_bet) { Fabricate.build(:finalized_bet, taker: user) }
 
       it "increases the match_participation_count by 2" do
-        user.stubs(:bets).returns([first_bet, second_bet])
+        user.stub(:bets).and_return([first_bet, second_bet])
         lambda { user.update_match_participation_count }.should change(user, :match_participation_count).by(2)
       end
     end
 
   end
 
-  context '.team_member?' do
+  context '#team_member?' do
     let(:user) { Fabricate(:user) }
     let(:team) { Fabricate(:team) }
 

@@ -30,7 +30,7 @@ describe Match do
     end
   end
 
-  describe '.can_be_disputed_by?' do
+  describe '#can_be_disputed_by?' do
     context 'when User vs User match' do
       let(:match) { Fabricate.build(:user_vs_user_match) }
 

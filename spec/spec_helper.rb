@@ -14,10 +14,10 @@ end
 
 module Helpers
   def stub_user_sync_methods
-    Store::User.any_instance.stubs(:save).returns(true)
-    Store::User.any_instance.stubs(:find).returns(Store::User.new)
-    ForumUser.any_instance.stubs(:save).returns(true)
-    ForumUser.any_instance.stubs(:find).returns(Store::User.new)
+    Store::User.any_instance.stub(:save).and_return(true)
+    Store::User.any_instance.stub(:find).and_return(Store::User.new)
+    ForumUser.any_instance.stub(:save).and_return(true)
+    ForumUser.any_instance.stub(:find).and_return(Store::User.new)
   end
 
   def unstub_user_sync_methods
@@ -33,21 +33,17 @@ require 'fabrication'
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 ENV["RAILS_ENV"] ||= 'test'
 require File.expand_path("../../config/environment", __FILE__)
-require 'rspec/core'
-require 'rspec/expectations'
-require 'rspec/autorun'
+require 'rspec/rails'
+require 'mongoid-rspec'
 require 'capybara/rails'
 require 'capybara/rspec'
-require 'mocha/api'
-require 'shoulda'
+require 'rspec/autorun'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 
 RSpec.configure do |config|
-  config.mock_framework = :mocha
-
   config.include Helpers
   config.include DateHelpers
   config.include Features::SessionHelpers, type: :feature

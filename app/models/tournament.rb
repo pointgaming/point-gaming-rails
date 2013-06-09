@@ -42,6 +42,18 @@ class Tournament
   validates :maps, presence: true
   validates :details, presence: true
 
+  def owner
+    collaborators.ownership.first.try(:user)
+  end
+
+  def destroyable_by_user?(user)
+    collaborators.ownership.for_user(user).exists?
+  end
+
+  def editable_by_user?(user)
+    collaborators.for_user(user).exists?
+  end
+
   def parse_datetime(string)
     return nil unless string.present?
     string = ["DateTime", "Date"].include?(string.class.name) ? string : DateTime.strptime(string, '%m/%d/%Y %I:%M %p')
@@ -58,10 +70,6 @@ class Tournament
 
   def signup_end_datetime=(value)
     write_attribute(:signup_end_datetime, parse_datetime(value))
-  end
-
-  def owner
-    collaborators.where(owner: true).first
   end
 
   def formats

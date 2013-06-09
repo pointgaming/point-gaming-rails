@@ -13,4 +13,7 @@ Fabricator(:tournament) do
   type 'open'
   maps 'Shattered Temple'
   details 'No cheating!'
+  after_build do |tournament|
+    Fabricate(:tournament_collaborator, tournament: tournament, owner: true, user: Fabricate(:user))
+  end
 end
