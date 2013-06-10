@@ -1,9 +1,9 @@
-<table class="table table-bordered table-striped">
+<table class="subscriptions-table table table-bordered table-striped">
   <thead>
     <tr>
       <th></th>
       <% @subscription_types.each do |sub_type| %>
-        <th><%= sub_type.name %></th>
+        <th class="subscription-type"><h3><%= sub_type.name %></h3></th>
       <% end %>
     </tr>
   </thead>
@@ -15,10 +15,11 @@
           <td><%= sub_type.value_for_feature(sub_feature) %></td>
         <% end %>
       </tr>
-    <% end %>
+      <% end %>
+      <tr class="buy-options">
+        <td></td>
+        <td><h3><i>Free</i></h3></td>
+        <td><%= link_to t('.buy'), new_subscription_path, :class => 'btn span12' %></td>
+      </tr>
   </tbody>
 </table>
-
-<div class="pull-right">
-  <%= link_to t('.buy'), new_subscription_path, :class => 'btn' %>
-</div>
