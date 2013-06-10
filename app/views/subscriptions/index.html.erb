@@ -19,7 +19,7 @@
       <tr class="price-point">
         <td></td>
         <% @subscription_types.each do |sub_type| %>
-        <td><h3>$<%= sub_type.price %></h3></td>
+        <td><h3><%= number_to_currency sub_type.price %></h3></td>
         <% end %>
       </tr>
       <tr class="points">
