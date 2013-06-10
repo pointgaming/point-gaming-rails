@@ -1,0 +1,20 @@
+table.subscriptions-table { border: 0;
+	th {width: 250px;
+		&:first-child {border-left: 0;}
+	}
+	th.subscription-type { background: $secondaryColor; color: $white; padding: 20px; font-size: 18px; font-weight: normal;
+		h3 {text-align: center; color: $white; font-weight: normal; padding: 0; margin: 0;}
+	}
+	tr {
+		td {text-align: center; padding: 20px;
+			&:first-child {text-align: left; background: $midGrey; font-weight: bold;}
+			&:last-child {border-right: 1px solid #ddd;}
+		}
+	}
+	tr.buy-options {
+		td {padding: 20px; border-bottom: 1px solid #ddd;
+			&:first-child {border-left: 0; border-bottom: 0; background: none;}
+			h3 {margin: 0; font-weight: normal;}
+		}
+	}
+}
