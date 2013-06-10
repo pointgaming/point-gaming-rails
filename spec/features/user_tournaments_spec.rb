@@ -1,6 +1,5 @@
 require 'spec_helper'
 
-
 feature 'User views user_tournaments#index' do
   let(:tournament) { Fabricate(:tournament) }
 

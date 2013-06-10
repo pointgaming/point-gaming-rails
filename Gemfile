@@ -54,8 +54,6 @@ group :test, :development do
   gem 'capybara', require: false
   gem 'selenium-webdriver', require: false
   gem 'spring', require: false
-  gem 'guard-spring', require: false
-  gem 'listen', require: false
 end
 
 gem 'whenever', require: false
