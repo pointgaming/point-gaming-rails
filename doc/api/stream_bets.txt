@@ -58,7 +58,7 @@ The following data will be emitted via socket.io as event "Bet.Taker.new" to the
 
 
 Delete Bet:
-https://dev.pointgaming.com/matches/:match_id/bets/:bet_id.json?auth_token=AUTH_TOKEN_ID
+http://dev.pointgaming.com/matches/:match_id/bets/:bet_id.json?auth_token=AUTH_TOKEN_ID
 
 If the bet has not yet been taken/accepted by a user, the creator of a bet should be able to delete/cancel the bet.
 
