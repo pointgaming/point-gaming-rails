@@ -16,10 +16,23 @@
         <% end %>
       </tr>
       <% end %>
+      <tr class="price-point">
+        <td></td>
+        <% @subscription_types.each do |sub_type| %>
+        <td><h3><%= number_to_currency sub_type.price %></h3></td>
+        <% end %>
+      </tr>
+      <tr class="points">
+        <td></td>
+        <% @subscription_types.each do |sub_type| %>
+        <td><h3><%= sub_type.points_per_month %> points</h3></td>
+        <% end %>
+      </tr>
       <tr class="buy-options">
         <td></td>
         <td><h3><i>Free</i></h3></td>
         <td><%= link_to t('.buy'), new_subscription_path, :class => 'btn span12' %></td>
       </tr>
+
   </tbody>
 </table>

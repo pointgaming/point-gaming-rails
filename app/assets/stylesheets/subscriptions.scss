@@ -13,8 +13,18 @@ table.subscriptions-table { border: 0;
 	}
 	tr.buy-options {
 		td {padding: 20px; border-bottom: 1px solid #ddd;
-			&:first-child {border-left: 0; border-bottom: 0; background: none;}
+			&:first-child {border-left: 0; border-bottom: 0; background: none; border-top: 0;}
 			h3 {margin: 0; font-weight: normal;}
+		}
+	}
+	tr.price-point {
+		td { 
+			&:first-child {background: none; border-bottom: 0; border-left: 0; border-top: 0;}
+		}
+	}
+	tr.points {
+		td {
+			&:first-child {background: none; border-bottom: 0; border-left: 0; border-top: 0;}
 		}
 	}
 }
