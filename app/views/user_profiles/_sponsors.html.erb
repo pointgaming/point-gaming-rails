@@ -1,7 +1,7 @@
 <%- edit ||= false %>
 <h4>Sponsors</h4>
 <% @user.sponsors.order_by(sort_order: :asc).each do |sponsor| %>
-  <div data-hook="sponsor" class="sponsor">
+  <div id="sponsor_<%= sponsor._id %>" data-hook="sponsor" class="sponsor">
     <%= link_to image_tag(sponsor.image.url(:medium), alt: sponsor.name, :class => 'thumbnail'),
                 sponsor.url %>
     <%- if edit %>
@@ -24,7 +24,7 @@
   </div>
 <% end %>
 <% if edit %>
-  <div data-hook="sponsor" class="sponsor">
+  <div id="new_sponsor" data-hook="sponsor" class="sponsor">
     <%= image_tag UserSponsor.new.image.url(:medium), :class => 'thumbnail' %>
     <ul class="actions" style="display: none;">
       <li>

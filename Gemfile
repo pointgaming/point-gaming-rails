@@ -54,6 +54,7 @@ group :test, :development do
   gem 'capybara', require: false
   gem 'selenium-webdriver', require: false
   gem 'spring', require: false
+  gem 'launchy', require: false
 end
 
 gem 'whenever', require: false

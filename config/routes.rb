@@ -141,7 +141,7 @@ Pointgaming::Application.routes.draw do
   resources :users, path: "/u", only: [] do
     resources :demos, only: [:new, :create, :destroy]
     resources :configs, only: [:new, :create, :destroy]
-    resources :sponsors, except: [:index, :show]
+    resources :sponsors, controller: 'user_sponsors', except: [:index, :show]
     resources :friends, controller: 'user_friends', only: [:index]
   end
 

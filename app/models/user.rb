@@ -70,7 +70,7 @@ class User
   field :time_zone, default: Rails.application.config.time_zone
   field :birth_date, type: Date
   field :phone
-  field :country
+  field :country, default: ''
   field :state
   field :points, type: Integer, default: 0
   field :friend_count, :type => Integer, :default => 0
