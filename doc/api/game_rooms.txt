@@ -24,9 +24,10 @@ game_rooms: A collection of game_room objects
 
 Example JSON Response:
 {"game_rooms":[
-{"_id":"5147baed4e6d46cf4f00000a","position":7,"is_advertising":true,"is_locked":true,"member_count":0,"max_member_count":123,"description":"another room","game_id":"510090394e6d46607f000001","owner":{"_id":"0df30f7b-4043-462f-aad2-cf5c8b9878ef","username":"cbankston"}},
-{"_id":"5148b95c4e6d465579000001","position":8,"is_advertising":true,"is_locked":true,"member_count":0,"max_member_count":123,"description":"another room","game_id":"510090394e6d46607f000001","owner":{"_id":"0df30f7b-4043-462f-aad2-cf5c8b9878ef","username":"cbankston"}},
-{"_id":"5148cfeb4e6d466f66000001","position":22,"is_advertising":false,"is_locked":false,"member_count":0,"max_member_count":25,"description":"updated again","game_id":"510090394e6d46607f000001","owner":{"_id":"0af783ba-199b-4aae-a50c-e3ca9109098c","username":"rawr23"}}]}
+{"_id":"518af6b84e6d4644e0000001","position":11,"is_advertising":false,"is_locked":false,"member_count":0,"max_member_count":99,"description":"test game room 3","game_id":"510090394e6d46607f0001fa","owner":{"_id":"dd470b86-dc53-48b0-982e-867b201dd6d7","username":"testU","points":61,"teams":[{"_id":"51a2dfd74e6d46c30b00000f","name":"test","slug":"test","points":60}]},"members":[]},
+{"_id":"518347c44e6d46c840000010","position":13,"is_advertising":false,"is_locked":false,"member_count":1,"max_member_count":15,"description":"test after coachella","game_id":"510090394e6d46607f0001fa","owner":{"_id":"0df30f7b-4043-462f-aad2-cf5c8b9878ef","username":"cbankston","points":1184,"teams":[{"_id":"512bf1354e6d46af1900000f","name":"Azure Twilight","slug":"azure_twilight","points":1561},{"_id":"5153974c4e6d460441000016","name":"rastet","slug":"rastet","points":0},{"_id":"51a2be954e6d46166b00000c","name":"test 2","slug":"test_2","points":0}]},"members":[{"_id":"d391e0af-ee5f-4f5f-a95f-0ed5b55779a7","username":"reddit","points":0,"teams":[{"_id":"512bf1354e6d46af1900000f","name":"Azure Twilight","slug":"azure_twilight","points":1561}]}]},
+{"_id":"518af1dd4e6d46794f000001","position":14,"is_advertising":false,"is_locked":false,"member_count":0,"max_member_count":99,"description":"test game room","game_id":"510090394e6d46607f0001fa","owner":{"_id":"f31194ac-9c6d-43fd-b9ff-e61491f67a5f","username":"test99","points":0,"teams":[{"_id":"512bf1354e6d46af1900000f","name":"Azure Twilight","slug":"azure_twilight","points":1561}]},"members":[]}
+]}
 
 Socket.io events:
 No events are emitted.
