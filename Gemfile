@@ -13,6 +13,7 @@ gem 'mail'
 
 gem 'stripe'
 gem 'resque'
+gem "resque-scheduler", require: "resque_scheduler"
 gem 'resque-loner'
 gem 'devise'
 gem 'cancan'
@@ -55,6 +56,7 @@ group :test, :development do
   gem 'selenium-webdriver', require: false
   gem 'spring', require: false
   gem 'launchy', require: false
+  gem 'resque_spec', require: false
 end
 
 gem 'whenever', require: false

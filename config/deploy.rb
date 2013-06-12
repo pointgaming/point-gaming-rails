@@ -29,7 +29,7 @@ namespace :deploy do
 
   desc "Restart God gracefully"
   task "restart_god", :roles => :app do
-    god_config_path = File.join(release_path, 'config', 'resque.god')
+    god_config_path = File.join(release_path, 'config', 'app.god')
     begin
       # Throws an exception if god is not running.
       run "cd #{release_path}; bundle exec god status && RAILS_ENV=#{rails_env} RAILS_ROOT=#{release_path} bundle exec god load #{god_config_path} && bundle exec god start resque"

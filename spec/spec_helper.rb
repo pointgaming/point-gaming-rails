@@ -37,6 +37,8 @@ require 'rspec/rails'
 require 'mongoid-rspec'
 require 'capybara/rails'
 require 'capybara/rspec'
+require 'resque_spec'
+require 'resque_spec/scheduler'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.

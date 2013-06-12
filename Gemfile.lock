@@ -241,6 +241,13 @@ GEM
       vegas (~> 0.1.2)
     resque-loner (1.2.1)
       resque (~> 1.0)
+    resque-scheduler (2.0.1)
+      redis (>= 2.0.1)
+      resque (>= 1.20.0)
+      rufus-scheduler
+    resque_spec (0.13.0)
+      resque (>= 1.19.0)
+      rspec (>= 2.5.0)
     rest-client (1.6.7)
       mime-types (>= 1.16)
     rspec (2.13.0)
@@ -259,6 +266,8 @@ GEM
       rspec-expectations (~> 2.13.0)
       rspec-mocks (~> 2.13.0)
     rubyzip (0.9.9)
+    rufus-scheduler (2.0.19)
+      tzinfo (>= 0.3.23)
     sanitize (2.0.3)
       nokogiri (>= 1.4.4, < 1.6)
     sass (3.2.9)
@@ -372,6 +381,8 @@ DEPENDENCIES
   remotipart (~> 1.0)
   resque
   resque-loner
+  resque-scheduler
+  resque_spec
   rspec-rails
   sanitize
   sass-rails (~> 3.2.3)

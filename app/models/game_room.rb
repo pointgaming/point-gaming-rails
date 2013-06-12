@@ -7,6 +7,8 @@ class GameRoom
   scope :for, lambda {|game| where(game_id: game._id) }
 
   after_create :publish_created
+  after_create :ensure_game_room_has_members
+  after_update :destroy_if_no_members
   after_update :publish_updated
   after_destroy :publish_destroyed
   after_destroy :cancel_match
@@ -32,6 +34,7 @@ class GameRoom
 
   validates :position, presence: true, numericality: {only_integer: true, greater_than: 0, less_than: 1000}
   validates :max_member_count, :presence=>true
+  validates :game, presence: true
 
   validate :check_position_uniqueness
   validate :check_game_room_owner_count
@@ -124,6 +127,16 @@ private
 
   def publish_destroyed()
     BunnyClient.instance.publish_fanout("c.#{self.game.mq_exchange}", ::RablRails.render(self, 'api/v1/game_rooms/socket_destroy'))
+  end
+
+  def ensure_game_room_has_members
+    Resque.enqueue_in(1.minute, DestroyGameRoomIfNoMembers, _id)
+  end
+
+  def destroy_if_no_members
+    if member_count_changed? && member_count === 0 && member_count_was > 0
+      destroy
+    end
   end
 
   def cancel_match

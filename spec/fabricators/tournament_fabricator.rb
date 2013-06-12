@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 Fabricator(:tournament) do
   game
   game_type

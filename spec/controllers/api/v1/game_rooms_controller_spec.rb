@@ -126,7 +126,8 @@ describe Api::V1::GameRoomsController do
 
       context 'as a member of the game room' do
         before(:each) do
-          put :join, request_params
+          game_room.add_user_to_members!(user)
+          game_room.add_user_to_members!(Fabricate(:user))
           game_room.reload
         end
         let!(:initial_member_count) { game_room.member_count }
