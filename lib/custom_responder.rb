@@ -1,6 +1,6 @@
 class CustomResponder < ActionController::Responder
   def json_resource_errors
-    {:errors => resource.errors.full_messages}
+    {:errors => resource.errors.try(:full_messages) || resource.errors}
   end
 
   def api_behavior(error)

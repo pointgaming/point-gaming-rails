@@ -116,7 +116,12 @@ Pointgaming::Application.routes.draw do
         end
         resources :matches, only: [:index, :new, :show, :create, :destroy]
       end
-      resources :game_rooms, only: [:show, :destroy]
+      resources :game_rooms, only: [:show, :destroy] do
+        member do
+          put 'join'
+          put 'leave'
+        end
+      end
     end
   end
 

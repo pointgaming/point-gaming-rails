@@ -26,6 +26,7 @@ class GameRoom
   belongs_to :match
 
   has_many :matches, as: :room
+  has_and_belongs_to_many :members, class_name: 'User'
 
   # has_and_belongs_to_many :team_bots
 
@@ -58,6 +59,23 @@ class GameRoom
       self.position = GameRoom.next_available_position(game)
       save
     end
+  end
+
+  def add_user_to_members!(user)
+    if _id != user._id && !members.include?(user)
+      self.members << user
+      update_member_count!
+    end
+  end
+
+  def remove_user_from_members!(user)
+    self.members.delete(user)
+    update_member_count!
+  end
+
+  def update_member_count!
+    self.member_count = members.length
+    save
   end
 
 private

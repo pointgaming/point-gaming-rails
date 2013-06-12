@@ -131,6 +131,10 @@ class User
     Bet.for_user(self).all
   end
 
+  def teams
+    team_members.map(&:team)
+  end
+
   def increment_points!(amount)
     raise TypeError, "Amount must be a Fixnum." unless amount.class.name === 'Fixnum'
 
