@@ -118,15 +118,15 @@ private
   end
 
   def publish_created
-    BunnyClient.instance.publish_fanout("c.#{self.game.mq_exchange}", ::RablRails.render(self, 'api/v1/game_rooms/socket_new'))
+    BunnyClient.instance.publish_fanout("c.#{self.game.mq_exchange}", ::RablRails.render(self, 'game_rooms/socket_new'))
   end
 
   def publish_updated
-    BunnyClient.instance.publish_fanout("c.#{self.game.mq_exchange}", ::RablRails.render(self, 'api/v1/game_rooms/socket_update'))
+    BunnyClient.instance.publish_fanout("c.#{self.game.mq_exchange}", ::RablRails.render(self, 'game_rooms/socket_update'))
   end
 
   def publish_destroyed()
-    BunnyClient.instance.publish_fanout("c.#{self.game.mq_exchange}", ::RablRails.render(self, 'api/v1/game_rooms/socket_destroy'))
+    BunnyClient.instance.publish_fanout("c.#{self.game.mq_exchange}", ::RablRails.render(self, 'game_rooms/socket_destroy'))
   end
 
   def ensure_game_room_has_members
