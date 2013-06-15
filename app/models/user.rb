@@ -211,8 +211,14 @@ class User
   end
 
   def update_reputation
-    self.reputation = BigDecimal.new("100") - (BigDecimal.new("100") * 
-                      (BigDecimal.new(dispute_lost_count) / BigDecimal.new(match_participation_count)) )
+    self.reputation = if dispute_lost_count === 0
+      BigDecimal.new("100")
+    elsif match_participation_count === 0
+      BigDecimal.new("0")
+    else
+      BigDecimal.new("100") - (BigDecimal.new("100") * 
+        (BigDecimal.new(dispute_lost_count) / BigDecimal.new(match_participation_count)) )
+    end
   end
 
   def update_match_participation_count

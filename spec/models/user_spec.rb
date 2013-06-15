@@ -1,9 +1,11 @@
 require 'spec_helper'
 
 describe User do
+  let(:user) { Fabricate(:user) }
+
   describe "points" do
     it "defaults to 0 points" do
-      User.new.points.should == 0
+      expect(user.points).to eq(0)
     end
 
     describe 'increment_points!' do
@@ -51,14 +53,57 @@ describe User do
   end
 
   describe "reputation" do
-    describe '#update_reputation' do
-      let(:user) { Fabricate.build(:user) }
+    it "defaults to 100 reputation" do
+      expect(user.reputation).to eq(BigDecimal.new("100"))
+    end
 
-      it 'calculates reputation correctly' do
-        user.match_participation_count = 100
-        user.dispute_lost_count = 10
-        user.update_reputation
-        user.reputation.should === BigDecimal.new("90")
+    describe '#update_reputation' do
+      context 'when operands are 0' do
+        before(:each) do
+          user.match_participation_count = 0
+          user.dispute_lost_count = 0
+        end
+
+        it 'calculated to 100' do
+          user.update_reputation
+          expect(user.reputation).to eq(BigDecimal.new("100"))
+        end
+      end
+
+      context 'when match_participation_count is 0 and dispute_lost_count > 0' do
+        before(:each) do
+          user.match_participation_count = 0
+          user.dispute_lost_count = 1
+        end
+
+        it 'calculated to 0' do
+          user.update_reputation
+          expect(user.reputation).to eq(BigDecimal.new("0"))
+        end
+      end
+
+      context 'when dispute_lost_count is 0 and match_participation_count > 0' do
+        before(:each) do
+          user.match_participation_count = 1
+          user.dispute_lost_count = 0
+        end
+
+        it 'calculated to 100' do
+          user.update_reputation
+          expect(user.reputation).to eq(BigDecimal.new("100"))
+        end
+      end
+
+      context 'with ordinary operands' do
+        before(:each) do
+          user.match_participation_count = 100
+          user.dispute_lost_count = 10
+        end
+
+        it 'calculates correctly' do
+          user.update_reputation
+          user.reputation.should === BigDecimal.new("90")
+        end
       end
     end
   end
