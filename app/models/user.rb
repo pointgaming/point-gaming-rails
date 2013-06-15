@@ -79,7 +79,6 @@ class User
   field :match_participation_count, type: Integer, default: 0
   field :dispute_won_count, :type => Integer, :default => 0
   field :dispute_lost_count, :type => Integer, :default => 0
-  field :admin, :type => Boolean, :default => 0
   field :stripe_customer_token
 
   # online/offline chat status
@@ -122,6 +121,11 @@ class User
   has_many :team_members
 
   accepts_nested_attributes_for :profile
+
+  def admin?
+    group.present?
+  end
+  alias_method :admin, :admin?
 
   def birth_date=(value)
     write_attribute(:birth_date, Date.strptime(value, '%m/%d/%Y')) if value.present?
@@ -288,7 +292,7 @@ protected
   end
 
   def create_forum_user
-    forum_user = ForumUser.new :email => self.email, :username => self.username, :admin => self.admin, avatar_thumb_url: self.avatar.url(:thumb)
+    forum_user = ForumUser.new :email => self.email, :username => self.username, avatar_thumb_url: self.avatar.url(:thumb)
     if forum_user.save
       true
     else
@@ -298,11 +302,10 @@ protected
   end
 
   def update_forum_user
-    if self.email_changed? || self.username_changed? || self.admin_changed? || self.avatar_updated_at_changed?
+    if self.email_changed? || self.username_changed? || self.avatar_updated_at_changed?
       forum_user = ForumUser.find self.email_was
       forum_user.email = self.email
       forum_user.username = self.username
-      forum_user.admin = self.admin
       forum_user.avatar_thumb_url = self.avatar.url(:thumb)
       if forum_user.save
         true
@@ -323,7 +326,7 @@ protected
   end
 
   def create_store_user
-    store_user = Store::User.new :email => self.email, :username => self.username, :admin => self.admin
+    store_user = Store::User.new :email => self.email, :username => self.username
     if store_user.save
       true
     else
@@ -333,11 +336,10 @@ protected
   end
 
   def update_store_user
-    if self.email_changed? || self.username_changed? || self.admin_changed?
+    if self.email_changed? || self.username_changed?
       store_user = Store::User.find self.email_was
       store_user.email = self.email
       store_user.username = self.username
-      store_user.admin = self.admin
       if store_user.save
         true
       else
