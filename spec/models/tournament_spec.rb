@@ -1,13 +1,14 @@
 require 'spec_helper'
 
 describe Tournament do
-  let(:tournament) { Fabricate(:tournament) }
+  let(:tournament) { Fabricate.build(:tournament) }
 
   it 'is valid with valid attributes' do
     expect(tournament).to be_valid
   end
 
   describe "permission checks" do
+    let(:tournament) { Fabricate(:tournament) }
     let(:random_user) { Fabricate(:user) }
     let(:owner) { tournament.owner }
     let(:collaborator) do

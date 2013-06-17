@@ -1,6 +1,6 @@
 class UserTournamentsController < ApplicationController
   before_filter :authenticate_user!
-  before_filter :ensure_tournament, only: [:show, :edit, :update, :destroy]
+  before_filter :ensure_tournament, except: [:index, :new, :create]
   before_filter :ensure_tournament_editable, only: [:edit, :update]
   before_filter :ensure_tournament_destroyable, only: [:destroy]
 
@@ -28,8 +28,11 @@ class UserTournamentsController < ApplicationController
   end
 
   def update
-    @tournament.update_attributes(update_params)
-    respond_with(@tournament, location: tournament_path(@tournament.slug))
+    action = default_update_action
+    if @tournament.update_attributes(update_params)
+      @tournament.move_to_next_state! if [:prize_pool].include?(action)
+    end
+    respond_with(@tournament, action: action, location: next_user_tournament_path(@tournament))
   end
 
   def destroy
@@ -37,7 +40,36 @@ class UserTournamentsController < ApplicationController
     respond_with(@tournament, location: user_tournaments_path)
   end
 
+  def prize_pool
+
+  end
+
+  def pay
+
+  end
+
 private
+
+  def default_update_action
+    if params[:tournament][:prizepool].present?
+      :prize_pool
+    else
+      :edit
+    end
+  end
+
+  def next_user_tournament_path(tournament)
+    case true
+    when @tournament.prizepool_required?
+      prize_pool_user_tournament_path(@tournament)
+    when @tournament.payment_required?
+      pay_user_tournament_path(@tournament)
+    when @tournament.payment_pending?
+      users_user_tournament_path(@tournament)
+    when @tournament.activated?
+      tournament_path(@tournament.slug)
+    end
+  end
 
   def create_params
     params[:tournament]

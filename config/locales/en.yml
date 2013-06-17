@@ -13,7 +13,8 @@ en:
     models:
       team_member: 'Member'
       user_sponsor: 'Sponsor'
-      team_sponsor: 'Team'
+      team_sponsor: 'Sponsor'
+      tournament_sponsor: 'Sponsor'
     attributes:
       bet:
         offerer_choice_name: 'Winner'

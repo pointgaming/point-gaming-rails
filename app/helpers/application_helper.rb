@@ -1,12 +1,13 @@
 module ApplicationHelper
     def navItem(link_text, link_path, options = {})
-      is_current_page = if options.present? && options[:exact] === true
+      is_current_page = if options[:exact] === true
         current_page_exact?(link_path)
       else
         current_page?(link_path)
       end
 
-      class_name = is_current_page ? 'active' : ''
+      class_name = options[:class].present? ? options[:class] : ""
+      class_name = "#{class_name} #{is_current_page ? 'active' : ''}"
 
       content_tag(:li, :class => class_name) do
         link_to link_text, link_path

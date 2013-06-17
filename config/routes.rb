@@ -22,8 +22,17 @@ Pointgaming::Application.routes.draw do
     end
   end
   resources :leagues
-  resources :tournaments, only: [:index, :show]
-  resources :user_tournaments
+  resources :tournaments, only: [:index, :show] do
+    resources :sponsors, controller: 'tournament_sponsors', except: [:index, :show]
+  end
+  resources :user_tournaments do
+    member do
+      get 'prize_pool'
+      get 'pay'
+      get 'status'
+      get 'users'
+    end
+  end
   resources :streams, controller: 'streams', as: 'streams', only: [:index, :create]
   resources :s, controller: 'streams', as: 'streams', except: [:index, :create, :edit, :update] do
     resources :matches, only: [:index, :new, :show, :create, :destroy]

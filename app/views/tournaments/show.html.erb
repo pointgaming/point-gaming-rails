@@ -26,12 +26,12 @@
   <dd><%= @tournament.details %></dd>
   <dt><strong><%= model_class.human_attribute_name(:prizepool) %>:</strong></dt>
   <dd><%= @tournament.prizepool %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:prizepool_status) %>:</strong></dt>
-  <dd><%=t @tournament.prizepool_status %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:state) %>:</strong></dt>
+  <dd><%=t @tournament.state %></dd>
   <dt><strong><%= model_class.human_attribute_name(:prizepool_total) %>:</strong></dt>
   <dd><%= @tournament.prizepool_total %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:sponsor_request_status) %>:</strong></dt>
-  <dd><%=t @tournament.sponsor_request_status %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:sponsor_request) %>:</strong></dt>
+  <dd><%=t @tournament.sponsor_request.try(:state) %></dd>
   <dt><strong><%= model_class.human_attribute_name(:game_id) %>:</strong></dt>
   <dd><%= @tournament.game.try(:display_name) %></dd>
   <dt><strong><%= model_class.human_attribute_name(:game_type_id) %>:</strong></dt>

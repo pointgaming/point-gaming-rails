@@ -1,8 +1,9 @@
 class Tournament
   include Mongoid::Document
+  include Workflow
 
-  SPONSOR_REQUEST_STATUSES = [:new, :requested, :declined, :accepted]
-  PRIZEPOOL_STATUSES = [:deposit_required, :deposit_pending, :configure_prizepool, :prizepool_finalized]
+  after_create :trigger_created
+
   FORMATS = [:single_elimination, :double_elimination, :round_robin]
   TYPES = [:open, :invite, :mixed]
 
@@ -16,14 +17,33 @@ class Tournament
   field :type
   field :maps
   field :details
+  field :state, default: 'new'
   field :prizepool, type: Hash, default: {}
-  field :prizepool_status, default: 'deposit_required'
   field :prizepool_total, type: BigDecimal, default: BigDecimal.new("0")
   field :player_count, type: Integer, default: 0
-  field :sponsor_request_status, default: 'new'
+  field :sponsor_request_state, default: 'not_requested'
+
+  workflow_column :state
+  workflow do
+    state :new do
+      event :created, transitions_to: :prizepool_required
+    end 
+    state :prizepool_required do
+      event :prizepool_submitted, transitions_to: :payment_required
+    end 
+    state :payment_required do
+      event :payment_submitted, transitions_to: :payment_pending
+    end
+    state :payment_pending do
+      event :payment_approved, transitions_to: :activated
+      event :payment_denied, transitions_to: :payment_required
+    end
+    state :activated
+  end
 
   belongs_to :game
   belongs_to :game_type
+  belongs_to :sponsor_request
 
   has_many :deposits, class_name: 'TournamentDeposit'
   has_many :collaborators, dependent: :destroy, class_name: 'TournamentCollaborator'
@@ -41,6 +61,16 @@ class Tournament
   validates :game_type, presence: true
   validates :maps, presence: true
   validates :details, presence: true
+  validate :validate_prizepool_fields
+
+  def validate_prizepool_fields
+    return unless prizepool.present?
+    prizepool.each do |placement, prize|
+      if prize.present? && !(prize =~ /^\d+(\.\d{1,2})?$/)
+        self.errors[:base] << "#{ActiveSupport::Inflector.ordinalize(placement)} must be numeric"
+      end
+    end
+  end
 
   def owner
     collaborators.ownership.first.try(:user)
@@ -52,6 +82,22 @@ class Tournament
 
   def editable_by_user?(user)
     collaborators.for_user(user).exists?
+  end
+
+  def move_to_next_state!
+    case true
+    when prizepool_required?
+      prizepool_submitted!
+    when payment_required?
+      payment_submitted!
+    end
+  end
+
+  def prizepool_submitted
+    if !prizepool.present? || prizepool.values.all? {|item| !item.present?}
+      self.errors[:prizepool] << "is required"
+      halt 'Prizepool is required'
+    end
   end
 
   def parse_datetime(string)
@@ -78,6 +124,14 @@ class Tournament
 
   def types
     TYPES
+  end
+
+  def prize_pool_size
+    player_limit / 2
+  end
+
+  def trigger_created
+    created!
   end
 
 end
