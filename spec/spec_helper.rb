@@ -47,6 +47,7 @@ Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 RSpec.configure do |config|
   config.include Helpers
   config.include DateHelpers
+  config.include ApiTokenHelpers
   config.include Features::SessionHelpers, type: :feature
   config.include Features::FormHelpers, type: :feature
   config.include Rails.application.routes.url_helpers, type: :feature
