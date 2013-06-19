@@ -3,6 +3,7 @@ class Tournament
   include Workflow
 
   after_create :trigger_created
+  after_save :move_to_next_state!
 
   FORMATS = [:single_elimination, :double_elimination, :round_robin]
   TYPES = [:open, :invite, :mixed]
@@ -61,7 +62,14 @@ class Tournament
   validates :game_type, presence: true
   validates :maps, presence: true
   validates :details, presence: true
+  validate :validate_prizepool
   validate :validate_prizepool_fields
+
+  def validate_prizepool
+    if prizepool_was.present? && prizepool_changed? && prizepool_required? === false
+      self.errors[:prizepool] << "can no longer be changed"
+    end
+  end
 
   def validate_prizepool_fields
     return unless prizepool.present?
@@ -85,12 +93,7 @@ class Tournament
   end
 
   def move_to_next_state!
-    case true
-    when prizepool_required?
-      prizepool_submitted!
-    when payment_required?
-      payment_submitted!
-    end
+    prizepool_submitted! if prizepool.present? && prizepool_required?
   end
 
   def prizepool_submitted
@@ -132,6 +135,11 @@ class Tournament
 
   def trigger_created
     created!
+  end
+
+  def update_prizepool_total
+    self.prizepool_total = prizepool.values.select { |val| val.numeric? }
+      .map{ |val| BigDecimal.new(val) }.reduce(:+) || BigDecimal.new("0")
   end
 
 end

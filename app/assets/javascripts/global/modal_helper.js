@@ -8,7 +8,7 @@ PointGaming.ModalHelper = {
 
       e.preventDefault();
 
-      $('body').modalmanager('loading');
+      PointGaming.ModalHelper.toggleLoading();
 
       options.width = elem.data('width') || 'auto';
       options.height = elem.data('height') || 'auto';
@@ -47,7 +47,7 @@ PointGaming.ModalHelper = {
       }
 
       // show the spinner
-      $('body').modalmanager('loading');
+      PointGaming.ModalHelper.toggleLoading();
 
       // send the ajax call
       $.ajax({
@@ -57,14 +57,14 @@ PointGaming.ModalHelper = {
         dataType: 'html',
         success: function(data) {
           // hide the spinner
-          $('body').modalmanager('loading');
+          PointGaming.ModalHelper.toggleLoading();
 
           // close the dialog
           modal.modal('hide');
         },
         error: function(data) {
           // hide the spinner
-          $('body').modalmanager('loading');
+          PointGaming.ModalHelper.toggleLoading();
 
           // remove the older error message
           current_form.find(".error").remove()
@@ -80,6 +80,10 @@ PointGaming.ModalHelper = {
 
       return false;
     };
+  },
+
+  toggleLoading: function() {
+    $('body').modalmanager('loading');
   }
 
 };

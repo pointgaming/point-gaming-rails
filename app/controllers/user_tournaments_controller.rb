@@ -28,11 +28,10 @@ class UserTournamentsController < ApplicationController
   end
 
   def update
-    action = default_update_action
-    if @tournament.update_attributes(update_params)
-      @tournament.move_to_next_state! if [:prize_pool].include?(action)
-    end
-    respond_with(@tournament, action: action, location: next_user_tournament_path(@tournament))
+    tournament_updater = TournamentUpdater.new(@tournament, update_params)
+    tournament_updater.save
+    respond_with(@tournament, { action: tournament_updater.update_action, 
+                                location: next_user_tournament_path(@tournament) })
   end
 
   def destroy
@@ -48,15 +47,11 @@ class UserTournamentsController < ApplicationController
 
   end
 
-private
+  def status
 
-  def default_update_action
-    if params[:tournament][:prizepool].present?
-      :prize_pool
-    else
-      :edit
-    end
   end
+
+private
 
   def next_user_tournament_path(tournament)
     case true
