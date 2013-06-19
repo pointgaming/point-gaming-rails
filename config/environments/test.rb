@@ -1,4 +1,4 @@
-Pointgaming::Application.configure do
+PointGamingRails::Application.configure do
   # session store
   config.session_store :redis_store, :key => '_pg_session'
 

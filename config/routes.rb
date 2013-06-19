@@ -2,7 +2,7 @@ require 'resque/server'
 require 'resque_scheduler'
 require 'resque_scheduler/server'
 
-Pointgaming::Application.routes.draw do
+PointGamingRails::Application.routes.draw do
   resources :matches, only: [:show, :edit, :update] do
     member do
       put 'start'

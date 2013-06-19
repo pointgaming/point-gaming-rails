@@ -11,7 +11,7 @@ set :bundle_without, [:development, :test]
 set :stages, ["production"]
 set :default_stage, "production"
 
-set :application, "Pointgaming"
+set :application, "PointGamingRails"
 set :repository,  "git@github.com:pointgaming/point-gaming-rails.git"
 
 set :scm, :git
