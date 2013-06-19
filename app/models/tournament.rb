@@ -46,7 +46,6 @@ class Tournament
   belongs_to :game_type
   belongs_to :sponsor_request
 
-  has_many :deposits, class_name: 'TournamentDeposit'
   has_many :collaborators, dependent: :destroy, class_name: 'TournamentCollaborator'
   has_many :sponsors, dependent: :destroy, class_name: 'TournamentSponsor'
 
