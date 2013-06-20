@@ -1,3 +1,11 @@
+GIT
+  remote: git@github.com:pointgaming/point-gaming-core.git
+  revision: 4731c9f6db41ead6348cd83b34baab869273b7f5
+  specs:
+    point_gaming (0.0.5)
+      mongoid (~> 3.0.0)
+      rails (~> 3.2.13)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -373,6 +381,7 @@ DEPENDENCIES
   mongoid-rspec
   obscenity
   oj
+  point_gaming!
   quiet_assets
   rabl-rails
   rails (= 3.2.13)

@@ -68,3 +68,5 @@ gem 'capistrano-ext'
 gem 'twitter-bootstrap-rails'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
+
+gem "point_gaming", git: "git@github.com:pointgaming/point-gaming-core.git"
