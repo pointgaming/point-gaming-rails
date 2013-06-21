@@ -11,6 +11,7 @@ The following is a list of notes to help install the main PointGaming applicatio
 * MongoDB
 * Redis
 * RabbitMQ
+* elasticsearch
 
 ## Instructions
 
