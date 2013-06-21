@@ -1,10 +1,10 @@
 require 'spec_helper'
 
 describe UserTournamentsController do
+
   describe '#edit' do
-    it 'redirects when the user is not logged in' do
-      get :edit, id: 2
-      expect(response.status).to redirect_to(new_user_session_path)
+    it_behaves_like "requires_login" do
+      before { get :edit, id: 2 }
     end
 
     describe 'when logged in' do
@@ -27,9 +27,8 @@ describe UserTournamentsController do
   end
 
   describe '#destroy' do
-    it 'redirects when the user is not logged in' do
-      delete :destroy, id: 2
-      expect(response.status).to redirect_to(new_user_session_path)
+    it_behaves_like "requires_login" do
+      before { delete :destroy, id: 2 }
     end
 
     describe 'when logged in' do
@@ -51,5 +50,10 @@ describe UserTournamentsController do
     end
   end
 
+  describe '#prize_pool' do
+    it_behaves_like "requires_login" do
+      before { get :prize_pool, id: 2 }
+    end
+  end
 
 end

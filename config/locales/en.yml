@@ -40,6 +40,17 @@ en:
         created_at: 'Joined on'
       tournament:
         start_datetime: 'Start Date'
+      tournament_payment:
+        credit_card_name: 'Name on Card'
+        credit_card_number: 'Card Number'
+        credit_card_expiration_month: 'Expiration Month'
+        credit_card_expiration_year: 'Expiration Year'
+        credit_card_cvv2: 'Verification Code'
+        credit_card_address_1: 'Address 1'
+        credit_card_address_2: 'Address 2'
+        credit_card_city: 'City'
+        credit_card_state: 'State'
+        credit_card_zip: 'Zip'
       user:
         created_at: 'Joined on'
         game_id: 'Primary Game'

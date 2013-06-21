@@ -6,7 +6,7 @@ feature 'Tournament Sponsors' do
     let(:user) { tournament.owner }
 
     let(:new_sponsor) { Fabricate.build(:tournament_sponsor, tournament: tournament) }
-    before(:each) { sign_in(user.username, "myawesomepassword") }
+    before(:each) { sign_in(user) }
 
     describe 'A user can add a new sponsors' do
       it 'is created successfully' do

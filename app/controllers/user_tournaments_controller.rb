@@ -28,10 +28,9 @@ class UserTournamentsController < ApplicationController
   end
 
   def update
-    tournament_updater = TournamentUpdater.new(@tournament, update_params)
-    tournament_updater.save
-    respond_with(@tournament, { action: tournament_updater.update_action, 
-                                location: next_user_tournament_path(@tournament) })
+    @tournament.update_attributes(update_params)
+    respond_with(@tournament, { action: default_update_action, 
+                                location: @tournament.next_user_tournament_path })
   end
 
   def destroy
@@ -43,26 +42,17 @@ class UserTournamentsController < ApplicationController
 
   end
 
-  def pay
-
-  end
-
   def status
 
   end
 
 private
 
-  def next_user_tournament_path(tournament)
-    case true
-    when @tournament.prizepool_required?
-      prize_pool_user_tournament_path(@tournament)
-    when @tournament.payment_required?
-      pay_user_tournament_path(@tournament)
-    when @tournament.payment_pending?
-      users_user_tournament_path(@tournament)
-    when @tournament.activated?
-      tournament_path(@tournament.slug)
+  def default_update_action
+    if update_params[:prizepool].present?
+      :prize_pool
+    else
+      :edit
     end
   end
 

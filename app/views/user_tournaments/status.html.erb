@@ -9,13 +9,47 @@
           <h3>Status</h3>
         </div>
         <div class="widget-content">
-          <ol>
-            <li class="alert alert-success">Tournament created</li>
-            <li class="alert <%= @tournament.prizepool.present? ? "alert-success" : "alert-error" %>">Prizepool locked in</li>
-            <li class="alert">Payment information submitted</li>
-            <li class="alert">Verifying payment (Can take up to 14 days)</li>
-            <li class="alert">Tournament Activated</li>
-          </ol>
+          <table class="table">
+            <tbody>
+              <tr class="success">
+                <td>
+                  <input type="checkbox" disabled="disabled" checked="checked" />
+                </td>
+                <td>Tournament created</td>
+              </tr>
+              <%- prizepool_locked = @tournament.prizepool.present? %>
+              <%- prizepool_current_step = @tournament.prizepool_required? %>
+              <tr class="<%= status_row_class(prizepool_locked, prizepool_current_step) %>">
+                <td>
+                  <input type="checkbox" disabled="disabled" <%= 'checked="checked"' if prizepool_locked %> />
+                </td>
+                <td>Prizepool locked in</td>
+              </tr>
+              <%- payment_submitted = @tournament.payment.present? %>
+              <%- payment_current_step = @tournament.payment_required? %>
+              <tr class="<%= status_row_class(payment_submitted, payment_current_step) %>">
+                <td>
+                  <input type="checkbox" disabled="disabled" <%= 'checked="checked"' if payment_submitted %> />
+                </td>
+                <td>Payment information submitted</td>
+              </tr>
+              <%- payment_verified = @tournament.state === 'activated' %>
+              <%- verify_payment_current_step = @tournament.payment_pending? %>
+              <tr class="<%= status_row_class(payment_verified, verify_payment_current_step) %>">
+                <td>
+                  <input type="checkbox" disabled="disabled" <%= 'checked="checked"' if payment_verified %> />
+                </td>
+                <td>Verifying payment (Can take up to 14 days)</td>
+              </tr>
+              <%- activated = @tournament.state === 'activated' %>
+              <tr class="<%= status_row_class(activated) %>">
+                <td>
+                  <input type="checkbox" disabled="disabled" <%= 'checked="checked"' if activated %> />
+                </td>
+                <td>Tournament Activated</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

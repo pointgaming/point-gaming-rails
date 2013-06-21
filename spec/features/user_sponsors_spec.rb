@@ -4,7 +4,7 @@ feature 'User sponsors are editable' do
   let(:user_sponsor) { Fabricate(:user_sponsor) }
   let(:user) { user_sponsor.user }
 
-  before(:each) { sign_in(user.username, user.password) }
+  before(:each) { sign_in(user) }
 
   it "is updated successfully", js: true do
     new_url = 'http://chrisbankston.com'

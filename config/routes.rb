@@ -26,9 +26,9 @@ PointGamingRails::Application.routes.draw do
     resources :sponsors, controller: 'tournament_sponsors', except: [:index, :show]
   end
   resources :user_tournaments do
+    resources :payments, controller: 'tournament_payments', only: [:new, :create]
     member do
       get 'prize_pool'
-      get 'pay'
       get 'status'
       get 'users'
     end

@@ -1,5 +1,26 @@
 require 'spec_helper'
 
+shared_examples_for 'current_status_row' do
+  it "status row is marked as incompleted" do
+    status_row = find('tr', text: status_text)
+    expect(status_row[:class]).to include('warning')
+  end
+end
+
+shared_examples_for 'incompleted_status_row' do
+  it "status row is marked as incompleted" do
+    status_row = find('tr', text: status_text)
+    expect(status_row[:class]).to include('error')
+  end
+end
+
+shared_examples_for 'completed_status_row' do
+  it "status row is marked as completed" do
+    status_row = find('tr', text: status_text)
+    expect(status_row[:class]).to include('success')
+  end
+end
+
 feature 'User Tournaments' do
   let(:tournament) { Fabricate(:tournament) }
   let(:user) { Fabricate(:user) }
@@ -7,7 +28,7 @@ feature 'User Tournaments' do
 
   describe 'User views user_tournaments#index' do
     it "lists tournaments they created" do
-      sign_in(tournament.owner.username, "myawesomepassword")
+      sign_in(tournament.owner)
 
       visit "/user_tournaments"
 
@@ -17,7 +38,7 @@ feature 'User Tournaments' do
     it "doesn't list tournaments created by another user" do
       tournament
 
-      sign_in(user.username, user.password)
+      sign_in(user)
 
       visit "/user_tournaments"
 
@@ -27,7 +48,7 @@ feature 'User Tournaments' do
 
   describe 'User creates tournament' do
     let(:tournament) { Fabricate.build(:tournament, game_type: game_type, game: game_type.game) }
-    before(:each) { sign_in(user.username, user.password) }
+    before(:each) { sign_in(user) }
     before(:each) { game_type }
 
     context 'with valid attributes' do
@@ -63,7 +84,7 @@ feature 'User Tournaments' do
 
   describe 'User edits tournament' do
     context 'that they created' do
-      before(:each) { sign_in(tournament.owner.username, "myawesomepassword") }
+      before(:each) { sign_in(tournament.owner) }
 
       it "is updated successfully" do
         visit "/user_tournaments/#{tournament._id}/edit"
@@ -80,7 +101,7 @@ feature 'User Tournaments' do
 
   describe 'User deletes tournament' do
     context 'that they own' do
-      before(:each) { sign_in(tournament.owner.username, "myawesomepassword") }
+      before(:each) { sign_in(tournament.owner) }
 
       it "is deleted successfully" do
         visit '/user_tournaments'
@@ -96,7 +117,7 @@ feature 'User Tournaments' do
   describe 'User edits tournament prize_pool' do
     context 'user owns tournament' do
       before(:each) do
-        sign_in(tournament.owner.username, "myawesomepassword")
+        sign_in(tournament.owner)
 
         visit "/user_tournaments/#{tournament._id}/edit"
         click_link 'Prize Pool'
@@ -156,71 +177,100 @@ feature 'User Tournaments' do
     end
   end
 
-  describe 'User pays for prize_pool' do
-    before do
-      TournamentUpdater.new(tournament, {prizepool: {"1" => "5"}}).save
-
-      sign_in(tournament.owner.username, "myawesomepassword")
-
-      visit "/user_tournaments/#{tournament._id}/edit"
-      click_link 'Pay'
-    end
-
-    it "displays prize pool total" do
-      total_container = page.find('[data-hook=prize-pool-total]')
-      expect(total_container).to have_content '$5.00'
-    end
-
-    context 'Bank Transfer option' do
-      it 'is present' do
-        expect(page).to have_content 'Bank Transfer'
-      end
-    end
-
-    context 'Dwolla option' do
-      it 'is present' do
-        expect(page).to have_content 'Dwolla'
-      end
-    end
-
-    context 'Credit Card option' do
-      it 'is present' do
-        expect(page).to have_content 'Credit Card'
-      end
-    end
-
-    context 'PayPal option' do
-      it 'is present' do
-        expect(page).to have_content 'PayPal'
-      end
-    end
-  end
-
   describe 'User views status' do
-    context 'Tournament was just created' do
+    let (:created_status) { 'Tournament created' }
+    let (:prizepool_required_status) { 'Prizepool locked in' }
+    let (:payment_submitted_status) { 'information submitted' }
+    let (:verifying_payment_status) { 'Verifying payment' }
+    let (:activated_status) { 'Activated' }
+    before { sign_in(tournament.owner) }
+
+    describe 'by clicking the status link from the edit page' do
       before do
-        sign_in(tournament.owner.username, "myawesomepassword")
-        visit "/user_tournaments/#{tournament._id}/edit"
+        visit "/user_tournaments/#{tournament._id}/status"
         click_link 'Status'
       end
 
-      it 'Tournament created status' do
-        expect(page).to have_content 'Tournament created'
+      it 'renders the status page' do
+        expect(page).to have_selector "#status-widget"
+      end
+    end
+
+    context 'Tournament was just created' do
+      before do
+        visit "/user_tournaments/#{tournament._id}/status"
+      end
+
+      it_behaves_like 'completed_status_row' do
+        let (:status_text) { created_status }
+      end
+
+      it_behaves_like 'current_status_row' do
+        let (:status_text) { prizepool_required_status }
+      end
+
+      it_behaves_like 'incompleted_status_row' do
+        let (:status_text) { payment_submitted_status }
+      end
+      it_behaves_like 'incompleted_status_row' do
+        let (:status_text) { verifying_payment_status }
+      end
+      it_behaves_like 'incompleted_status_row' do
+        let (:status_text) { activated_status }
       end
     end
 
     context 'Tournament prize pool is locked in' do
       before do
-        TournamentUpdater.new(tournament, {prizepool: {"1" => "5"}}).save
-        sign_in(tournament.owner.username, "myawesomepassword")
-        visit "/user_tournaments/#{tournament._id}/edit"
-        click_link 'Status'
+        tournament.update_attributes prizepool: {"1" => "5"}
+        visit "/user_tournaments/#{tournament._id}/status"
       end
 
-      it 'Prizepool locked in' do
-        expect(page).to have_content 'Prizepool locked in'
+      it_behaves_like 'completed_status_row' do
+        let (:status_text) { created_status }
+      end
+      it_behaves_like 'completed_status_row' do
+        let (:status_text) { prizepool_required_status }
+      end
+
+      it_behaves_like 'current_status_row' do
+        let (:status_text) { payment_submitted_status }
+      end
+
+      it_behaves_like 'incompleted_status_row' do
+        let (:status_text) { verifying_payment_status }
+      end
+      it_behaves_like 'incompleted_status_row' do
+        let (:status_text) { activated_status }
       end
     end
+
+    context 'Tournament payment is submitted' do
+      before do
+        tournament.update_attributes prizepool: {"1" => "5"}
+        Fabricate(:tournament_payment_credit_card, tournament: tournament)
+        visit "/user_tournaments/#{tournament._id}/status"
+      end
+
+      it_behaves_like 'completed_status_row' do
+        let (:status_text) { created_status }
+      end
+      it_behaves_like 'completed_status_row' do
+        let (:status_text) { prizepool_required_status }
+      end
+      it_behaves_like 'completed_status_row' do
+        let (:status_text) { payment_submitted_status }
+      end
+
+      it_behaves_like 'current_status_row' do
+        let (:status_text) { verifying_payment_status }
+      end
+
+      it_behaves_like 'incompleted_status_row' do
+        let (:status_text) { activated_status }
+      end
+    end
+
   end
 
 end

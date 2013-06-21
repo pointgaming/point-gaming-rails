@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe User do
-  let(:user) { Fabricate(:user) }
+  let(:user) { Fabricate.build(:user) }
 
   describe "points" do
     it "defaults to 0 points" do
@@ -9,7 +9,6 @@ describe User do
     end
 
     describe 'increment_points!' do
-      let(:user) { Fabricate.build(:user) }
 
       it "raises an error with an invalid amount" do
         lambda { user.increment_points!(:wat) }.should raise_error
@@ -30,7 +29,6 @@ describe User do
     end
 
     describe 'transfer_points_to_user' do
-      let(:user) { Fabricate.build(:user) }
       let(:another_user) { Fabricate.build(:user) }
 
       it "raises an error with an invalid user" do
@@ -109,8 +107,6 @@ describe User do
   end
 
   context '#update_match_participation_count' do
-    let(:user) { Fabricate.build(:user) }
-
     context 'without any bets' do
       it "doesn't increase the match_participation_count" do
         lambda { user.update_match_participation_count }.should_not change(user, :match_participation_count)
@@ -141,19 +137,20 @@ describe User do
   end
 
   context '#team_member?' do
-    let(:user) { Fabricate(:user) }
-    let(:team) { Fabricate(:team) }
+    let(:team) { Fabricate.build(:team) }
 
     context 'when user is not on team' do
-      it 'is false' do
-        user.team_member?(team).should be_false
+      it 'returns false' do
+        expect(user.team_member?(team)).to be_false
       end
     end
 
-    it 'is true when user is added to the team' do
-      member = user.team_members.build team: team, rank: 'Member'
-      member.save
-      user.team_member?(team).should be_true
+    context 'when user is added to the team' do
+      it 'returns true' do
+        member = user.team_members.build team: team, rank: 'Member'
+        member.save
+        expect(user.team_member?(team)).to be_true
+      end
     end
   end
 

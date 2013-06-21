@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe GameRoom do
-  let(:game) { Fabricate(:game) }
+  let(:game) { Fabricate.build(:game) }
 
   describe 'after_create #ensure_game_room_has_members' do
     before { ResqueSpec.reset! }

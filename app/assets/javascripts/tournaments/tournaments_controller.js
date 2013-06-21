@@ -14,6 +14,8 @@ PointGaming.TournamentsController.prototype.registerHandlers = function() {
   $(document).on('keyup', 'input[data-hook=prizepool-field]', this.recalculatePrizepoolTotal);
   $(document).on('change', 'input[data-hook=prizepool-field]', this.recalculatePrizepoolTotal);
 
+  $(document).on('change', '#payment-source-widget input[type=radio]', this.showPaymentSourceFields);
+
   // setup the modal events for Sponsors
   var $modal = $('#ajax-modal');
   $(document).on('click', 'a[rel="modal:open:ajaxpost"]:not([data-modal-target]):not([disabled])', PointGaming.ModalHelper.openModal($modal));
@@ -44,6 +46,12 @@ PointGaming.TournamentsController.prototype.recalculatePrizepoolTotal = function
   });
 
   $('span[data-hook=prize-pool-total]').html(accounting.formatMoney(total));
+};
+
+PointGaming.TournamentsController.prototype.showPaymentSourceFields = function(){
+  var payment_source = $(this).val() || "";
+  $('[data-hook=payment-source-fields]').hide();
+  $('#payment_source_fields_' + payment_source).show();
 };
 
 PointGaming.TournamentsController.prototype.handleSuccessForSponsorModal = function(){
