@@ -1,6 +1,7 @@
 GIT
   remote: git@github.com:pointgaming/point-gaming-core.git
   revision: 4731c9f6db41ead6348cd83b34baab869273b7f5
+  branch: master
   specs:
     point_gaming (0.0.5)
       mongoid (~> 3.0.0)

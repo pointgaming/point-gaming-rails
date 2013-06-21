@@ -69,4 +69,4 @@ gem 'twitter-bootstrap-rails'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
 
-gem "point_gaming", git: "git@github.com:pointgaming/point-gaming-core.git"
+gem "point_gaming", git: "git@github.com:pointgaming/point-gaming-core.git", branch: 'master'
