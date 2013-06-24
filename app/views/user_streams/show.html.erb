@@ -1,6 +1,6 @@
 <%- model_class = Stream -%>
 <% content_for :footer_scripts do %>
-  <%= javascript_include_tag "manifests/user_streams" %>
+  <%= javascript_include_tag "pages/user_streams" %>
 <% end %>
 <%- user_is_stream_owner = @stream_owner.try(:user_id) === current_user.id -%>
 <div id="user-stream">

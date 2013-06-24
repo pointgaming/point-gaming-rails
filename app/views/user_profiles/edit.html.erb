@@ -1,6 +1,6 @@
 <%- model_class = Profile -%>
 <% content_for :footer_scripts do %>
-  <%= javascript_include_tag "manifests/profile" %>
+  <%= javascript_include_tag "pages/profile" %>
 <% end %>
 <div class="row-fluid" id="user-profile">
   <h1><%=t '.title', :default => t('helpers.titles.edit', :model => model_class.model_name.human,

@@ -1,5 +1,5 @@
 <% content_for :footer_scripts do %>
-  <%= javascript_include_tag "manifests/user_tournaments" %>
+  <%= javascript_include_tag "pages/user_tournaments" %>
 <% end %>
 <%- edit ||= false %>
 <%= form_for [:user, @tournament], html: { :class => '' } do |f| %>
