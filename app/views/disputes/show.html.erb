@@ -1,5 +1,4 @@
 <%- model_class = Dispute -%>
-<%= javascript_include_tag "disputes" %>
 <h1><%=t '.title', :default => model_class.model_name.human %> <%= @dispute.id %></h1>
 
 <div class="breadcrumbs">
@@ -88,25 +87,28 @@
   <%= render partial: 'dispute_messages/form', locals: { hide_cancel_button: true, remote: true} %>
 </section>
 
-<%= javascript_tag do %>
-  $(function () {
-    if (PointGaming.authToken) {
-      PointGaming.socket = io.connect(PointGaming.socketio_uri);
-      PointGaming.socket.on("ready", function(){
-        // send auth request
-        PointGaming.socket.emit("auth", {auth_token: PointGaming.authToken});
-      });
+<% content_for :footer_scripts do %>
+  <%= javascript_include_tag "manifests/disputes" %>
+  <%= javascript_tag do %>
+    $(function () {
+      if (PointGaming.authToken) {
+        PointGaming.socket = io.connect(PointGaming.socketio_uri);
+        PointGaming.socket.on("ready", function(){
+          // send auth request
+          PointGaming.socket.emit("auth", {auth_token: PointGaming.authToken});
+        });
 
-      // register listener for auth callback
-      PointGaming.socket.on("auth_resp", function(data){
-        if (data.success === true && data.user) {
-          PointGaming.user = data.user;
-        }
-      });
+        // register listener for auth callback
+        PointGaming.socket.on("auth_resp", function(data){
+          if (data.success === true && data.user) {
+            PointGaming.user = data.user;
+          }
+        });
 
-      new PointGaming.DisputeMessagesController({
-        chat_room: "<%= @dispute.mq_exchange %>"
-      });
-    }
-  });
+        new PointGaming.DisputeMessagesController({
+          chat_room: "<%= @dispute.mq_exchange %>"
+        });
+      }
+    });
+  <% end %>
 <% end %>

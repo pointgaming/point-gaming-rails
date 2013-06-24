@@ -1,4 +1,4 @@
-//= require ./profile/profile_controller
+//= require profile/profile_controller
 
 $(function(){
   new PointGaming.ProfileController();

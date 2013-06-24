@@ -1,5 +1,5 @@
 class StreamsController < ApplicationController
-  layout 'full_width', :only => [:show]
+  before_filter :set_full_width_layout, only: [:show]
   before_filter :authenticate_user!, except: [:embedded_content]
   before_filter :ensure_stream, only: [:show, :embedded_content]
 
@@ -23,6 +23,10 @@ class StreamsController < ApplicationController
   end
 
 private
+
+  def set_full_width_layout
+    self.full_width_layout = true
+  end
 
   def ensure_stream
     @stream = Stream.where(slug: params[:id]).first

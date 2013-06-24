@@ -1,5 +1,3 @@
-<%= javascript_include_tag "stream" %>
-
 <div id="ajax-modal" class="modal hide fade" tabindex="-1"></div>
 <div id="match-modal" class="modal hide fade" tabindex="-1"></div>
 
@@ -126,56 +124,59 @@
   </div>
 </div>
 
-<%= javascript_tag do %>
-  $(function () {
-    if (PointGaming.authToken) {
-      PointGaming.socket = io.connect(PointGaming.socketio_uri);
-      PointGaming.socket.on("ready", function(){
-        // send auth request
-        PointGaming.socket.emit("auth", {auth_token: PointGaming.authToken});
-      });
-
-      // register listener for auth callback
-      PointGaming.socket.on("auth_resp", function(data){
-        if (data.success === true && data.user) {
-          PointGaming.user = data.user;
-        }
-      });
-
-      <% if @stream_owner.user_id === current_user.id || @collaborator.present? %>
-        new PointGaming.StreamAdminController();
-        new PointGaming.MatchAdminController(<%= @stream.match ? @stream.match.to_json.html_safe : '{}' %>, {
-          new_match_path: "<%= new_stream_match_path(@stream, Match.new) %>",
-          polymorphic_match_path: "<%= stream_match_path(@stream, ':match_id') %>",
-          match_path: "<%= match_path(':match_id') %>"
+<% content_for :footer_scripts do %>
+  <%= javascript_include_tag "manifests/stream" %>
+  <%= javascript_tag do %>
+    $(function () {
+      if (PointGaming.authToken) {
+        PointGaming.socket = io.connect(PointGaming.socketio_uri);
+        PointGaming.socket.on("ready", function(){
+          // send auth request
+          PointGaming.socket.emit("auth", {auth_token: PointGaming.authToken});
         });
-      <% end %>
 
-      new PointGaming.BetsController({
-        chat_room: "<%= @stream.mq_exchange %>"
-      });
+        // register listener for auth callback
+        PointGaming.socket.on("auth_resp", function(data){
+          if (data.success === true && data.user) {
+            PointGaming.user = data.user;
+          }
+        });
 
-      new PointGaming.StreamsController({
-        chat_room: "<%= @stream.mq_exchange %>"
-      });
+        <% if @stream_owner.user_id === current_user.id || @collaborator.present? %>
+          new PointGaming.StreamAdminController();
+          new PointGaming.MatchAdminController(<%= @stream.match ? @stream.match.to_json.html_safe : '{}' %>, {
+            new_match_path: "<%= new_stream_match_path(@stream, Match.new) %>",
+            polymorphic_match_path: "<%= stream_match_path(@stream, ':match_id') %>",
+            match_path: "<%= match_path(':match_id') %>"
+          });
+        <% end %>
 
-      new PointGaming.MatchController(
-        <%= @stream.match ? @stream.match.to_json.html_safe : '{}' %>,
-        "<%= new_match_bet_path(':match_id') %>"
-      );
+        new PointGaming.BetsController({
+          chat_room: "<%= @stream.mq_exchange %>"
+        });
 
-      var chat_room = new PointGaming.chatbox({
-        message_window_selector: "#chatbox",
-        chat_room: "<%= @stream.mq_exchange %>"
-      }, PointGaming.socket);
+        new PointGaming.StreamsController({
+          chat_room: "<%= @stream.mq_exchange %>"
+        });
 
-      $("#chatbox-form").submit(function(e){
-        var inputbox = $('input[type="text"]', this);
-        var message = inputbox.val();
-        if (message) chat_room.sendMessage(message);
-        e.preventDefault();
-        inputbox.val('');
-      });
-    }
-  });
+        new PointGaming.MatchController(
+          <%= @stream.match ? @stream.match.to_json.html_safe : '{}' %>,
+          "<%= new_match_bet_path(':match_id') %>"
+        );
+
+        var chat_room = new PointGaming.chatbox({
+          message_window_selector: "#chatbox",
+          chat_room: "<%= @stream.mq_exchange %>"
+        }, PointGaming.socket);
+
+        $("#chatbox-form").submit(function(e){
+          var inputbox = $('input[type="text"]', this);
+          var message = inputbox.val();
+          if (message) chat_room.sendMessage(message);
+          e.preventDefault();
+          inputbox.val('');
+        });
+      }
+    });
+  <% end %>
 <% end %>

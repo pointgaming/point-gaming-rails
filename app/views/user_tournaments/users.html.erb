@@ -1,4 +1,6 @@
-<%= javascript_include_tag "tournaments" %>
+<% content_for :footer_scripts do %>
+  <%= javascript_include_tag "manifests/user_tournaments" %>
+<% end %>
 <div class="row-fluid" id="tournaments">
   <h1>Tournament: <%= @tournament.name %></h1>
   <%= render :partial => 'workflow_navigation' %>
@@ -6,17 +8,7 @@
   <div class="row-fluid">
 
     <div class="span6">
-      <div id="prize-pool-widget" class="widget">
-        <div class="widget-header">
-          <h3>Collaborators</h3>
-        </div>
-        <div class="widget-content scrollable">
-          <%= form_for [:user, @tournament], html: { :class => 'form-horizontal', :'data-hook'=>'collaborator-form' } do |f| %>
-            <%= render partial: 'shared/form_errors', locals: {model: f.object} %>
-
-          <% end %>
-        </div>
-      </div>
+      <%= render partial: 'tournament_collaborators/show' %>
     </div>
 
     <div class="span6">

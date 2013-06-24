@@ -23,6 +23,7 @@
 //= require bootstrap-modal
 //= require bootstrap-typeahead
 //= require moment
+//= require ./pg_init.js
 //= require ./global/socket.io
 //= require ./global/chatbox
 //= require ./global/modal_helper

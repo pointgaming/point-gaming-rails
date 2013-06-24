@@ -46,6 +46,10 @@ class UserTournamentsController < ApplicationController
 
   end
 
+  def users
+    @collaborators = @tournament.collaborators
+  end
+
 private
 
   def default_update_action

@@ -1,4 +1,6 @@
-<%= javascript_include_tag "tournaments" %>
+<% content_for :footer_scripts do %>
+  <%= javascript_include_tag "manifests/user_tournaments" %>
+<% end %>
 <%- edit ||= false %>
 <%= form_for [:user, @tournament], html: { :class => '' } do |f| %>
   <%= render partial: 'shared/form_errors', locals: {model: f.object} %>

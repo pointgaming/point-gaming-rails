@@ -20,7 +20,6 @@
     <%#= favicon_link_tag 'images/apple-touch-icon-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png' %>
     <%#= favicon_link_tag 'favicon.ico', :rel => 'shortcut icon' %>
 
-    <%= javascript_include_tag "application" %>
     <%= javascript_tag do %>
       var PointGaming;
       if (!PointGaming) {
@@ -38,12 +37,12 @@
       <% end %>
     <% end %>
   </head>
-  <body>
+  <body data-controller="<%= controller_name %>" data-action="<%= controller.active_template.virtual_path.split('/').last %>">
 
     <div id="wrapper">
       <%= render 'shared/navbar', :locals => {:current_path => @current_path} %>
 
-      <div id="main" class="container">
+      <div id="main" class="<%= controller.full_width_layout ? "container-fluid" : "container" %>">
         <%= render partial: 'shared/desktop_client_helper' %>
         <% if controller.respond_to?(:sub_layout) && controller.sub_layout %>
           <%= render :partial=>"layouts/#{controller.sub_layout}" %>
@@ -53,6 +52,8 @@
       </div>
     </div>
 
-
+    <%= javascript_include_tag "application" %>
+    <%= yield :footer_scripts %>
+    <%= javascript_include_tag "pg_start" %>
   </body>
 </html>

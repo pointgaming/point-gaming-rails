@@ -1,4 +1,6 @@
-<%= javascript_include_tag "news" %>
+<% content_for :footer_scripts do %>
+  <%= javascript_include_tag "manifests/news" %>
+<% end %>
 
 <div class="row-fluid">
   <div class="span12">

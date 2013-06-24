@@ -1,4 +1,6 @@
-<%= javascript_include_tag "user_streams" %>
+<% content_for :footer_scripts do %>
+  <%= javascript_include_tag "manifests/user_streams" %>
+<% end %>
 <%- model_class = Stream -%>
 <h1><%=t '.title', :default => t('helpers.titles.new', :model => model_class.model_name.human,
                                 :default => "New #{model_class.model_name.human}") %></h1>

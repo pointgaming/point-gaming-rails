@@ -1,5 +1,7 @@
 <%- model_class = Profile -%>
-<%= javascript_include_tag "profile" %>
+<% content_for :footer_scripts do %>
+  <%= javascript_include_tag "manifests/profile" %>
+<% end %>
 
 <div class="row-fluid" id="user-profile">
   <div class="span3">

@@ -4,6 +4,8 @@ class ApplicationController < ActionController::Base
 
   self.responder = CustomResponder
 
+  attr_accessor :full_width_layout
+
   before_filter :authenticate_user!, :if => :requested_private_url?
   around_filter :user_time_zone, :if => :current_user
   before_filter :set_current_path
@@ -37,6 +39,14 @@ class ApplicationController < ActionController::Base
     '0.0.0'
   end
   helper_method :desktop_client_latest_version
+
+  def full_width_layout=(value)
+    @full_width_layout = value
+  end
+
+  def full_width_layout
+    @full_width_layout ||= false
+  end
 
 private
 

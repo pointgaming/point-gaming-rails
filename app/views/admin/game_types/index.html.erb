@@ -1,5 +1,7 @@
 <%- model_class = GameType -%>
-<%= javascript_include_tag "admin/game_types" %>
+<% content_for :footer_scripts do %>
+  <%= javascript_include_tag "manifests/admin/game_types" %>
+<% end %>
 
 <div class="widget widget-nopad">
   <div class="widget-header">

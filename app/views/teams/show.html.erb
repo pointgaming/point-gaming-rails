@@ -1,5 +1,7 @@
 <%- model_class = Team -%>
-<%= javascript_include_tag "team" %>
+<% content_for :footer_scripts do %>
+  <%= javascript_include_tag "manifests/team" %>
+<% end %>
 <div id="team-show">
   <div id="ajax-modal" class="modal hide fade" tabindex="-1"></div>
 
