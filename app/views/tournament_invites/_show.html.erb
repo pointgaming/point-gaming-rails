@@ -1,23 +1,23 @@
 <%- user_is_tournament_owner = @tournament.owner.try(:_id) === current_user._id %>
-<div id="tournament-collaborators-widget" class="widget">
+<div id="invites-widget" class="widget">
   <div class="widget-header">
-    <h3>Collaborators</h3>
+    <h3>Invite Players</h3>
   </div>
   <div class="widget-content scrollable">
-    <h4>People to help you administrate the tournament</h4>
+    <h4>Invite players to help build your tournament</h4>
     <% if user_is_tournament_owner %>
-      <%= render partial: 'tournament_collaborators/form' %>
+      <%= render partial: 'tournament_invites/form' %>
     <% end %>
-    <% if @collaborators.present? %>
+    <% if @invites.present? %>
       <ul>
-        <% @collaborators.each do |collaborator| %>
+        <% @invites.each do |invite| %>
           <li>
             <div class="control-group">
-              <%= collaborator.user.try(:username) %>
+              <%= invite.user.try(:username) %>
               <div class="pull-right">
-                <% if user_is_tournament_owner && collaborator.owner != true %>
+                <% if user_is_tournament_owner %>
                   <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                          user_tournament_collaborator_path(@tournament, collaborator),
+                          user_tournament_invite_path(@tournament, invite),
                           :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
                           :method => 'delete', :class => 'btn btn-mini btn-danger' %>
                 <% end %>

@@ -1,4 +1,4 @@
-<%= form_for :tournament_collaborator, url: user_tournament_collaborators_path(@tournament), html: { autocomplete: :off, :class => 'typeahead', :'data-hook'=>'collaborator-form' } do |f| %>
+<%= form_for :tournament_invite, url: user_tournament_invites_path(@tournament), html: { autocomplete: :off, :class => 'typeahead', :'data-hook'=>'invites-form' } do |f| %>
   <div class="control-group">
     <%= f.text_field :username, :class => 'search-query', placeholder: 'Add' %>
   </div>

@@ -48,6 +48,7 @@ class UserTournamentsController < ApplicationController
 
   def users
     @collaborators = @tournament.collaborators
+    @invites = @tournament.invites
   end
 
 private

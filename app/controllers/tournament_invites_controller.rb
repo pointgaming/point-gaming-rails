@@ -1,22 +1,22 @@
-class TournamentCollaboratorsController < ApplicationController
+class TournamentInvitesController < ApplicationController
   before_filter :authenticate_user!
   before_filter :ensure_tournament
   before_filter :ensure_tournament_owner
   before_filter :ensure_params, only: [:create]
   before_filter :ensure_user, only: [:create]
-  before_filter :ensure_collaborator, only: [:destroy]
+  before_filter :ensure_invite, only: [:destroy]
 
   respond_to :html, :json
 
   def create
-    @collaborator = TournamentCollaborator.new({tournament_id: @tournament._id, user_id: @user._id})
-    @collaborator.save
-    respond_with(@collaborator, location: users_user_tournament_path(@tournament))
+    @invite = TournamentInvite.new({tournament_id: @tournament._id, user_id: @user._id})
+    @invite.save
+    respond_with(@invite, location: users_user_tournament_path(@tournament))
   end
 
   def destroy
-    @collaborator.destroy
-    respond_with(@collaborator, location: users_user_tournament_path(@tournament))
+    @invite.destroy
+    respond_with(@invite, location: users_user_tournament_path(@tournament))
   end
 
 protected
@@ -27,7 +27,7 @@ protected
 
   def ensure_tournament_owner
     unless @tournament.owner._id === current_user._id
-      message = 'You do not have permission to edit that tournaments collaborators'
+      message = 'You do not have permission to edit that tournaments invites'
       respond_with({errors: [message]}, status: 403) do |format|
         format.html { redirect_to user_tournaments_path, alert: message }
       end
@@ -35,8 +35,8 @@ protected
   end
 
   def ensure_params
-    if params[:tournament_collaborator].blank?
-      message = 'Missing tournament_collaborator parameter'
+    if params[:tournament_invite].blank?
+      message = 'Missing tournament_invite parameter'
       respond_with({errors: [message]}, status: 422) do |format|
         format.html { redirect_to users_user_tournament_path(@tournament), alert: message }
       end
@@ -44,7 +44,7 @@ protected
   end
 
   def ensure_user
-    @user = User.where(username: params[:tournament_collaborator][:username]).first
+    @user = User.where(username: params[:tournament_invite][:username]).first
     unless @user
       message = 'The specified user was not found.'
       respond_with({errors: [message]}, status: 422) do |format|
@@ -53,8 +53,8 @@ protected
     end
   end
 
-  def ensure_collaborator
-    @collaborator = @tournament.collaborators.find(params[:id])
+  def ensure_invite
+    @invite = @tournament.invites.find(params[:id])
   end
 
 end

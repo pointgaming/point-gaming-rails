@@ -29,6 +29,11 @@
     prize_pool: function(){
       $(document).on('keyup', 'input[data-hook=prizepool-field]', helpers.recalculatePrizepoolTotal);
       $(document).on('change', 'input[data-hook=prizepool-field]', helpers.recalculatePrizepoolTotal);
+    },
+
+    users: function(){
+      $(document).on('click', "[data-hook=collaborator-form] input.search-query", helpers.setupTypeahead);
+      $(document).on('click', "[data-hook=invites-form] input.search-query", helpers.setupTypeahead);
     }
 
   };
@@ -79,6 +84,19 @@
           container.prepend('<div class="alert alert-error">'+ value + '</div>');
         });
       }
+    },
+
+    setupTypeahead: function(e) {
+      var self = this;
+      $(this).typeahead({
+        ajax: { url: '/users/search.json', triggerLength: 1, method: 'get' },
+        display: 'username', 
+        val: 'username',
+        itemSelected: function(item, val, text){
+          var current_form = $(self).closest('form');
+          current_form.submit();
+        }
+      });
     }
 
   };
