@@ -75,28 +75,6 @@ PointGamingRails::Application.routes.draw do
 
   resources :games
 
-  namespace :admin do
-    root :to => "dashboard#index"
-    resources :disputes, only: [:index, :show, :edit, :update] do
-      resources :messages, controller: 'dispute_messages', only: [:new, :create]
-      member do
-        put 'cancel'
-      end
-    end
-    resources :groups do
-      resources :users, controller: 'group_users'
-    end
-    resources :game_types
-    resources :subscription_features
-    resources :subscription_types
-    resources :reports, only: [:index] do
-      collection do
-        get 'point_audit'
-      end
-    end
-    resources :news
-  end
-
   namespace :api do
     namespace :v1 do
       resources :users do
