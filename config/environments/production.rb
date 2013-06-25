@@ -31,12 +31,12 @@ PointGamingRails::Application.configure do
   # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for nginx
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-  #config.force_ssl = false
+  config.force_ssl = true
 
-  #config.ssl_options = {
-  #  exclude: proc {|env| env['HTTPS'] != 'on' },
-  #  hsts: false
-  #}
+  config.ssl_options = {
+    exclude: proc { |env| env['PATH_INFO'].match(/\/s(treams)?\//i).present? },
+    hsts: false
+  }
 
   # See everything in the log (default is :info)
   # config.log_level = :debug
@@ -77,10 +77,6 @@ PointGamingRails::Application.configure do
 
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
-
-  config.to_prepare { Devise::SessionsController.ssl_required :new, :create, :destroy }
-  config.to_prepare { Devise::RegistrationsController.ssl_required :new, :create, :edit, :update, :destroy, :cancel }
-  config.to_prepare { Devise::PasswordsController.ssl_required :new, :create, :edit, :update }
 
   config.after_initialize do
     Rails.application.routes.default_url_options = Rails.application.config.action_mailer.default_url_options

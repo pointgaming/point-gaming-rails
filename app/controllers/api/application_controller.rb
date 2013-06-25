@@ -1,5 +1,4 @@
 class Api::ApplicationController < ActionController::Base
-  include ::SslRequirement
   rescue_from ::PermissionDenied, :with => :render_permission_denied
   rescue_from ::UnprocessableEntity, :with => :render_unprocessable_entity
   rescue_from ::Mongoid::Errors::DocumentNotFound, :with => :render_not_found
@@ -7,10 +6,6 @@ class Api::ApplicationController < ActionController::Base
   self.responder = CustomResponder
 
 protected
-
-  def ssl_required?
-    true
-  end
 
   def api_token_present?
     params[:api_token].present?

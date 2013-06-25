@@ -1,5 +1,4 @@
 class DemosController < ApplicationController
-  ssl_allowed :new, :create, :destroy, :game_type_options
   before_filter :authenticate_user!
   before_filter :ensure_demo, only: [:show]
   before_filter :ensure_user_demo, only: [:destroy]

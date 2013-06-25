@@ -1,6 +1,4 @@
 class SiteController < ApplicationController
-  ssl_allowed :game_type_options
-
   def desktop_version
     render json: {version: desktop_client_latest_version}
   end
