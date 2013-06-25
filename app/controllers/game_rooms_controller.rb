@@ -6,6 +6,8 @@ class GameRoomsController < ApplicationController
   before_filter :check_owner_params, only: [:update]
   before_filter :ensure_params, only: [:create, :update]
 
+  ssl_allowed :index, :show, :create, :update
+
   respond_to :json
 
   def index
