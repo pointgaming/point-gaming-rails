@@ -49,6 +49,10 @@ module ApplicationHelper
       APP_CONFIG['store_url']
     end
 
+    def admin_path
+      APP_CONFIG['admin_url']
+    end
+
     def devise_mapping
       @devise_mapping ||= Devise.mappings[:user]
     end
