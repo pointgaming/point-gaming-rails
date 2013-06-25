@@ -2,8 +2,6 @@ source 'https://rubygems.org'
 
 gem 'rails', '3.2.13'
 
-gem 'bartt-ssl_requirement', '~>1.4.0', :require => 'ssl_requirement'
-
 gem 'bunny', '>= 0.9.0.pre6'
 gem 'mongoid', "~> 3.0.0"
 gem 'redis-rails'
@@ -15,8 +13,6 @@ gem 'stripe'
 gem 'resque'
 gem "resque-scheduler", require: "resque_scheduler"
 gem 'resque-loner'
-gem 'devise'
-gem 'cancan'
 gem 'carmen'
 gem 'carmen-rails'
 gem "mongoid-paperclip", :require => "mongoid_paperclip"

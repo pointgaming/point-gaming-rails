@@ -1,6 +1,4 @@
 class ApplicationController < ActionController::Base
-  include ::SslRequirement
-
   self.responder = CustomResponder
 
   attr_accessor :full_width_layout
