@@ -2,28 +2,16 @@ source 'https://rubygems.org'
 
 gem 'rails', '3.2.13'
 
-gem 'bunny', '>= 0.9.0.pre6'
-gem 'mongoid', "~> 3.0.0"
-gem 'redis-rails'
-gem 'active_hash'
-gem 'tire'
-gem 'mail'
-
-gem 'stripe'
 gem 'resque'
 gem "resque-scheduler", require: "resque_scheduler"
 gem 'resque-loner'
 gem 'carmen'
 gem 'carmen-rails'
-gem "mongoid-paperclip", :require => "mongoid_paperclip"
 gem 'kaminari'
-gem 'workflow_on_mongoid'
 gem 'rabl-rails'
 gem 'oj'
-gem 'uuidtools'
 gem 'remotipart', '~> 1.0'
 gem 'sanitize'
-gem 'obscenity'
 
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'

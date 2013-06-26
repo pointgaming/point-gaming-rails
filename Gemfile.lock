@@ -1,9 +1,9 @@
 GIT
   remote: git@github.com:pointgaming/point-gaming-core.git
-  revision: 20e102633d109e111422582e0c6729ec422a70ba
+  revision: df779e79348e4ccbfe913d51dd3dc746c99482bb
   branch: master
   specs:
-    point_gaming (0.0.20)
+    point_gaming (0.0.22)
       active_hash
       bunny (>= 0.9.0.pre6)
       cancan
@@ -17,6 +17,7 @@ GIT
       redis-rails
       stripe
       tire
+      uuidtools
       validates_email_format_of (~> 1.5.3)
       workflow_on_mongoid
 
@@ -368,11 +369,9 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  active_hash
   better_errors (>= 0.3.2)
   binding_of_caller (>= 0.6.8)
   bootstrap-sass (~> 2.3.1.0)
-  bunny (>= 0.9.0.pre6)
   capistrano
   capistrano-ext
   capybara
@@ -387,19 +386,14 @@ DEPENDENCIES
   jquery-ui-rails
   kaminari
   launchy
-  mail
   meta_request
-  mongoid (~> 3.0.0)
-  mongoid-paperclip
   mongoid-rspec
-  obscenity
   oj
   point_gaming!
   quiet_assets
   rabl-rails
   rails (= 3.2.13)
   rb-fsevent
-  redis-rails
   remotipart (~> 1.0)
   resque
   resque-loner
@@ -411,11 +405,7 @@ DEPENDENCIES
   selenium-webdriver
   simplecov
   spring
-  stripe
-  tire
   turbo-sprockets-rails3
   twitter-bootstrap-rails
   uglifier (>= 1.0.3)
-  uuidtools
   whenever
-  workflow_on_mongoid
