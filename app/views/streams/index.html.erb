@@ -4,7 +4,7 @@
       <ul class="thumbnails">
         <% @streams.each do |stream| %>
           <div class="span4 game-badge-container">
-            <%= link_to image_tag(stream.thumbnail.url(:thumb)), stream_path(stream) %>
+            <%= link_to image_tag(stream.thumbnail.url(:thumb)), stream_url(stream, protocol: "http") %>
             <div class="game-badge <%= game_css_class(stream.try(:game)) %>"></div>
             <div class="row-fluid">
               <div class="span6"><%= stream.name %></div>
