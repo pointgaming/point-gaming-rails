@@ -1,14 +1,23 @@
 GIT
   remote: git@github.com:pointgaming/point-gaming-core.git
-  revision: 6dbad7ec053f293a64f6ce4b05ba99e50afc46e8
+  revision: d30916c2ed06799b2c1b6e87b1f2e4c26dac0fc0
   branch: master
   specs:
-    point_gaming (0.0.13)
+    point_gaming (0.0.17)
+      active_hash
+      bunny (>= 0.9.0.pre6)
       cancan
       devise
+      mail
       mongoid (~> 3.0.0)
+      mongoid-paperclip
+      obscenity
       rails (~> 3.2.13)
+      redis-rails
+      stripe
+      tire
       validates_email_format_of (~> 1.5.3)
+      workflow_on_mongoid
 
 GEM
   remote: https://rubygems.org/
