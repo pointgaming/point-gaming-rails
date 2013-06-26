@@ -1,6 +1,6 @@
 PointGamingRails::Application.configure do
   # session store
-  config.session_store :redis_store, :key => '_pg_session', :domain => '.pointgaming.com'
+  config.session_store :redis_store, :key => '_pg_session', :domain => '.pointgaming.com', secure: false
 
   # Settings specified here will take precedence over those in config/application.rb
 
