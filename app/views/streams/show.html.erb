@@ -49,9 +49,10 @@
   <% end %>
 </div>
 
+
 <div class="row-fluid">
   <div id="embed_container" class="span8 flex-video">
-    <iframe src="<%= @stream.embedded_url %>" frameborder="0"></iframe>
+    <%= @stream.embedded_html.html_safe %>
   </div>
 
   <div class="span4">
