@@ -35,18 +35,18 @@ feature 'Tournament Payments' do
 
   describe 'User goes to the Pay page' do
 
-    it 'after clicking the "Pay" tab when editing a tournament' do
-      sign_in(tournament.owner)
-      visit "/user_tournaments/#{tournament._id}/edit"
-      click_link 'Pay'
-      expect(page).to have_selector 'form[data-hook=payment-form]'
-    end
-
     context 'tournament has prizepool configured' do
       before do
         tournament.update_attributes prizepool: {"1" => "5"}
         sign_in(tournament.owner)
         visit "/user_tournaments/#{tournament._id}/payments/new"
+      end
+
+      it 'after clicking the "Pay" tab when editing a tournament' do
+        sign_in(tournament.owner)
+        visit "/user_tournaments/#{tournament._id}/edit"
+        click_link 'Pay'
+        expect(page).to have_selector 'form[data-hook=payment-form]'
       end
 
       it "displays prize pool total" do

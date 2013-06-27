@@ -1,5 +1,6 @@
 #tournaments {
   input[name='tournament[name]'] { width: 98% }
   input[name='tournament[slug]'] { width: 73% }
+  input[name='tournament[stream_slug]'] { width: 81% }
   textarea { width: 97%; }
 }

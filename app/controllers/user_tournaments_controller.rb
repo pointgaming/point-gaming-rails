@@ -1,8 +1,10 @@
 class UserTournamentsController < ApplicationController
   before_filter :authenticate_user!
   before_filter :ensure_tournament, except: [:index, :new, :create]
-  before_filter :ensure_tournament_editable, only: [:edit, :update]
-  before_filter :ensure_tournament_destroyable, only: [:destroy]
+
+  before_filter :ensure_tournament_prizepool_required, only: [:prize_pool]
+  before_filter :ensure_tournament_editable_by_user, only: [:edit, :update]
+  before_filter :ensure_tournament_destroyable_by_user, only: [:destroy]
 
   respond_to :html, :json
 
@@ -16,7 +18,7 @@ class UserTournamentsController < ApplicationController
 
   def create
     @tournament = Tournament.new(create_params)
-    collaborator = @tournament.collaborators.build(user_id: current_user.id, owner: true)
+    collaborator = TournamentCollaborator.new(tournament_id: @tournament._id, user_id: current_user.id, owner: true)
     @tournament.save && collaborator.save
     respond_with(@tournament, location: edit_user_tournament_path(@tournament.id))
   end
@@ -73,7 +75,16 @@ private
     @tournament = Tournament.find params[:id]
   end
 
-  def ensure_tournament_editable
+  def ensure_tournament_prizepool_required
+    unless @tournament.prizepool_required?
+      message = 'Unable to add a payment to that tournament'
+      respond_with({errors: [message]}, status: 403) do |format|
+        format.html { redirect_to user_tournament_path(@tournament), alert: message }
+      end
+    end
+  end
+
+  def ensure_tournament_editable_by_user
     unless @tournament.editable_by_user?(current_user)
       message = 'You do not have permission to edit that tournament'
       respond_with({errors: [message]}, status: 403) do |format|
@@ -82,7 +93,7 @@ private
     end
   end
 
-  def ensure_tournament_destroyable
+  def ensure_tournament_destroyable_by_user
     unless @tournament.destroyable_by_user?(current_user)
       message = 'You do not have permission to destroy that tournament'
       respond_with({errors: [message]}, status: 403) do |format|

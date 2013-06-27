@@ -13,7 +13,8 @@
         <%= navItem "Edit", edit_user_tournament_path(@tournament) %>
         <%- prize_pool_class = @tournament.prizepool_required? ? '' : 'disabled' %>
         <%= navItem "Prize Pool", prize_pool_user_tournament_path(@tournament), :class => prize_pool_class %>
-        <%= navItem "Pay", new_user_tournament_payment_path(@tournament) %>
+        <%- pay_class = @tournament.payment_required? ? '' : 'disabled' %>
+        <%= navItem "Pay", new_user_tournament_payment_path(@tournament), :class => pay_class %>
         <%= navItem "Status", status_user_tournament_path(@tournament) %>
         <%= navItem "Collaborators & Invites", users_user_tournament_path(@tournament) %>
         <%= navItem "Overview", user_tournament_path(@tournament) %>

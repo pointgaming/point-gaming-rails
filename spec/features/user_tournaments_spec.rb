@@ -57,6 +57,7 @@ feature 'User Tournaments' do
         expect {
           fill_in :tournament_name, with: tournament.name
           fill_in :tournament_slug, with: tournament.slug
+          fill_in :tournament_stream_slug, with: tournament.stream_slug
           fill_in :tournament_signup_start_datetime, with: ldate(tournament.signup_start_datetime)
           fill_in :tournament_signup_end_datetime, with: ldate(tournament.signup_end_datetime)
           fill_in :tournament_start_datetime, with: ldate(tournament.start_datetime)

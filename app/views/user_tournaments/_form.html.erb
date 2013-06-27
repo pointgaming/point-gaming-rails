@@ -19,6 +19,12 @@
           <%= tournaments_path(only_path: false) %>/<%= f.text_field :slug, :class => 'text_field' %>
         </div>
       </div>
+      <div class="control-group">
+        <%= f.label :stream_slug, :class => 'control-label' %>
+        <div class="controls">
+          <%= stream_path('', only_path: false) %><%= f.text_field :stream_slug, :class => 'text_field' %>
+        </div>
+      </div>
     </div>
   </div>
 

@@ -4,6 +4,7 @@
   window.PointGaming.controllers.user_tournaments = {
 
     init: function(){
+      $(document).on("click", "ul.nav-tabs li.disabled a", function(e) { return false; });
     },
 
     new: function(){

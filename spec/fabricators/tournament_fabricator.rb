@@ -3,6 +3,7 @@ Fabricator(:tournament) do
   game_type
   name { sequence(:name) { |i| "tournament#{i}" } }
   slug { sequence(:slug) { |i| "tournament#{i}" } }
+  stream_slug { sequence(:stream_slug) { |i| "stream#{i}" } }
   start_datetime { DateTime.now }
   signup_start_datetime { DateTime.now }
   signup_end_datetime { DateTime.tomorrow }

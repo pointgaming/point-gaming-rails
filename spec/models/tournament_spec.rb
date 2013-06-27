@@ -5,6 +5,7 @@ describe Tournament do
 
   it { expect(tournament).to validate_presence_of(:name) }
   it { expect(tournament).to validate_presence_of(:slug) }
+  it { expect(tournament).to validate_presence_of(:stream_slug) }
   it { expect(tournament).to validate_presence_of(:signup_start_datetime) }
   it { expect(tournament).to validate_presence_of(:signup_end_datetime) }
   it { expect(tournament).to validate_presence_of(:start_datetime) }

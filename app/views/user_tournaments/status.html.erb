@@ -1,3 +1,6 @@
+<% content_for :footer_scripts do %>
+  <%= javascript_include_tag "pages/user_tournaments" %>
+<% end %>
 <div class="row-fluid" id="tournaments">
   <h1>Tournament: <%= @tournament.name %></h1>
   <%= render :partial => 'workflow_navigation' %>
