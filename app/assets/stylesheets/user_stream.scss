@@ -12,7 +12,11 @@
 
 #streams {
 	ul {
-		div.game-badge-container {margin: 10px; background: $lightGrey; border: 1px solid $midGrey;
+		div.game-badge-container {margin: 8px; background: $lightGrey; border: 1px solid $midGrey;
+			.padding {padding: 5px;}
+			a { overflow: hidden;
+				img {width: 100%; height: auto; border: 1px solid $midGrey; }
+			}
 			.info-wrapper {
 				.info {@include clearfix(); background: $secondaryColor; color: $white; font-weight: bold; padding: 10px;}
 			}
