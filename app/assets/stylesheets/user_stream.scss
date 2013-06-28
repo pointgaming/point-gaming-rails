@@ -9,3 +9,13 @@
   #stream-admin-collaborators { margin-right: 30px; }
   .modal-footer { clear: both }
 }
+
+#streams {
+	ul {
+		div.game-badge-container {margin: 10px; background: $lightGrey; border: 1px solid $midGrey;
+			.info-wrapper {
+				.info {@include clearfix(); background: $secondaryColor; color: $white; font-weight: bold; padding: 10px;}
+			}
+		}
+	}
+}
