@@ -151,7 +151,7 @@
                   <%= link_to 'Leave', tournament_player_path(@tournament, current_user),
                               :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
                               :method => :delete, :class => 'btn btn-block' %>
-                <% else %>
+                <% elsif @tournament.signup_open? %>
                   <%= link_to 'Join', tournament_players_path(@tournament),
                               :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
                               :method => :post, :class => 'btn btn-block' %>

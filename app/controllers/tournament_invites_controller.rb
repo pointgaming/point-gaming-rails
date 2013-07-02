@@ -1,7 +1,7 @@
 class TournamentInvitesController < ApplicationController
   before_filter :authenticate_user!
   before_filter :ensure_tournament
-  before_filter :ensure_tournament_owner
+  before_filter :ensure_tournament_editable_by_user
   before_filter :ensure_params, only: [:create]
   before_filter :ensure_user, only: [:create]
   before_filter :ensure_invite, only: [:destroy]
@@ -25,8 +25,8 @@ protected
     @tournament = Tournament.find(params[:user_tournament_id])
   end
 
-  def ensure_tournament_owner
-    unless @tournament.owner._id === current_user._id
+  def ensure_tournament_editable_by_user
+    unless @tournament.editable_by_user?(current_user)
       message = 'You do not have permission to edit that tournaments invites'
       respond_with({errors: [message]}, status: 403) do |format|
         format.html { redirect_to user_tournaments_path, alert: message }
