@@ -2,7 +2,7 @@
 <div id="match-modal" class="modal hide fade" tabindex="-1"></div>
 
 <div class="row-fluid">
-  <h2 class="span8" style="padding: 10px; background: #333; color: #fff; margin-top: 0;">
+  <h2 class="span8 well" style="margin-top: 0; padding: 7px;">
     <%= image_tag @stream.thumbnail.url(:tiny), id: 'stream-thumbnail' %>
     <span id="stream-name" data-content="<%= @stream.details %>">
       <%= @stream.name %>
