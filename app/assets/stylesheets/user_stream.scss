@@ -12,7 +12,7 @@
 
 #streams {
 	ul {
-		div.game-badge-container {background: $lightGrey; border: 1px solid $midGrey;
+		div.game-badge-container {background: $lightGrey; border: 1px solid $midGrey; margin-bottom: 20px;
 			.padding {padding: 5px;}
 			a { overflow: hidden;
 				img {width: 100%; height: auto; border: 1px solid $midGrey; }
