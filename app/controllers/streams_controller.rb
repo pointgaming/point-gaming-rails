@@ -1,5 +1,5 @@
 class StreamsController < ApplicationController
-  before_filter :set_full_width_layout, only: [:show]
+  before_filter :set_full_width_layout, only: [:index, :show]
   before_filter :authenticate_user!, except: [:embedded_content]
   before_filter :ensure_stream, only: [:show, :embedded_content]
 
