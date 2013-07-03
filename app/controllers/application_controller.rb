@@ -1,4 +1,4 @@
-class ApplicationController < ActionController::Base
+class ApplicationController < BaseController
   self.responder = CustomResponder
 
   attr_accessor :full_width_layout
@@ -29,13 +29,6 @@ class ApplicationController < ActionController::Base
     @current_order ||= get_current_order
   end
   helper_method :current_order
-
-  def desktop_client_latest_version
-    SiteSetting.find_by(key: 'desktop_version').value
-  rescue Mongoid::Errors::DocumentNotFound
-    '0.0.0'
-  end
-  helper_method :desktop_client_latest_version
 
   def full_width_layout=(value)
     @full_width_layout = value
