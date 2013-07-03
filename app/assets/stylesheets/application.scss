@@ -8,11 +8,20 @@
  * You're free to add application-wide styles to this file and they'll appear at the top of the
  * compiled file, but it's generally better to create a new file per style scope.
  *
- *=require bootstrap_and_overrides
- *=require bootstrap-modal
+ *= require flags16
  *= require_self
- *= require_tree ./global
+ *= require point_gaming_frontend
 */
+
+@import "bootstrap_and_overrides";
+@import "profile";
+@import "tournaments";
+@import "team";
+@import "user_stream";
+@import "posts";
+@import "news_comments";
+@import "subscriptions";
+
 #logo-container {
   margin-bottom: 15px;
 }

@@ -1,6 +1,6 @@
 GIT
   remote: git@github.com:pointgaming/point-gaming-core.git
-  revision: 0b8c75fc1d0a6f1d33b60cfcc906ce256ff7e4f2
+  revision: 542b97bf96aee2f8b9fa8c2d985ac5664c1022d6
   branch: master
   specs:
     point_gaming (0.0.29)
@@ -20,6 +20,17 @@ GIT
       uuidtools
       validates_email_format_of (~> 1.5.3)
       workflow_on_mongoid
+
+GIT
+  remote: git@github.com:pointgaming/point-gaming-frontend.git
+  revision: 12170b4009c19c97f97c7a613de9f188371b1d8d
+  branch: master
+  specs:
+    point_gaming_frontend (0.0.2)
+      bootstrap-sass (~> 2.3.1.0)
+      rails (~> 3.2.13)
+      sass-rails (~> 3.2.3)
+      twitter-bootstrap-rails
 
 GEM
   remote: https://rubygems.org/
@@ -97,13 +108,6 @@ GEM
     cocaine (0.5.1)
       climate_control (>= 0.0.3, < 1.0)
     coderay (1.0.9)
-    coffee-rails (3.2.2)
-      coffee-script (>= 2.2.0)
-      railties (~> 3.2.0)
-    coffee-script (2.2.0)
-      coffee-script-source
-      execjs
-    coffee-script-source (1.6.2)
     database_cleaner (1.0.1)
     debug_inspector (0.0.2)
     devise (2.2.4)
@@ -371,13 +375,11 @@ PLATFORMS
 DEPENDENCIES
   better_errors (>= 0.3.2)
   binding_of_caller (>= 0.6.8)
-  bootstrap-sass (~> 2.3.1.0)
   capistrano
   capistrano-ext
   capybara
   carmen
   carmen-rails
-  coffee-rails (~> 3.2.1)
   database_cleaner
   fabrication
   god
@@ -390,6 +392,7 @@ DEPENDENCIES
   mongoid-rspec
   oj
   point_gaming!
+  point_gaming_frontend!
   quiet_assets
   rabl-rails
   rails (= 3.2.13)
@@ -401,11 +404,9 @@ DEPENDENCIES
   resque_spec
   rspec-rails
   sanitize
-  sass-rails (~> 3.2.3)
   selenium-webdriver
   simplecov
   spring
   turbo-sprockets-rails3
-  twitter-bootstrap-rails
   uglifier (>= 1.0.3)
   whenever

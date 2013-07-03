@@ -10,26 +10,11 @@
 // WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
 // GO AFTER THE REQUIRES BELOW.
 //
-//= require jquery
-//= require jquery_ujs
+//= require point_gaming_frontend
 //= require jquery.remotipart
-//= require jquery.cookie
-//= require twitter/bootstrap/bootstrap-dropdown
 //= require twitter/bootstrap/bootstrap-tooltip
 //= require twitter/bootstrap/bootstrap-popover
-//= require twitter/bootstrap/bootstrap-collapse
 //= require twitter/bootstrap/bootstrap-tab
-//= require bootstrap-datetimepicker
-//= require bootstrap-modalmanager
-//= require bootstrap-modal
-//= require bootstrap-typeahead
-//= require moment
-//= require ./pg_init.js
-//= require ./global/socket.io
-//= require ./global/chatbox
-//= require ./global/modal_helper
-//= require ./global/toolbar_controller
-//= require_tree ./global
 
 $(function(){
   new PointGaming.ToolbarController();

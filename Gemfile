@@ -14,9 +14,6 @@ gem 'remotipart', '~> 1.0'
 gem 'sanitize'
 
 group :assets do
-  gem 'sass-rails',   '~> 3.2.3'
-  gem 'bootstrap-sass', '~> 2.3.1.0'
-  gem 'coffee-rails', '~> 3.2.1'
   gem 'uglifier', '>= 1.0.3'
   gem 'turbo-sprockets-rails3'
 end
@@ -49,8 +46,8 @@ gem 'capistrano'
 gem 'capistrano-ext'
 
 # required to precompile assets
-gem 'twitter-bootstrap-rails'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
 
 gem "point_gaming", git: "git@github.com:pointgaming/point-gaming-core.git", branch: 'master'
+gem "point_gaming_frontend", git: "git@github.com:pointgaming/point-gaming-frontend.git", branch: 'master'
