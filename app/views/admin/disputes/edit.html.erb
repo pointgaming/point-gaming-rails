@@ -1,6 +1,0 @@
-<%- model_class = Dispute -%>
-<div class="modal-header">
-  <h2><%=t '.title', :default => t('helpers.titles.finalize', :model => model_class.model_name.human,
-                                 :default => "Finalize #{model_class.model_name.human}") %></h2>
-</div>
-<%= render :partial => 'form' %>
