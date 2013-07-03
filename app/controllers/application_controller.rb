@@ -1,8 +1,6 @@
 class ApplicationController < BaseController
   self.responder = CustomResponder
 
-  attr_accessor :full_width_layout
-
   before_filter :authenticate_user!, :if => :requested_private_url?
   around_filter :user_time_zone, :if => :current_user
   before_filter :set_current_path
@@ -25,30 +23,7 @@ class ApplicationController < BaseController
     super(options, extra_options, &block)
   end
 
-  def current_order
-    @current_order ||= get_current_order
-  end
-  helper_method :current_order
-
-  def full_width_layout=(value)
-    @full_width_layout = value
-  end
-
-  def full_width_layout
-    @full_width_layout ||= false
-  end
-
 private
-
-  def get_current_order
-    if session[:order_id].present?
-      current_order = Store::Order.find(session[:order_id])
-      current_order.completed_at.present? ? nil : current_order
-    end
-  rescue => e
-    logger.warn "get_current_order failed: #{e.class}: #{e.message}"
-    nil
-  end
 
   def requested_private_url?
     !requested_public_url?
