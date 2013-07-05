@@ -1,5 +1,5 @@
-server "wpc", :app, :web, :db, :primary => true
-set :deploy_to, "/point-gaming-rails"
+server "pg", :app, :web, :db, :primary => true
+set :deploy_to, "/srv/point-gaming-rails"
 
 set :use_sudo, false
 
