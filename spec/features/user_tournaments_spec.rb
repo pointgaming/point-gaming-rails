@@ -147,14 +147,6 @@ feature 'User Tournaments' do
       end
 
       context 'with invalid attributes' do
-        it "displays errors when left blank" do
-          within 'form[data-hook=prize-pool-form]' do
-            click_button 'Next'
-          end
-
-          expect(page).to have_selector 'div.alert-error'
-        end
-
         it "displays errors with non-numeric input" do
           within 'form[data-hook=prize-pool-form]' do
             fill_in "tournament_prizepool_1", with: 'a'
