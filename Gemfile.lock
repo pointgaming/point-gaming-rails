@@ -1,6 +1,6 @@
 GIT
   remote: git@github.com:pointgaming/point-gaming-core.git
-  revision: 3e3424bbefaea4a3360e7ba5bd157a2d9325a753
+  revision: 147fc63f33cc74ef229cf1eb5c7a22d75be7a044
   branch: master
   specs:
     point_gaming (0.0.29)
