@@ -44,16 +44,12 @@ class UserTournamentsController < ApplicationController
 
   end
 
-  def status
-
-  end
-
   def users
     @collaborators = @tournament.collaborators
     @invites = @tournament.invites
   end
 
-private
+  private
 
   def default_update_action
     if update_params[:prizepool].present?

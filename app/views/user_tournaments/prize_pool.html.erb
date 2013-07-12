@@ -3,7 +3,7 @@
 <% end %>
 <div class="row-fluid" id="tournaments">
   <h1>Tournament: <%= @tournament.name %></h1>
-  <%= render :partial => 'workflow_navigation' %>
+  <%= render :partial => 'tournaments/workflow_navigation' %>
   <%= form_for [:user, @tournament], html: { :class => 'form-horizontal', :'data-hook'=>'prize-pool-form' } do |f| %>
     <%= render partial: 'shared/form_errors', locals: {model: f.object} %>
 

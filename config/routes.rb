@@ -32,7 +32,7 @@ PointGamingRails::Application.routes.draw do
     resources :payments, controller: 'tournament_payments', only: [:new, :create]
     member do
       get 'prize_pool'
-      get 'status'
+      get 'status', to: 'tournament_status#show'
       get 'users'
     end
   end

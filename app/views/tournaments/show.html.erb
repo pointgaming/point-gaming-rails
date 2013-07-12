@@ -1,0 +1,16 @@
+<% content_for :footer_scripts do %>
+  <%= javascript_include_tag "pages/user_tournaments" %>
+<% end %>
+
+<div class="row-fluid" id="tournaments">
+  <div class="row-fluid">
+    <div class="span9">
+      <%= render :partial => 'tournaments/show' %>
+    </div>
+
+    <div class="span3">
+      <%= render :partial => 'tournaments/sponsors' %>
+    </div>
+  </div>
+
+</div>

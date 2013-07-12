@@ -1,13 +1,16 @@
 class TournamentsController < ApplicationController
   before_filter :authenticate_user!
 
+  respond_to :html, :json
+
   def index
-    @tournaments = []
+    @tournaments = Tournament.activated.order_by(start_datetime: :asc).all
+    respond_with(@tournaments)
   end
 
   def show
     @tournament = Tournament.find_by(slug: params[:id])
-    render 'user_tournaments/show', locals: { hide_workflow: true }
+    respond_with(@tournament)
   end
 
 end

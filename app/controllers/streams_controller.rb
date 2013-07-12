@@ -2,8 +2,11 @@ class StreamsController < ApplicationController
   before_filter :authenticate_user!, except: [:embedded_content]
   before_filter :ensure_stream, only: [:show, :embedded_content]
 
+  respond_to :html, :json
+
   def index
     @streams = Stream.where(streaming: true).order_by(viewer_count: 'DESC').all
+    respond_with(@streams)
   end
 
   def show
@@ -24,8 +27,12 @@ class StreamsController < ApplicationController
 private
 
   def ensure_stream
-    @stream = Stream.where(slug: params[:id]).first
-    raise Mongoid::Errors::DocumentNotFound unless @stream.present?
+    @stream = Stream.find_by(slug: params[:id])
+  rescue Mongoid::Errors::DocumentNotFound
+    message = 'That stream was not found'
+    respond_with({ errors: [message] }, status: 404) do |format|
+      format.html { redirect_to streams_path, alert: message }
+    end
   end
 
 end
