@@ -1,6 +1,6 @@
 GIT
   remote: git@github.com:pointgaming/point-gaming-core.git
-  revision: 8cf950dbe42e1e8e4ef01e9f3272af88476a2690
+  revision: 09e05d12fce56648cc192f38858bfc2a4ac77056
   branch: master
   specs:
     point_gaming (0.0.31)
@@ -111,11 +111,11 @@ GEM
     coderay (1.0.9)
     database_cleaner (1.0.1)
     debug_inspector (0.0.2)
-    devise (2.2.4)
+    devise (3.0.0)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.1)
-      railties (~> 3.1)
-      warden (~> 1.2.1)
+      railties (>= 3.2.6, < 5)
+      warden (~> 1.2.3)
     diff-lcs (1.2.4)
     erubis (2.7.0)
     execjs (1.4.0)
@@ -359,7 +359,7 @@ GEM
     validates_email_format_of (1.5.3)
     vegas (0.1.11)
       rack (>= 1.0.0)
-    warden (1.2.2)
+    warden (1.2.3)
       rack (>= 1.0)
     websocket (1.0.7)
     whenever (0.8.2)
