@@ -24,7 +24,7 @@ GIT
 
 GIT
   remote: git@github.com:pointgaming/point-gaming-frontend.git
-  revision: 98aac23f5bee8e7b1e7e87a81f5d83517dbce9de
+  revision: 2b028f6378e1c0ad1c730f8f25df5219eef8f7f2
   branch: master
   specs:
     point_gaming_frontend (0.0.2)
