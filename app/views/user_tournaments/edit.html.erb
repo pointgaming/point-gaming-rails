@@ -1,3 +1,7 @@
+<% content_for :footer_scripts do %>
+  <%= javascript_include_tag "pages/user_tournaments" %>
+<% end %>
+
 <%- model_class = Tournament -%>
 <div class="row-fluid" id="tournaments">
   <h1><%=t '.title', :default => [:'helpers.titles.edit', 'Edit %{model}'], :model => model_class.model_name.human %></h1>
@@ -8,7 +12,7 @@
 
   <div class="row-fluid">
     <div class="span9">
-      <%= render :partial => 'form', locals: {edit: true} %>
+      <%= render :partial => 'tournaments/form', locals: { form_object: [:user, @tournament], cancel_url: tournaments_path } %>
     </div>
     <div class="span3">
       <%= render :partial => 'sponsors', locals: {edit: true} %>
