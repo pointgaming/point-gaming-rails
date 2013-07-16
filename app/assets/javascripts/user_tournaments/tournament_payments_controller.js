@@ -4,22 +4,13 @@
   window.PointGaming.controllers.tournament_payments = {
 
     init: function(){
+      var workflow_widget = new window.PointGaming.views.tournament_workflow_widget();
     },
 
     new: function(){
-      $(document).on('change', '#payment-source-widget input[type=radio]', helpers.showPaymentSourceFields);
+      var form = new window.PointGaming.views.tournament_payment_form();
     }
     
-  };
-
-  var helpers = {
-
-    showPaymentSourceFields: function(){
-      var payment_source = $(this).val() || "";
-      $('[data-hook=payment-source-fields]').hide();
-      $('#payment_source_fields_' + payment_source).show();
-    }
-
   };
 
 })(window);

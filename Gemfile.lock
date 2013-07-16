@@ -24,7 +24,7 @@ GIT
 
 GIT
   remote: git@github.com:pointgaming/point-gaming-frontend.git
-  revision: 2b028f6378e1c0ad1c730f8f25df5219eef8f7f2
+  revision: 534e2f2331408420842d57ebaa1493db0c89e216
   branch: master
   specs:
     point_gaming_frontend (0.0.2)
@@ -49,7 +49,7 @@ GEM
       rack-cache (~> 1.2)
       rack-test (~> 0.6.1)
       sprockets (~> 2.2.1)
-    active_hash (1.0.0)
+    active_hash (1.0.1)
       activesupport (>= 2.2.2)
     activemodel (3.2.13)
       activesupport (= 3.2.13)

@@ -11,6 +11,8 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 //= require point_gaming_frontend
+//= require point_gaming_frontend_views
+//= require_tree ./views/
 //= require jquery.remotipart
 //= require twitter/bootstrap/bootstrap-tooltip
 //= require twitter/bootstrap/bootstrap-popover
