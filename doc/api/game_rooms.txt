@@ -1,13 +1,5 @@
 Game Rooms
 
-TODO:
-- Remove betting field
-- Add fields user_betting, team_betting and members_required_per_team
-- GameRoom.max_member_count validation should be improved to require an integer value with a min/max?
-- GameRoom.description validation should be improved to have a max length?
-- A game room should be able to advertise its existence within a Games chatroom (GameRoom.is_advertising)
-- A game room owner should be able to prevent other users from joining a game room by requiring a password or specify that the game room is invite only (GameRoom.is_locked)
-
 
 
 List Game Rooms:
