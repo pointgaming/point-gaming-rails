@@ -1,6 +1,6 @@
 GIT
   remote: git@github.com:pointgaming/point-gaming-core.git
-  revision: 05f7d2191a23b30af3a0294198114812c4d6ab03
+  revision: 5df3b02570d4a57a11f4425141085e5fa976653d
   branch: master
   specs:
     point_gaming (0.0.31)
@@ -24,7 +24,7 @@ GIT
 
 GIT
   remote: git@github.com:pointgaming/point-gaming-frontend.git
-  revision: baf8f7fbdefcb5b3205ed9cde90b0d45de148053
+  revision: d886b0fd3273cfa1ccdb3442a729be3424b1f5d8
   branch: master
   specs:
     point_gaming_frontend (0.0.2)
@@ -192,9 +192,8 @@ GEM
     oj (2.1.2)
     origin (1.1.0)
     orm_adapter (0.4.0)
-    paperclip (3.4.2)
+    paperclip (3.5.0)
       activemodel (>= 3.0.0)
-      activerecord (>= 3.0.0)
       activesupport (>= 3.0.0)
       cocaine (~> 0.5.0)
       mime-types
