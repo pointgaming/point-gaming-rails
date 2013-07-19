@@ -30,7 +30,7 @@ private
   end
 
   def requested_public_url?
-    request.env['PATH_INFO'].start_with?('/s/') && request.env['PATH_INFO'].ends_with?('/embedded_content')
+    false
   end
 
   def user_time_zone(&block)

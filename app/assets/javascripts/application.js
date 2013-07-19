@@ -12,6 +12,7 @@
 //
 //= require point_gaming_frontend
 //= require point_gaming_frontend_views
+//= require_tree ./controllers/
 //= require_tree ./views/
 //= require jquery.remotipart
 //= require twitter/bootstrap/bootstrap-tooltip

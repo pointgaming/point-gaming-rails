@@ -1,0 +1,25 @@
+<div class="post">
+  <h1 class="post-title"><%= link_to news.title, news %></h1>
+  <% if news.image.present? %>
+    <%= image_tag news.image.url(:medium) %>
+  <% end %>
+  <div class="text-block">
+    <p><%= truncate(news.content, :length => 255, :omission => '...') %></p>
+  </div>
+  <div class="well clearfix">
+    <time class="date well span2" datetime="<%= ldate news.created_at %>"><%= ldate news.created_at.to_date %></time>
+    <nav class="sub-nav span5">
+      <ul>
+        <li><%= link_to "Learn More", news %></li>
+        <li><%= link_to "#{news.comment_count} Comments", news_path(news, anchor: 'comments') %></li>
+      </ul>
+    </nav>
+    <nav class="share-icons span5">
+      <ul>
+        <li><a href="#"><%= image_tag "ico-facebook-share.png", alt: "facebook share", width: "61", height: "20" %></a></li>
+        <li><a href="#"><%= image_tag "ico-tweet.png", alt: "tweet", width: "55", height: "20" %></a></li>
+        <li><a href="#"><%= image_tag "ico-google+1.png", alt: "google+1", width: "32", height: "20" %></a></li>
+      </ul>
+    </nav>
+  </div>
+</div>
