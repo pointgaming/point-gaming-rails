@@ -1,52 +1,59 @@
-<div class="widget">
+<div id="account-balance-widget" class="widget">
   <div class="widget-header">
     <i class="icon-tags icon-white"></i>
     <h3>Account Balance</h3>
   </div>
   <div class="widget-content">
-    <div class="container-fluid">
+    <table class="table table-bordered table-striped">
+      <tbody>
 
-      <div class="row-fluid">
-        <h4>
-          Points
-          <div class="pull-right">
-            <%= @user.points %>
-          </div>
-        </h4>
-      </div>
-
-      <div class="row-fluid">
-        <h4>
-          Cash
-          <div class="pull-right">
-            <%= number_to_currency @user.cash %>
-          </div>
-          <div class="sub-heading">
-            Tournament winnings and stream commissions
-          </div>
-        </h4>
-      </div>
-
-      <div class="row-fluid">
-        <h4>
-          Pro Subscriptions
-          <div class="pull-right">
-            <% if @user_subscription.present? %>
+        <tr>
+          <td>
+            <h4>
+              Points
               <div class="pull-right">
-                <%= @user_subscription.days_until_expiration_date %>
+                <%= @user.points %>
               </div>
-              <br />
-              <div class="sub-heading">
-                Expiration date <%= ldate @user_subscription.expiration_date %>
-              </div>
-            <% else %>
-              0
-            <% end %>
-          </div>
-        </h4>
-      </div>
+            </h4>
+          </td>
+        </tr>
 
-    </div>
+        <tr>
+          <td>
+            <h4>
+              Cash
+              <div class="pull-right">
+                <%= number_to_currency @user.cash %>
+              </div>
+              <div class="sub-heading">
+                Tournament winnings and stream commissions
+              </div>
+            </h4>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <h4>
+              Pro Subscriptions
+              <div class="pull-right">
+                <% if @user_subscription.present? %>
+                  <div class="pull-right">
+                    <%= @user_subscription.days_until_expiration_date %>
+                  </div>
+                  <br />
+                  <div class="sub-heading">
+                    Expiration date <%= ldate @user_subscription.expiration_date %>
+                  </div>
+                <% else %>
+                  0
+                <% end %>
+              </div>
+            </h4>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>
 
