@@ -7,6 +7,8 @@ Fabricator(:tournament) do
   start_datetime { DateTime.now }
   signup_start_datetime { DateTime.now }
   signup_end_datetime { DateTime.tomorrow }
+  check_in_start_datetime { DateTime.tomorrow }
+  check_in_end_datetime { DateTime.tomorrow }
   player_limit 128
   format 'single_elimination'
   type 'open'

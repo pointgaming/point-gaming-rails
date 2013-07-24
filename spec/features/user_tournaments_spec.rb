@@ -1,5 +1,23 @@
 require 'spec_helper'
 
+def fill_in_tournament_form(tournament)
+  fill_in :tournament_name, with: tournament.name
+  fill_in :tournament_slug, with: tournament.slug
+  fill_in :tournament_stream_slug, with: tournament.stream_slug
+  fill_in :tournament_signup_start_datetime, with: ldate(tournament.signup_start_datetime)
+  fill_in :tournament_signup_end_datetime, with: ldate(tournament.signup_end_datetime)
+  fill_in :tournament_check_in_start_datetime, with: ldate(tournament.check_in_start_datetime)
+  fill_in :tournament_check_in_end_datetime, with: ldate(tournament.check_in_end_datetime)
+  fill_in :tournament_start_datetime, with: ldate(tournament.start_datetime)
+  fill_in :tournament_player_limit, with: tournament.player_limit
+  select_option :tournament_format, tournament.format
+  select_option :tournament_type, tournament.type
+  select_option :tournament_game_id, tournament.game_id
+  select_option :tournament_game_type_id, tournament.game_type_id
+  fill_in :tournament_maps, with: tournament.maps
+  fill_in :tournament_details, with: tournament.details
+end
+
 shared_examples_for 'current_status_row' do
   it "status row is marked as incompleted" do
     status_row = find('tr', text: status_text)
@@ -55,19 +73,7 @@ feature 'User Tournaments' do
       it "adds a tournament to the database", js: true do
         visit '/user_tournaments/new'
         expect {
-          fill_in :tournament_name, with: tournament.name
-          fill_in :tournament_slug, with: tournament.slug
-          fill_in :tournament_stream_slug, with: tournament.stream_slug
-          fill_in :tournament_signup_start_datetime, with: ldate(tournament.signup_start_datetime)
-          fill_in :tournament_signup_end_datetime, with: ldate(tournament.signup_end_datetime)
-          fill_in :tournament_start_datetime, with: ldate(tournament.start_datetime)
-          fill_in :tournament_player_limit, with: tournament.player_limit
-          select_option :tournament_format, tournament.format
-          select_option :tournament_type, tournament.type
-          select_option :tournament_game_id, tournament.game_id
-          select_option :tournament_game_type_id, tournament.game_type_id
-          fill_in :tournament_maps, with: tournament.maps
-          fill_in :tournament_details, with: tournament.details
+          fill_in_tournament_form(tournament)
           click_button 'Next'
         }.to change(Tournament, :count).by(1)
       end
