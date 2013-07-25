@@ -23,7 +23,7 @@ PointGamingRails::Application.routes.draw do
   end
   resources :leagues
   resources :tournaments, only: [:index, :show] do
-    resources :players, controller: 'tournament_players', only: [:create, :destroy]
+    resources :players, controller: 'tournament_players', only: [:create, :update, :destroy]
     resources :sponsors, controller: 'tournament_sponsors', except: [:index, :show]
   end
   resources :user_tournaments do
