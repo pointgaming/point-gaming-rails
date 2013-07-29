@@ -4,6 +4,27 @@ describe Api::V1::GameRoomsController do
   let(:user) { Fabricate(:user) }
   let(:request_params) { {id: game_room._id, api_token: node_api_token, user_id: user._id, format: :json} }
 
+  describe '#show' do
+    render_views
+    let(:game_room) { Fabricate(:game_room) }
+
+    context 'with valid room' do
+      before(:each) do
+        get :show, request_params
+      end
+
+      it 'response status is 200' do
+        expect(response.status).to eq(200)
+      end
+
+      it 'returns correct json' do
+        json = JSON.parse(response.body)
+        expect(json).should_not be_nil
+        expect(json['game_room']['_id'].to_s).to eq(game_room.id.to_s)
+      end      
+    end
+  end
+
   describe '#join' do
     let(:game_room) { Fabricate(:game_room) }
 
