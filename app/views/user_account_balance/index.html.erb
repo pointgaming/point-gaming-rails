@@ -12,7 +12,7 @@
             <h4>
               Points
               <div class="pull-right">
-                <%= @user.points %>
+                <%= link_to @user.points, user_points_path(@user.slug) %>
               </div>
             </h4>
           </td>
@@ -23,7 +23,7 @@
             <h4>
               Cash
               <div class="pull-right">
-                <%= number_to_currency @user.cash %>
+                <%= link_to number_to_currency(@user.cash), user_cash_index_path(@user.slug) %>
               </div>
               <div class="sub-heading">
                 Tournament winnings and stream commissions

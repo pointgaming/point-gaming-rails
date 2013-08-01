@@ -4,7 +4,7 @@
 <h3>Match Information</h3>
 <dl class="dl-horizontal">
   <dt><strong><%= Match.human_attribute_name(:details) %>:</strong></dt>
-  <dd><%= match_details(@bet.match, :short) %></dd>
+  <dd><%= @bet.match.decorate.details(:short) %></dd>
   <dt><strong><%= Match.human_attribute_name(:created_at) %>:</strong></dt>
   <dd><%= ldate @bet.match.created_at %></dd>
   <dt><strong><%= Match.human_attribute_name(:state) %>:</strong></dt>

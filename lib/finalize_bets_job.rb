@@ -16,13 +16,13 @@ class FinalizeBetsJob
         elsif bet.offerer_choice_id === match.winner_id && bet.offerer_choice_type === match.winner_type
           bet.update_attribute(:outcome, :offerer_won)
 
-          bet.taker.transfer_points_to_user(bet.offerer, bet.taker_wager)
+          UserPointService.new(bet.taker).transfer(bet.offerer, bet.taker_wager, bet)
           Resque.enqueue RecalculateUserMatchesParticipatedInCountJob, bet.offerer._id
           Resque.enqueue RecalculateUserMatchesParticipatedInCountJob, bet.taker._id
         else
           bet.update_attribute(:outcome, :taker_won)
 
-          bet.offerer.transfer_points_to_user(bet.taker, bet.offerer_wager)
+          UserPointService.new(bet.offerer).transfer(bet.taker, bet.offerer_wager, bet)
           Resque.enqueue RecalculateUserMatchesParticipatedInCountJob, bet.offerer._id
           Resque.enqueue RecalculateUserMatchesParticipatedInCountJob, bet.taker._id
         end

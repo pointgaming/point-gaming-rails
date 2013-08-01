@@ -15,7 +15,7 @@
       <tr>
         <td><%= link_to dispute.id, dispute_path(dispute) %></td>
         <td><%= link_to dispute.owner.try(:username), dispute.owner %></td>
-        <td><%= link_to match_details(dispute.match, :short), match_path(dispute.match) %></td>
+        <td><%= link_to dispute.match.decorate.details(:short), match_path(dispute.match) %></td>
         <td><%= dispute.state %></td>
         <td><%=ldate dispute.updated_at %></td>
         <td>

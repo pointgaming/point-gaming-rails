@@ -27,27 +27,6 @@ describe User do
         user.points.should == 70
       end
     end
-
-    describe 'transfer_points_to_user' do
-      let(:another_user) { Fabricate.build(:user) }
-
-      it "raises an error with an invalid user" do
-        lambda { user.transfer_points_to_user(:wat, 25) }.should raise_error
-      end
-
-      it "raises an error with an invalid amount" do
-        lambda { user.transfer_points_to_user(another_user, :wat) }.should raise_error
-      end
-
-      it "transfers points" do
-        user.points = 50
-        another_user.points = 0
-
-        user.transfer_points_to_user(another_user, 50)
-        user.points.should == 0
-        another_user.points.should == 50
-      end
-    end
   end
 
   describe "reputation" do

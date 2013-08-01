@@ -43,10 +43,10 @@ class ProcessDisputeOutcomeJob
       lambda {|bet| 
         if bet.outcome === 'taker_won' && bet.offerer_choice_id === dispute.winner_id && bet.offerer_choice_type === dispute.winner_type
           bet.update_attribute(:outcome, :offerer_won)
-          bet.taker.transfer_points_to_user(bet.offerer, bet.offerer_wager + bet.taker_wager)
+          UserPointService.new(bet.taker).transfer(bet.offerer, bet.offerer_wager + bet.taker_wager, dispute)
         elsif bet.outcome === 'offerer_won' && bet.taker_choice_id === dispute.winner_id && bet.taker_choice_type === dispute.winner_type
           bet.update_attribute(:outcome, :taker_won)
-          bet.offerer.transfer_points_to_user(bet.taker, bet.taker_wager + bet.offerer_wager)
+          UserPointService.new(bet.offerer).transfer(bet.taker, bet.taker_wager + bet.offerer_wager, dispute)
         end
       }
     elsif dispute.outcome === 'void_match'
@@ -56,9 +56,9 @@ class ProcessDisputeOutcomeJob
         Resque.enqueue RecalculateUserMatchesParticipatedInCountJob, bet.offerer._id
         Resque.enqueue RecalculateUserMatchesParticipatedInCountJob, bet.taker._id
         if original_outcome === 'taker_won'
-          bet.taker.transfer_points_to_user(bet.offerer, bet.offerer_wager)
+          UserPointService.new(bet.taker).transfer(bet.offerer, bet.offerer_wager, dispute)
         elsif original_outcome === 'offerer_won'
-          bet.offerer.transfer_points_to_user(bet.taker, bet.taker_wager)
+          UserPointService.new(bet.offerer).transfer(bet.taker, bet.taker_wager, dispute)
         end
       }
     else

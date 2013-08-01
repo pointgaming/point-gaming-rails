@@ -20,7 +20,7 @@
   <tbody>
     <% @matches.each do |match| %>
       <tr>
-        <td><%= link_to match_details(match, :short), polymorphic_path([@room, match]) %></td>
+        <td><%= link_to match.decorate.details(:short), polymorphic_path([@room, match]) %></td>
         <td><%= match.state %></td>
         <td><%= match.winner.try(:display_name) %></td>
         <td><%= ldate match.created_at %></td>

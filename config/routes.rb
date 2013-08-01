@@ -80,7 +80,7 @@ PointGamingRails::Application.routes.draw do
     namespace :v1 do
       resources :users do
         member do
-          put 'increment_points'
+          put 'increment_points_for_store_order'
         end
       end
       resources :coins
@@ -141,6 +141,8 @@ PointGamingRails::Application.routes.draw do
     resources :sponsors, controller: 'user_sponsors', except: [:index, :show]
     resources :friends, controller: 'user_friends', only: [:index]
     resources :account_balance, controller: 'user_account_balance', only: [:index]
+    resources :points, controller: 'user_points', only: [:index]
+    resources :cash, controller: 'user_cash', only: [:index]
   end
 
   get "/u/:user_id/avatar/edit", :to => "user_avatar#edit", as: 'edit_user_avatar'

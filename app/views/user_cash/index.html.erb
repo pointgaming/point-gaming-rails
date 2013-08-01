@@ -1,0 +1,52 @@
+<div id="cash-widget" class="widget">
+  <div class="widget-header">
+    <i class="icon-tags icon-white"></i>
+    <h3>Cash</h3>
+  </div>
+  <div class="widget-content">
+    <table class="table table-bordered table-striped">
+      <tbody>
+        <tr>
+          <td>
+            <h4>
+              Cash
+              <div class="pull-right">
+                <%= number_to_currency(@user.cash) %>
+              </div>
+            </h4>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="pull-right">
+              <%= link_to 'Withdraw', '#', class: 'btn' %>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="page-header">
+  <h1>Cash History</h1>
+</div>
+
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th><%= UserCashHistory.human_attribute_name(:created_at) %></th>
+      <th><%= UserCashHistory.human_attribute_name(:description) %></th>
+      <th><%= UserCashHistory.human_attribute_name(:amount) %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @cash_history.each do |cash_history| %>
+      <tr>
+        <td><%= ldate cash_history.created_at %></td>
+        <td><%= cash_history.description %></td>
+        <td><%= number_to_currency cash_history.amount  %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

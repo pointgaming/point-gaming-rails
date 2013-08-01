@@ -57,6 +57,8 @@ en:
         matches_participated_in_count: 'Matches participated in'
         match_dispute_won_count: 'Disputes won'
         match_dispute_lost_count: 'Disputes lost'
+      user_point_history:
+        action_source: 'Type'
   search:
     type:
       spree/product: "Store"

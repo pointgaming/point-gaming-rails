@@ -9,7 +9,7 @@
     <span id="stream-name" data-content="<%= @stream.details %>">
       <%= @stream.name %>
       <span id="stream-match-details">
-        <%= " - #{match_details(@stream.match)}" if @stream.match %>
+        <%= " - #{@stream.match.decorate.details}" if @stream.match %>
       </span>
     </span>
   </h2>

@@ -11,7 +11,7 @@
         <div class="control-group">
           <%= label @match, :details, :class => 'control-label' %>
           <div class="controls">
-            <%= match_details(@match, :short) %>
+            <%= @match.decorate.details(:short) %>
           </div>
         </div>
 

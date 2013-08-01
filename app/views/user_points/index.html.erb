@@ -1,0 +1,56 @@
+<div id="points-widget" class="widget">
+  <div class="widget-header">
+    <i class="icon-tags icon-white"></i>
+    <h3>Points</h3>
+  </div>
+  <div class="widget-content">
+    <table class="table table-bordered table-striped">
+      <tbody>
+        <tr>
+          <td>
+            <h4>
+              Points
+              <div class="pull-right">
+                <%= @user.points %>
+              </div>
+            </h4>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div id="graph" class="aGraph"></div>
+          </td>
+        <tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="page-header">
+  <h1>Point History</h1>
+</div>
+
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th><%= UserPointHistory.human_attribute_name(:created_at) %></th>
+      <th><%= UserPointHistory.human_attribute_name(:description) %></th>
+      <th><%= UserPointHistory.human_attribute_name(:action_source) %></th>
+      <th><%= UserPointHistory.human_attribute_name(:points) %></th>
+      <th><%=t '.actions', :default => t("helpers.actions") %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @point_history.each do |point_history| %>
+      <tr>
+        <td><%= ldate point_history.created_at %></td>
+        <td><%= point_history.description %></td>
+        <td><%= point_history.action_source_type %></td>
+        <td><%= point_history.amount %></td>
+        <td>
+          <%= link_to :View, '#', :class => 'btn btn-mini' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

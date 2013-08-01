@@ -10,6 +10,7 @@
 // WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
 // GO AFTER THE REQUIRES BELOW.
 //
+//= require d3.v3.min
 //= require point_gaming_frontend
 //= require point_gaming_frontend_views
 //= require_tree ./controllers/
