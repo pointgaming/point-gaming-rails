@@ -19,7 +19,7 @@ describe Api::V1::GameRoomsController do
 
       it 'returns correct json' do
         json = JSON.parse(response.body)
-        expect(json).should_not be_nil
+        expect(json).to_not be_nil
         expect(json['game_room']['_id'].to_s).to eq(game_room.id.to_s)
       end      
     end
