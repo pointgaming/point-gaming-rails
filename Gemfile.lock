@@ -202,6 +202,7 @@ GEM
       activesupport (>= 3.0.0)
       cocaine (~> 0.5.0)
       mime-types
+    pg (0.15.1)
     polyglot (0.3.3)
     pry (0.9.12.2)
       coderay (~> 1.0.5)
@@ -316,6 +317,7 @@ GEM
       multi_json (~> 1.0)
       rubyzip
       websocket (~> 1.0.4)
+    sequel (3.45.0)
     simplecov (0.7.1)
       multi_json (~> 1.0)
       simplecov-html (~> 0.7.1)
@@ -399,6 +401,7 @@ DEPENDENCIES
   meta_request
   mongoid-rspec
   oj
+  pg
   point_gaming!
   point_gaming_frontend!
   quiet_assets
@@ -413,6 +416,7 @@ DEPENDENCIES
   rspec-rails
   sanitize
   selenium-webdriver
+  sequel
   simplecov
   spring
   turbo-sprockets-rails3

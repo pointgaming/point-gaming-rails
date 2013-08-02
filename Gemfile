@@ -12,6 +12,8 @@ gem 'rabl-rails'
 gem 'oj'
 gem 'remotipart', '~> 1.0'
 gem 'sanitize'
+gem "pg"
+gem "sequel"
 
 group :assets do
   gem 'uglifier', '>= 1.0.3'
