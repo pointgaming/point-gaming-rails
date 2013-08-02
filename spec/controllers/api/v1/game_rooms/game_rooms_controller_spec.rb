@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Api::V1::GameRoomsController do
+describe Api::GameRooms::GameRoomsController do
   let(:user) { Fabricate(:user) }
   let(:request_params) { {id: game_room._id, api_token: node_api_token, user_id: user._id, format: :json} }
 
@@ -20,7 +20,8 @@ describe Api::V1::GameRoomsController do
       it 'returns correct json' do
         json = JSON.parse(response.body)
         expect(json).to_not be_nil
-        expect(json['game_room']['_id'].to_s).to eq(game_room.id.to_s)
+        expect(json['_id'].to_s).to eq(game_room.id.to_s)
+        expect(json['game_id'].to_s).to eq(game_room.game_id.to_s)
       end      
     end
   end

@@ -46,6 +46,7 @@ PointGamingRails::Application.routes.draw do
   resources :game_rooms do
     resources :matches, only: [:index, :new, :show, :create, :destroy]
   end
+
   resources :teams, controller: 'teams', as: 'teams', only: [:index, :create]
   resources :t, controller: 'teams', as: 'teams', except: [:index, :create] do
     collection do
@@ -94,7 +95,6 @@ PointGamingRails::Application.routes.draw do
           put 'cancel'
           put 'finalize'
         end
-        resources :bets, only: [:new, :show, :create, :update, :destroy]
       end
       resources :disputes, only: [:show] do
         member do
@@ -108,11 +108,15 @@ PointGamingRails::Application.routes.draw do
         end
         resources :matches, only: [:index, :new, :show, :create, :destroy]
       end
+    end
+
+    scope module: :game_rooms do
       resources :game_rooms, only: [:show, :destroy] do
         member do
           put 'join'
           put 'leave'
         end
+        resources :bets, except: [:edit]
       end
     end
   end

@@ -5,14 +5,14 @@ describe MatchesController do
 
   describe '#create' do
     let(:user) { Fabricate(:user) }
-    let(:game) { Fabricate(:game) }
+    let(:game) { Fabricate(:game) }  
 
     let(:player1) { Fabricate(:user) }
     let(:player2) { Fabricate(:user) }
 
     before(:each) { sign_in(:user, user) }
 
-    context 'when user is logged in and owner' do
+    context 'when user is logged in and room owner' do
       let(:game_room) { Fabricate(:game_room, {game: game, owner: user}) }
       let(:request_params) { {game_room_id: game_room._id, api_token: node_api_token, user_id: user._id, format: :json} }
 
@@ -54,9 +54,6 @@ describe MatchesController do
         expect(match['default_offerer_odds']).to eq( request_params[:match][:default_offerer_odds] )
         expect(match['map']).to eq( request_params[:match][:map] )
       end
-    end
-
-    context 'when user is logged in and member' do
-    end    
+    end 
   end
 end
