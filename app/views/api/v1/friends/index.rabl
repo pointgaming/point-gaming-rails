@@ -1,4 +1,4 @@
 object false
 child(:@friends) do
-  attributes :_id, :username, :status
+  attributes :_id, :username, :status, :avatar
 end
