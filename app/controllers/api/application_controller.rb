@@ -32,6 +32,10 @@ protected
                                valid_api_token?(APP_CONFIG['forum_api_auth_token'])
   end
 
+  def render_success
+    render json: {}, status: 200
+  end
+
   def render_not_found
     render json: {}, status: 404
   end

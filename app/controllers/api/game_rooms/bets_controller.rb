@@ -4,7 +4,7 @@ module Api
 	  before_filter :authenticate_user!
 	  before_filter :ensure_params, only: [:create]
 	  before_filter :ensure_bet_match, only: [:create]
-	  before_filter :ensure_bet, only: [:create]
+	  before_filter :ensure_game_room_bet, only: [:show]
 	  before_filter :ensure_offerer_choice, only: [:create]
 	  before_filter :ensure_taker_choice, only: [:create]
 
@@ -20,25 +20,51 @@ module Api
 	  end
 
 	  def show
+        render json: @bet.as_json(:include => :match), status: 200
+	  end
+
+	  def index
+	  	@bets = Bet.where(:match_id.in => @game_room.match_ids)
+	  	respond_with :api, @bets
+	  end
+
+	  def destroy
+	  	if @bet.match.is_new_state? && can_admin_bet?
+          render_success
+	  	else
+	  	  render_unauthorized 
+	  	end
 	  end
 
       protected
 
   	    def ensure_params
  	      if params[:bet].blank?
-	        respond_to do |format|
-	          format.html { redirect_to polymorphic_path(@game_room), alert: 'Invalid or missing parameters.' }
-              format.json { render json: [], status: :unprocessable_entity }
-	        end
-	      end
+            render json: {errors: ["Invalid or missing parameters."]}, status: :unprocessable_entity
+          end
+	    end
+
+	    def ensure_game_room_bet
+          @bet = Bet.where(id: params[:id]).first
+          unless @bet && @bet.match.room == @game_room
+            render json: {errors: ["The specified bet was not found."]}, status: :unprocessable_entity
+          end
 	    end
 
 	    def ensure_bet
-          @bet = Bet.new(params[:bet])
+          @bet = Bet.where(match: @match).find params[:id]
+          unless @bet
+            render json: {errors: ["The specified bet was not found."]}, status: :unprocessable_entity
+	      end
 	    end
 
 	    def ensure_bet_match
-	      if params[:bet][:match]
+          @bet = Bet.new(params[:bet])
+          if !@game_room.match.nil?
+	      	render json: {errors: ["The room already has a match"]}, status: :unprocessable_entity
+	      elsif @game_room.betting == false
+            render json: {errors: ["Betting not avalable in room."]}, status: :unprocessable_entity
+	      elsif params[:bet][:match]
 	      	@match = Match.new params[:bet][:match]
 	      	@match.room_type = 'GameRoom'
 	      	@match.room = @game_room
@@ -73,6 +99,12 @@ module Api
           else
 	        nil
 	      end
+        end
+
+      private
+
+        def can_admin_bet?
+          @bet.game_room.owner == current_user || @bet.offerer == current_user
         end
     end
   end

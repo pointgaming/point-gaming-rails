@@ -1,9 +1,9 @@
 GIT
   remote: git@github.com:pointgaming/point-gaming-core.git
-  revision: 3124ad4d672cd3eb8276c71f380961a655ab529f
+  revision: c4dfcc179575f9f03def169e912cee5853a23d29
   branch: master
   specs:
-    point_gaming (0.0.34)
+    point_gaming (0.0.35)
       active_hash
       bunny (>= 0.9.0.pre6)
       cancan
