@@ -115,7 +115,7 @@ PointGamingRails::Application.routes.draw do
     end
 
     scope module: :game_rooms do
-      resources :game_rooms, only: [:show, :destroy] do
+      resources :game_rooms, only: [:show, :create, :destroy] do
         member do
           put 'join'
           put 'leave'

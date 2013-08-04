@@ -1,8 +1,10 @@
 module Api
   module GameRooms
     class GameRoomsController < Api::GameRooms::ContextController
-      before_filter :authenticate_node_api!
+      before_filter :authenticate_user!, only: [:create]
+      before_filter :authenticate_node_api!, except: [:create]
       before_filter :ensure_user, only: [:join, :leave]
+      skip_before_filter :ensure_game_room, only: [:create]
 
       def show
         @game_room.matches = @game_room.pending_matches
@@ -10,6 +12,15 @@ module Api
 
         respond_with(json)
       end
+
+      def create
+        @game_room = GameRoom.new(params[:game_room])
+        @game_room.game = @game_room.game
+        @game_room.owner = current_user
+        @game_room.save
+
+        respond_with(@game_room)
+      end      
 
       def destroy
         @game_room.destroy
@@ -27,14 +38,6 @@ module Api
       end
 
     protected
-
-      def ensure_game_room
-        if params[:id].present?
-          @game_room = GameRoom.find params[:id]
-        else
-          respond_with({errors: ["Missing id parameter"]}, status: 403)
-        end
-      end
 
       def ensure_user
         if params[:user_id].present?

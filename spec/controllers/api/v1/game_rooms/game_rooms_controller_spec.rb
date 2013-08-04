@@ -2,7 +2,44 @@ require 'spec_helper'
 
 describe Api::GameRooms::GameRoomsController do
   let(:user) { Fabricate(:user, {points: 100}) }
-  let(:request_params) { {id: game_room._id, api_token: node_api_token, user_id: user._id, format: :json} }
+  let(:request_params) {{
+    id: defined?(game_room) ? game_room._id : nil, 
+    api_token: node_api_token, 
+    user_id: user._id, 
+    format: :json 
+  }}
+
+  describe '#create' do
+    render_views
+    let(:game) { Fabricate(:game) }
+
+    context 'when user is logged in' do
+      before(:each) do 
+        sign_in(:user, user) 
+      end
+
+      context 'with valid params' do
+        before(:each) do
+          request_params[:game_room] = { name: 'test room', position: 101, game_id: game.id}
+        end      
+
+        it 'expects game room created' do
+          expect{ 
+            post :create, request_params
+          }.to change(GameRoom,:count).by(1)
+        end
+
+        it 'returns correct json' do
+          post :create, request_params
+            
+          json = JSON.parse(response.body)
+          expect(json).to_not be_nil
+          expect(json['owner_id'].to_s).to eq(user.id.to_s)
+          expect(json['game_id'].to_s).to eq(game.id.to_s)
+        end   
+      end
+    end
+  end
 
   describe '#show' do
     render_views
