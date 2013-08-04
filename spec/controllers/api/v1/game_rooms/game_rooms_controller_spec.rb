@@ -41,6 +41,7 @@ describe Api::GameRooms::GameRoomsController do
 
         first_bet = bets[0]
         expect(first_bet['_id']).to eq(game_room.bets.first._id.to_s)
+        expect(first_bet['match']['_id']).to eq(game_room.bets.first.match._id.to_s)
       end
     end
   end
