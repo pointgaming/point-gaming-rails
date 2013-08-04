@@ -20,7 +20,7 @@ describe Api::GameRooms::BetsController do
           request_params[:bet] = bet_params
         end
 
-        context 'with user self as chosen winner' do
+        context 'with 1v1 user betting' do
           it 'expects bet created' do
             expect{ 
               post :create, request_params
@@ -34,6 +34,26 @@ describe Api::GameRooms::BetsController do
             expect{ 
               post :create, request_params
             }.to change(Match,:count).by(1)
+          end
+        end
+
+        context 'with team betting' do
+          let(:team1) { Fabricate(:team, {name: 'team 1', slug: 'team1', tag: 'team1'}) }
+          let(:team2) { Fabricate(:team, {name: 'team 2', slug: 'team1', tag: 'team1'}) }
+          let(:member) { Fabricate(:team_member, {team: team1, user: user, rank: 'leader'}) }
+
+          before(:each) do
+            game_room.update_attribute :betting_type, 'team'
+
+          end
+
+          it 'expects bet created' do
+            expect{ 
+              post :create, request_params
+
+              json = JSON.parse(response.body)
+              expect(json['_id']).to_not be_nil
+            }.to change(Bet,:count).by(1)
           end
         end
       end

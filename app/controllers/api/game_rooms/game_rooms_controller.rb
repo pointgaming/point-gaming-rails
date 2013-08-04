@@ -4,7 +4,10 @@ module Api
       before_filter :ensure_user, only: [:join, :leave]
 
       def show
-        respond_with(@game_room)
+        @game_room.matches = @game_room.pending_matches
+        json = @game_room.as_json(:methods => [:bets])
+
+        respond_with(json)
       end
 
       def destroy

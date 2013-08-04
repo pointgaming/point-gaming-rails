@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Api::GameRooms::GameRoomsController do
-  let(:user) { Fabricate(:user) }
+  let(:user) { Fabricate(:user, {points: 100}) }
   let(:request_params) { {id: game_room._id, api_token: node_api_token, user_id: user._id, format: :json} }
 
   describe '#show' do
@@ -23,6 +23,25 @@ describe Api::GameRooms::GameRoomsController do
         expect(json['_id'].to_s).to eq(game_room.id.to_s)
         expect(json['game_id'].to_s).to eq(game_room.game_id.to_s)
       end      
+    end
+
+    context 'with bets' do
+      before(:each) do
+        match = Fabricate(:match, {room: game_room, state: 'new' })
+        game_room.matches << match
+        bet = Fabricate(:bet, {offerer: user, match: match})
+        game_room.save!
+        get :show, request_params
+      end
+
+      it 'returns correct json' do
+        json = JSON.parse(response.body)
+        bets = json['bets']
+        expect(bets.size).to eq(game_room.bets.size)
+
+        first_bet = bets[0]
+        expect(first_bet['_id']).to eq(game_room.bets.first._id.to_s)
+      end
     end
   end
 
