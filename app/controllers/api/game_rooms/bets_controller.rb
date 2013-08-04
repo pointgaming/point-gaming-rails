@@ -2,7 +2,7 @@ module Api
   module GameRooms
     class BetsController < Api::GameRooms::ContextController
 	  before_filter :authenticate_user!, except: [:index] 
-	  before_filter :ensure_params, only: [:create]
+	  before_filter :ensure_params, only: [:create, :update]
 	  before_filter :ensure_bet_match, only: [:create]
 	  before_filter :ensure_game_room_bet, only: [:show]
 	  before_filter :ensure_offerer_choice, only: [:create]
@@ -28,6 +28,12 @@ module Api
 	  	respond_with :api, @bets
 	  end
 
+	  def update
+	  	if @bet.match.is_new_state?
+	  	else
+	  	end
+	  end
+
 	  def destroy
 	  	if @bet.match.is_new_state? && can_admin_bet?
           render_success
@@ -39,9 +45,7 @@ module Api
       protected
 
   	    def ensure_params
- 	      if params[:bet].blank?
-            render json: {errors: ["Invalid or missing parameters."]}, status: :unprocessable_entity
-          end
+ 	      render_unprocessable_entity if params[:bet].blank?
 	    end
 
 	    def ensure_game_room_bet
