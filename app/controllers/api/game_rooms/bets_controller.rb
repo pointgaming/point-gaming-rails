@@ -73,6 +73,7 @@ module Api
 	      	@match.room_type = 'GameRoom'
 	      	@match.room = @game_room
 	      	@match.game = @game_room.game
+	      	@match.default_offerer_odds ||= params[:bet][:offerer_odds]
 	      	@match.player_1 = current_user
 
 	      	if !@match.save

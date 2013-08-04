@@ -36,6 +36,7 @@ describe Api::GameRooms::GameRoomsController do
           expect(json).to_not be_nil
           expect(json['owner_id'].to_s).to eq(user.id.to_s)
           expect(json['game_id'].to_s).to eq(game.id.to_s)
+          expect(json['betting']).to eq(true)
         end   
       end
     end

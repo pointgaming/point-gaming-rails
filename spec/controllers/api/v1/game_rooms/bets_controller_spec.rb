@@ -33,6 +33,9 @@ describe Api::GameRooms::BetsController do
           it 'expects match created' do
             expect{ 
               post :create, request_params
+
+              json = JSON.parse(response.body)
+              expect(assigns(:match).default_offerer_odds).to eq(request_params[:bet][:offerer_odds])
             }.to change(Match,:count).by(1)
           end
         end
@@ -129,8 +132,9 @@ def bet_params
   {
     offerer_wager: 10, 
     offerer_choice: 'player_1',
-    match: {map: 'test-map', default_offerer_odds: '1:1' 
-  }}
+    offerer_odds: '1:1',
+    match: {map: 'test-map' }
+  }
 end
 
 def create_game_room_with_owner(game, owner)
