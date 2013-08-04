@@ -1,6 +1,7 @@
 module Api
   module GameRooms
     class GameRoomsController < Api::GameRooms::ContextController
+      before_filter :authenticate_node_api!
       before_filter :ensure_user, only: [:join, :leave]
 
       def show

@@ -1,7 +1,7 @@
 module Api
   module GameRooms
     class BetsController < Api::GameRooms::ContextController
-	  before_filter :authenticate_user!
+	  before_filter :authenticate_user!, except: [:index] 
 	  before_filter :ensure_params, only: [:create]
 	  before_filter :ensure_bet_match, only: [:create]
 	  before_filter :ensure_game_room_bet, only: [:show]

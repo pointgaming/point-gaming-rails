@@ -1,7 +1,6 @@
 module Api
   module GameRooms
     class ContextController < Api::ApplicationController
-      before_filter :authenticate_node_api!
       before_filter :ensure_game_room
 
       respond_to :json

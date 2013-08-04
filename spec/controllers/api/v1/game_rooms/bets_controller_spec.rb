@@ -7,7 +7,7 @@ describe Api::GameRooms::BetsController do
     let(:user) { Fabricate(:user) }
     let(:game) { Fabricate(:game) }
     let(:game_room) { Fabricate(:game_room, {game: game, owner: user, betting_type: '1v1'}) }
-    let(:request_params) { {game_room_id: game_room._id, api_token: node_api_token, user_id: user._id, format: :json} }
+    let(:request_params) { {game_room_id: game_room._id, user_id: user._id, format: :json} }
 
     context 'when user is logged in' do
       before(:each) do 

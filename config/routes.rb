@@ -103,6 +103,9 @@ PointGamingRails::Application.routes.draw do
           put 'incrementUserViewerCount'
         end
       end
+    end
+
+    scope module: :streams do
       resources :streams, only: [:show] do
         member do
           put 'incrementViewerCount'
