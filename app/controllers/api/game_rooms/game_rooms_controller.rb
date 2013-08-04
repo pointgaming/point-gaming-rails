@@ -1,9 +1,11 @@
 module Api
   module GameRooms
     class GameRoomsController < Api::GameRooms::ContextController
-      before_filter :authenticate_user!, only: [:create]
-      before_filter :authenticate_node_api!, except: [:create]
+      before_filter :authenticate_user!, only: [:create, :update]
+      before_filter :authenticate_node_api!, except: [:create, :update]
       before_filter :ensure_user, only: [:join, :leave]
+      before_filter :ensure_params, only: [:create, :update]
+      before_filter :check_owner_params, only: [:update]
       skip_before_filter :ensure_game_room, only: [:create]
 
       def show
@@ -19,12 +21,21 @@ module Api
         @game_room.owner = current_user
         @game_room.save
 
-        respond_with(@game_room)
-      end      
+        respond_with :api, @game_room
+      end    
+
+      def update
+        params[:game_room].delete(:game_id)
+        params[:game_room].delete(:owner_id)
+        @game_room.owner = @owner unless @owner.nil?
+
+        @game_room.update_attributes(params[:game_room])
+        respond_with :api, @game_room
+      end
 
       def destroy
         @game_room.destroy
-        respond_with(@game_room)
+        respond_with :api, @game_room
       end
 
       def join
@@ -45,6 +56,17 @@ module Api
         else
           respond_with({errors: ["Missing user_id parameter"]}, status: 403)
         end
+      end
+
+      def ensure_params
+        raise ::UnprocessableEntity, "Missing game_room parameter" if params[:game_room].blank?
+      end
+
+      def check_owner_params
+        return unless params[:game_room][:owner_id]
+
+        @owner = User.find(params[:game_room][:owner_id])
+        raise ::UnprocessableEntity, "Invalid owner_id. A user with that id was not found." unless @owner
       end
     end
   end

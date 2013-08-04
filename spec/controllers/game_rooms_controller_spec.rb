@@ -3,34 +3,6 @@ require 'spec_helper'
 describe GameRoomsController do
   render_views
 
-  describe '#update' do
-    let(:user) { Fabricate(:user) }
-
-    context 'when user is logged in and owner' do
-      let(:game) { Fabricate(:game) }
-      let(:game_room) { Fabricate(:game_room, {game: game, owner: user}) }
-      let(:request_params) { {game_id: game._id, format: :json} }
-
-      before(:each) { sign_in(:user, user) }
-
-      context 'with valid params' do
-
-        before(:each) do
-          request_params[:id] = game_room.id
-          request_params[:game_room] = {betting: false, betting_type: 'team'}
-          
-          put :update, request_params
-          game_room.reload
-        end
-
-        it 'expects changes saved' do
-          expect(game_room.betting_type).to eq('team')
-          expect(game_room.betting).to eq(false)
-        end
-      end
-    end
-  end
-
   describe '#index' do
     let(:user) { Fabricate(:user) }
     let(:game) { Fabricate(:game) }

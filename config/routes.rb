@@ -43,7 +43,7 @@ PointGamingRails::Application.routes.draw do
       get 'embedded_content'
     end
   end
-  resources :game_rooms do
+  resources :game_rooms, only: [:index] do
     resources :matches, only: [:index, :new, :show, :create, :destroy]
   end
 
@@ -115,7 +115,7 @@ PointGamingRails::Application.routes.draw do
     end
 
     scope module: :game_rooms do
-      resources :game_rooms, only: [:show, :create, :destroy] do
+      resources :game_rooms, only: [:show, :create, :update, :destroy] do
         member do
           put 'join'
           put 'leave'
