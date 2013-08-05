@@ -22,6 +22,6 @@ class Api::V1::BetterController < Api::ApplicationController
       last_stamp = share[:stamp]
     end
 
-    render json: time_spent
+    render json: { seconds: time_spent }
   end
 end
