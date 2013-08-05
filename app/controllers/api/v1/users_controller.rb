@@ -13,8 +13,6 @@ class Api::V1::UsersController < Api::ApplicationController
 
   def show
     render json: { user: @user.as_json({ include: [:group], except: [:password] }) }
-  rescue
-    render json: {}, status: 404
   end
 
   def increment_points_for_store_order
