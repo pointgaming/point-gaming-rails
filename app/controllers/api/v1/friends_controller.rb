@@ -1,5 +1,5 @@
 class Api::V1::FriendsController < Api::ApplicationController
-  before_filter :authenticate_rails_app_api!
+  before_filter :authenticate_user!
 
   respond_to :json
 
