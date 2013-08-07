@@ -6,7 +6,7 @@ describe Api::GameRooms::BetsController do
   describe '#create' do
     let(:user) { Fabricate(:user) }
     let(:game) { Fabricate(:game) }
-    let(:game_room) { Fabricate(:game_room, {game: game, owner: user, betting_type: '1v1'}) }
+    let(:game_room) { create_game_room_with_owner(game, user) }
     let(:request_params) { {game_room_id: game_room._id, user_id: user._id, format: :json} }
 
     context 'when user is logged in' do
@@ -24,9 +24,6 @@ describe Api::GameRooms::BetsController do
           it 'expects bet created' do
             expect{ 
               post :create, request_params
-
-              json = JSON.parse(response.body)
-              expect(json['_id']).to_not be_nil
             }.to change(Bet,:count).by(1)
           end
 
@@ -34,10 +31,56 @@ describe Api::GameRooms::BetsController do
             expect{ 
               post :create, request_params
 
-              json = JSON.parse(response.body)
               expect(assigns(:match).default_offerer_odds).to eq(request_params[:bet][:offerer_odds])
             }.to change(Match,:count).by(1)
           end
+
+          it 'returns correct json' do
+            post :create, request_params
+              
+            json = JSON.parse(response.body)
+            expect(json).to_not be_nil
+            expect(json['_id']).to_not be_nil
+            expect(json['offerer_wager']).to eq(bet_params[:offerer_wager])
+            expect(json['offerer_choice_name']).to eq(user.username)
+
+            expect(json['match']).to_not be_nil
+            expect(json['match']['map']).to eq(bet_params[:match][:map])
+            expect(json['match']['player_1_id']).to eq(user.id.to_s)
+            expect(json['match']['player_1_type']).to eq('User')
+          end 
+        end
+
+        context 'with team user betting' do
+          let(:team) { Fabricate(:team, name: 'Test', tag: 'testing') }
+          let(:membership) { Fabricate(:team_member, user: user, team: team, rank: 'Member') }
+
+          before(:each) do
+            game_room.update_attribute :betting_type, 'team'
+            user.update_attribute :team_id, team.id
+          end
+
+          it 'expects bet created' do
+            expect{ 
+              post :create, request_params
+            }.to change(Bet,:count).by(1)
+          end
+
+          it 'returns correct json' do
+            post :create, request_params
+            user.reload
+              
+            json = JSON.parse(response.body)
+            expect(json).to_not be_nil
+            expect(json['_id']).to_not be_nil
+            expect(json['offerer_wager']).to eq(bet_params[:offerer_wager])
+            expect(json['offerer_choice_name']).to eq(user.team.name)
+
+            expect(json['match']).to_not be_nil
+            expect(json['match']['map']).to eq(bet_params[:match][:map])
+            expect(json['match']['player_1_id']).to eq(user.team.id.to_s)
+            expect(json['match']['player_1_type']).to eq('Team')
+          end 
         end
       end
 
@@ -138,7 +181,7 @@ def bet_params
 end
 
 def create_game_room_with_owner(game, owner)
-  Fabricate(:game_room, {game: game, owner: offerer, betting_type: '1v1'})
+  Fabricate(:game_room, {game: game, owner: owner, betting_type: '1v1'})
 end
 
 def create_match_with_game_room_and_player(game_room, player)
@@ -148,7 +191,6 @@ def create_match_with_game_room_and_player(game_room, player)
     map: 'test-map-00001',
     default_offerer_odds: '1:1',
     betting: false, 
-    betting_type: 'team', 
     player_1_id: player._id, 
     player_1_type: 'User',
     room_type: 'GameRoom'

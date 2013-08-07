@@ -68,13 +68,15 @@ module Api
 	      	render json: {errors: ["The room already has a match"]}, status: :unprocessable_entity
 	      elsif @game_room.betting == false
             render json: {errors: ["Betting not avalable in room."]}, status: :unprocessable_entity
+	      elsif !@game_room.is_1v1? && current_user.team.nil?
+            render json: {errors: ["No player team available for team bet."]}, status: :unprocessable_entity
 	      elsif params[:bet][:match]
 	      	@match = Match.new params[:bet][:match]
 	      	@match.room_type = 'GameRoom'
 	      	@match.room = @game_room
 	      	@match.game = @game_room.game
 	      	@match.default_offerer_odds ||= params[:bet][:offerer_odds]
-	      	@match.player_1 = current_user
+	      	@match.player_1 = @game_room.is_1v1? ? current_user : current_user.team
 
 	      	if !@match.save
               render json: {errors: ["Invalid match: #{@match.errors.full_messages.join(', ')}"]}, status: 403
