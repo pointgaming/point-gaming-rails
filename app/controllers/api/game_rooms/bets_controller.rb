@@ -7,6 +7,7 @@ module Api
 	  before_filter :ensure_game_room_bet, only: [:show]
 	  before_filter :ensure_offerer_choice, only: [:create]
 	  before_filter :ensure_taker_choice, only: [:create]
+	  before_filter :ensure_taker, only: [:update]
 
 	  def create
 	    @bet.offerer = current_user
@@ -37,9 +38,6 @@ module Api
 	  end
 
 	  def update
-	  	if @bet.match.is_new_state?
-	  	else
-	  	end
 	  end
 
 	  def destroy
@@ -68,6 +66,18 @@ module Api
           unless @bet
             render json: {errors: ["The specified bet was not found."]}, status: :unprocessable_entity
 	      end
+	    end
+
+	    def ensure_bet_taker
+          @bet = Bet.where(match: @match).find params[:id]
+          if @bet.nil?
+            render json: {errors: ["The specified bet was not found."]}, status: :unprocessable_entity
+          elsif !params[:bet] || !params[:bet][:taker]
+          elsif @bet.match.is_new_state?
+
+          else
+            render json: {errors: ["This bet can no longer be updated."]}, status: :unprocessable_entity
+	  	  end
 	    end
 
 	    def ensure_bet_match
