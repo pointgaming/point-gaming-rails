@@ -15,21 +15,40 @@ protected
     api_token_present? && params[:api_token] === token
   end
 
-  def authenticate_node_api!
-    render_unauthorized unless valid_api_token?(APP_CONFIG['node_api_auth_token'])
+  def node_api_token_valid?
+    valid_api_token?(APP_CONFIG['node_api_auth_token'])
   end
 
-  def authenticate_store_api!
-    render_unauthorized unless valid_api_token?(APP_CONFIG['store_api_auth_token'])
+  def forum_api_token_valid?
+    valid_api_token?(APP_CONFIG['forum_api_auth_token'])
+  end
+
+  def store_api_token_valid?
+    valid_api_token?(APP_CONFIG['store_api_auth_token'])
+  end
+
+  def api_token_valid?
+    node_api_token_valid? || forum_api_token_valid? || store_api_token_valid?
+  end
+
+  def authenticate_node_api!
+    render_unauthorized unless node_api_token_valid?
   end
 
   def authenticate_forum_api!
-    render_unauthorized unless valid_api_token?(APP_CONFIG['forum_api_auth_token'])
+    render_unauthorized unless forum_api_token_valid?
+  end
+
+  def authenticate_store_api!
+    render_unauthorized unless store_api_token_valid?
   end
 
   def authenticate_rails_app_api!
-    render_unauthorized unless valid_api_token?(APP_CONFIG['store_api_auth_token']) || 
-                               valid_api_token?(APP_CONFIG['forum_api_auth_token'])
+    render_unauthorized unless api_token_valid?
+  end
+
+  def authenticate_user_or_api_call!
+    render_unauthorized unless user_signed_in? || api_token_valid?
   end
 
   def render_success
