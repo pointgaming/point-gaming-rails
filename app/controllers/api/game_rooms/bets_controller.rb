@@ -7,6 +7,7 @@ module Api
 	  before_filter :ensure_game_room_bet, only: [:show]
 	  before_filter :ensure_offerer_choice, only: [:create]
 	  before_filter :ensure_taker_choice, only: [:create]
+	  before_filter :ensure_bet, only: [:destroy, :update]
 	  before_filter :ensure_taker, only: [:update]
 
 	  def create
@@ -42,6 +43,7 @@ module Api
 
 	  def destroy
 	  	if @bet.match.is_new_state? && can_admin_bet?
+          @bet.destroy
           render_success
 	  	else
 	  	  render_unauthorized 
@@ -62,17 +64,14 @@ module Api
 	    end
 
 	    def ensure_bet
-          @bet = Bet.where(match: @match).find params[:id]
+          @bet = Bet.where(id: params[:id]).first
           unless @bet
             render json: {errors: ["The specified bet was not found."]}, status: :unprocessable_entity
 	      end
 	    end
 
 	    def ensure_bet_taker
-          @bet = Bet.where(match: @match).find params[:id]
-          if @bet.nil?
-            render json: {errors: ["The specified bet was not found."]}, status: :unprocessable_entity
-          elsif !params[:bet] || !params[:bet][:taker]
+          if !params[:bet] || !params[:bet][:taker]
           elsif @bet.match.is_new_state?
 
           else
@@ -129,7 +128,7 @@ module Api
       private
 
         def can_admin_bet?
-          @bet.game_room.owner == current_user || @bet.offerer == current_user
+          @game_room.owner == current_user || @bet.offerer == current_user
         end
     end
   end

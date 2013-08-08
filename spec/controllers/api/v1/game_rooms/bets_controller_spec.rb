@@ -164,6 +164,32 @@ describe Api::GameRooms::BetsController do
     end    
   end
 
+  describe '#destroy' do
+    let(:user) { Fabricate(:user) }
+    let(:offerer) { Fabricate(:user, {points: 100}) }
+    let(:game) { Fabricate(:game) }
+    let(:game_room) { create_game_room_with_owner(game, user) }
+    let(:match) { create_match_with_game_room_and_player(game_room, offerer) }
+
+    let(:request_params) { {game_room_id: game_room._id, id: bet._id, api_token: node_api_token, user_id: user._id, format: :json} }    
+
+    context 'when user is offererer' do
+      let(:bet) { create_bet_with_match_and_offerer(match, offerer) }
+
+      before(:each) do
+        sign_in(:user, user) 
+        game_room.add_user_to_members!(user)
+      end
+
+      it 'expects bet destroyed' do
+        delete :destroy, request_params
+
+        expect(response.status).to eq(200)
+        expect { bet.reload }.to raise_error(Mongoid::Errors::DocumentNotFound)
+      end
+    end
+  end
+
   describe '#show' do
     let(:user) { Fabricate(:user) }
     let(:offerer) { Fabricate(:user, {points: 100}) }
