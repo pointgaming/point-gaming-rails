@@ -25,6 +25,14 @@ module Api
 
 	  def index
 	  	@bets = Bet.where(:match_id.in => @game_room.match_ids)
+
+	  	case params[:scope]
+        when 'unaccepted'
+          @bets = @bets.unaccepted
+        when 'pending'
+          @bets = @bets.pending
+        end
+
 	  	respond_with :api, @bets
 	  end
 

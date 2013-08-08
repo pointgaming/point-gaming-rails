@@ -97,7 +97,7 @@ describe Api::GameRooms::GameRoomsController do
       context 'with valid params' do
         before(:each) do
           request_params[:id] = game_room.id
-          request_params[:game_room] = {betting: false, betting_type: 'team'}
+          request_params[:game_room] = {betting: false, betting_type: 'team', description: 'testing'}
           
           put :update, request_params
           game_room.reload
@@ -105,6 +105,7 @@ describe Api::GameRooms::GameRoomsController do
 
         it 'expects changes saved' do
           expect(game_room.betting_type).to eq('team')
+          expect(game_room.description).to eq('testing')
           expect(game_room.betting).to eq(false)
         end
       end

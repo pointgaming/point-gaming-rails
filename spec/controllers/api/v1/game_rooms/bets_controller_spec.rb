@@ -140,6 +140,28 @@ describe Api::GameRooms::BetsController do
       json = JSON.parse(response.body)
       expect(json.size).to eq(2)
     end
+
+    context 'with bet scope filter' do
+      before(:each) do 
+        request_params[:scope] = 'unaccepted'
+
+        taker = Fabricate(:user, {points: 100})
+        bet = Bet.first
+        bet.taker = taker
+        bet.save!
+      end
+
+      it 'returns filtered bets' do
+        bet = Bet.last
+        bet.taker = nil
+        bet.save(validate: false)
+
+        get :index, request_params
+
+        expect(assigns(:bets).size).to eq(1)
+        expect(assigns(:bets).first).to eq(bet)
+      end
+    end    
   end
 
   describe '#show' do
