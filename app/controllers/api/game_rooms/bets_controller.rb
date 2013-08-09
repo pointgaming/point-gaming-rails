@@ -7,6 +7,8 @@ module Api
 	  before_filter :ensure_game_room_bet, only: [:show]
 	  before_filter :ensure_offerer_choice, only: [:create]
 	  before_filter :ensure_taker_choice, only: [:create]
+	  before_filter :ensure_bet, only: [:destroy, :update]
+	  before_filter :ensure_taker, only: [:update]
 
 	  def create
 	    @bet.offerer = current_user
@@ -25,17 +27,23 @@ module Api
 
 	  def index
 	  	@bets = Bet.where(:match_id.in => @game_room.match_ids)
+
+	  	case params[:scope]
+        when 'unaccepted'
+          @bets = @bets.unaccepted
+        when 'pending'
+          @bets = @bets.pending
+        end
+
 	  	respond_with :api, @bets
 	  end
 
 	  def update
-	  	if @bet.match.is_new_state?
-	  	else
-	  	end
 	  end
 
 	  def destroy
 	  	if @bet.match.is_new_state? && can_admin_bet?
+          @bet.destroy
           render_success
 	  	else
 	  	  render_unauthorized 
@@ -56,10 +64,19 @@ module Api
 	    end
 
 	    def ensure_bet
-          @bet = Bet.where(match: @match).find params[:id]
+          @bet = Bet.where(id: params[:id]).first
           unless @bet
             render json: {errors: ["The specified bet was not found."]}, status: :unprocessable_entity
 	      end
+	    end
+
+	    def ensure_bet_taker
+          if !params[:bet] || !params[:bet][:taker]
+          elsif @bet.match.is_new_state?
+
+          else
+            render json: {errors: ["This bet can no longer be updated."]}, status: :unprocessable_entity
+	  	  end
 	    end
 
 	    def ensure_bet_match
@@ -68,13 +85,15 @@ module Api
 	      	render json: {errors: ["The room already has a match"]}, status: :unprocessable_entity
 	      elsif @game_room.betting == false
             render json: {errors: ["Betting not avalable in room."]}, status: :unprocessable_entity
+	      elsif !@game_room.is_1v1? && current_user.team.nil?
+            render json: {errors: ["No player team available for team bet."]}, status: :unprocessable_entity
 	      elsif params[:bet][:match]
 	      	@match = Match.new params[:bet][:match]
 	      	@match.room_type = 'GameRoom'
 	      	@match.room = @game_room
 	      	@match.game = @game_room.game
 	      	@match.default_offerer_odds ||= params[:bet][:offerer_odds]
-	      	@match.player_1 = current_user
+	      	@match.player_1 = @game_room.is_1v1? ? current_user : current_user.team
 
 	      	if !@match.save
               render json: {errors: ["Invalid match: #{@match.errors.full_messages.join(', ')}"]}, status: 403
@@ -109,7 +128,7 @@ module Api
       private
 
         def can_admin_bet?
-          @bet.game_room.owner == current_user || @bet.offerer == current_user
+          @game_room.owner == current_user || @bet.offerer == current_user
         end
     end
   end
