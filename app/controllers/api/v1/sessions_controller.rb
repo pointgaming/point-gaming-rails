@@ -11,7 +11,9 @@ class Api::V1::SessionsController < Api::ApplicationController
 
     if resource.valid_password?(params[:password])
       sign_in :user, resource
+      resource.auth_tokens.where(desktop: true).destroy_all
       @auth_token = resource.auth_tokens.build
+      @auth_token.desktop = true
       if @auth_token.save
         render :json => {
           :success=>true,
