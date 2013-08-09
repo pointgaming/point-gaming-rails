@@ -4,4 +4,7 @@ node :action do
 end
 child @object => :user do
   attributes :_id, :username, :status
+  child :lobbies do
+    attributes :game_id
+  end
 end

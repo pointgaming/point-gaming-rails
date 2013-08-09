@@ -105,6 +105,13 @@ PointGamingRails::Application.routes.draw do
       end
     end
 
+    resources :lobbies, only: [] do
+      member do
+        put 'join'
+        put 'leave'
+      end
+    end
+
     scope module: :streams do
       resources :streams, only: [:show] do
         member do

@@ -1,9 +1,9 @@
 GIT
   remote: git@github.com:pointgaming/point-gaming-core.git
-  revision: f10b1f71c606b141bb549bae6e4a4306f4972360
+  revision: 3d9b7b5ec9d1245ce95671947398ff1ac390ba42
   branch: master
   specs:
-    point_gaming (0.0.47)
+    point_gaming (0.0.49)
       active_hash
       bunny (>= 0.9.0.pre6)
       cancan
@@ -112,7 +112,7 @@ GEM
     coderay (1.0.9)
     database_cleaner (1.1.1)
     debug_inspector (0.0.2)
-    devise (3.0.1)
+    devise (3.0.2)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 3.2.6, < 5)
