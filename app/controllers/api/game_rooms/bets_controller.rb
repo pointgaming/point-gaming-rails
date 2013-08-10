@@ -42,8 +42,8 @@ module Api
         @bet.taker = current_user
 
         if @bet.save && @bet.match.save
-          @bet.match.start! if @bet.is_player_vs_mode?
-          
+          @bet.match.start! if @bet.match.is_player_vs_mode?
+
           respond_with :api, @bet
 	    else
           render json: {errors: @bet.errors.full_messages}, status: :unprocessable_entity

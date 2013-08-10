@@ -17,8 +17,9 @@ describe Api::Games::GamesController do
 
       json = JSON.parse(response.body)
       expect(json.size).to eq(2)
-puts json.inspect
-      json_game_ids = json.map{|j| j['_id'] }.sort
+
+      expect(json['games']).to_not be_nil
+      json_game_ids = json['games'].map{|j| j['_id'] }.sort
       document_game_ids = [first_game,second_game].map{|g|g._id.to_s}.sort
       expect(json_game_ids).to eq(document_game_ids)
     end    

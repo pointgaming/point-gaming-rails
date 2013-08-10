@@ -58,11 +58,13 @@ describe Api::GameRooms::BetsController do
           before(:each) do
             game_room.update_attribute :betting_type, 'team'
             user.update_attribute :team_id, team.id
+            request_params[:bet][:match].merge!({team_size: 1})
           end
 
           it 'expects bet created' do
             expect{ 
               post :create, request_params
+
             }.to change(Bet,:count).by(1)
           end
 

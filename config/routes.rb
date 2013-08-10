@@ -96,6 +96,9 @@ PointGamingRails::Application.routes.draw do
           put 'finalize'
         end
       end
+    end
+
+    scope module: :disputes do
       resources :disputes, only: [:show] do
         member do
           put 'incrementAdminViewerCount'
@@ -105,7 +108,14 @@ PointGamingRails::Application.routes.draw do
     end
 
     scope module: :games do
-      resources :games, only: [:index]
+      resources :games, only: [:index] do
+        resources :lobbies, only: [] do
+          collection do
+            put 'join'
+            put 'leave'
+          end
+        end
+      end
     end
 
     scope module: :streams do

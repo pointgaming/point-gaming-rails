@@ -7,4 +7,7 @@ child @object => :user do
   node :status do
     'added'
   end
+  child :lobbies do
+    attributes :game_id
+  end
 end
