@@ -87,7 +87,6 @@ PointGamingRails::Application.routes.draw do
       end
       resources :coins
       resources :sessions
-      resources :friends
       resources :friend_requests
       resources :matches, only: [:update] do
         member do
@@ -96,6 +95,10 @@ PointGamingRails::Application.routes.draw do
           put 'finalize'
         end
       end
+    end
+
+    scope module: :friends do
+      resources :friends, only: [:index, :destroy]
     end
 
     scope module: :disputes do

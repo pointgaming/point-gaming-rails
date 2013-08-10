@@ -141,6 +141,10 @@ describe Api::GameRooms::BetsController do
 
       json = JSON.parse(response.body)
       expect(json.size).to eq(2)
+
+      json_bets_ids = json.map{|j| j['_id'] }.sort
+      document_bet_ids = [Bet.first,Bet.last].map{|g|g._id.to_s}.sort
+      expect(json_bets_ids).to eq(document_bet_ids)
     end
 
     context 'with bet scope filter' do
