@@ -2,13 +2,12 @@ module Api
   module GameRooms
     class BetsController < Api::GameRooms::ContextController
 	  before_filter :authenticate_user!, except: [:index] 
-	  before_filter :ensure_params, only: [:create, :update]
+	  before_filter :ensure_params, only: [:create]
 	  before_filter :ensure_bet_match, only: [:create]
 	  before_filter :ensure_game_room_bet, only: [:show]
 	  before_filter :ensure_offerer_choice, only: [:create]
 	  before_filter :ensure_taker_choice, only: [:create]
 	  before_filter :ensure_bet, only: [:destroy, :update]
-	  before_filter :ensure_taker, only: [:update]
 
 	  def create
 	    @bet.offerer = current_user
@@ -39,10 +38,22 @@ module Api
 	  end
 
 	  def update
+	  	@bet.match.player_2 = @game_room.is_1v1? ? current_user : current_user.team
+        @bet.taker = current_user
+
+        if @bet.save && @bet.match.save
+          @bet.match.start! if @bet.is_player_vs_mode?
+          
+          respond_with :api, @bet
+	    else
+          render json: {errors: @bet.errors.full_messages}, status: :unprocessable_entity
+	    end
 	  end
 
 	  def destroy
-	  	if @bet.match.is_new_state? && can_admin_bet?
+	  	if !@bet.match.is_new_state? 
+          render_frozen_bet
+	  	elsif can_admin_bet?
           @bet.destroy
           render_success
 	  	else
@@ -75,7 +86,7 @@ module Api
           elsif @bet.match.is_new_state?
 
           else
-            render json: {errors: ["This bet can no longer be updated."]}, status: :unprocessable_entity
+            render_frozen_bet
 	  	  end
 	    end
 
@@ -126,6 +137,10 @@ module Api
         end
 
       private
+
+        def render_frozen_bet
+          render json: {errors: ["This bet can no longer be updated."]}, status: :unprocessable_entity
+        end
 
         def can_admin_bet?
           @game_room.owner == current_user || @bet.offerer == current_user

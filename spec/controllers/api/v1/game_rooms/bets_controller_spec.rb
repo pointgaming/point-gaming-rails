@@ -217,6 +217,55 @@ describe Api::GameRooms::BetsController do
       end      
     end
   end
+
+  describe '#update' do
+    let(:user) { Fabricate(:user) }
+    let(:offerer) { Fabricate(:user, {points: 100}) }
+    let(:game) { Fabricate(:game) }
+    let(:game_room) { create_game_room_with_owner(game, user) }
+    let(:match) { create_match_with_game_room_and_player(game_room, offerer) }
+
+    let(:request_params) { {game_room_id: game_room._id, id: bet._id, api_token: node_api_token, user_id: user._id, format: :json} }        
+
+    context 'when user is logged in' do
+      before(:each) do 
+        sign_in(:user, user) 
+      end
+
+      context 'with valid params' do
+        let(:bet) { create_bet_with_match_and_offerer(match, offerer) }
+
+        before(:each) do
+          user.update_attribute(:points, 100)
+          bet.taker = nil
+          bet.save(validate: false)
+        end
+
+        it 'expects bet accepted' do
+          put :update, request_params
+          bet.reload
+
+          expect(bet.taker).to eq(user)
+          expect(bet.match.player_2_id).to eq(user._id)
+        end    
+
+        it 'starts match' do
+          put :update, request_params
+
+          expect(bet.match.reload.state).to eq('started')
+        end     
+      end
+
+      context 'with invalid taker' do
+        let(:bet) { create_bet_with_match_and_offerer(match, user) }
+
+        before(:each) do
+          sign_in(:user, user) 
+        end
+
+      end
+    end    
+  end
 end
 
 def bet_params

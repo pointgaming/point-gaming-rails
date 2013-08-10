@@ -86,7 +86,6 @@ PointGamingRails::Application.routes.draw do
         end
       end
       resources :coins
-      resources :games, only: [:index]
       resources :sessions
       resources :friends
       resources :friend_requests
@@ -103,6 +102,10 @@ PointGamingRails::Application.routes.draw do
           put 'incrementUserViewerCount'
         end
       end
+    end
+
+    scope module: :games do
+      resources :games, only: [:index]
     end
 
     scope module: :streams do
