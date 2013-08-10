@@ -1,6 +1,6 @@
 module Api
   module Disputes
-    class DisputesController < Api::ApplicationController
+    class ContextController < Api::ApplicationController
       before_filter :authenticate_node_api!
       before_filter :ensure_dispute
 
