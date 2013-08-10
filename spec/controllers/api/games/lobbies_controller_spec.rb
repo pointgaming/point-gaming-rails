@@ -13,8 +13,6 @@ describe Api::Games::LobbiesController do
     it 'expects lobby created' do
       expect{ 
         put :join, request_params
-        puts response.status
-        puts response.body
       }.to change(UserLobby,:count).by(1)
     end  
   end
