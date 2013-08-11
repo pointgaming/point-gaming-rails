@@ -85,7 +85,6 @@ PointGamingRails::Application.routes.draw do
           put 'increment_points_for_store_order'
         end
       end
-      resources :coins
       resources :sessions
       resources :friend_requests
       resources :matches, only: [:update] do
@@ -99,6 +98,10 @@ PointGamingRails::Application.routes.draw do
 
     scope module: :friends do
       resources :friends, only: [:index, :destroy]
+    end
+
+    scope module: :coins do
+      resources :coins, only: [:index, :create, :show, :destroy]
     end
 
     scope module: :disputes do
