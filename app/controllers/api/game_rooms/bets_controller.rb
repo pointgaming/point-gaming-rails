@@ -54,6 +54,7 @@ module Api
 	  	if !@bet.match.is_new_state? 
           render_frozen_bet
 	  	elsif can_admin_bet?
+          @bet.match.cancel!
           @bet.destroy
           render_success
 	  	else

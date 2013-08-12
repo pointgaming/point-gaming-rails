@@ -86,13 +86,6 @@ PointGamingRails::Application.routes.draw do
         end
       end
       resources :sessions
-      resources :matches, only: [:update] do
-        member do
-          put 'start'
-          put 'cancel'
-          put 'finalize'
-        end
-      end
     end
 
     scope module: :friends do
@@ -141,6 +134,7 @@ PointGamingRails::Application.routes.draw do
         end
         resources :bets, except: [:edit]
       end
+      resources :matches, only: [:index]
     end
   end
 
