@@ -86,7 +86,6 @@ PointGamingRails::Application.routes.draw do
         end
       end
       resources :sessions
-      resources :friend_requests
       resources :matches, only: [:update] do
         member do
           put 'start'
@@ -98,6 +97,7 @@ PointGamingRails::Application.routes.draw do
 
     scope module: :friends do
       resources :friends, only: [:index, :destroy]
+      resources :friend_requests, except: [:new, :edit]
     end
 
     scope module: :coins do

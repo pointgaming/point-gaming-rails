@@ -13,6 +13,13 @@ module Api
         rescue
           @friends = []
         end
+
+
+        def ensure_friend_request
+          @friend_request = FriendRequest.find(params[:id])
+        rescue Mongoid::Errors::DocumentNotFound
+          render :json => {:success=>false, :message=>"That friend request was not found"}, :status=>404
+        end
     end
   end
 end
