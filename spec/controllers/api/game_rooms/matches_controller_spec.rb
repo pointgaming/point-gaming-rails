@@ -8,7 +8,6 @@ describe Api::GameRooms::MatchesController do
     let(:taker) { Fabricate(:user) }
     let(:game) { Fabricate(:game) }
     let(:game_room) { create_game_room_with_owner(game, user) }
-    let(:request_params) { {user_id: user._id, format: :json} }
 
     let(:request_params) { {game_room_id: game_room._id, api_token: node_api_token, user_id: user._id, format: :json} }
 
@@ -51,6 +50,48 @@ describe Api::GameRooms::MatchesController do
       end
     end
   end
+
+  describe '#update' do
+    let(:user) { Fabricate(:user) }
+    let(:taker) { Fabricate(:user) }
+    let(:game) { Fabricate(:game) }
+    let(:game_room) { create_game_room_with_owner(game, user) }
+
+    let(:request_params) { {game_room_id: game_room._id, api_token: node_api_token, user_id: user._id, format: :json} }
+
+    context 'when user is logged in' do
+      before(:each) do 
+        user.update_attribute(:points, 100)
+        sign_in(:user, user) 
+      end
+
+      it 'updates match and bet workflow states' do
+      	match = create_match_with_game_room_and_players(game_room, user, taker)
+      	match.update_attribute :state, 'started'
+      	bet = match.bets.first
+
+        put :update, request_params.merge(id: match.id)
+        match.reload
+        bet.reload
+
+        expect(match.state).to eq('finalized')
+        expect(bet.outcome).to eq('offerer_won')
+      end  
+
+      it 'expects error when match not started' do
+      	match = create_match_with_game_room_and_players(game_room, user, taker)
+      	put :update, request_params.merge(id: match.id)
+        expect(response.status).to eq(422)
+      end   
+
+      it 'expects error for non-participating user' do
+        sign_in(:user, Fabricate(:user)) 
+      	match = create_match_with_game_room_and_players(game_room, user, taker)
+      	put :update, request_params.merge(id: match.id)
+        expect(response.status).to eq(422)
+      end
+    end    
+  end  
 end
 
 def create_match_with_game_room_and_players(game_room, player_1, player_2)

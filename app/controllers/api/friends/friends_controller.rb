@@ -4,7 +4,7 @@ module Api
       before_filter :ensure_friends, only: [:index]
 
       def index
-        render json: { friends: @friends }
+        respond_with :api, @friends
       end
 
       def destroy

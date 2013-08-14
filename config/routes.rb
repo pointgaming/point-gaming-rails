@@ -134,7 +134,7 @@ PointGamingRails::Application.routes.draw do
         end
         resources :bets, except: [:edit]
       end
-      resources :matches, only: [:index]
+      resources :matches, only: [:index, :update]
     end
   end
 
