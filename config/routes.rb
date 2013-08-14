@@ -88,6 +88,14 @@ PointGamingRails::Application.routes.draw do
       resources :sessions
     end
 
+    scope module: :users do
+      resources :users, only: [:index, :show] do
+        member do
+          put 'increment_points_for_store_order'
+        end
+      end
+    end
+
     scope module: :friends do
       resources :friends, only: [:index, :destroy]
       resources :friend_requests, except: [:new, :edit]
