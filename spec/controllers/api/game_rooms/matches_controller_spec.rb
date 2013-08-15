@@ -19,6 +19,7 @@ describe Api::GameRooms::MatchesController do
 
       it 'returns correct json' do
       	match = create_match_with_game_room_and_players(game_room, user, taker)
+        match.start!
 
         get :index, request_params
         json = JSON.parse(response.body)

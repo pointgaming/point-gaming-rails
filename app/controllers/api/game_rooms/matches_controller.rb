@@ -62,19 +62,28 @@ module Api
 	  	  end
 	    end
 
+      def started_matches(matches)
+        matches.select{|b| b.match.state == 'started' }
+      end
+
 	    def pending_user_matches
           bets = current_user_1v1_bets.to_a
           bets |= current_user_team_bets.to_a
+          bets = started_matches(bets)
           
           swap_bet_match_ancestry bets
 	    end
 
 	    def current_user_1v1_bets
-          Bet.pending.includes(:match).where('$or' => [{offerer_id: current_user.id}, {taker_id: current_user.id}])
+          Bet.pending
+             .includes(:match)
+             .where('$or' => [{offerer_id: current_user.id}, {taker_id: current_user.id}])
 	    end
 
 	    def current_user_team_bets
-          Bet.pending.includes(:match).any_in('betters._id' => [current_user.id])
+          Bet.pending
+             .includes(:match)
+             .any_in('betters._id' => [current_user.id])
 	    end
 
 	    def swap_bet_match_ancestry(bets)
