@@ -43,6 +43,7 @@ module Api
 
         if @bet.save && @bet.match.save
           @bet.match.start! if @bet.match.is_player_vs_mode?
+          @bet.update_attribute(:outcome, 'undetermined') if @bet.outcome == 'void' # workflow hack
 
           respond_with :api, @bet
 	    else

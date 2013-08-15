@@ -63,15 +63,15 @@ module Api
 	    end
 
       def started_matches(matches)
-        matches.select{|b| b.match.state == 'started' }
+        matches.select{|b| b['state'] == 'started' }
       end
 
 	    def pending_user_matches
           bets = current_user_1v1_bets.to_a
           bets |= current_user_team_bets.to_a
-          bets = started_matches(bets)
           
-          swap_bet_match_ancestry bets
+          matches = swap_bet_match_ancestry bets
+          started_matches(matches)
 	    end
 
 	    def current_user_1v1_bets
