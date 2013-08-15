@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Api::V1::UsersController do
+describe Api::Users::UsersController do
   render_views
 
   describe '#show' do

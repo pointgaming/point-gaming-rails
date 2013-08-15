@@ -1,6 +1,7 @@
 module Api
   module GameRooms
     class MatchesController < Api::GameRooms::ContextController
+    skip_before_filter :ensure_game_room
 	  before_filter :authenticate_user!
 	  before_filter :ensure_match, only: [:update]
 
