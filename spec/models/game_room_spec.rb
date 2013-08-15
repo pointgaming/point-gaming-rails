@@ -7,9 +7,9 @@ describe GameRoom do
     before { ResqueSpec.reset! }
     let(:game_room) { Fabricate.build(:game_room, game: game) }
 
-    it 'schedules DestroyGameRoomIfNoMembers' do
+    it 'schedules DestroyGameRoomIfNoMembersJob' do
       game_room.save
-      expect(DestroyGameRoomIfNoMembers).to have_scheduled(game_room._id)
+      expect(DestroyGameRoomIfNoMembersJob).to have_scheduled(game_room._id)
     end
   end
 
