@@ -6,7 +6,7 @@ module Api
 	  before_filter :ensure_match, only: [:update]
 
 	  def index
-	  	@matches = pending_user_matches
+	  	@matches = accepted_user_matches
 	  	respond_with :api, @matches
 	  end
 
@@ -66,7 +66,7 @@ module Api
         matches.select{|b| b['state'] == 'started' }
       end
 
-	    def pending_user_matches
+	    def accepted_user_matches
           bets = current_user_1v1_bets.to_a
           bets |= current_user_team_bets.to_a
           
@@ -75,13 +75,13 @@ module Api
 	    end
 
 	    def current_user_1v1_bets
-          Bet.pending
+          Bet.accepted
              .includes(:match)
              .where('$or' => [{offerer_id: current_user.id}, {taker_id: current_user.id}])
 	    end
 
 	    def current_user_team_bets
-          Bet.pending
+          Bet.accepted
              .includes(:match)
              .any_in('betters._id' => [current_user.id])
 	    end

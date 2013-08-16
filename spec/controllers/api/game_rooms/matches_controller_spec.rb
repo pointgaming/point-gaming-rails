@@ -30,7 +30,7 @@ describe Api::GameRooms::MatchesController do
         expect(json_ids).to eq(document_ids)
 
         expect(json[0]['bets'].size).to eq(1)
-        expect(json[0]['bets'][0]['outcome']).to eq('undetermined')
+        expect(json[0]['bets'][0]['outcome']).to eq('accepted')
       end
 
       it 'returns only matches with undetermined bets' do
@@ -115,6 +115,7 @@ def create_match_with_game_room_and_players(game_room, player_1, player_2)
   bet.match = match
   bet.offerer = player_1
   bet.taker = player_2
+  bet.outcome = 'accepted'
   bet.save!
   match
 end
