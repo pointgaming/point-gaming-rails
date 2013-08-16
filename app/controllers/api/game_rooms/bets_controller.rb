@@ -40,6 +40,7 @@ module Api
 	  def update
 	  	@bet.match.player_2 = @game_room.is_1v1? ? current_user : current_user.team
         @bet.taker = current_user
+        @bet.outcome = 'accepted'
 
         if @bet.save && @bet.match.save
           @bet.match.start! if @bet.match.is_player_vs_mode?

@@ -252,7 +252,7 @@ describe Api::GameRooms::BetsController do
           bet.reload
 
           expect(bet.taker).to eq(user)
-          expect(bet.outcome).to eq('undetermined')
+          expect(bet.outcome).to eq('accepted')
           expect(bet.match.player_2_id).to eq(user._id)
         end    
 
