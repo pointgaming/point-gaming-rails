@@ -254,6 +254,7 @@ describe Api::GameRooms::BetsController do
           expect(bet.taker).to eq(user)
           expect(bet.outcome).to eq('accepted')
           expect(bet.match.player_2_id).to eq(user._id)
+          expect(bet.taker_choice).to eq(bet.match.player_2)
         end    
 
         it 'starts match' do
