@@ -15,7 +15,8 @@ module Api
         if update_match_winner(@match) && update_bet_outcome(@match, @bet)
         	respond_with :api, @match
         else
-          render_match_error @match.errors.full_messages
+          messages = @bet.errors.full_messages.concat @match.errors.full_messages
+          render_match_error messages
         end
 	  	else
 	  	  render_unauthorized 
