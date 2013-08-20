@@ -2,13 +2,9 @@ source 'https://rubygems.org'
 
 gem 'rails', '3.2.14'
 
-gem 'resque'
-gem "resque-scheduler", require: "resque_scheduler"
-gem 'resque-loner'
 gem 'carmen'
 gem 'carmen-rails'
 gem 'kaminari'
-gem 'rabl-rails'
 gem 'oj'
 gem 'remotipart', '~> 1.0'
 gem 'sanitize'
