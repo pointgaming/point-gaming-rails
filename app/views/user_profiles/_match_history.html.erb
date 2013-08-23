@@ -12,7 +12,7 @@
         </tr>
       </thead>
       <tbody>
-        <% @user.bets.accepted_and_finalized.each do |bet| %>
+        <% match_history.each do |bet| %>
           <tr>
             <td><%= bet.match.winner.display_name %></td>
             <td><%= bet.match.loser.display_name %></td>

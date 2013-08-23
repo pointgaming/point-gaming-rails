@@ -5,11 +5,16 @@ class UserProfilesController < ApplicationController
   before_filter :ensure_friends, except: [:subregion_options]
   before_filter :ensure_user_id_is_current_user, only: [:edit, :update]
   before_filter :lookup_game, only: [:update]
+  before_filter :lookup_match_history, only: [:show, :edit, :update]
 
   respond_to :html, :json
 
+  def lookup_match_history
+    @match_history = @user.bets.accepted_and_finalized.order_by(created_at: :desc)
+  end
+
   def show
-    @matches = []
+
   end
 
   def edit

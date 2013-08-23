@@ -123,7 +123,7 @@
           <div class="row-fluid">
 
             <div class="<%= @user.sponsors.present? ? :span9 : :span12 %>">
-              <%= render partial: 'user_profiles/match_history', locals: {models: @matches} %>
+              <%= render 'user_profiles/match_history', match_history: @match_history %>
               <%= render partial: 'user_profiles/rig', locals: {model: @user.profile.try(:rig)} %>
               <% if @user.configs.exists? %>
                 <%= render partial: 'user_profiles/configs', locals: {models: @user.configs} %>
