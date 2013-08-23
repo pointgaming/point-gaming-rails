@@ -54,7 +54,9 @@
       // define the x and y scale based on the supplied data
       var x = d3.time.scale().domain([startTime, endTime]).range([0, w]);
       x.tickFormat(d3.time.format("%Y-%m-%d"));
-      var y = d3.scale.linear().domain([0, d3.max(graph_data.data, function(d) { return d.value; })]).range([h, 0]);
+      var min_points = d3.min(graph_data.data, function(d) { return d.value; });
+      var max_points = d3.max(graph_data.data, function(d) { return d.value; });
+      var y = d3.scale.linear().domain([min_points, max_points]).range([h, 0]);
 
       // create a line function that will be used to plot data onto the graph
       var line1 = d3.svg.line()
