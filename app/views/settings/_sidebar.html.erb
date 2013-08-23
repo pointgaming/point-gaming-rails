@@ -1,6 +1,5 @@
 <ul class="nav nav-list">
   <%= navItem "Subscription", current_user.has_active_subscription? ? current_subscriptions_path : subscriptions_path %>
   <%= navItem "Billing", current_user.has_stripe_token? ? billing_path(1) : new_billing_path %>
-  <%= navItem "Bet History", bet_history_index_path %>
   <%= navItem "Disputes", disputes_path %>
 </ul>

@@ -1,6 +1,10 @@
 <%- model_class = Bet -%>
 
-<table class="table table-striped">
+<div class="page-header">
+  <h1>Bet History</h1>
+</div>
+
+<table class="table table-bordered table-striped">
   <thead>
     <tr>
       <th><%= model_class.human_attribute_name(:updated_at) %></th>
@@ -12,7 +16,7 @@
     </tr>
   </thead>
   <tbody>
-    <% @bets.each do |bet| %>
+    <% bets.each do |bet| %>
       <tr>
         <td><%= link_to ldate(bet.updated_at), bet_history_path(bet) %></td>
         <td class="number"><%= bet.outcome_amount(current_user) || bet.bet_amount(current_user) %></td>

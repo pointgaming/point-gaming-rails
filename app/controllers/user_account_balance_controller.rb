@@ -6,7 +6,8 @@ class UserAccountBalanceController < ApplicationController
   respond_to :html, :json
 
   def index
-    @billing_history = @user.billing_history
+    @billing_history = @user.billing_history.order_by(created_at: :desc)
+    @bet_history = Bet.for_user(current_user).order_by(created_at: :desc).all
     @user_subscription = @user.subscriptions.active.first
   end
 

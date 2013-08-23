@@ -59,7 +59,7 @@ PointGamingRails::Application.routes.draw do
   resources :faq
   resources :settings
   resources :billing, except: [:index]
-  resources :bet_history
+  resources :bet_history, only: [:show]
   resources :orders, only: [:show]
   resources :subscriptions, only: [:index, :new, :create, :edit, :update] do
     collection do
