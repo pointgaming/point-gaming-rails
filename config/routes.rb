@@ -80,11 +80,7 @@ PointGamingRails::Application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :better
-      resources :users do
-        member do
-          put 'increment_points_for_store_order'
-        end
-      end
+      resources :users, only: [:index, :show]
       resources :sessions
     end
 
