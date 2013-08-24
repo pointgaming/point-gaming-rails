@@ -1,9 +1,9 @@
 GIT
   remote: git@github.com:pointgaming/point-gaming-core.git
-  revision: 3eb05cd268595d76de82e5144b33ba4d9bbda8b2
+  revision: 87e79cde9b0ab872d7150cc08fd00b80a23e7280
   branch: master
   specs:
-    point_gaming (0.1.5)
+    point_gaming (0.1.11)
       active_hash
       bunny (>= 0.9.0.pre6)
       cancan
@@ -83,8 +83,8 @@ GEM
     bootstrap-sass (2.3.1.3)
       sass (~> 3.2)
     builder (3.0.4)
-    bunny (1.0.0.pre3)
-      amq-protocol (>= 1.6.0)
+    bunny (1.0.0.pre4)
+      amq-protocol (>= 1.7.0)
     callsite (0.0.11)
     cancan (1.6.10)
     capistrano (2.15.5)
@@ -127,8 +127,7 @@ GEM
       activesupport (>= 3.0)
       request_store (~> 1.0.3)
     erubis (2.7.0)
-    execjs (1.4.0)
-      multi_json (~> 1.0)
+    execjs (2.0.0)
     fabrication (2.7.2)
     ffi (1.9.0)
     formatador (0.2.4)
@@ -271,7 +270,7 @@ GEM
       redis-activesupport (~> 3.2.3)
       redis-store (~> 1.1.0)
     redis-store (1.1.3)
-      redis (>= 2.2)
+      redis (>= 2.2.0)
     remotipart (1.2.1)
     request_store (1.0.5)
     resque (1.24.1)
@@ -339,7 +338,7 @@ GEM
       multi_json (~> 1.0)
       rack (~> 1.0)
       tilt (~> 1.1, != 1.3.0)
-    stripe (1.8.5)
+    stripe (1.8.6)
       multi_json (>= 1.0.4, < 2)
       rest-client (~> 1.4)
     thor (0.18.1)
@@ -355,7 +354,7 @@ GEM
     treetop (1.4.15)
       polyglot
       polyglot (>= 0.3.1)
-    turbo-sprockets-rails3 (0.3.8)
+    turbo-sprockets-rails3 (0.3.9)
       railties (> 3.2.8, < 4.0.0)
       sprockets (>= 2.0.0)
     twitter-bootstrap-rails (2.2.8)
@@ -413,6 +412,7 @@ DEPENDENCIES
   quiet_assets
   rails (= 3.2.14)
   rb-fsevent
+  redis-store (> 1.1.0, < 1.1.4)
   remotipart (~> 1.0)
   resque_spec
   rspec-rails

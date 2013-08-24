@@ -52,7 +52,7 @@ describe Api::GameRooms::BetsController do
         end
 
         context 'with team user betting' do
-          let(:team) { Fabricate(:team, name: 'Test', tag: 'testing') }
+          let(:team) { Fabricate(:team, name: 'Test', tag: 'testing', points: 10) }
           let(:membership) { Fabricate(:team_member, user: user, team: team, rank: 'Member') }
 
           before(:each) do
@@ -64,7 +64,6 @@ describe Api::GameRooms::BetsController do
           it 'expects bet created' do
             expect{ 
               post :create, request_params
-
             }.to change(Bet,:count).by(1)
           end
 
@@ -251,7 +250,6 @@ describe Api::GameRooms::BetsController do
           put :update, request_params
           bet.reload
 
-          expect(bet.taker).to eq(user)
           expect(bet.outcome).to eq('accepted')
           expect(bet.match.player_2_id).to eq(user._id)
           expect(bet.taker_choice).to eq(bet.match.player_2)

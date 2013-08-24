@@ -12,7 +12,7 @@ module Api
 
 	  def update
 	  	if can_admin_match?
-        if update_match_winner(@match) && update_bet_outcome(@match, @bet)
+        if @match.report_winner!(current_user) && update_bet_outcome(@match, @bet)
         	respond_with :api, @match
         else
           messages = @bet.errors.full_messages.concat @match.errors.full_messages

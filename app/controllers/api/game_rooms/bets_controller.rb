@@ -38,15 +38,9 @@ module Api
 	  end
 
 	  def update
-	  	@bet.match.player_2 = @game_room.is_1v1? ? current_user : current_user.team
-        @bet.taker = current_user
-        @bet.taker_choice = @bet.match.player_2
-        
-        @bet.outcome = 'accepted'
-
-        if @bet.save && @bet.match.save
-          @bet.match.start! if @bet.match.is_player_vs_mode?
-          @bet.update_attribute(:outcome, 'undetermined') if @bet.reload.outcome == 'void' # workflow hack
+        if @bet.accept!(current_user)
+          @bet.match.start! if @bet.match.is_player_vs_mode? ||
+                               (@bet.match.is_team_vs_mode? && @bet.teams_full?)
 
           respond_with :api, @bet
 	    else
