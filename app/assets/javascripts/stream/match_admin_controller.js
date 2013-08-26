@@ -192,12 +192,10 @@ PointGaming.MatchAdminController.prototype.clearRelatedHiddenFields = function(e
 PointGaming.MatchAdminController.prototype.setupTypeahead = function(){
   var elements = $('#match-modal input.playable-search');
 
-  var search_url = PointGaming.helpers.url_builder.buildUrl('/search/playable.json');
-
   elements.each(function(index, elem){
     elem = $(elem);
     elem.typeahead({
-      ajax: { url: search_url, triggerLength: 0, method: 'get' },
+      ajax: { url: '/search/playable.json', triggerLength: 0, method: 'get' },
       display: 'name', 
       itemSelected: function(item, val, text){
         var text_field = elem,
