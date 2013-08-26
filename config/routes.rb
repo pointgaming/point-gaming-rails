@@ -61,11 +61,7 @@ PointGamingRails::Application.routes.draw do
   resources :billing, except: [:index]
   resources :bet_history, only: [:show]
   resources :orders, only: [:show]
-  resources :subscriptions, only: [:index, :new, :create, :edit, :update] do
-    collection do
-      get 'current'
-    end
-  end
+  resources :subscriptions, only: [:index, :new, :create, :edit, :update]
   resources :user_streams do
     resources :collaborators, only: [:index, :new, :create, :destroy]
     member do

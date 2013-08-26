@@ -3,13 +3,14 @@ class SubscriptionsController < ApplicationController
   before_filter :ensure_params_exist, only: [:create, :update]
   before_filter :ensure_active_subscription, only: [:edit, :update]
 
-  def sub_layout
-    "settings" if ['index', 'current'].include?(action_name)
-  end
-
   def index
-    @subscription_features = SubscriptionFeature.order_by(:sort_order => 'ASC').all
-    @subscription_types = SubscriptionType.order_by(:sort_order => 'ASC').all
+    @subscription = current_user_subscription
+    if @subscription.present?
+      render 'current'
+    else
+      @subscription_features = SubscriptionFeature.order_by(:sort_order => 'ASC').all
+      @subscription_types = SubscriptionType.order_by(:sort_order => 'ASC').all
+    end
   end
 
   def new
@@ -43,11 +44,6 @@ class SubscriptionsController < ApplicationController
     end
   end
 
-  def current
-    @subscription = current_user.subscriptions.active.first
-    redirect_to subscriptions_path unless @subscription.present?
-  end
-
 protected
 
   def ensure_active_subscription
@@ -76,6 +72,10 @@ protected
       user: current_user,
       subscription: @subscription
     }
+  end
+
+  def current_user_subscription
+    current_user.subscriptions.active.first
   end
 
 end
