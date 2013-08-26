@@ -29,10 +29,10 @@ GIT
 
 GIT
   remote: git@github.com:pointgaming/point-gaming-frontend.git
-  revision: 8ed01fb90c6c67138b73bfc1c40b59bbd7604f72
+  revision: 8bb3735fa11af343cc34079035066d9d333cbed3
   branch: master
   specs:
-    point_gaming_frontend (0.0.3)
+    point_gaming_frontend (0.0.4)
       bootstrap-sass (~> 2.3.1.0)
       rails (~> 3.2.14)
       sass-rails (~> 3.2.3)
