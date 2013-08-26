@@ -54,6 +54,6 @@
   <div class="form-actions">
     <%= f.submit nil, :class => 'btn btn-primary' %>
     <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
-                disputes_path, :class => 'btn' %>
+                user_account_balance_index_url(current_user), :class => 'btn' %>
   </div>
 <% end %>

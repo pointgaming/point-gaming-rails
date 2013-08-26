@@ -3,7 +3,7 @@
 
 <div class="breadcrumbs">
   <%= link_to t('.back', :default => t("helpers.links.back")),
-              disputes_path, :class => 'btn' %>
+              user_account_balance_index_url(current_user), :class => 'btn' %>
   <% if @dispute.owner_id === current_user._id && @dispute.can_cancel? %>
     <div class="pull-right">
       <%= link_to t('.cancel_dispute'), cancel_dispute_path(@dispute),
