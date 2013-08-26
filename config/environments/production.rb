@@ -35,7 +35,8 @@ PointGamingRails::Application.configure do
 
   config.ssl_options = {
     exclude: proc do |env|
-      env['PATH_INFO'].match(/\/s(treams)?\//i).present? ||
+      env['PATH_INFO'].match(/\/(user_)s(treams)?\//i).present? ||
+        env['PATH_INFO'].match(/\/matches\//i).present? ||
         env['PATH_INFO'].starts_with?('/search')
     end,
     hsts: false
