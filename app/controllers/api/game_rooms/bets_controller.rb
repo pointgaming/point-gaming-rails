@@ -121,7 +121,7 @@ module Api
 			  @bet.offerer_choice_name = @offerer_choice.try(:display_name)
 			end
           else
-	        nil
+          	@bet.offerer_choice ||= @match.player_1
 	      end
 	    end
 

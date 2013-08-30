@@ -15,6 +15,20 @@ describe Api::GameRooms::BetsController do
         sign_in(:user, user) 
       end
 
+      context 'with default offerer choice' do
+        before(:each) do
+          request_params[:bet] = bet_params
+          request_params[:bet][:offerer_choice] = nil
+        end
+
+        it 'expects offerer as offerer choice' do
+          post :create, request_params
+          choice = assigns(:bet).offerer_choice
+          expect(choice).to eq(user)
+          expect(choice).to eq(assigns(:bet).match.player_1)
+        end        
+      end
+
       context 'with valid params' do
         before(:each) do
           request_params[:bet] = bet_params
