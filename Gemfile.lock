@@ -29,7 +29,7 @@ GIT
 
 GIT
   remote: git@github.com:pointgaming/point-gaming-frontend.git
-  revision: 564ea3f3733103e1c0233e82616d648b5c77f80e
+  revision: df63520576a9507495426d0ff869e60d8ddf3ce0
   branch: master
   specs:
     point_gaming_frontend (0.0.4)
@@ -127,7 +127,7 @@ GEM
       activesupport (>= 3.0)
       request_store (~> 1.0.3)
     erubis (2.7.0)
-    execjs (2.0.0)
+    execjs (2.0.1)
     fabrication (2.7.2)
     ffi (1.9.0)
     formatador (0.2.4)
@@ -171,7 +171,7 @@ GEM
       rack-contrib
       railties
     method_source (0.8.2)
-    mime-types (1.24)
+    mime-types (1.25)
     mini_portile (0.5.1)
     mongoid (3.0.23)
       activemodel (~> 3.1)
