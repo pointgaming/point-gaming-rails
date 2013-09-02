@@ -3,4 +3,23 @@
   input[name='tournament[slug]'] { width: 73% }
   input[name='tournament[stream_slug]'] { width: 81% }
   textarea { width: 97%; }
+
+  #tournament-name-wrapper {
+  	.tournament-thumb { 
+  		img {min-height: 80px; min-width: 80px;}
+
+  	}
+  	.widget-content { padding-left: 30px;
+  		h2, h3, h4 { margin: 0;}
+  	}
+
+  	.game-type {padding: 10px; background: $secondaryColor;
+  		.span12 {margin: 0;}
+  		h4 {color: $white;}
+
+  	}
+  }
+
+  .middle-content {margin-left: 0;}
 }
+

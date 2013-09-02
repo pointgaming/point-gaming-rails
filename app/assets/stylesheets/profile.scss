@@ -1,3 +1,19 @@
+h4 {font-weight: normal;}
+
+#primary-game {
+	position: relative;
+	&.Quake3 {height: 150px; background: url(image_path('quake3.png')) no-repeat 50% 25%}
+	&.QuakeLive {height: 150px; background: url(image_path('quakelive.png')) no-repeat 50% 50%}
+	&.CounterStrikeGo {height: 150px; background: url(image_path('counterstrikego.png')) no-repeat 50% 50%}
+	&.CounterStrikeSource {height: 150px; background: url(image_path('counterstrikesource.png')) no-repeat 50% 50%}
+	&.StarCraftII {height: 150px; background: url(image_path('starcrafttwo.png')) no-repeat 50% 50%;
+		.widget-header { position: absolute; bottom: 0; width: 100%; }
+	}
+	&.LeagueofLegends {height: 150px; background: url(image_path('leagueoflegends.png')) no-repeat 50% 50%}
+	h3, h4 {position: absolute; bottom: 0; color: $white; padding: 0 10px;}
+	h3 {bottom: 20px;}
+
+}
 
 #user-profile {
 
@@ -7,17 +23,7 @@
 		p {margin: 0;}
     .progress { margin-bottom: 0; }
 	}
-	h4 {font-weight: normal;}
-	#primary-game {position: relative;
-		&.Quake3 {height: 150px; background: url(image_path('quake3.png')) no-repeat 50% 25%}
-		&.QuakeLive {height: 150px; background: url(image_path('quakelive.png')) no-repeat 50% 50%}
-		&.CounterStrikeGo {height: 150px; background: url(image_path('counterstrikego.png')) no-repeat 50% 50%}
-		&.CounterStrikeSource {height: 150px; background: url(image_path('counterstrikesource.png')) no-repeat 50% 50%}
-		&.StarCraftII {height: 150px; background: url(image_path('starcrafttwo.png')) no-repeat 50% 50%}
-		&.LeagueofLegends {height: 150px; background: url(image_path('leagueoflegends.png')) no-repeat 50% 50%}
-		h3, h4 {position: absolute; bottom: 0; color: $white; padding: 0 10px;}
-		h3 {bottom: 20px;}
-	}
+	
 
 	#profile-top-bar {background: $lightGrey; border: 1px solid $midGrey;
 		h2 {margin: 0; font-weight: bold;}

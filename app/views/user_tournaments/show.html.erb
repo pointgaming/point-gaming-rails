@@ -5,27 +5,9 @@
 
 <div class="row-fluid" id="tournaments">
   <%= render :partial => 'tournaments/workflow_navigation' %>
-
   <div class="row-fluid">
-    <div class="span9">
-      <div class="row-fluid">
-        <div class="span12">
-          <h2><%= @tournament.name %></h2>
-          <% if @tournament.owner === current_user %>
-              <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                      user_tournament_path(@tournament),
-                      :method => 'delete',
-                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-                      :class => 'btn btn-mini btn-danger pull-right' %>
-          <% end %>
-        </div>
-      </div>
-
+    <div class="span12">
       <%= render :partial => 'tournaments/show' %>
-    </div>
-
-    <div class="span3">
-      <%= render :partial => 'user_tournaments/sponsors' %>
     </div>
   </div>
 </div>
