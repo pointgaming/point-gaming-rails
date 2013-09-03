@@ -3,4 +3,38 @@
   input[name='tournament[slug]'] { width: 73% }
   input[name='tournament[stream_slug]'] { width: 81% }
   textarea { width: 97%; }
+
+  .well { margin-bottom: 10px; }
+
+  #tournament-name-wrapper {
+  	.tournament-thumb { 
+  		img {min-height: 80px; min-width: 80px;}
+
+  	}
+  	.widget-content { padding-left: 30px;
+  		h2, h3, h4 { margin: 0;}
+  	}
+
+  	.game-type {padding: 10px; background: $secondaryColor;
+  		.span12 {margin: 0;}
+  		h4 {color: $white;}
+  	}
+  }
+
+  .middle-content {margin-left: 0;
+  	#registration-cycle, #registration-checkin {
+  		.registration-cycle-content-wrapper, .registration-checkin-content-wrapper { border-right: 1px solid #ccc;}
+  		.span6 {padding-right: 10px; padding-top: 5px;}
+  		.sub-label {
+  			h4 {text-align: center; margin-top: 15px;}
+  		}
+  		.sub-time-date {
+  			h4, h3 { text-align: right; }
+  		}
+  		h3, h4 {margin: 0;}
+  		h3:not(.widget-header h3) {font-weight: normal; line-height: 30px; margin-bottom: 5px;}
+  		h4 {font-weight: normal; }
+  	}
+  }
 }
+

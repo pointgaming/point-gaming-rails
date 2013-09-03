@@ -68,7 +68,7 @@
       </div>
         
       <% if @user.game.present? %>
-        <div class="span12 game-badge <%= game_css_class(@user.game) %>" id="primary-game">
+        <div class="span12 game-badge <%= @user.game.decorate.html_class %>" id="primary-game">
           <h3><%= User.human_attribute_name(:game_id) %></h3>
           <h4><%= @user.game.try(:display_name) %></h4>
         </div>

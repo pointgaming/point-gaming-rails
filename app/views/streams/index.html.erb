@@ -24,7 +24,7 @@
               <div class="span3 game-badge-container">
                 <div class="padding">
                   <%= link_to image_tag(stream.thumbnail.url(:thumb)), stream_url(stream.slug) %>
-                  <div class="game-badge <%= game_css_class(stream.try(:game)) %>"></div>
+                  <div class="game-badge <%= stream.game.present? ? stream.game.decorate.html_class : '' %>"></div>
                   <div class="row-fluid info-wrapper">
                     <div class="info">
                       <div class="span6"><%= stream.name %></div>
