@@ -15,24 +15,27 @@
     </div>
   </div>
 
-  <div class="row-fluid">
+  <% if @featured %>
+    <div id="featured-streams" class="row-fluid">
+      <div class="container">
+        <ul class="thumbnails">
+          <div class="row-fluid">
+            <% @featured.each do |stream| %>
+              <%= render stream %>
+            <% end %>
+          </div>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+
+  <div id="streams-table" class="row-fluid">
     <% if @streams %>
       <ul class="thumbnails">
         <% @streams.each_slice(4) do |streams| %>
           <div class="row-fluid">
             <% streams.each do |stream| %>
-              <div class="span3 game-badge-container">
-                <div class="padding">
-                  <%= link_to image_tag(stream.thumbnail.url(:thumb)), stream_url(stream.slug) %>
-                  <div class="game-badge <%= stream.game.present? ? stream.game.decorate.html_class : '' %>"></div>
-                  <div class="row-fluid info-wrapper">
-                    <div class="info">
-                      <div class="span6"><%= stream.name %></div>
-                      <div class="span6 viewer_count">Viewers: <%= stream.viewer_count %></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <%= render stream %>
             <% end %>
           </div>
         <% end %>

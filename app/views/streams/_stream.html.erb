@@ -1,0 +1,5 @@
+<div class="span3 game-badge-container">
+  <div class="stroke"><%= stream.name %></div>
+  <%= link_to image_tag(stream.thumbnail.url(:thumb)), stream_url(stream.slug) %>
+  <div class="stroke bottom"><%= stream.viewer_count %></div>
+</div>

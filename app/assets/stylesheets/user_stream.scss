@@ -12,13 +12,28 @@
 
 #streams {
 	ul {
-		div.game-badge-container {background: $lightGrey; border: 1px solid $midGrey; margin-bottom: 20px;
-			.padding {padding: 5px;}
-			a { overflow: hidden;
-				img {width: 100%; height: auto; border: 1px solid $midGrey; }
-			}
-			.info-wrapper {
-				.info {@include clearfix(); background: $secondaryColor; color: $white; font-weight: bold; padding: 10px;}
+		div.game-badge-container {
+            border: 1px solid $midGrey;
+            margin-bottom: 20px;
+
+            .stroke {
+                color: $white;
+                font-weight: bold;
+                position: absolute;
+                text-shadow: 1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
+            }
+
+            .stroke.bottom {
+                margin-top: -15px;
+            }
+
+			a {
+                overflow: hidden;
+
+				img {
+                    width: 100%;
+                    height: auto;
+                }
 			}
 		}
 	}
@@ -30,10 +45,24 @@
         }
 
         div.stream-button-separator {
-          margin-left: 20px;
-          margin-right: 20px;
+            margin-left: 20px;
+            margin-right: 20px;
         }
 
         height: 150px;
+    }
+
+    #featured-streams {
+        background-image: url('/assets/featured-stream-bg.png');
+        margin-bottom: 20px;
+        position: absolute;
+        left: 0;
+        width: 100%;
+        height: 291px;
+        padding-top: 55px;
+    }
+
+    #streams-table {
+        margin-top: 400px;
     }
 }

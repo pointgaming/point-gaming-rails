@@ -6,6 +6,7 @@ class StreamsController < ApplicationController
 
   def index
     @streams = Stream.where(streaming: true).order_by(viewer_count: 'DESC').all
+    @featured = @streams[0..3]
     respond_with(@streams)
   end
 
