@@ -22,4 +22,18 @@
 			}
 		}
 	}
+
+    #stream-buttons {
+        div {
+            float: left;
+            margin-top: 25px;
+        }
+
+        div.stream-button-separator {
+          margin-left: 20px;
+          margin-right: 20px;
+        }
+
+        height: 150px;
+    }
 }

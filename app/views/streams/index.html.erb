@@ -1,5 +1,20 @@
 <% content_for :full_width_layout do %>1<% end %>
-<div id="streams" class="container-fluid">
+
+<div id="streams" class="container">
+  <div id="stream-buttons">
+    <div class="stream-button" data-game="all">
+      <%= link_to image_tag("stream-button-all.png", id: "stream-button-all") %>
+    </div>
+
+    <div class="stream-button-separator">
+      <%= image_tag("stream-button-separator.png") %>
+    </div>
+
+    <div class="stream-button" data-game="ql">
+      <%= link_to image_tag("stream-button-ql.png", id: "stream-button-ql") %>
+    </div>
+  </div>
+
   <div class="row-fluid">
     <% if @streams %>
       <ul class="thumbnails">
