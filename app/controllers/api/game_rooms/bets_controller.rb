@@ -45,8 +45,8 @@ module Api
 
           respond_with :api, @bet
 	    else
-	      bet_errors = (@bet && @bet.errors.full_messages) || ''
-	      match_errors = (@match && @match.errors.full_messages) || ''
+	      bet_errors = (@bet && @bet.errors.full_messages.join('; ')) || ''
+	      match_errors = (@match && @match.errors.full_messages.join('; ')) || ''
 	      messages = bet_errors.concat match_errors
           render json: {errors: messages}, status: :unprocessable_entity
 	    end
