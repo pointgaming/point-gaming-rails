@@ -11,6 +11,7 @@ module Api
 
 	  def create
 	    @bet.offerer = current_user
+	    @bet.betters << new_better unless @game_room.is_1v1?
 
 	    @bet.match = @match
 	    @bet.offerer_odds = @match.default_offerer_odds
@@ -44,7 +45,9 @@ module Api
 
           respond_with :api, @bet
 	    else
-	      messages = @bet.errors.full_messages.concat @match.errors.full_messages
+	      bet_errors = (@bet && @bet.errors.full_messages.join('; ')) || ''
+	      match_errors = (@match && @match.errors.full_messages.join('; ')) || ''
+	      messages = bet_errors.concat match_errors
           render json: {errors: messages}, status: :unprocessable_entity
 	    end
 	  end
@@ -144,6 +147,10 @@ module Api
 
         def can_admin_bet?
           @game_room.owner == current_user || @bet.offerer == current_user
+        end
+
+        def new_better
+          Betting::Better.new(user: current_user, team_id: current_user.team_id)
         end
     end
   end

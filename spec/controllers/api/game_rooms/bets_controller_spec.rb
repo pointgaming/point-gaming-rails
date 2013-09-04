@@ -72,7 +72,7 @@ describe Api::GameRooms::BetsController do
           before(:each) do
             game_room.update_attribute :betting_type, 'team'
             user.update_attribute :team_id, team.id
-            request_params[:bet][:match].merge!({team_size: 1})
+            request_params[:bet][:match].merge!({team_size: 1, player_1_type: 'Team'})
           end
 
           it 'expects bet created' do
@@ -90,6 +90,7 @@ describe Api::GameRooms::BetsController do
             expect(json['_id']).to_not be_nil
             expect(json['offerer_wager']).to eq(bet_params[:offerer_wager])
             expect(json['offerer_choice_name']).to eq(user.team.name)
+            expect(json['betters']).to_not be_empty
 
             expect(json['match']).to_not be_nil
             expect(json['match']['map']).to eq(bet_params[:match][:map])
