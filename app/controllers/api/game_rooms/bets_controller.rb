@@ -11,6 +11,7 @@ module Api
 
 	  def create
 	    @bet.offerer = current_user
+	    @bet.betters << new_better unless @game_room.is_1v1?
 
 	    @bet.match = @match
 	    @bet.offerer_odds = @match.default_offerer_odds
@@ -144,6 +145,10 @@ module Api
 
         def can_admin_bet?
           @game_room.owner == current_user || @bet.offerer == current_user
+        end
+
+        def new_better
+          Betting::Better.new(user: current_user, team_id: current_user.team_id)
         end
     end
   end
