@@ -23,7 +23,9 @@
     loadGraphData: function(){
       var self = this;
 
-      d3.json(window.location.href + '.json', function(error, data) {
+      var data_url = PointGaming.helpers.url_builder.buildUrl(URI().pathname() + '.json');
+
+      d3.json(data_url, function(error, data) {
         if (!error) {
           self.graph_data = data;
           self.renderGraph();
