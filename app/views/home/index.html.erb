@@ -36,7 +36,7 @@
             <% @players.each do |user| %>
               <tr class="<%= 'bottom' if @players.last === user %>">
                 <td><%= link_to user.display_name, user %></td>
-                <td class="item"><%= user.points %></td>
+                <td class="item"><%= user.decorate.points %></td>
               </tr>
             <% end %>
           </tbody>

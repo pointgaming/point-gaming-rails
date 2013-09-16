@@ -1,9 +1,9 @@
 GIT
   remote: git@github.com:pointgaming/point-gaming-core.git
-  revision: 4fa634520f5f7743c9efff6dbf53952858b3a04d
+  revision: 70a6d40afd47a7cbd01322468270f4e05a6b0edc
   branch: master
   specs:
-    point_gaming (0.1.12)
+    point_gaming (0.1.13)
       active_hash
       bunny (>= 0.9.0.pre6)
       cancan
@@ -29,10 +29,10 @@ GIT
 
 GIT
   remote: git@github.com:pointgaming/point-gaming-frontend.git
-  revision: 13fe8262322b485860fc00efb8250d2171f26e61
+  revision: 0c40234b3ae364db91c7f15f5bebd8272b28b34e
   branch: master
   specs:
-    point_gaming_frontend (0.0.4)
+    point_gaming_frontend (0.0.5)
       bootstrap-sass (~> 2.3.1.0)
       rails (~> 3.2.14)
       sass-rails (~> 3.2.3)

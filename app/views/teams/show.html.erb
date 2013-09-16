@@ -27,7 +27,7 @@
     <div class="span9">
       <div class="row-fluid">
         <div class="span12" id="team-information">
-          <h4 class="pull-right"><%= @team.points %> Points</h4>
+          <h4 class="pull-right"><%= @team.decorate.points %> Points</h4>
           <h2><%= @team.display_name %></h2>
           <% if @member.try(:is_leader?) %>
               <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
@@ -61,7 +61,7 @@
                       <% @team.game_points_with_games.sort{|a, b| b[:points] <=> a[:points]}.each do |game_point| %>
                         <tr>
                           <td><%= game_point[:game].try(:display_name) || t(:no_active_game) %></td>
-                          <td><%= game_point[:points] %></td>
+                          <td><%= format_points(game_point[:points]) %></td>
                         </tr>
                       <% end %>
                     </tbody>
@@ -97,7 +97,7 @@
                       <% @team.members.each do |member| %>
                         <tr>
                           <td><%= member.user.try(:username) %></td>
-                          <td><%= member.user.try(:points) %></td>
+                          <td><%= member.user.decorate.try(:points) %></td>
                           <td><%= member.rank %></td>
                           <td><%= ldate member.created_at.to_date %></td>
                           <td>

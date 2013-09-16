@@ -16,7 +16,7 @@
         <% models.each do |friend| %>
           <tr>
             <td><%= link_to friend.username, friend %></td>
-            <td width="100"><%= friend.points %></td>
+            <td width="100"><%= friend.decorate.points %></td>
             <td width="100"><%= friend.team.try(:name) %></td>
             <td width="100">
               <% unless friend._id === current_user._id || user._id === current_user._id %>
