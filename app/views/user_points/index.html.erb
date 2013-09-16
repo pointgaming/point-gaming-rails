@@ -46,9 +46,12 @@
         <td><%= ldate point_history.created_at %></td>
         <td><%= point_history.description %></td>
         <td><%= point_history.action_source_type %></td>
-        <td><%= point_history.amount %></td>
+        <td><%= point_history.decorate.amount %></td>
         <td>
-          <%= link_to :View, '#', :class => 'btn btn-mini' %>
+          <%- model_actions = ModelActionsFactory.new(current_user, point_history.action_source) %>
+          <%- model_actions.actions.each do |name, url| %>
+            <%= link_to name, url, class: 'btn btn-mini' %>
+          <% end %>
         </td>
       </tr>
     <% end %>
