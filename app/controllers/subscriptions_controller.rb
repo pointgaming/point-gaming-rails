@@ -25,7 +25,6 @@ class SubscriptionsController < ApplicationController
     if @subscription_order_processor.process
       redirect_to order_path(@subscription_order_processor.order)
     else
-      @subscription.reset_expiration_date!
       render action: :new
     end
   end
@@ -39,7 +38,6 @@ class SubscriptionsController < ApplicationController
     if @subscription_order_processor.process
       redirect_to order_path(@subscription_order_processor.order)
     else
-      @subscription.reset_expiration_date!
       render action: :edit
     end
   end
