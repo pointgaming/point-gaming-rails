@@ -81,11 +81,7 @@ PointGamingRails::Application.routes.draw do
     end
 
     scope module: :users do
-      resources :users, only: [:index, :show] do
-        member do
-          put 'increment_points_for_store_order'
-        end
-      end
+      resources :users, only: [:index, :show]
     end
 
     scope module: :friends do
@@ -135,6 +131,14 @@ PointGamingRails::Application.routes.draw do
         resources :bets, except: [:edit]
       end
       resources :matches, only: [:index, :update]
+    end
+
+    scope module: :store do
+      resources :orders, only: [] do
+        member do
+          put 'log'
+        end
+      end
     end
   end
 
