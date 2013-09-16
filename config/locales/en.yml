@@ -67,6 +67,10 @@ en:
       stream: "Stream"
       team: "Team"
       user: "User"
+  UserTransactionHistory:
+    _type:
+      UserPointHistory: 'Points'
+      UserBillingHistory: 'Order'
   shared:
     desktop_client_helper:
       desktop_client_required_modal:
