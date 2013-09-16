@@ -17,7 +17,9 @@ module Api
 	    @bet.offerer_odds = @match.default_offerer_odds
 	    @bet.match_hash = @match.match_hash
 
-	    @bet.save
+	    if @bet.save
+        log_user_created_bet
+      end
 	    respond_with :api, @game_room, @bet
 	  end
 
@@ -40,6 +42,7 @@ module Api
 
 	  def update
         if @bet.accept!(current_user)
+          log_user_accepted_bet
           @bet.match.start! if @bet.match.is_player_vs_mode? ||
                                (@bet.match.is_team_vs_mode? && @bet.teams_full?)
 
@@ -151,6 +154,23 @@ module Api
 
         def new_better
           Betting::Better.new(user: current_user, team_id: current_user.team_id)
+        end
+
+        def log_user_created_bet
+          description = 'Bet Created'
+          log_user_bet(description)
+        end
+
+        def log_user_accepted_bet
+          description = 'Bet Accepted'
+          log_user_bet(description)
+        end
+
+        def log_user_bet(description)
+          user = current_user
+          amount = @bet.bet_amount(user)
+          UserBetLoggerService.new(user: user, bet: @bet).
+            log(amount, description)
         end
     end
   end

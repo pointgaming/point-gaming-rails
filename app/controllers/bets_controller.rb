@@ -31,9 +31,12 @@ class BetsController < ApplicationController
   end
 
   def update
-    @bet.taker = current_user
+    acceptor = BetAcceptorService.new({
+      bet: @bet,
+      user: current_user
+    })
 
-    @bet.save
+    acceptor.accept
     respond_with(@bet)
   end
 

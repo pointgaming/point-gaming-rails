@@ -69,6 +69,7 @@ en:
       user: "User"
   UserTransactionHistory:
     _type:
+      UserBetHistory: 'Bet'
       UserPointHistory: 'Points'
       UserBillingHistory: 'Order'
   shared:
