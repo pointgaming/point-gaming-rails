@@ -13,8 +13,6 @@ PointGaming.MatchAdminController.prototype.registerHandlers = function() {
 
   $(document).on('change', '#match-modal input.playable-search', this.clearRelatedHiddenFields);
 
-  $(document).on('change', 'select#match_winner_id', this.populateWinnerType.bind(this));
-
   $(document).on('click', 'a[rel="modal:open:ajaxpost"][data-modal-target="#match-modal"]:not([disabled])', this.openModal(modal));
   $(document).on('click', 'a[disabled]', function(e){ return false; });
   $(document).on('submit', '#match-modal form', PointGaming.ModalHelper.submitModalForm(modal));
@@ -25,10 +23,6 @@ PointGaming.MatchAdminController.prototype.registerHandlers = function() {
 
   PointGaming.socket.on("Match.new", this.handleMatchCreated.bind(this));
   PointGaming.socket.on("Match.update", this.handleMatchUpdated.bind(this));
-};
-
-PointGaming.MatchAdminController.prototype.populateWinnerType = function(jqEvent) {
-  $('input#match_winner_type').val( $(':selected', jqEvent.target).data('type') || '' );
 };
 
 // this method will return the handler used to setup match modal windows.

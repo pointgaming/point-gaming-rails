@@ -69,14 +69,17 @@ class MatchesController < ApplicationController
 protected
 
   def update_match_attributes
-    @match.update_attributes params[:match] if params[:match]
+    @match.update_attributes(update_match_params)
     respond_with(@match)
   end
 
+  def update_match_params
+    params[:match].slice(:player_1_name, :player_1_id, :player_1_type, :player_2_name, :player_2_id, :player_2_type, :map, :default_offerer_odds, :game_id)
+  end
+
   def update_match_winner
-    if ['team', 'user'].include?(params[:match][:winner_type].downcase)
-      winner = params[:match][:winner_type].classify.constantize.find(params[:match][:winner_id])
-      @match.winner = winner
+    if ['player_1', 'player_2'].include?(params[:match][:winner])
+      @match.winner = @match.send(params[:match][:winner])
     end
 
     @match.save && @match.finalize!
