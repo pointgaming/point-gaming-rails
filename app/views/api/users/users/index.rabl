@@ -1,4 +1,4 @@
 object false
 child(:@users) do
-  extends "api/v1/users/base"
+  extends "api/users/users/base"
 end

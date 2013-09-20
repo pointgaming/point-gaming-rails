@@ -76,7 +76,6 @@ PointGamingRails::Application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :better
-      resources :users, only: [:index, :show]
       resources :sessions
     end
 
