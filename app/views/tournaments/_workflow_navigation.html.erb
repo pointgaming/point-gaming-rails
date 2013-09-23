@@ -7,6 +7,7 @@
         <li class="disabled"><a href="">Pay</a></li>
         <li class="disabled"><a href="">Status</a></li>
         <li class="disabled"><a href="">Collaborators & Invites</a></li>
+        <li class="disabled"><a href="">Seeds</a></li>
         <li class="disabled"><a href="">Overview</a></li>
       <% else %>
         <%= navItem "Edit", edit_user_tournament_path(@tournament) %>
@@ -16,6 +17,7 @@
         <%= navItem "Pay", new_user_tournament_payment_path(@tournament), :class => pay_class %>
         <%= navItem "Status", status_user_tournament_path(@tournament) %>
         <%= navItem "Collaborators & Invites", users_user_tournament_path(@tournament) %>
+        <%= navItem "Seeds", seeds_user_tournament_path(@tournament) %>
         <%= navItem "Overview", user_tournament_path(@tournament) %>
       <% end %>
     </ul>

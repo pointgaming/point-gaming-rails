@@ -34,6 +34,7 @@ PointGamingRails::Application.routes.draw do
       get 'prize_pool'
       get 'status', to: 'tournament_status#show'
       get 'users'
+      get 'seeds'
     end
   end
   resources :streams, controller: 'streams', as: 'streams', only: [:index, :create]

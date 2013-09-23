@@ -49,6 +49,9 @@ class UserTournamentsController < ApplicationController
     @invites = @tournament.invites
   end
 
+  def seeds
+  end
+
   private
 
   def default_update_action
