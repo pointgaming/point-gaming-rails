@@ -6,7 +6,7 @@ describe UserPointService do
     let(:points_to_transfer) { 50 }
     let(:user) { Fabricate(:user, points: points_to_transfer) }
     let(:another_user) { Fabricate(:user, points: 0) }
-    let(:action_source) { Bet.new }
+    let(:action_source) { double(id: 1) }
 
     it "raises an error when transferring points to an invalid user" do
       lambda { UserPointService.new(user).transfer(:wat, 25, action_source) }.should raise_error

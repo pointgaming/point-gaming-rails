@@ -3,8 +3,6 @@ class BetsController < ApplicationController
   before_filter :ensure_match
   before_filter :ensure_bet, except: [:new, :create]
   before_filter :ensure_params, only: [:create]
-  before_filter :ensure_offerer_choice, only: [:create]
-  before_filter :ensure_taker_choice, only: [:create]
   before_filter :ensure_not_bet_owner, only: [:update]
   before_filter :ensure_bet_owner, only: [:destroy]
   before_filter :ensure_no_taker, only: [:update, :destroy]
@@ -20,25 +18,25 @@ class BetsController < ApplicationController
   end
 
   def create
-    @bet = Bet.new(params[:bet])
-    @bet.offerer = current_user
-    @bet.match = @match
-    @bet.offerer_odds = @match.default_offerer_odds if @match.room_type === 'GameRoom'
+    creator = BetCreatorService.new({
+      params: params[:bet],
+      match: @match,
+      user: current_user
+    })
 
-    @bet.offerer_choice = @offerer_choice
-    @bet.offerer_choice_name = @offerer_choice.try(:display_name)
+    @bet = creator.bet
 
-    @bet.taker_choice = @taker_choice
-    @bet.taker_choice_name = @taker_choice.try(:display_name)
-
-    @bet.save
+    creator.create
     respond_with(@match, @bet)
   end
 
   def update
-    @bet.taker = current_user
+    acceptor = BetAcceptorService.new({
+      bet: @bet,
+      user: current_user
+    })
 
-    @bet.save
+    acceptor.accept
     respond_with(@bet)
   end
 
@@ -62,18 +60,6 @@ protected
         format.html { redirect_to polymorphic_path(@match), alert: 'Invalid or missing parameters.' }
         format.json { render json: [], status: :unprocessable_entity }
       end
-    end
-  end
-
-  def ensure_offerer_choice
-    if ['team', 'user'].include?(params[:bet][:offerer_choice_type].downcase)
-      @offerer_choice = params[:bet][:offerer_choice_type].classify.constantize.find(params[:bet][:offerer_choice_id])
-    end
-  end
-
-  def ensure_taker_choice
-    if ['team', 'user'].include?(params[:bet][:taker_choice_type].downcase)
-      @taker_choice = params[:bet][:taker_choice_type].classify.constantize.find(params[:bet][:taker_choice_id])
     end
   end
 

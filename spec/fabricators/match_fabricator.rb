@@ -14,11 +14,6 @@ Fabricator(:user_vs_user_match, from: :match) do
   player_2(fabricator: :user)
 end
 
-Fabricator(:user_vs_team_match, from: :match) do
-  player_1(fabricator: :user)
-  player_2(fabricator: :team_with_members)
-end
-
 Fabricator(:team_vs_user_match, from: :match) do
   player_1(fabricator: :team_with_members)
   player_2(fabricator: :user)
@@ -27,6 +22,7 @@ end
 Fabricator(:team_vs_team_match, from: :match) do
   player_1(fabricator: :team_with_members)
   player_2(fabricator: :team_with_members)
+  team_size 0
 end
 
 Fabricator(:finalized_match, from: :match) do

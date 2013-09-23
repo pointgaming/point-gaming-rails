@@ -1,0 +1,31 @@
+<div class="page-header">
+  <h1>Transaction History</h1>
+</div>
+
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th><%= UserTransactionHistory.human_attribute_name(:created_at) %></th>
+      <th><%= UserTransactionHistory.human_attribute_name(:description) %></th>
+      <th><%= UserTransactionHistory.human_attribute_name(:type) %></th>
+      <th><%= UserTransactionHistory.human_attribute_name(:amount) %></th>
+      <th><%= UserTransactionHistory.human_attribute_name(:actions) %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% transaction_history.each do |transaction_history| %>
+      <tr>
+        <td><%= ldate transaction_history.created_at %></td>
+        <td><%= transaction_history.description %></td>
+        <td><%= t transaction_history._type, scope: [UserTransactionHistory, :_type] %></td>
+        <td><%= transaction_history.decorate.amount  %></td>
+        <td>
+          <%- model_actions = ModelActionsFactory.new(current_user, transaction_history.action_source) %>
+          <%- model_actions.actions.each do |name, url| %>
+            <%= link_to name, url, class: 'btn btn-mini' %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

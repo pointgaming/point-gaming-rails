@@ -14,7 +14,7 @@
         <% @players.each do |user| %>
           <tr>
             <td><%= link_to user.display_name, user %></td>
-            <td><%= user.points %></td>
+            <td><%= user.decorate.points %></td>
           </tr>
         <% end %>
       </tbody>
@@ -35,7 +35,7 @@
         <% @teams.each do |team| %>
           <tr>
             <td><%= link_to team.display_name, team %></td>
-            <td><%= team.points %></td>
+            <td><%= team.decorate.points %></td>
           </tr>
         <% end %>
       </tbody>
