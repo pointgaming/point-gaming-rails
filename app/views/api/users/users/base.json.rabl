@@ -3,5 +3,5 @@ node :group_prefix do |user|
   user.group.try(:prefix)
 end
 child :team do
-  extends "api/users/users/base"
+  extends "api/v1/teams/base"
 end
