@@ -38,3 +38,13 @@
   }
 }
 
+.tourney-players li {
+  margin: 0 3px 3px 3px;
+  padding: 0.4em;
+  height: 18px;
+}
+
+.tourney-players li.draggable:hover {
+  background-color: #fff;
+  cursor: move;
+}

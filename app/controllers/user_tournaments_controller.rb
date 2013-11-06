@@ -50,6 +50,18 @@ class UserTournamentsController < ApplicationController
   end
 
   def seeds
+    if request.put?
+      params[:seeds] = [] if params[:seeds].blank?
+
+      players = params[:seeds].map { |s| @tournament.players.find(s) } rescue false
+
+      if players
+        @tournament.seeds = params[:seeds]
+        @tournament.save
+      end
+
+      head :ok
+    end
   end
 
   private
