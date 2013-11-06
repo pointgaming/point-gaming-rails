@@ -1,9 +1,9 @@
 GIT
   remote: git@github.com:pointgaming/point-gaming-core.git
-  revision: c934c687987ba0dcf3dbd77f781c96a3455d0832
+  revision: 0b7d9eafb649977f65caa37bb59da0876f2c81b0
   branch: master
   specs:
-    point_gaming (0.1.13)
+    point_gaming (0.1.14)
       active_hash
       bunny (>= 0.9.0.pre6)
       cancan
@@ -29,10 +29,10 @@ GIT
 
 GIT
   remote: git@github.com:pointgaming/point-gaming-frontend.git
-  revision: 2609bf7a6eadd354d7fc73de3288e890151a949c
+  revision: 4c5909323a7d75295a53e74641f2bb75b1ffc5be
   branch: master
   specs:
-    point_gaming_frontend (0.0.5)
+    point_gaming_frontend (0.0.6)
       bootstrap-sass (~> 2.3.1.0)
       rails (~> 3.2.14)
       sass-rails (~> 3.2.3)
@@ -54,7 +54,7 @@ GEM
       rack-cache (~> 1.2)
       rack-test (~> 0.6.1)
       sprockets (~> 2.2.1)
-    active_hash (1.0.2)
+    active_hash (1.2.2)
       activesupport (>= 2.2.2)
     activemodel (3.2.14)
       activesupport (= 3.2.14)
@@ -84,8 +84,8 @@ GEM
     bootstrap-sass (2.3.1.3)
       sass (~> 3.2)
     builder (3.0.4)
-    bunny (1.0.0.pre6)
-      amq-protocol (>= 1.7.0)
+    bunny (1.0.0)
+      amq-protocol (>= 1.8.0)
     callsite (0.0.11)
     cancan (1.6.10)
     capistrano (2.15.5)
@@ -112,24 +112,25 @@ GEM
     chronic (0.10.2)
     climate_control (0.0.3)
       activesupport (>= 3.0)
-    cocaine (0.5.1)
+    cocaine (0.5.3)
       climate_control (>= 0.0.3, < 1.0)
     coderay (1.1.0)
     database_cleaner (1.1.1)
     debug_inspector (0.0.2)
-    devise (3.1.0)
+    devise (3.1.1)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 3.2.6, < 5)
       thread_safe (~> 0.1)
       warden (~> 1.2.3)
     diff-lcs (1.2.4)
-    draper (1.2.1)
+    draper (1.3.0)
       actionpack (>= 3.0)
+      activemodel (>= 3.0)
       activesupport (>= 3.0)
       request_store (~> 1.0.3)
     erubis (2.7.0)
-    execjs (2.0.1)
+    execjs (2.0.2)
     fabrication (2.8.0)
     ffi (1.9.0)
     god (0.13.2)
@@ -150,7 +151,7 @@ GEM
     jquery-ui-rails (4.0.4)
       jquery-rails
       railties (>= 3.1.0)
-    json (1.8.0)
+    json (1.8.1)
     kaminari (0.14.1)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
@@ -182,7 +183,7 @@ GEM
       rspec (>= 2.14)
     mono_logger (1.1.0)
     moped (1.5.1)
-    multi_json (1.8.0)
+    multi_json (1.8.2)
     net-scp (1.1.2)
       net-ssh (>= 2.6.5)
     net-sftp (2.1.2)
@@ -196,10 +197,10 @@ GEM
     oj (2.1.4)
     origin (1.1.0)
     orm_adapter (0.4.0)
-    paperclip (3.5.1)
+    paperclip (3.5.2)
       activemodel (>= 3.0.0)
       activesupport (>= 3.0.0)
-      cocaine (~> 0.5.0)
+      cocaine (~> 0.5.3)
       mime-types
     pg (0.17.0)
     polyglot (0.3.3)
@@ -215,7 +216,7 @@ GEM
       rack (>= 0.4)
     rack-contrib (1.1.0)
       rack (>= 0.9.1)
-    rack-protection (1.5.0)
+    rack-protection (1.5.1)
       rack
     rack-ssl (1.3.3)
       rack
@@ -244,7 +245,7 @@ GEM
       ffi (>= 0.5.0)
     rdoc (3.12.2)
       json (~> 1.4)
-    redis (3.0.4)
+    redis (3.0.5)
     redis-actionpack (3.2.3)
       actionpack (~> 3.2.3)
       redis-rack (~> 1.4.0)
@@ -252,8 +253,8 @@ GEM
     redis-activesupport (3.2.4)
       activesupport (~> 3.2.0)
       redis-store (~> 1.1.0)
-    redis-namespace (1.3.1)
-      redis (~> 3.0.0)
+    redis-namespace (1.3.2)
+      redis (~> 3.0.4)
     redis-rack (1.4.3)
       rack (~> 1.4.0)
       redis-store (~> 1.1.0)
@@ -265,7 +266,7 @@ GEM
       redis (>= 2.2.0)
     remotipart (1.2.1)
     request_store (1.0.5)
-    resque (1.25.0)
+    resque (1.25.1)
       mono_logger (~> 1.0)
       multi_json (~> 1.0)
       redis-namespace (~> 1.2)
@@ -300,11 +301,11 @@ GEM
       rspec-expectations (~> 2.14.0)
       rspec-mocks (~> 2.14.0)
     rubyzip (0.9.9)
-    rufus-scheduler (2.0.24)
-      tzinfo (>= 0.3.22)
+    rufus-scheduler (3.0.2)
+      tzinfo
     sanitize (2.0.6)
       nokogiri (>= 1.4.4)
-    sass (3.2.10)
+    sass (3.2.12)
     sass-rails (3.2.6)
       railties (~> 3.2.0)
       sass (>= 3.1.10)
@@ -319,7 +320,7 @@ GEM
       multi_json (~> 1.0)
       simplecov-html (~> 0.7.1)
     simplecov-html (0.7.1)
-    sinatra (1.4.3)
+    sinatra (1.4.4)
       rack (~> 1.4)
       rack-protection (~> 1.4)
       tilt (~> 1.3, >= 1.3.4)
@@ -329,14 +330,14 @@ GEM
       multi_json (~> 1.0)
       rack (~> 1.0)
       tilt (~> 1.1, != 1.3.0)
-    stripe (1.8.7)
+    stripe (1.8.8)
       multi_json (>= 1.0.4, < 2)
       rest-client (~> 1.4)
     thor (0.18.1)
     thread_safe (0.1.3)
       atomic
     tilt (1.4.1)
-    tire (0.6.0)
+    tire (0.6.1)
       activemodel (>= 3.0)
       activesupport
       ansi
@@ -355,7 +356,7 @@ GEM
       execjs
       rails (>= 3.1)
       railties (>= 3.1)
-    tzinfo (0.3.37)
+    tzinfo (0.3.38)
     uglifier (2.2.1)
       execjs (>= 0.3.0)
       multi_json (~> 1.0, >= 1.0.2)
