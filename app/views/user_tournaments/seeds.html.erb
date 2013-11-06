@@ -16,11 +16,11 @@
         </div>
 
         <div class="widget-content scrollable">
-          <ol class="tourney-players">
+          <ul class="tourney-players">
             <% @tournament.players.each do |player| %>
               <li class="draggable" data-id="<%= player.id %>"><%= player.user.username %></li>
             <% end %>
-          </ol>
+          </ul>
         </div>
       </div>
     </div>
