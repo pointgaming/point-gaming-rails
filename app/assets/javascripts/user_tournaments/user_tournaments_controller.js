@@ -37,7 +37,7 @@
 
               link = $("<a></a>").text("[x]").attr("href", "#").addClass("remove-seed");
 
-              $("<li></li>").text(" " + username).data("id", ui.draggable.data("id")).prepend(link).appendTo(this);
+              $("<li></li>").text(" " + username).data("id", ui.draggable.data("id")).prepend(link).appendTo($(this).find("ol"));
               updateServer();
           }
       }).sortable({
