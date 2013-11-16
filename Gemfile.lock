@@ -29,7 +29,7 @@ GIT
 
 GIT
   remote: git@github.com:pointgaming/point-gaming-frontend.git
-  revision: 4c5909323a7d75295a53e74641f2bb75b1ffc5be
+  revision: 5622af9dced62e7be8bd22c43321669eaf8e25af
   branch: master
   specs:
     point_gaming_frontend (0.0.6)
@@ -73,7 +73,7 @@ GEM
     addressable (2.3.5)
     amq-protocol (1.8.0)
     ansi (1.4.3)
-    arel (3.0.2)
+    arel (3.0.3)
     atomic (1.1.14)
     bcrypt-ruby (3.1.2)
     better_errors (1.0.1)
