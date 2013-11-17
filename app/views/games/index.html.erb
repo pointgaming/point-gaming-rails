@@ -11,7 +11,7 @@
   <tbody>
     <% @games.each do |game| %>
       <tr>
-        <td><%= link_to_lobby game %></td>
+        <td><%= image_tag(image_path(game.decorate.image_name)) %><%= link_to_lobby game %></td>
         <td><%= game.player_count %></td>
         <td><%= "n/a" %></td>
       </tr>
