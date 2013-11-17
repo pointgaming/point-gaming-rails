@@ -59,8 +59,7 @@ PointGamingRails::Application.routes.draw do
   end
   resources :store
   resources :faq
-  resources :settings
-  resources :billing, except: [:index]
+  resources :billing, except: [:index, :show]
   resources :bet_history, only: [:show]
   resources :orders, only: [:show]
   resources :subscriptions, only: [:index, :new, :create, :edit, :update]
