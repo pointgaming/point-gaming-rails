@@ -1,7 +1,6 @@
 module Api
   module Games
     class ContextController < Api::ApplicationController
-      before_filter :authenticate_user!
       before_filter :ensure_game
 
       respond_to :json
