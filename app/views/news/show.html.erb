@@ -10,7 +10,7 @@
           <%= @news.title %>
           <% if can? :manage, News %>
             <div class="pull-right" style="padding-right: 23px;">
-              <%= link_to 'Edit News', edit_admin_news_path(@news), :class => 'btn btn-mini' %>
+              <%= link_to 'Edit News', edit_admin_news_url(@news), :class => 'btn btn-mini' %>
             </div>
           <% end %>
         </h1>
