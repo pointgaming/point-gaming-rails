@@ -53,7 +53,7 @@ module Api
 	if @game_room && !current_user.eql?(@game_room.owner) && current_user.can_take_over?(@game_room)
 	  @new_game_room = @game_room.clone
 	  @new_game_room.owner = current_user
-	  @game_room.update_attributes position: GameRoom.first_free_position(@game_room.game)
+	  @game_room.update_attributes position: GameRoom.next_available_position(@game_room.game)
 	  @new_game_room.save
 	  respond_with :api, @new_game_room
 	else
