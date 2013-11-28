@@ -41,7 +41,7 @@ end
 
 gem 'whenever', require: false
 gem 'god', require: false
-gem 'capistrano'
+gem 'capistrano', '~> 2.15.1'
 gem 'capistrano-ext'
 
 # required to precompile assets
