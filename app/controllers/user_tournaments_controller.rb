@@ -41,7 +41,6 @@ class UserTournamentsController < ApplicationController
   end
 
   def prize_pool
-
   end
 
   def users
@@ -61,6 +60,17 @@ class UserTournamentsController < ApplicationController
       end
 
       head :ok
+    end
+  end
+
+  def brackets
+    respond_to do |format|
+      format.html
+      format.json do
+        brackets = @tournament.brackets
+        brackets["teams"].map! { |p| p.map { |t| t.blank? || t == "BYE" ? "BYE" : @tournament.players.find(t).user.username } }
+        render json: brackets
+      end
     end
   end
 

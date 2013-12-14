@@ -1,72 +1,85 @@
 (function(window){
-  "use strict";
+    "use strict";
 
-  window.PointGaming.controllers.user_tournaments = {
+    window.PointGaming.controllers.user_tournaments = {
+        init: function () {
+            var workflow_widget = new window.PointGaming.views.tournament_workflow_widget();
+        },
 
-    init: function(){
-      var workflow_widget = new window.PointGaming.views.tournament_workflow_widget(),
+        new: function () {
+            var form = new window.PointGaming.views.tournament_form();
+        },
 
-          updateServer = function () {
-              var seeds = [];
-              
-              $("#tourney-seeds li").each(function (i, e) {
-                  if ($(e).data("id")) {
-                      seeds.push($(e).data("id"));
-                  }
-              });
+        edit: function () {
+            var form = new window.PointGaming.views.tournament_form(),
+                sponsors = new window.PointGaming.views.tournament_sponsors();
+        },
 
-              $.ajax({
-                  url: "seeds",
-                  method: "put",
-                  data: { seeds: seeds }
-              });
-          };
+        prize_pool: function () {
+            var form = new window.PointGaming.views.tournament_prizepool_form();
+        },
 
-      $("li.draggable").draggable({
-          appendTo: "body",
-          helper: "clone"
-      });
-      $("#tourney-seeds").droppable({
-          drop: function (e, ui) {
-              var username = ui.draggable.text(),
-                  link;
+        seeds: function () {
+            var updateServer = function () {
+                var seeds = [];
 
-              if ($(this).find("li:contains('" + username + "')").length) {
-                  return false;
-              }
+                $("#tourney-seeds li").each(function (i, e) {
+                    if ($(e).data("id")) {
+                        seeds.push($(e).data("id"));
+                    }
+                });
 
-              link = $("<a></a>").text("[x]").attr("href", "#").addClass("remove-seed");
+                $.ajax({
+                    url: "seeds",
+                    method: "put",
+                    data: { seeds: seeds }
+                });
+            };
 
-              $("<li></li>").text(" " + username).data("id", ui.draggable.data("id")).prepend(link).appendTo($(this).find("ol"));
-              updateServer();
-          }
-      }).sortable({
-          update: updateServer
-      });
-      $("#tourney-seeds").on("click", "a", function () {
-         $(this).parent("li").remove();
-         updateServer();
-         return false;
-      });
-    },
+            $("li.draggable").draggable({
+                appendTo: "body",
+                helper: "clone"
+            });
 
-    new: function(){
-      var form = new window.PointGaming.views.tournament_form();
-    },
-    
-    edit: function(){
-      var form = new window.PointGaming.views.tournament_form()
-        , sponsors = new window.PointGaming.views.tournament_sponsors();
-    },
+            $("#tourney-seeds").droppable({
+                drop: function (e, ui) {
+                    var username = ui.draggable.text(),
+                    link;
 
-    prize_pool: function(){
-      var form = new window.PointGaming.views.tournament_prizepool_form();
-    },
+                    if ($(this).find("li:contains('" + username + "')").length) {
+                        return false;
+                    }
 
-    users: function(){
-      new window.PointGaming.views.tournament_users();
-    }
+                    link = $("<a></a>").text("[x]").attr("href", "#").addClass("remove-seed");
 
-  };
+                    $("<li></li>").text(" " + username).data("id", ui.draggable.data("id")).prepend(link).appendTo($(this).find("ol"));
+                    updateServer();
+                }
+            }).sortable({
+                update: updateServer
+            });
 
+            $("#tourney-seeds").on("click", "a", function () {
+                $(this).parent("li").remove();
+                updateServer();
+                return false;
+            });
+        },
+
+        brackets: function () {
+            $.ajax({
+                method: "GET",
+                data: { format: "json" },
+                success: function (data) {
+                    $("#tourney-brackets").bracket({
+                        init: data
+                    });
+                }
+            });
+        },
+
+        users: function(){
+            new window.PointGaming.views.tournament_users();
+        }
+    };
 })(window);
