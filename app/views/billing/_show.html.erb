@@ -12,29 +12,29 @@
           <div class="control-group">
             <label>Name</label>
             <div class="controls">
-              <%= @stripe_customer.active_card.name %>
+              <%= @stripe_customer.try(:active_card).try(:name) %>
             </div>
           </div>
 
           <div class="control-group">
             <label>Number</label>
             <div class="controls">
-              **** **** **** <%= @stripe_customer.active_card.last4 %>
+              **** **** **** <%= @stripe_customer.try(:active_card).try(:last4) %>
             </div>
           </div>
 
           <div class="control-group">
             <label>Type</label>
             <div class="controls">
-              <%= @stripe_customer.active_card.type %>
+              <%= @stripe_customer.try(:active_card).try(:type) %>
             </div>
           </div>
 
           <div class="control-group">
             <label>Expiration</label>
             <div class="controls">
-              <%= @stripe_customer.active_card.exp_month %>
-              / <%= @stripe_customer.active_card.exp_year %>
+              <%= @stripe_customer.try(:active_card).try(:exp_month) %>
+              / <%= @stripe_customer.try(:active_card).try(:exp_year) %>
             </div>
           </div>
         </div>
@@ -43,15 +43,15 @@
           <div class="control-group">
             <label>Address 1</label>
             <div class="controls">
-              <%= @stripe_customer.active_card.address_line1 %>
+              <%= @stripe_customer.try(:active_card).try(:address_line1) %>
             </div>
           </div>
   
-          <% unless @stripe_customer.active_card.address_line2 %>
+          <% unless @stripe_customer.try(:active_card).try(:address_line2) %>
             <div class="control-group">
               <label>Address 2</label>
               <div class="controls">
-                <%= @stripe_customer.active_card.address_line2 %>
+                <%= @stripe_customer.try(:active_card).try(:address_line2) %>
               </div>
             </div>
           <% end %>
@@ -59,21 +59,21 @@
           <div class="control-group">
             <label>City</label>
             <div class="controls">
-              <%= @stripe_customer.active_card.address_city %>
+              <%= @stripe_customer.try(:active_card).try(:address_city) %>
             </div>
           </div>
 
           <div class="control-group">
             <label>State</label>
             <div class="controls">
-              <%= @stripe_customer.active_card.address_state %>
+              <%= @stripe_customer.try(:active_card).try(:address_state) %>
             </div>
           </div>
 
           <div class="control-group">
             <label>Zip</label>
             <div class="controls">
-              <%= @stripe_customer.active_card.address_zip %>
+              <%= @stripe_customer.try(:active_card).try(:address_zip) %>
             </div>
           </div>
         </div>

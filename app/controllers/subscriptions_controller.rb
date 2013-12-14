@@ -46,7 +46,7 @@ class SubscriptionsController < ApplicationController
 protected
 
   def ensure_stripe_customer
-    @stripe_customer = Stripe::Customer.retrieve(current_user.stripe_customer_token)
+    @stripe_customer = Stripe::Customer.retrieve(current_user.stripe_customer_token) rescue nil
   end
 
   def ensure_active_subscription
