@@ -1,4 +1,4 @@
-source 'https://rubygems.org'
+source 'http://rubygems.org'
 
 gem 'rails', '3.2.14'
 gem 'redis-store', '> 1.1.0', '< 1.1.4'
