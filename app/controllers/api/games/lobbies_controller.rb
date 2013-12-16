@@ -17,7 +17,7 @@ module Api
 	  def leave
 	    @game.increment_player_count!(-1)
 	    @user.lobbies.where(game: @game).destroy_all
-
+	    GameRoom.where(game: @game).where(owner: @user).delete_all
 	    notify_friends_lobby_changed 'left'
 
         respond_with :api, @game

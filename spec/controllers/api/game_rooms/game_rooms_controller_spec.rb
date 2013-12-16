@@ -258,4 +258,67 @@ describe Api::GameRooms::GameRoomsController do
     end
   end
 
+  describe '#take_over' do
+
+    context 'success taking over' do
+      let!(:game_room) { Fabricate(:game_room) }
+
+      before(:each) do
+        controller.stub(:current_user).and_return(user)
+        @start_count = GameRoom.count
+        get :take_over, id: game_room.id, user_id: user.id
+        @new_game_room = GameRoom.where(position: game_room.position).first
+      end
+
+      it 'game rooms count must be increased' do
+        expect(GameRoom.count).to eq(@start_count + 1)
+      end
+
+      it 'new game room at the already busy position' do
+        expect(@new_game_room.persisted?).to be_true
+      end
+
+      it 'current user is an owner of a new room' do
+        expect(@new_game_room.owner).to eq(user)
+      end
+    end
+
+    context 'fail taking over' do
+      let(:game_room) { Fabricate(:game_room, owner: user) }
+
+      before(:each) do
+        controller.stub(:current_user).and_return(user)
+        get :take_over, id: game_room.id, user_id: user.id
+      end
+
+      it 'current user cannot take over the room' do
+        expect(response.status).to eq(406)
+      end
+    end
+  end
+
+  describe '#can_take_over' do
+
+    let!(:user) { Fabricate(:user) }
+    let(:game_room) { Fabricate(:game_room) }
+    let(:bool_answer) { true }
+
+    context 'yes' do
+      before(:each) do
+        controller.stub(:current_user).and_return(user)
+        user.stub(:can_take_over?).and_return(bool_answer)
+        get :can_take_over, id: game_room.id, format: :json
+        @json = JSON.parse(response.body)
+      end
+
+      it 'response contains answer key' do
+        expect(@json.has_key?("answer"))
+      end
+
+      it 'returns whether user can take over the room' do
+        expect(@json["answer"]).to eq(bool_answer)
+      end
+    end
+  end
+
 end

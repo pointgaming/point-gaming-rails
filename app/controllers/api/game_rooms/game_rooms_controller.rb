@@ -2,7 +2,7 @@ module Api
   module GameRooms
     class GameRoomsController < Api::GameRooms::ContextController
       before_filter :authenticate_user!, only: [:create, :update]
-      before_filter :authenticate_node_api!, except: [:create, :update, :take_over]
+      before_filter :authenticate_node_api!, except: [:create, :update, :take_over, :can_take_over]
       before_filter :ensure_user, only: [:join, :leave]
       before_filter :ensure_params, only: [:create, :update]
       before_filter :check_owner_params, only: [:update]
@@ -40,7 +40,7 @@ module Api
 
       def join
         @game_room.add_user_to_members!(@user)
-        respond_with(@game_room)
+	respond_with(@game_room)
       end
 
       def leave
@@ -51,14 +51,17 @@ module Api
       def take_over
 	@game_room = GameRoom.find params[:id]
 	if @game_room && !current_user.eql?(@game_room.owner) && current_user.can_take_over?(@game_room)
-	  @new_game_room = @game_room.clone
-	  @new_game_room.owner = current_user
-	  @game_room.update_attributes position: GameRoom.next_available_position(@game_room.game)
-	  @new_game_room.save
+	  position = @game_room.position
+	  @game_room.take_over current_user
+	  @new_game_room = GameRoom.where(position: position).first
 	  respond_with :api, @new_game_room
 	else
-	  respond_with({ errors: ["You cannot take this room over"] }, status: 403)
+	  respond_with({ errors: ["You cannot take this room over"] })
 	end
+      end
+
+      def can_take_over
+	respond_with({ answer: current_user.can_take_over?(@game_room) })
       end
 
     protected
