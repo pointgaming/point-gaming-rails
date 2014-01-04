@@ -28,5 +28,16 @@ class Ability
         can *permission.ability
       end
     end
+
+    # Tournament-specific permissions
+    alias_action :create, :read, :update, :destroy, to: :crud
+
+    can :join, Tournament do |tournament|
+      !(tournament.owner == user || tournament.collaborators.include?(user.id.to_s))
+    end
+
+    can :crud, Tournament do |tournament|
+      tournament.owner == user || tournament.collaborators.include?(user.id.to_s)
+    end
   end
 end

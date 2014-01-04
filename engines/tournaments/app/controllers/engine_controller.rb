@@ -32,7 +32,7 @@ class EngineController < ApplicationController
   end
 
   def ensure_tournament_editable_by_user
-    unless current_user.can? :manage, @tournament
+    unless current_user.can? :edit, @tournament
       message = "You do not have permission to edit that tournament"
       respond_with({errors: [message]}, status: 403) do |format|
         format.html { redirect_to tournaments_path, alert: message }

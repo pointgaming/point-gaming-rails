@@ -26,6 +26,9 @@
         <td>
           <% if can? :edit, tournament %>
             <%= link_to "Edit", edit_tournament_path(tournament), class: "btn btn-mini" %>
+          <% end %>
+
+          <% if can? :destroy, tournament %>
             <%= link_to "Destroy", tournament_path(tournament), data: { confirm: "Are you sure?" }, method: :delete, class: "btn btn-mini btn-danger" %>
           <% end %>
         </td>
