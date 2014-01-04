@@ -1,0 +1,24 @@
+.search-form input[type="text"] {
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  box-shadow: none !important;
+}
+
+.nav-list > .active > a, .nav-list > .active > a:hover {
+  background-color: #CE2027;
+}
+
+.dropdown-menu li.active > a,
+.dropdown-menu li.active > a:hover,
+.dropdown-menu li > a:hover,
+.dropdown-menu li > a:focus,
+.dropdown-submenu:hover > a {
+  background-color:#e9323d;
+  background-image: -moz-linear-gradient(top,#e9323d 0%,#ce2027 100%);
+  background-image: -webkit-gradient(linear,0 0,0 100%,from(#e9323d 0%),to(#ce2027 100%));
+  background-image: -webkit-linear-gradient(top,#e9323d 0%,#ce2027 100%);
+  background-image: -o-linear-gradient(top,#e9323d 0%,#ce2027 100%);
+  background-image: linear-gradient(to bottom,#e9323d 0%,#ce2027 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e9323d', endColorstr='#ce2027',GradientType=0 );
+}

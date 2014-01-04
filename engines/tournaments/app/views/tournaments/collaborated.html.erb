@@ -1,0 +1,35 @@
+<div class="breadcrumb">
+  <%= link_to "New", new_tournament_path, class: "btn" %>
+</div>
+  
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Sign-Up Ends At</th>
+      <th>Game</th>
+      <th>Game Type</th>
+      <th>Prize Pool</th>
+      <th>Teams</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @tournaments.each do |tournament| %>
+      <tr id="tournament_<%= tournament._id %>">
+        <td><%= link_to tournament.name, tournament %></td>
+        <td><%= ldate tournament.signup_ends_at %></td>
+        <td><%= tournament.game.name %></td>
+        <td><%= tournament.game_type.name %></td>
+        <td><%= number_to_currency tournament.prizepool_total %></td>
+        <td><%= tournament.player_count %>/<%= tournament.player_limit %></td>
+        <td>
+          <% if can? :edit, tournament %>
+            <%= link_to "Edit", edit_tournament_path(tournament), class: "btn btn-mini" %>
+            <%= link_to "Destroy", tournament_path(tournament), data: { confirm: "Are you sure?" }, method: :delete, class: "btn btn-mini btn-danger" %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

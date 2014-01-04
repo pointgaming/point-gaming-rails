@@ -2,6 +2,15 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
+  flash:
+    actions:
+      create:
+        notice: "{resource_name} was successfully created"
+      update:
+        notice: "{resource_name} was successfully updated"
+      destroy:
+        notice: "{resource_name} was successfully destroyed"
+        alert: "{resource_name} could not be destroyed"
   hello: "Hello world"
   date:
     formats:
@@ -9,6 +18,13 @@ en:
   time:
     formats:
       default: ! '%m/%d/%Y %I:%M %p'
+  models:
+    tournament_status_steps:
+      creation: 'Tournament created'
+      prizepool: 'Prizepool locked in'
+      payment: 'Payment information submitted'
+      payment_verification: 'Verifying payment (Can take up to 14 days)'
+      activation: 'Tournament Activated'
   mongoid:
     models:
       team_member: 'Member'

@@ -1,0 +1,25 @@
+<div class="row-fluid">
+  <div class="span12">
+    <ul class="nav nav-tabs">
+      <% if @tournament.new_record? %>
+        <%= navItem "Create", new_tournament_path %>
+        <li class="disabled"><a href="">Prize Pool</a></li>
+        <li class="disabled"><a href="">Pay</a></li>
+        <li class="disabled"><a href="">Status</a></li>
+        <li class="disabled"><a href="">Collaborators & Invites</a></li>
+        <li class="disabled"><a href="">Seeds</a></li>
+        <li class="disabled"><a href="">Overview</a></li>
+      <% else %>
+        <%= navItem "Edit", edit_tournament_path(@tournament) %>
+        <%- prize_pool_class = @tournament.prizepool_required? ? "" : "disabled" %>
+        <%= navItem "Prize Pool", prize_pool_tournament_path(@tournament), class: prize_pool_class %>
+        <%- pay_class = @tournament.payment_required? ? "" : "disabled" %>
+        <%= navItem "Pay", new_tournament_payment_path(@tournament), class: pay_class %>
+        <%= navItem "Status", status_tournament_path(@tournament) %>
+        <%= navItem "Collaborators & Invites", users_tournament_path(@tournament) %>
+        <%= navItem "Seeds", seeds_tournament_path(@tournament) %>
+        <%= navItem "Overview", tournament_path(@tournament) %>
+      <% end %>
+    </ul>
+  </div>
+</div>

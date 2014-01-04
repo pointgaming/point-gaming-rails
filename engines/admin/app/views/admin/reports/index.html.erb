@@ -1,0 +1,15 @@
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%- reports = ["point_audit"] %>
+    <% reports.each do |report| %>
+      <tr>
+        <td><%= link_to t(report, scope: [:reports]), send("#{report}_admin_reports_path") %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

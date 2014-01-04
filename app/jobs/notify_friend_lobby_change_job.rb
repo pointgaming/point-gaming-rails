@@ -2,9 +2,9 @@ class NotifyFriendLobbyChangeJob
   @queue = :high
 
   def self.perform(opts)
-    user_id = opts.fetch(:user_id)
-    game_id = opts.fetch(:game_id)
-    status = opts.fetch(:status)
+    user_id = opts.fetch('user_id')
+    game_id = opts.fetch('game_id')
+    status = opts.fetch('status')
 
     user = lookup_user(user_id)
 

@@ -1,0 +1,16 @@
+(function(window){
+  "use strict";
+
+  window.PointGaming.helpers.url_builder = {
+
+    buildUrl: function(path) {
+      return URI({
+        protocol: PointGaming.ssl_allowed ? 'https' : 'http',
+        hostname: URI().host(),
+        path: path 
+      }).toString();
+    }
+
+  };
+
+})(window);

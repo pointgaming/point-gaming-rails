@@ -1,0 +1,29 @@
+<%= form_for @dispute, :html => { remote: true, :'data-type' => :json } do |f| %>
+  <div class="modal-body">
+    <%= render partial: 'shared/form_errors', locals: {model: f.object} %>
+
+    <div class="control-group">
+    </div>
+
+    <div class="control-group">
+      <%= f.label :outcome, :class => 'control-label' %>
+      <div class="controls">
+        <%= label_tag nil, nil, :class => "radio" do %>
+          <%= f.radio_button :outcome, :rejected %> Reject Dispute
+        <% end %>
+        <%= label_tag nil, nil, :class => "radio" do %>
+          <%= f.radio_button :outcome, :void_match %> Void Match
+        <% end %>
+        <%= label_tag nil, nil, :class => "radio" do %>
+          <%= f.radio_button :outcome, :new_match_winner %> Set <%= @dispute.match.loser.try(:display_name) %> as the winner
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <%= f.submit 'Finalize', :class => 'btn btn-primary' %>
+    <%= link_to t('.cancel', default: t("helpers.links.cancel")), dispute_path(@dispute), 
+                :class => 'btn', 'data-dismiss' => 'modal' %>
+  </div>
+<% end %>

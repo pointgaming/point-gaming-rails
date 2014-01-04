@@ -1,0 +1,28 @@
+<div id="registration-widget" class="well well-small">
+  <div class="widget-content scrollable">
+    <% if @tournament.signup_open? %>
+      <div class="control-group">
+        <%= label @tournament, :signup_ends_at, class: "control-label" %>
+        <div class="controls">
+          <%= ldate @tournament.signup_ends_at %>
+        </div>
+      </div>
+    <% elsif !@tournament.signed_up?(current_user) %>
+      Registration is closed.
+    <% end %>
+
+    <div class="control-group">
+      <% if @tournament.signed_up?(current_user) %>
+        <% if @tournament.checked_in?(current_user) %>
+          <%= link_to "Checked In", "#", class: "btn btn-block disabled" %>
+        <% else %>
+          <%= link_to "Check In", tournament_player_url(@tournament, current_user), data: { confirm: "Are you sure?" }, method: :put, class: "btn btn-block" %>
+        <% end %>
+
+        <%= link_to "Leave", tournament_player_url(@tournament, current_user), data: { confirm: "Are you sure?" }, method: :delete, class: "btn btn-block" %>
+      <% else %>
+        <%= link_to "Join", tournament_players_url(@tournament), data: { confirm: "Are you sure?" }, method: :post, class: "btn btn-block" %>
+      <% end %>
+    </div>
+  </div>
+</div>

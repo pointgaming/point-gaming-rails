@@ -1,0 +1,26 @@
+<% if model.errors.any? %>
+  <div class="alert alert-error">
+    <h4 class="alert-heading">Please correct the following <%= pluralize(model.errors.count, "error") %>:</h4>
+    <ul>
+    <% if model.errors.respond_to?(:full_messages) %>
+      <% model.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    <% else %>
+      <% model.errors.each do |field, messages| %>
+        <li><%= t field %>:
+          <% if messages.class.name === "String" %>
+            <%= messages %>
+          <% elsif messages.length > 0 %>
+            <ul>
+              <% messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          <% end %>
+        </li>
+      <% end %>
+    <% end %>
+    </ul>
+  </div>
+<% end %>

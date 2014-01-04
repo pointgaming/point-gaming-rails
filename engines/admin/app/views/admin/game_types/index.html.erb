@@ -1,0 +1,45 @@
+<% content_for :footer_scripts do %>
+  <%= javascript_include_tag "admin/pages/game_types" %>
+<% end %>
+
+<div class="widget widget-nopad">
+  <div class="widget-header">
+    <h3>Games Types</h3>
+  </div>
+  <div class="widget-content">
+    <div class="widget-padding-container">
+      <div class="control-group"> 
+        <%= label :game, :game, for: "game_id", class: "control-label" %>
+        <div class="controls">
+          <%= select :game, :id,  @games.collect {|g| [ g.name, g.id ]},   include_blank: "- Select -" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% if @game.present? %>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Sort Order</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @game.types.order_by(sort_order: :asc).each do |game_type| %>
+        <tr>
+          <td><%= game_type.name %></td>
+          <td><%= game_type.sort_order %></td>
+          <td>
+            <%= link_to "Edit", edit_admin_game_type_path(game_type), class: "btn btn-mini" %>
+            <%= link_to "Destroy", admin_game_type_path(game_type), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-mini btn-danger" %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <%= link_to "New", new_admin_game_type_path(game_id: @game.id), class: "btn" %>
+<% end %>

@@ -1,0 +1,9 @@
+<div id="game_type_wrapper">
+  <% if game.nil? %>
+    <span class="help-inline">Please select a game</span>
+  <% elsif !game.types.exists? %>
+    <span class="help-inline">Please select another game</span>
+  <% else game.types %>
+    <%= select model_name, :game_type_id, game.types.order_by(sort_order: :asc).all.collect{|gt| [gt.name, gt.id]}, include_blank: '- Select -' %>
+  <% end %>
+</div>

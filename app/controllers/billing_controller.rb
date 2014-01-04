@@ -4,10 +4,6 @@ class BillingController < ApplicationController
   before_filter :ensure_user_needs_new_token, only: [:new, :create]
   before_filter :ensure_stripe_customer, only: [:show, :update]
 
-  def sub_layout
-    "settings"
-  end
-
   def show
 
   end

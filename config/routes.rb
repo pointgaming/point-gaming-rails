@@ -22,22 +22,6 @@ PointGamingRails::Application.routes.draw do
     end
   end
   resources :leagues
-  resources :tournaments, only: [:index, :show] do
-    resources :players, controller: 'tournament_players', only: [:create, :update, :destroy]
-    resources :sponsors, controller: 'tournament_sponsors', except: [:index, :show]
-  end
-  resources :user_tournaments do
-    resources :collaborators, controller: 'tournament_collaborators', only: [:create, :destroy]
-    resources :invites, controller: 'tournament_invites', only: [:create, :destroy]
-    resources :payments, controller: 'tournament_payments', only: [:new, :create]
-    member do
-      get 'prize_pool'
-      get 'status', to: 'tournament_status#show'
-      get 'users'
-      get 'seeds'
-      put 'seeds'
-    end
-  end
   resources :streams, controller: 'streams', as: 'streams', only: [:index, :create]
   resources :s, controller: 'streams', as: 'streams', except: [:index, :create, :edit, :update] do
     resources :matches, only: [:index, :new, :show, :create, :destroy]
@@ -59,8 +43,7 @@ PointGamingRails::Application.routes.draw do
   end
   resources :store
   resources :faq
-  resources :settings
-  resources :billing, except: [:index]
+  resources :billing, except: [:index, :show]
   resources :bet_history, only: [:show]
   resources :orders, only: [:show]
   resources :subscriptions, only: [:index, :new, :create, :edit, :update]
@@ -128,6 +111,7 @@ PointGamingRails::Application.routes.draw do
         member do
           put 'join'
           put 'leave'
+	  get 'take_over'
         end
         resources :bets, except: [:edit]
       end
@@ -186,4 +170,6 @@ PointGamingRails::Application.routes.draw do
     mount Resque::Server.new, :at => "/resque"
   end
 
+  mount Admin::Engine       => "/admin"
+  mount Tournaments::Engine => "/"
 end

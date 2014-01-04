@@ -1,0 +1,34 @@
+<%- model_class = Dispute -%>
+
+<ul class="nav nav-pills">
+  <%= navItem :Active, disputes_path, exact: true %>
+  <%= navItem :History, disputes_path(history: 1) %>
+</ul>
+
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th><%= model_class.human_attribute_name(:id) %></th>
+      <th><%= model_class.human_attribute_name(:owner_id) %></th>
+      <th><%= model_class.human_attribute_name(:match_id) %></th>
+      <th><%= model_class.human_attribute_name(:state) %></th>
+      <th><%= model_class.human_attribute_name(:updated_at) %></th>
+      <th><%=t '.actions', :default => t("helpers.actions") %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @disputes.each do |dispute| %>
+      <tr>
+        <td><%= link_to dispute.id, dispute_path(dispute) %></td>
+        <td><%= link_to dispute.owner.try(:username), user_url(dispute.owner) %></td>
+        <td><%= link_to dispute.match.decorate.details(:short), match_url(dispute.match) %></td>
+        <td><%=t dispute.state, scope: [:dispute, :state] %></td>
+        <td><%=ldate dispute.updated_at %></td>
+        <td>
+          <%= link_to t('.view'), dispute_path(dispute),
+                      :class => 'btn btn-mini' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -1,0 +1,15 @@
+/*
+ *= require bootstrap-modal
+ *= require bootstrap-datetimepicker
+ *= require jquery.bracket.min
+ *= require_self
+ *= require_tree ./global 
+ */
+
+#header, #wrapper {
+  overflow: visible;
+}
+
+a:hover {
+  color:#CE2027;
+}

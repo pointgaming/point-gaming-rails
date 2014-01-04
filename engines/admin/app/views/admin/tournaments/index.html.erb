@@ -1,0 +1,6 @@
+<ul class="nav nav-pills">
+  <%= navItem :Pending, admin_tournaments_path, exact: true %>
+  <%= navItem :Approved, admin_tournaments_path(approved: 1) %>
+</ul>
+
+<%= render template: "/tournaments/collaborated" %>

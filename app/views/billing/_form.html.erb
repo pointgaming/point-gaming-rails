@@ -11,7 +11,7 @@
   <div class="form-actions">
     <%= submit_tag :Save, :class => 'btn' %>
     <% if current_user.has_stripe_token? %>
-      <%= link_to t('.cancel', default: t("helpers.links.cancel")), billing_path(1), :class => 'btn' %>
+      <%= link_to t('.cancel', default: t("helpers.links.cancel")), subscriptions_path, :class => 'btn' %>
     <% end %>
   </div>
 <% end %>

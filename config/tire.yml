@@ -1,0 +1,12 @@
+defaults: &DEFAULTS
+  url: "http://localhost:9200"
+
+development:
+  <<: *DEFAULTS
+
+test:
+  <<: *DEFAULTS
+
+production:
+  <<: *DEFAULTS
+  url: "http://pointgaming:SOMETHINGABOUTASEARCHINDEXER!!1@198.58.118.201:9200"

@@ -1,21 +1,20 @@
 <%- model_class = News -%>
 <div id="twocolumns" class="row-fluid">
   <section id="content" class="span9">
-    <%- home_tabs = HomeTabsViewModel.new({ user: current_user }) %>
     <ul class="nav nav-pills">
-      <li class="<%= home_tabs.active_class_for_tab(:about) %>">
+      <li class="<%= active_class_for_tab(:about) %>">
         <a href="#about" data-toggle="pill">About</a>
       </li>
-      <li class="<%= home_tabs.active_class_for_tab(:news) %>">
+      <li class="<%= active_class_for_tab(:news) %>">
         <a href="#news" data-toggle="pill">News</a>
       </li>
     </ul>
 
     <div class="tab-content">
-      <div class="tab-pane <%= home_tabs.active_class_for_pane(:about) %>" id="about">
+      <div class="tab-pane <%= active_class_for_tab(:about) %>" id="about">
         <%= render 'about' %>
       </div>
-      <div class="tab-pane <%= home_tabs.active_class_for_pane(:news) %>" id="news">
+      <div class="tab-pane <%= active_class_for_tab(:news) %>" id="news">
         <%= render @news %>
       </div>
     </div>

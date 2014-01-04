@@ -1,0 +1,119 @@
+<%- model_class = Dispute -%>
+<h1><%=t '.title', :default => model_class.model_name.human %> <%= @dispute.id %></h1>
+
+<div class="breadcrumbs">
+  <%= link_to t('.back', :default => t("helpers.links.back")),
+              disputes_path, :class => 'btn' %>
+  <% if @dispute.can_finalize? %>
+    <%= link_to_modal t('.finalize_dispute'), edit_dispute_path(@dispute),
+          remote: true, :class => 'btn', id: 'finalize-dispute' %>
+  <% end %>
+  <% if @dispute.can_cancel? %>
+    <div class="pull-right">
+      <%= link_to t('.cancel_dispute'), cancel_dispute_path(@dispute),
+                  :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                  method: 'put', :class => 'btn btn-danger' %>
+    </div>
+  <% end %>
+</div>
+
+<br />
+<div id="ajax-modal" class="modal hide fade" tabindex="-1"></div>
+
+<div class="row-fluid">
+  <dl class="dl-horizontal">
+    <dt><strong><%= model_class.human_attribute_name(:owner) %>:</strong></dt>
+    <dd><%= link_to @dispute.owner.try(:username), user_url(@dispute.owner) %></dd>
+    <dt><strong><%= model_class.human_attribute_name(:reason) %>:</strong></dt>
+    <dd><%= t @dispute.reason %></dd>
+    <% if @dispute.due_to_cheating_player? %>
+      <dt><strong><%= model_class.human_attribute_name(:cheater) %>:</strong></dt>
+      <dd><%= link_to @dispute.cheater.try(:display_name), user_url(@dispute.cheater) %></dd>
+    <% end %>
+    <dt><strong><%= model_class.human_attribute_name(:created_at) %>:</strong></dt>
+    <dd><%=ldate @dispute.created_at %></dd>
+    <dt><strong><%= model_class.human_attribute_name(:updated_at) %>:</strong></dt>
+    <dd><%=ldate @dispute.updated_at %></dd>
+    <dt><strong><%= model_class.human_attribute_name(:state) %>:</strong></dt>
+    <dd><%=t @dispute.state, scope: [:dispute, :state] %></dd>
+    <dt><strong><%= model_class.human_attribute_name(:outcome) %>:</strong></dt>
+    <dd><%=t @dispute.outcome, scope: [:dispute, :outcome] %></dd>
+  </dl>
+</div>
+
+<br />
+
+<div class="row-fluid">
+  <dl class="dl-horizontal">
+    <dt><strong><%= model_class.human_attribute_name(:match_id) %>:</strong></dt>
+    <dd><%= link_to @dispute.match.decorate.details(:short), match_url(@dispute.match) %></dd>
+    <dt><strong><%= Match.human_attribute_name(:finalized_at) %>:</strong></dt>
+    <dd><%=ldate @dispute.match.finalized_at %></dd>
+  </dl>
+</div>
+
+<br />
+
+<div id="messages" class="row-fluid">
+  <h1>
+    <%= link_to '', '#messages', name: 'messages' %>
+    All Messages (<span data-hook="message_count"><%= @dispute.message_count %></span>)
+  </h1>
+  <% @dispute.messages.each_with_index do |message, index| %>
+    <div class="message row-fluid <%= (index % 2 === 0 ? 'even' : 'odd') %>">
+      <div class="user">
+        <div class="username">
+          <%= link_to message.user.username, user_url(message.user) %>
+        </div>
+        <div class="icon">
+          <%= image_tag main_app_user_asset_url(message.user.avatar.url(:thumb)) %>
+        </div>
+      </div>
+
+      <div class="contents">
+        <a name="message-<%= message._id %>" href="#message-<%= message._id %>">
+          <time class="date" datetime="<%= ldate message.created_at %>"><%= ldate message.created_at %></time>
+        </a>
+
+        <p><%= message.text %></p>
+        <% if message.attachment.present? %>
+          <p>Attachment: <%= link_to message.attachment_file_name, message.attachment.url %></p>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<br />
+
+<section class="full-width clearfix">
+  <h1><%= t 'helpers.titles.new', model: DisputeMessage.model_name.human, default: "New #{DisputeMessage.model_name.human}" %></h1>
+
+  <%= render partial: 'dispute_messages/form', locals: { hide_cancel_button: true, remote: true} %>
+</section>
+
+<% content_for :footer_scripts do %>
+  <%= javascript_include_tag "pages/disputes" %>
+  <%= javascript_tag do %>
+    $(function () {
+      if (PointGaming.authToken) {
+        PointGaming.socket = io.connect(PointGaming.socketio_uri);
+        PointGaming.socket.on("ready", function(){
+          // send auth request
+          PointGaming.socket.emit("auth", {auth_token: PointGaming.authToken});
+        });
+
+        // register listener for auth callback
+        PointGaming.socket.on("auth_resp", function(data){
+          if (data.success === true && data.user) {
+            PointGaming.user = data.user;
+          }
+        });
+
+        new PointGaming.views.dispute_messages({
+          chat_room: "<%= @dispute.mq_exchange %>"
+        });
+      }
+    });
+  <% end %>
+<% end %>

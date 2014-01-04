@@ -1,0 +1,38 @@
+defaults: &DEFAULTS
+  display_name_regex: !ruby/regexp '/^[\w\-]([\w\s\-](?<!\s(?<=\s\s))){0,15}(?<!\s)$/'
+  display_name_regex_message: "must be 1-16 characters, can only include letters, numbers, -, _, and space, cannot start or end with space and a space cannot follow another space."
+  main_app_url: http://localhost:3000/
+  login_url: http://localhost:3000/users/sign_in
+  logout_url: http://localhost:3000/users/sign_out
+  signup_url: http://localhost:3000/users/sign_up
+  socketio_uri: https://localhost:9999/
+  store_url: http://localhost:5000/
+  store_api_url: http://localhost:5000/private/api/
+  store_api_auth_token: 'M9812Y125T-V234BCOV6-B7PGL23WM-S68CAS53FNGO2B-4JGNT-6RU'
+  admin_url: http://localhost:7000/
+  forum_url: http://localhost:4000/
+  forum_api_url: http://localhost:4000/private/api/
+  forum_api_auth_token: 'M9812Y125T-V234BCOV6-B7PGL23WM-S68CAS53FNGO2B-4JGNT-6RU'
+  node_api_auth_token: 'M9812Y125T-V234BCOV6-B7PGL23WM-S68CAS53FNGO2B-4JGNT-6RU'
+
+development:
+  <<: *DEFAULTS
+
+test:
+  <<: *DEFAULTS
+
+production:
+  <<: *DEFAULTS
+  main_app_url: https://dev.pointgaming.com/
+  login_url: https://dev.pointgaming.com/users/sign_in
+  logout_url: https://dev.pointgaming.com/users/sign_out
+  signup_url: https://dev.pointgaming.com/users/sign_up
+  socketio_uri: https://socket.pointgaming.com/
+  store_url: https://store.pointgaming.com/
+  store_api_url: https://store.pointgaming.com/private/api/
+  store_api_auth_token: '25ds-45p56q63-56b75s5m-ndma2fd86gkjo4n6-5124z5568-68f9s'
+  admin_url: https://admin.pointgaming.com/
+  forum_url: https://forums.pointgaming.com/
+  forum_api_url: https://forums.pointgaming.com/private/api/
+  forum_api_auth_token: '25ds-45p56q63-56b75s5m-ndma2fd86gkjo4n6-5124z5568-68f9s'
+  node_api_auth_token: '25ds-45p56q63-56b75s5m-ndma2fd86gkjo4n6-5124z5568-68f9s'

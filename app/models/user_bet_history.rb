@@ -1,0 +1,3 @@
+class UserBetHistory < UserTransactionHistory
+
+end

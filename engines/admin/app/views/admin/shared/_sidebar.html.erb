@@ -1,0 +1,10 @@
+<ul class="nav nav-list">
+  <%= navItem "Groups", admin_groups_path if can? :manage, Group %>
+  <%= navItem "News", admin_news_index_path if can? :manage, News %>
+  <%= navItem "Subscription Features", admin_subscription_features_path if can? :manage, SubscriptionFeature %>
+  <%= navItem "Subscription Types", admin_subscription_types_path if can? :manage, SubscriptionType %>
+  <%= navItem "Game Types", admin_game_types_path if can? :manage, GameType %>
+  <%= navItem "Disputes", admin_disputes_path if can? :manage, Dispute %>
+  <%= navItem "Tournaments", admin_tournaments_path if can? :manage, Tournament %>
+  <%= navItem "Reports", admin_reports_path %>
+</ul>

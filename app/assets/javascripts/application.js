@@ -19,6 +19,7 @@
 //= require twitter/bootstrap/bootstrap-tooltip
 //= require twitter/bootstrap/bootstrap-popover
 //= require twitter/bootstrap/bootstrap-tab
+//= require tournaments/application
 
 $(function(){
   new PointGaming.ToolbarController();

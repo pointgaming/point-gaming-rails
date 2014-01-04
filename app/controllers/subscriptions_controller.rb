@@ -2,6 +2,7 @@ class SubscriptionsController < ApplicationController
   before_filter :authenticate_user!
   before_filter :ensure_params_exist, only: [:create, :update]
   before_filter :ensure_active_subscription, only: [:edit, :update]
+  before_filter :ensure_stripe_customer, only: [:index]
 
   def index
     @subscription = current_user_subscription
@@ -43,6 +44,10 @@ class SubscriptionsController < ApplicationController
   end
 
 protected
+
+  def ensure_stripe_customer
+    @stripe_customer = Stripe::Customer.retrieve(current_user.stripe_customer_token) rescue nil
+  end
 
   def ensure_active_subscription
     @subscription = current_user.subscriptions.active.first
