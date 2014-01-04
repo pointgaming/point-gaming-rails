@@ -111,7 +111,8 @@ PointGamingRails::Application.routes.draw do
         member do
           put 'join'
           put 'leave'
-	  get 'take_over'
+          get 'take_over'
+          get 'can_take_over'
         end
         resources :bets, except: [:edit]
       end

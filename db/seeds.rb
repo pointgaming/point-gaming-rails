@@ -7,10 +7,10 @@ games = [
   "Counter-Strike (All Versions)"
 ]
 
-games.each {|game_name| 
+games.each do |game_name| 
   game = Game.create! name: game_name, player_count: 0
   puts "New game created: " << game.name
-}
+end
 
 puts "Setting up default groups."
 
