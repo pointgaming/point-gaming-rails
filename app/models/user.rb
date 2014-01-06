@@ -269,6 +269,14 @@ class User
     return (!game_room.owner.eql?(self) && self.points >= 2 * game_room.owner.points && self.take_over_time + 24.hours < Time.now)
   end
 
+  def can_hold?(game_room)
+    return game_room.owner.eql?(self) && self.team.present? && team_member?(self.team) && self.as_team_member.can_edit_team?
+  end
+
+  def as_team_member
+    return self.team_members.where(team: self.team).first
+  end
+
   settings analysis: {
       analyzer: {
         partial_match: {

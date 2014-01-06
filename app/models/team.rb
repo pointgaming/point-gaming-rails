@@ -21,6 +21,7 @@ class Team
   has_many :members, class_name: 'TeamMember', dependent: :destroy
   has_many :active_users, class_name: 'User'
   has_many :sponsors, class_name: 'TeamSponsor'
+  has_one :team_bot, dependent: :destroy
 
   validates :name, presence: true, uniqueness: true, :format => {:with => APP_CONFIG[:display_name_regex], message: APP_CONFIG[:display_name_regex_message]}
   validates :slug, presence: true, uniqueness: true
