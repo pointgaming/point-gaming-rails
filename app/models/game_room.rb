@@ -183,7 +183,7 @@ private
   end
 
   def destroy_if_no_members
-    if member_count_changed? && member_count === 0 && member_count_was > 0
+    if member_count_changed? && member_count === 0 && member_count_was > 0 && team_bot.blank?
       destroy
     end
   end
