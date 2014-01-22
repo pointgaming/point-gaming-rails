@@ -26,6 +26,7 @@ class GameRoom
   field :member_count, type: Integer, default: 0
   field :max_member_count, type: Integer, default: 99
   field :description, :type => String, :default => ''
+  field :is_team_bot_placed, type: Boolean, default: false
 
   belongs_to :game
   belongs_to :owner, class_name: 'User'
@@ -35,6 +36,7 @@ class GameRoom
   has_and_belongs_to_many :members, class_name: 'User'
 
   # has_and_belongs_to_many :team_bots
+  has_one :team_bot, dependent: :destroy
 
   validates :position, presence: true, numericality: {only_integer: true, greater_than: 0, less_than: 1000}
   validates :max_member_count, :presence=>true
@@ -116,6 +118,15 @@ class GameRoom
     next_position_game.shift_in_rate_queue if next_position_game
     self.update_attributes(position: self.position + 1)
   end
+
+  def hold user
+    team_bot = TeamBot.create(game_room: self, team: user.team)
+  end
+
+  def is_free?
+    self.team_bot.blank?
+  end
+
 private
 
   # FIXME: this needs to be implemented properly (check team/team bot points)
@@ -172,7 +183,7 @@ private
   end
 
   def destroy_if_no_members
-    if member_count_changed? && member_count === 0 && member_count_was > 0
+    if member_count_changed? && member_count === 0 && member_count_was > 0 && team_bot.blank?
       destroy
     end
   end

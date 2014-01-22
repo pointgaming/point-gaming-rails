@@ -3,12 +3,12 @@ source "http://rubygems.org"
 gem "rails", "3.2.14"
 gem "redis-store", "> 1.1.0", "< 1.1.4"
 
-gem "carmen"
-gem "carmen-rails"
-gem "kaminari"
-gem "oj"
-gem "remotipart", "~> 1.0"
-gem "sanitize"
+gem 'carmen'
+gem 'carmen-rails'
+gem 'kaminari'
+gem 'oj', ">= 2.1.4"
+gem 'remotipart', '~> 1.0'
+gem 'sanitize'
 gem "pg"
 gem "sequel"
 gem "bunny", ">= 0.9.0.pre6"
