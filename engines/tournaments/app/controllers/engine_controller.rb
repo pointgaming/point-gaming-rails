@@ -5,7 +5,7 @@ class EngineController < ApplicationController
   protected
 
   def ensure_tournament
-    @tournament = Tournament.find_by(slug: params[:id] || params[:tournament_id])
+    @tournament = Tournament.find_by(slug: params[:tournament_id] || params[:id])
   rescue Mongoid::Errors::DocumentNotFound
     message = "The tournament was not found"
     respond_with({errors: [message]}, status: 404) do |format|
