@@ -2,7 +2,7 @@ module Api
   module GameRooms
     class GameRoomsController < Api::GameRooms::ContextController
       before_filter :authenticate_user!, only: [:create, :update]
-      before_filter :authenticate_node_api!, except: [:create, :update, :take_over, :can_take_over, :hold, :can_hold, :unhold, :team_bot]
+      before_filter :authenticate_node_api!, except: [:create, :update, :take_over, :can_take_over, :can_hold, :team_bot, :settings]
       before_filter :ensure_user, only: [:join, :leave]
       before_filter :ensure_params, only: [:create, :update]
       before_filter :check_owner_params, only: [:update]
@@ -29,7 +29,16 @@ module Api
         params[:game_room].delete(:owner_id)
         @game_room.owner = @owner unless @owner.nil?
 
-        @game_room.update_attributes(params[:game_room])
+	team_bot_present = params[:team_bot]
+	update_hash = params[:game_room]
+	update_hash.delete(:team_bot)
+	if team_bot_present && @game_room.is_free?
+	  @game_room.hold(current_user) if current_user.can_hold?(@game_room)
+	elsif !team_bot_present && !@game_room.is_free?
+	  @game_room.team_bot.delete
+	end
+
+        @game_room.update_attributes(update_hash)
         respond_with :api, @game_room
       end
 
@@ -60,17 +69,6 @@ module Api
         end
       end
 
-      def hold
-	team_bot = @game_room.hold(current_user) if current_user.can_hold?(@game_room) && @game_room.is_free?
-	answer = team_bot.persisted? ? true : false
-	respond_with({ answer: answer })
-      end
-
-      def unhold
-	@game_room.team_bot.delete if @game_room.team_bot.present?
-	respond_with({ answer: 'success' })
-      end
-
       def can_take_over
         respond_with({ answer: current_user.can_take_over?(@game_room) })
       end
@@ -83,6 +81,11 @@ module Api
 	team_bot = @game_room.team_bot
 	answer = team_bot.present? ? { name: team_bot.team.name, points: team_bot.team.points } : { errors: 'No team bot found' }
 	respond_with(answer)
+      end
+
+      def settings
+	answer = { can_hold: current_user.can_hold?(@game_room), is_team_bot_placed: !@game_room.is_free?, is_advertising: @game_room.is_advertising }
+	respond_with answer
       end
 
     protected

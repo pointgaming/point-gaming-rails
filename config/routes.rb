@@ -112,11 +112,10 @@ PointGamingRails::Application.routes.draw do
           put 'join'
           put 'leave'
 	  get 'take_over'
-	  get 'hold'
-	  get 'unhold'
 	  get 'can_take_over'
 	  get 'can_hold'
 	  get 'team_bot'
+	  get 'settings'
         end
         resources :bets, except: [:edit]
       end
