@@ -17,7 +17,7 @@
         <%= navItem "Pay", new_tournament_payment_path(@tournament), class: pay_class %>
         <%= navItem "Status", status_tournament_path(@tournament) %>
         <%= navItem "Collaborators & Invites", users_tournament_path(@tournament) %>
-        <%= navItem "Seeds", seeds_tournament_path(@tournament) %>
+        <%= navItem "Seeds", seeds_tournament_path(@tournament), class: (@tournament.activated?? "" : "disabled") %>
         <%= navItem "Overview", tournament_path(@tournament) %>
       <% end %>
     </ul>

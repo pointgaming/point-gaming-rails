@@ -29,7 +29,7 @@ class PlayersController < EngineController
   end
 
   def ensure_user_can_join_tournament
-    unless join?
+    unless current_user.can?(:join, @tournament)
       message = "That tournament is no longer open for registration"
       respond_with({errors: [message]}, status: 403) do |format|
         format.html { redirect_to tournament_path(@tournament.slug), alert: message }
@@ -66,7 +66,7 @@ class PlayersController < EngineController
   end
 
   def join?
-    tournament.signup_open? && !user_signed_up_for_tournament?
+    @tournament.signup_open? && !user_signed_up_for_tournament?
   end
 
   def leave?
@@ -78,7 +78,7 @@ class PlayersController < EngineController
   end
 
   def check_in?
-    tournament.check_in_open? && user_signed_up_for_tournament? && !user_checked_in_for_tournament?
+    @tournament.checkin_open_for?(current_user)
   end
 
   def checked_in?
@@ -86,7 +86,7 @@ class PlayersController < EngineController
   end
 
   def tournament_player_for_user
-    @tournament_player_for_user ||= tournament.players.for_user(user).first
+    @tournament_player_for_user ||= @tournament.players.for_user(current_user).first
   end
 
   def user_signed_up_for_tournament?

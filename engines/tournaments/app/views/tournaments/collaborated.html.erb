@@ -24,6 +24,14 @@
         <td><%= number_to_currency tournament.prizepool_total %></td>
         <td><%= tournament.player_count %>/<%= tournament.player_limit %></td>
         <td>
+          <% if can? :crud, Tournament %>
+            <%= link_to "Approve", approve_admin_tournament_path(tournament), method: :put, class: "btn btn-mini" %>
+            <%= link_to "Deny", deny_admin_tournament_path(tournament), method: :put, class: "btn btn-mini" %>
+          <% end %>
+
+          <br />
+          <br />
+
           <% if can? :edit, tournament %>
             <%= link_to "Edit", edit_tournament_path(tournament), class: "btn btn-mini" %>
           <% end %>

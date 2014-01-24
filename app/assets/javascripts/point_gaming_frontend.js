@@ -3,6 +3,7 @@
 //= require jquery.cookie
 //= require jqui
 //= require jquery.bracket.min
+//= require jquery.countdown.min
 //= require twitter/bootstrap/bootstrap-dropdown
 //= require twitter/bootstrap/bootstrap-collapse
 //= require bootstrap-datetimepicker

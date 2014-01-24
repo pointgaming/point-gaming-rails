@@ -22,7 +22,6 @@ class Tournament
   field :player_limit, type: Integer, default: 128
   field :format
   field :type
-  field :maps
   field :details
   field :state, default: "new"
   field :prizepool, type: Hash, default: {}
@@ -104,7 +103,6 @@ class Tournament
   validates :type, presence: true
   validates :game, presence: true
   validates :game_type, presence: true
-  validates :maps, presence: true
   validates :details, presence: true
   validate :validate_prizepool
   validate :validate_prizepool_fields
@@ -134,16 +132,29 @@ class Tournament
     signup_ends_at >= DateTime.now
   end
 
-  def check_in_open?
-    DateTime.now < (signup_ends_at - checkin_hours.hours)
+  def started?
+    !signup_open?
+  end
+
+  def checkin_date
+    signup_ends_at - checkin_hours.hours
+  end
+
+  def checkin_open?
+    now = DateTime.now
+    now > checkin_date && now < signup_ends_at
+  end
+
+  def checkin_open_for?(user)
+    checkin_open? && signed_up?(user)
   end
 
   def checked_in?(user)
-    players.where(user_id: user.id, :checked_in_at.ne => nil).count > 0
+    players.where(user: user, :checked_in_at.ne => nil).exists?
   end
 
   def signed_up?(user)
-    players.where(user_id: user.id).count > 1
+    players.where(user: user).exists?
   end
 
   def increment_player_count(amount = 1)

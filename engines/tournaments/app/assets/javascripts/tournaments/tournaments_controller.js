@@ -3,7 +3,28 @@
 
     window.PointGaming.controllers.tournaments = {
         init: function () {
-            var workflow_widget = new window.PointGaming.views.tournament_workflow_widget();
+            var workflowWidget = new window.PointGaming.views.tournament_workflow_widget();
+
+            $("a[disabled=disabled]").click(function () {
+                return false;
+            });
+
+            if ($("#time-left").length) {
+                $("#time-left").countdown({
+                    until: (new Date($("#time-left").html().trim())),
+                    compact: true,
+                    layout: "{hnn}:{mnn}:{snn}",
+                    format: "HMS",
+                    description: "",
+
+                    onExpiry: function () {
+                        $("#btn-checkin").removeClass("btn-disabled");
+                        $("#btn-checkin").addClass("btn-info");
+                    }
+                });
+
+                $("#time-left").show();
+            }
         },
 
         new: function () {
