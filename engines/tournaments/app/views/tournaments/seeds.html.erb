@@ -5,34 +5,18 @@
 
   <div class="row-fluid">
     <div class="span6">
+      <p>Drag players to set their seed in the tournament.</p>
+
       <div class="widget">
         <div class="widget-header">
           <h3>Players</h3>
         </div>
 
-        <div class="widget-content scrollable">
-          <ul class="tourney-players">
-            <% @tournament.players.each do |player| %>
-              <li class="draggable" data-id="<%= player.id %>"><%= player.user.username %></li>
-            <% end %>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <div class="span6">
-      <div class="widget">
-        <div class="widget-header">
-          <h3>Seeds</h3>
-        </div>
-
-        <div id="tourney-seeds" class="widget-content scrollable droppable">
-          <ol class="tourney-players">
-            <% @tournament.seeds.each do |seed| %>
-              <li data-id="<%= seed %>">
-                <a href="#" class="remove-seed">[x]</a>
-                <%= @tournament.players.find(seed).user.username %>
-              </li>
+        <div class="widget-content">
+          <ol class="tourney-players sortable">
+            <% @tournament.seeds.each do |id| %>
+              <% player = Player.find(id) %>
+              <li class="draggable" data-id="<%= id %>"><%= player.user.username %></li>
             <% end %>
           </ol>
         </div>

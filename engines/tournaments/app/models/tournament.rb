@@ -5,6 +5,7 @@ class Tournament
   cattr_reader :formats, :types
 
   after_create :trigger_created
+  before_save :randomize_seeds
   after_save :move_to_next_state!
 
   @@formats = [:single_elimination, :double_elimination, :round_robin]
@@ -241,6 +242,10 @@ class Tournament
 
   def trigger_created
     created!
+  end
+
+  def randomize_seeds
+    self.seeds = players.map { |p| p.id.to_s }.shuffle unless seeds.present?
   end
 
   def update_prizepool_total
