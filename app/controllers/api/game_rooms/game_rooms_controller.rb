@@ -25,19 +25,26 @@ module Api
       end
 
       def update
-        params[:game_room].delete(:game_id)
-        params[:game_room].delete(:owner_id)
-        @game_room.owner = @owner unless @owner.nil?
-
-	team_bot_present = params[:team_bot]
 	update_hash = params[:game_room]
-	update_hash.delete(:team_bot)
+	admins_ids = update_hash[:admins]
+	team_bot_present = update_hash[:is_team_bot_placed]
+	update_hash.delete(:admins)
+	update_hash.delete(:is_team_bot_placed)
+        update_hash.delete(:game_id)
+        update_hash.delete(:owner_id)
+        @game_room.owner = @owner unless @owner.nil?
 	if team_bot_present && @game_room.is_free?
 	  @game_room.hold(current_user) if current_user.can_hold?(@game_room)
 	elsif !team_bot_present && !@game_room.is_free?
 	  @game_room.team_bot.delete
 	end
-
+	@game_room.admins = []
+	if admins_ids.present?
+	  admins_ids.each do |admin_id|
+	    admin = User.where(id: admin_id).first
+	    @game_room.admins << admin unless admin.eql?(@game_room.owner)
+	  end
+	end
         @game_room.update_attributes(update_hash)
         respond_with :api, @game_room
       end

@@ -34,6 +34,7 @@ class GameRoom
 
   has_many :matches, as: :room
   has_and_belongs_to_many :members, class_name: 'User'
+  has_and_belongs_to_many :admins, class_name: 'User'
 
   # has_and_belongs_to_many :team_bots
   has_one :team_bot, dependent: :destroy
