@@ -4,6 +4,7 @@ module Api
       before_filter :authenticate_user!, only: [:create, :update]
       before_filter :authenticate_node_api!, except: [:create, :update, :take_over, :can_take_over, :can_hold, :team_bot, :settings]
       before_filter :ensure_user, only: [:join, :leave]
+      before_filter :ensure_not_banned, only: [:join, :update]
       before_filter :ensure_params, only: [:create, :update]
       before_filter :check_owner_params, only: [:update]
       skip_before_filter :ensure_game_room, only: [:create]
@@ -21,7 +22,7 @@ module Api
         @game_room.owner = current_user
         @game_room.save
 
-        respond_with :api, @game_room
+	respond_with :api, @game_room
       end
 
       def update
@@ -114,6 +115,16 @@ module Api
 
         @owner = User.find(params[:game_room][:owner_id])
         raise ::UnprocessableEntity, "Invalid owner_id. A user with that id was not found." unless @owner
+      end
+
+      def ensure_not_banned
+	 @user = current_user unless @user
+	 game = @game_room.present? ? @game_room.game : Game.where(id: params[:game_room][:game_id]).first
+         is_banned = @user.is_banned_for? game
+	 if is_banned
+	   @game_room.errors[:base] << "User is banned"
+	   respond_with :api, @game_room
+	 end
       end
     end
   end

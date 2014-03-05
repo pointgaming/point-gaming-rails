@@ -277,6 +277,12 @@ class User
     return self.team_members.where(team: self.team).first
   end
 
+  def is_banned_for? game
+    user_ban = UserBan.where(user: self, game: game).first
+    user_ban.delete if user_ban.present? && user_ban.is_expired?
+    return UserBan.where(user: self, game: game).first.present?
+  end
+
   settings analysis: {
       analyzer: {
         partial_match: {

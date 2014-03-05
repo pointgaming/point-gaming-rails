@@ -92,6 +92,8 @@ PointGamingRails::Application.routes.draw do
           collection do
             put 'join'
             put 'leave'
+	    get 'ban'
+	    get 'user_rights'
           end
         end
       end
