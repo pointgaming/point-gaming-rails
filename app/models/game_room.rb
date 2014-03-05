@@ -47,6 +47,8 @@ class GameRoom
   validate :check_position_uniqueness
   validate :check_game_room_owner_count
 
+  validate :check_owner_not_banned
+
   def mq_exchange
     "GameRoom_#{_id}"
   end
@@ -161,6 +163,12 @@ private
   def check_game_room_owner_count
     if GameRoom.where(game_id: self.game_id, owner_id: self.owner_id).nin(_id: self._id).exists?
       self.errors[:base] << "User already owns a Game Room in this lobby"
+    end
+  end
+
+  def check_owner_not_banned
+    if self.owner.is_banned_for?(self.game)
+      self.errors[:base] << "User is banned"
     end
   end
 
