@@ -5,3 +5,6 @@ end
 child :members do
   extends "users/base"
 end
+child :admins do
+  extends 'users/base'
+end

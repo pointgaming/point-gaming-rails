@@ -2,8 +2,9 @@ module Api
   module GameRooms
     class GameRoomsController < Api::GameRooms::ContextController
       before_filter :authenticate_user!, only: [:create, :update]
-      before_filter :authenticate_node_api!, except: [:create, :update, :take_over, :can_take_over, :hold, :can_hold, :unhold, :team_bot]
+      before_filter :authenticate_node_api!, except: [:create, :update, :take_over, :can_take_over, :can_hold, :team_bot, :settings]
       before_filter :ensure_user, only: [:join, :leave]
+      before_filter :ensure_not_banned, only: [:join, :update]
       before_filter :ensure_params, only: [:create, :update]
       before_filter :check_owner_params, only: [:update]
       skip_before_filter :ensure_game_room, only: [:create]
@@ -21,15 +22,31 @@ module Api
         @game_room.owner = current_user
         @game_room.save
 
-        respond_with :api, @game_room
+	respond_with :api, @game_room
       end
 
       def update
-        params[:game_room].delete(:game_id)
-        params[:game_room].delete(:owner_id)
+	update_hash = params[:game_room]
+	admins_ids = update_hash[:admins]
+	team_bot_present = update_hash[:is_team_bot_placed]
+	update_hash.delete(:admins)
+	update_hash.delete(:is_team_bot_placed)
+        update_hash.delete(:game_id)
+        update_hash.delete(:owner_id)
         @game_room.owner = @owner unless @owner.nil?
-
-        @game_room.update_attributes(params[:game_room])
+	if team_bot_present && @game_room.is_free?
+	  @game_room.hold(current_user) if current_user.can_hold?(@game_room)
+	elsif !team_bot_present && !@game_room.is_free?
+	  @game_room.team_bot.delete
+	end
+	@game_room.admins = []
+	if admins_ids.present?
+	  admins_ids.each do |admin_id|
+	    admin = User.where(id: admin_id).first
+	    @game_room.admins << admin unless admin.eql?(@game_room.owner)
+	  end
+	end
+        @game_room.update_attributes(update_hash)
         respond_with :api, @game_room
       end
 
@@ -60,17 +77,6 @@ module Api
         end
       end
 
-      def hold
-	team_bot = @game_room.hold(current_user) if current_user.can_hold?(@game_room) && @game_room.is_free?
-	answer = team_bot.persisted? ? true : false
-	respond_with({ answer: answer })
-      end
-
-      def unhold
-	@game_room.team_bot.delete if @game_room.team_bot.present?
-	respond_with({ answer: 'success' })
-      end
-
       def can_take_over
         respond_with({ answer: current_user.can_take_over?(@game_room) })
       end
@@ -83,6 +89,11 @@ module Api
 	team_bot = @game_room.team_bot
 	answer = team_bot.present? ? { name: team_bot.team.name, points: team_bot.team.points } : { errors: 'No team bot found' }
 	respond_with(answer)
+      end
+
+      def settings
+	answer = { can_hold: current_user.can_hold?(@game_room), is_team_bot_placed: !@game_room.is_free?, is_advertising: @game_room.is_advertising }
+	respond_with answer
       end
 
     protected
@@ -104,6 +115,16 @@ module Api
 
         @owner = User.find(params[:game_room][:owner_id])
         raise ::UnprocessableEntity, "Invalid owner_id. A user with that id was not found." unless @owner
+      end
+
+      def ensure_not_banned
+	 @user = current_user unless @user
+	 game = @game_room.present? ? @game_room.game : Game.where(id: params[:game_room][:game_id]).first
+         is_banned = @user.is_banned_for? game
+	 if is_banned
+	   @game_room.errors[:base] << "User is banned"
+	   respond_with :api, @game_room
+	 end
       end
     end
   end

@@ -45,6 +45,7 @@ group :development do
   gem "binding_of_caller", ">= 0.6.8"
   gem "meta_request"
   gem "quiet_assets"
+  gem 'pry'
 end
 
 group :test, :development do

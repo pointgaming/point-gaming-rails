@@ -412,6 +412,7 @@ DEPENDENCIES
   obscenity
   oj (>= 2.1.4)
   pg
+  pry
   quiet_assets
   rabl-rails
   rack-ssl (~> 1.3.2)
