@@ -394,6 +394,7 @@ DEPENDENCIES
   capybara
   carmen
   carmen-rails
+  chronic
   database_cleaner
   devise (~> 3.1.0)
   draper (~> 1.0)

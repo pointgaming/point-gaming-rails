@@ -36,7 +36,7 @@ class Tournament
   # brackets library. Here"s an example:
   #
   # {
-  #   teams : [
+  #   teams: [
   #     ["rapha",       "Cypher" ],
   #     ["ZeRo4",       "zar" ],
   #     ["DaHanG",      "jochs" ],
@@ -46,19 +46,19 @@ class Tournament
   #     ["apparition",  "whaz"],
   #     ["id_",         "andriiiiii"]
   #   ],
-  #   results : [[ /* WINNER BRACKET */
+  #   results: [[ /* WINNER BRACKET */
   #     [[3,5], [2,4], [6,3], [2,3], [1,5], [5,3], [7,2], [1,2]],
   #     [[1,2], [3,4], [5,6], [7,8]],
   #     [[9,1], [8,2]],
   #     [[1,3]]
-  #   ], [         /* LOSER BRACKET */
+  #   ],[         /* LOSER BRACKET */
   #     [[5,1], [1,2], [3,2], [6,9]],
   #     [[8,2], [1,2], [6,2], [1,3]],
   #     [[1,2], [3,1]],
   #     [[3,0], [1,9]],
   #     [[3,2]],
   #     [[4,2]]
-  #   ], [         /* FINALS */
+  #   ],[         /* FINALS */
   #     [[3,8], [1,2]],
   #     [[2,1]]
   #   ]]
@@ -181,8 +181,8 @@ class Tournament
     # +seeds+ is now the full list of players, properly sorted
     seeds |= players
 
-    # Take the top seed out if we have an odd number of players
-    seeds << "BYE" if seeds.count % 2 != 0
+    # Add BYEs if we have n players where n is not a power of 2
+    seeds << "BYE" while seeds.count & (seeds.count - 1) != 0
 
     # Perform the seeding
     bracket_list = seeds.clone
@@ -204,6 +204,22 @@ class Tournament
       self.brackets[:teams] << [(pair[0].id rescue "BYE"), (pair[1].id rescue "BYE")]
     end
 
+    # Go through and move players forward if BYEs are present
+    winners_bracket = []
+    self.brackets[:teams].each do |pair|
+      score = []
+
+      if pair[0] == "BYE"
+        score = [0,1]
+      elsif pair[1] == "BYE"
+        score = [1,0]
+      end
+
+      winners_bracket << score
+    end
+
+    self.brackets[:results] = [winners_bracket]
+
     save
   end
 
@@ -223,7 +239,7 @@ class Tournament
 
   def parse_datetime(string)
     return nil unless string.present?
-    ["DateTime", "Date"].include?(string.class.name) ? string : DateTime.strptime(string, "%m/%d/%Y %I:%M %p")
+    ["DateTime", "Date"].include?(string.class.name) ? string : Chronic.parse(string, time_class: Time.zone)
   end
 
   def signup_ends_at=(value)

@@ -3,14 +3,15 @@ source "http://rubygems.org"
 gem "rails", "3.2.14"
 gem "redis-store", "> 1.1.0", "< 1.1.4"
 
-gem 'carmen'
-gem 'carmen-rails'
-gem 'kaminari'
-gem 'oj', ">= 2.1.4"
-gem 'remotipart', '~> 1.0'
-gem 'sanitize'
+gem "carmen"
+gem "carmen-rails"
+gem "kaminari"
+gem "oj", ">= 2.1.4"
+gem "remotipart", "~> 1.0"
+gem "sanitize"
 gem "pg"
 gem "sequel"
+gem "chronic"
 gem "bunny", ">= 0.9.0.pre6"
 gem "mongoid", "~> 3.0.0"
 gem "redis-rails"
@@ -45,7 +46,7 @@ group :development do
   gem "binding_of_caller", ">= 0.6.8"
   gem "meta_request"
   gem "quiet_assets"
-  gem 'pry'
+  gem "pry"
 end
 
 group :test, :development do

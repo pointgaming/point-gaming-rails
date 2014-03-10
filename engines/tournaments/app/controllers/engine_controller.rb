@@ -13,6 +13,16 @@ class EngineController < ApplicationController
     end
   end
 
+  def ensure_tournament_started
+    @tournament = Tournament.find_by(slug: params[:tournament_id] || params[:id])
+    unless @tournament.started?
+      message = "The tournament has not started yet"
+      respond_with({errors: [message]}, status: 403) do |format|
+        format.html { redirect_to @tournament, alert: message }
+      end
+    end
+  end
+
   def ensure_tournament_owner
     unless @tournament.owner._id === current_user._id
       message = "You do not have permission to edit that tournaments collaborators"

@@ -2,6 +2,7 @@ class TournamentsController < EngineController
   before_filter :ensure_tournament, except: [:index, :collaborated, :new, :create]
   before_filter :ensure_tournament_prizepool_required, only: [:prize_pool]
   before_filter :ensure_tournament_editable_by_user, only: [:edit, :update, :destroy]
+  before_filter :ensure_tournament_started, only: [:brackets]
 
   respond_to :html, :json
 
@@ -66,6 +67,7 @@ class TournamentsController < EngineController
       if players
         @tournament.seeds = params[:seeds]
         @tournament.save
+        @tournament.generate_brackets!
       end
 
       head :ok
