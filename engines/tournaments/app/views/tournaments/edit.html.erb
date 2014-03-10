@@ -9,8 +9,10 @@
     <div class="span9">
       <%= render "form" %>
     </div>
-    <div class="span3">
-      <%= render "sponsors", locals: { edit: true } %>
-    </div>
+    <% if @tournament.sponsors.present? %>
+      <div class="span3">
+        <%= render "sponsors", locals: { edit: true } %>
+      </div>
+    <% end %>
   </div>
 </div>

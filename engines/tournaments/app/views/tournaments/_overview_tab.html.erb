@@ -23,7 +23,7 @@
           <% end %>
         </div>
         <div class="span6">
-          <%= link_to "Brackets", "#", class: "btn btn-block", disabled: true %>
+          <%= link_to "Brackets", brackets_tournament_path(@tournament), class: "btn btn-block", disabled: !@tournament.started? %>
         </div>
       </div>
     </div>
