@@ -1,4 +1,3 @@
-<%- model_class = News -%>
 <div id="twocolumns" class="row-fluid">
   <section id="content" class="span9">
     <ul class="nav nav-pills">
@@ -20,6 +19,28 @@
     </div>
   </section>
   <aside id="sidebar" class="span3">
+    <div class="games clearfix">
+      <div class="visual">
+        <h3>Games</h3>
+      </div>
+      <div style="padding: 5px;" class="clearfix">
+        <table class="table table-bordered table-striped">
+          <tbody>
+            <tr>
+              <th class="title">Game</th>
+              <th>Players</th>
+            </tr>
+            <% Game.all.each do |game| %>
+                <tr<%= "class='bottom'" if game == Game.last %>>
+                    <td><%= link_to_lobby image_tag(image_path(game.decorate.image_name)), game %></td>
+                    <td><%= game.player_count %></td>
+                </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
     <div class="leaderboard clearfix">
       <div class="visual">
         <h3>Leaderboard</h3>

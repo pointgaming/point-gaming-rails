@@ -56,8 +56,6 @@ PointGamingRails::Application.routes.draw do
     end
   end
 
-  resources :games
-
   namespace :api do
     namespace :v1 do
       resources :better
