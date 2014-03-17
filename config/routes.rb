@@ -131,6 +131,11 @@ PointGamingRails::Application.routes.draw do
         end
       end
     end
+
+    scope module: :user_bans do
+      resources :user_bans, only: [:index, :show]
+    end
+
   end
 
   get '/desktop_client/version', to: 'site#desktop_version'
