@@ -94,6 +94,7 @@ PointGamingRails::Application.routes.draw do
             put 'leave'
 	    get 'ban'
 	    get 'user_rights'
+	    get 'change_points'
           end
         end
       end
