@@ -11,8 +11,15 @@ class UserBan
   belongs_to :owner, class_name: 'User'
 
   validates :game, :user, :owner, presence: true
+  validate :not_banned_himself
 
   def is_expired?
-    return (self.start_time + period.hours) < Time.now
+    return (self.start_time.utc + period.hours) < Time.now.utc
+  end
+
+  protected
+
+  def not_banned_himself
+    self.errors[:base] << "User cannot ban himself" if owner.eql?(user)
   end
 end
