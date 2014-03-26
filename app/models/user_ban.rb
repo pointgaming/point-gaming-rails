@@ -14,7 +14,7 @@ class UserBan
   validate :not_banned_himself
 
   def is_expired?
-    return (self.start_time.utc + period.hours) < Time.now.utc
+    return ((!self.period.eql?(-1.0)) and ((self.start_time.utc + period.hours) < Time.now.utc))
   end
 
   protected

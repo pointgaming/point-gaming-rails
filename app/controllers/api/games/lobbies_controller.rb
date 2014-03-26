@@ -26,7 +26,7 @@ module Api
 	  def ban
 	    @user_lobby = @user.lobbies.where(game: @game).first
 	    if @user_lobby.present?
-	      period = params[:period].present? ? params[:period].gsub!(',', '.').to_f : 1.0
+	      period = params[:period].present? ? params[:period].gsub(',', '.').to_f : 1.0
 	      @user_ban = UserBan.where(user: @user_lobby.user, game: @user_lobby.game).first
 	      @user_ban = UserBan.create(start_time: Time.now, period: period, game: @user_lobby.game, user: @user_lobby.user, owner: current_user) if @user_ban.blank?
 	    end
