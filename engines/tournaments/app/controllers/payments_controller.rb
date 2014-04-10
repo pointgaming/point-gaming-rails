@@ -3,8 +3,6 @@ class PaymentsController < EngineController
   before_filter :ensure_tournament_payment_required
   before_filter :ensure_tournament_editable_by_user, only: [:edit, :update]
 
-  respond_to :html, :json
-
   def new
     @payment = @tournament.build_payment
   end

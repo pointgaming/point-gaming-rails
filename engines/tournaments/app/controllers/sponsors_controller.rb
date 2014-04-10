@@ -4,8 +4,6 @@ class SponsorsController < EngineController
   before_filter :ensure_params, only: [:create, :update]
   before_filter :ensure_tournament_editable
 
-  respond_to :html, :json
-
   def new
     @sponsor = @tournament.sponsors.build
     respond_with(@sponsor)

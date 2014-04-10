@@ -5,16 +5,18 @@ class Player
   after_destroy :decrement_tournament_player_count
   before_save :set_username
 
+  # Update tournament brackets if there's a new player, 
+  after_save :update_tournament_brackets, if: :checked_in_at_changed?
+  after_destroy :update_tournament_brackets
+
   scope :for_user, lambda { |user| where(user_id: user._id) }
 
-  field :_id, type: String, default: proc { "#{tournament_id}-#{user_id}" }
   field :checked_in_at, type: DateTime
   field :username, type: String
+  field :seed, type: Integer
   field :current_position, type: Array
 
-  index({ _id: 1 }, { unique: true })
-
-  belongs_to :tournament
+  embedded_in :tournament
   belongs_to :user
 
   def checked_in?
@@ -59,7 +61,8 @@ class Player
       tournament.save
 
       opponent = current_opponent()
-      opponent.set_current_position and opponent.save
+
+      opponent.set_current_position and opponent.save unless opponent == "TBD"
       set_current_position and save
     else
       false
@@ -175,5 +178,9 @@ class Player
 
   def set_username
     self.username = user.username
+  end
+
+  def update_tournament_brackets
+    self.tournament.generate_brackets!
   end
 end

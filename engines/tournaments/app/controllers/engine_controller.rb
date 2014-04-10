@@ -2,6 +2,8 @@ class EngineController < ApplicationController
   include Rails.application.routes.url_helpers
   before_filter :authenticate_user!
 
+  respond_to :html, :json
+
   protected
 
   def ensure_tournament

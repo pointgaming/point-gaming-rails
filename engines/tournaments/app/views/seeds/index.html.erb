@@ -1,7 +1,7 @@
 <div class="row-fluid" id="tournaments">
   <h1>Edit Tournament</h1>
 
-  <%= render "workflow_navigation" %>
+  <%= render "tournaments/workflow_navigation" %>
 
   <div class="row-fluid">
     <div class="span6">
@@ -14,10 +14,11 @@
 
         <div class="widget-content">
           <ol class="tourney-players sortable">
-            <% @tournament.seeds.each do |id| %>
-              <% player = Player.find(id) rescue nil %>
-              <% next unless player %>
-              <li class="draggable" data-id="<%= id %>"><%= player.username %></li>
+            <% @tournament.players.desc(:seed).each do |player| %>
+              <li class="draggable" data-id="<%= player.id %>">
+                <%= link_to "[x]", "#", class: "remove-player", data: { tournament_id: @tournament.slug, id: player.id.to_s, confirm: "Are you sure?" } %>
+                <%= player.username %>
+              </li>
             <% end %>
           </ol>
         </div>

@@ -5,7 +5,7 @@ class Tournament
   cattr_reader :formats, :types
 
   after_create :trigger_created
-  before_save :randomize_seeds
+  before_validation :set_tournament_slug, on: :create
   after_save :move_to_next_state!
 
   @@formats = [:single_elimination, :double_elimination, :round_robin]
@@ -30,7 +30,6 @@ class Tournament
   field :player_count, type: Integer, default: 0
   field :sponsor_request_state, default: "not_requested"
   field :collaborators, type: Array, default: []
-  field :seeds, type: Array, default: []
 
   # The brackets format here needs to match the format used in the jQuery
   # brackets library. Here"s an example:
@@ -92,11 +91,10 @@ class Tournament
 
   has_many :sponsors, dependent: :destroy
   has_many :invites,  dependent: :destroy
-  has_many :players,  dependent: :destroy
+  embeds_many :players
 
   validates :name, presence: true, uniqueness: true
   validates :slug, presence: true, uniqueness: true
-  validates :stream_slug, presence: true
   validates :signup_ends_at, presence: true
   validates :checkin_hours, presence: true, numericality: { only_integer: true, greater_than: 0, less_than: 4 }
   validates :player_limit, presence: true, numericality: { only_integer: true, greater_than: 0, even: true }
@@ -123,7 +121,7 @@ class Tournament
   def validate_prizepool_fields
     return unless prizepool.present?
     prizepool.each do |placement, prize|
-      if prize.present? && !(prize =~ /^\d+(\.\d{1,2})?$/)
+      if prize.present? && prize !~ /^\d+(\.\d{1,2})?$/
         self.errors[:base] << "#{ActiveSupport::Inflector.ordinalize(placement)} must be numeric"
       end
     end
@@ -183,12 +181,10 @@ class Tournament
     self.brackets = { "teams" => [], "results" => [] }
 
     # Split up players and seeds
-    seeds   = self.seeds.map { |s| players.find(s) }
-    players = self.players - seeds
-    players.shuffle!
+    clean_seeds!
 
-    # +seeds+ is now the full list of players, properly sorted
-    seeds |= players
+    seeds = self.players.desc(:seed).to_a
+    save and return unless seeds.present?
 
     # Add BYEs if we have n players where n is not a power of 2
     seeds << "BYE" while seeds.count & (seeds.count - 1) != 0
@@ -286,11 +282,27 @@ class Tournament
     created!
   end
 
-  def randomize_seeds
-    self.seeds = players.map { |p| p.id.to_s }.shuffle unless seeds.present?
-  end
-
   def update_prizepool_total
     self.prizepool_total = prizepool.values.select { |val| val.numeric? }.map { |val| BigDecimal.new(val) }.reduce(:+) || BigDecimal.new("0")
+  end
+
+  def set_tournament_slug
+    # We want to remove all non-word charcters, reduce multiple consecutive
+    # spaces down to a single space, and replace the spaces with dashes.
+    self.slug = self.name.to_s.downcase.gsub(/[^\w\s]+/i, "").gsub(/\s+/, "-")
+  end
+
+  def clean_seeds!
+    if seeds.present?
+      dead = []
+      seeds.each { |seed| dead << seed unless players.where(_id: seed).exists? }
+
+      if dead.present?
+        seeds.delete_if { |seed| dead.include?(seed) }
+        save
+      end
+    end
+
+    self.seeds = players.map { |p| p.id.to_s }.shuffle unless seeds.present?
   end
 end

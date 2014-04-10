@@ -4,8 +4,6 @@ class InvitesController < EngineController
   before_filter :ensure_params, only: [:create]
   before_filter :ensure_user, only: [:create]
 
-  respond_to :html, :json
-
   def create
     @invite = Invite.create({tournament_id: @tournament._id, user_id: @user._id})
     respond_with(@invite, location: users_tournament_path(@tournament))
