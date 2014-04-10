@@ -14,7 +14,7 @@
 
         <div class="widget-content">
           <ol class="tourney-players sortable">
-            <% @tournament.players.desc(:seed).each do |player| %>
+            <% @tournament.players.asc(:seed).each do |player| %>
               <li class="draggable" data-id="<%= player.id %>">
                 <%= link_to "[x]", "#", class: "remove-player", data: { tournament_id: @tournament.slug, id: player.id.to_s, confirm: "Are you sure?" } %>
                 <%= player.username %>

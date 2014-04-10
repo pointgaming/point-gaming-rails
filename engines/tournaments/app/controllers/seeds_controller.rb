@@ -7,6 +7,8 @@ class SeedsController < EngineController
       @tournament.players.find(player_id).update_attribute(:seed, i) rescue nil
     end
 
+    @tournament.generate_brackets!
+
     head :ok
   end
 

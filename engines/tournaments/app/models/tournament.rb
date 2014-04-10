@@ -178,7 +178,7 @@ class Tournament
     # Split up players and seeds
     clean_seeds!
 
-    seeds = self.players.desc(:seed).to_a
+    seeds = self.players.asc(:seed).to_a
     save and return unless seeds.present?
 
     # Add BYEs if we have n players where n is not a power of 2
@@ -237,6 +237,10 @@ class Tournament
       end
 
       player.report_scores!(1, 0) if player
+    end
+
+    players.each do |player|
+      player.set_current_position and save
     end
   end
 

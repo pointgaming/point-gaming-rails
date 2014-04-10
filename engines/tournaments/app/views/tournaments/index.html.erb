@@ -19,7 +19,7 @@
         <td><%= tournament.game.name %></td>
         <td><%= tournament.game_type.name %></td>
         <td><%= number_to_currency tournament.prizepool_total %></td>
-        <td><%= tournament.player.count %>/<%= tournament.player_limit %></td>
+        <td><%= tournament.players.count %>/<%= tournament.player_limit %></td>
       </tr>
     <% end %>
   </tbody>

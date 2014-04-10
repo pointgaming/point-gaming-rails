@@ -17,6 +17,10 @@ class Player
   embedded_in :tournament
   belongs_to :user
 
+  def check_in!
+    update_attribute(:checked_in_at, DateTime.now)
+  end
+
   def checked_in?
     checked_in_at.is_a?(DateTime)
   end
