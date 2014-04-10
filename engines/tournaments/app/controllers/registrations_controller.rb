@@ -11,7 +11,7 @@ class RegistrationsController < EngineController
   end
 
   def update
-    @player.update_attributes(checked_in_at: DateTime.now)
+    @player.update_attribute(:checked_in_at, DateTime.now)
     respond_with(@player, location: @tournament)
   end
 

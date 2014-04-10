@@ -27,7 +27,6 @@ class Tournament
   field :state, default: "new"
   field :prizepool, type: Hash, default: {}
   field :prizepool_total, type: BigDecimal, default: BigDecimal.new("0")
-  field :player_count, type: Integer, default: 0
   field :sponsor_request_state, default: "not_requested"
   field :collaborators, type: Array, default: []
 
@@ -154,10 +153,6 @@ class Tournament
 
   def signed_up?(user)
     players.where(user: user).exists?
-  end
-
-  def increment_player_count(amount = 1)
-    inc(:player_count, amount)
   end
 
   def to_param

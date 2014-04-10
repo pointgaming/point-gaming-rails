@@ -67,7 +67,7 @@
         </div>
         <div class="widget">
           <div class="widget-header">
-            <h3>Players (<%= "#{@tournament.player_count}/#{@tournament.player_limit}" %>)</h3>
+            <h3>Players (<%= "#{@tournament.player.count}/#{@tournament.player_limit}" %>)</h3>
           </div>
           <div class="widget-content">
             <% @tournament.players.each do |player| %>

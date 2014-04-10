@@ -1,8 +1,6 @@
 class Player
   include Mongoid::Document
 
-  after_create :increment_tournament_player_count
-  after_destroy :decrement_tournament_player_count
   before_save :set_username
 
   # Update tournament brackets if there's a new player, 
@@ -166,14 +164,6 @@ class Player
         end
       end
     end
-  end
-
-  def increment_tournament_player_count
-    self.tournament.increment_player_count(1)
-  end
-
-  def decrement_tournament_player_count
-    self.tournament.increment_player_count(-1)
   end
 
   def set_username
