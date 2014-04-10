@@ -14,67 +14,67 @@ en:
   hello: "Hello world"
   date:
     formats:
-      default: ! '%m/%d/%Y'
+      default: ! "%m/%d/%Y"
   time:
     formats:
-      default: ! '%m/%d/%Y %I:%M %p'
+      default: ! "%m/%d/%Y %I:%M %p"
   models:
     tournament_status_steps:
-      creation: 'Tournament created'
-      prizepool: 'Prizepool locked in'
-      payment: 'Payment information submitted'
-      payment_verification: 'Verifying payment (Can take up to 14 days)'
-      activation: 'Tournament Activated'
+      creation: "Tournament created"
+      prizepool: "Prizepool locked in"
+      payment: "Payment information submitted"
+      payment_verification: "Verifying payment"
+      activation: "Tournament Activated"
   mongoid:
     models:
-      team_member: 'Member'
-      user_sponsor: 'Sponsor'
-      team_sponsor: 'Sponsor'
-      tournament_sponsor: 'Sponsor'
+      team_member: "Member"
+      user_sponsor: "Sponsor"
+      team_sponsor: "Sponsor"
+      tournament_sponsor: "Sponsor"
     attributes:
       bet:
-        offerer_choice_name: 'Winner'
-        taker_choice_name: 'Loser'
-        risk_amount: 'Your risk amount'
-        win_amount: 'Your win amount'
+        offerer_choice_name: "Winner"
+        taker_choice_name: "Loser"
+        risk_amount: "Your risk amount"
+        win_amount: "Your win amount"
       demo:
-        updated_at: 'Uploaded at'
-        winner_name: 'Winner'
-        loser_name: 'Loser'
+        updated_at: "Uploaded at"
+        winner_name: "Winner"
+        loser_name: "Loser"
       match:
-        player_1_name: 'Player or Team 1'
-        player_2_name: 'Player or Team 2'
+        player_1_name: "Player or Team 1"
+        player_2_name: "Player or Team 2"
       comment:
-        text: 'Comment'
+        text: "Comment"
       dispute:
-        owner: 'Filed by'
+        owner: "Filed by"
       message:
-        text: 'Message'
+        text: "Message"
       team:
-        tag: 'Nick Name'
+        tag: "Nick Name"
       team_member:
-        created_at: 'Joined on'
+        created_at: "Joined on"
       tournament:
-        start_datetime: 'Start Date'
+        start_datetime: "Start Date"
       tournament_payment:
-        credit_card_name: 'Name on Card'
-        credit_card_number: 'Card Number'
-        credit_card_expiration_month: 'Expiration Month'
-        credit_card_expiration_year: 'Expiration Year'
-        credit_card_cvv2: 'Verification Code'
-        credit_card_address_1: 'Address 1'
-        credit_card_address_2: 'Address 2'
-        credit_card_city: 'City'
-        credit_card_state: 'State'
-        credit_card_zip: 'Zip'
+        credit_card_name: "Name on Card"
+        credit_card_number: "Card Number"
+        credit_card_expiration_month: "Expiration Month"
+        credit_card_expiration_year: "Expiration Year"
+        credit_card_cvv2: "Verification Code"
+        credit_card_address_1: "Address 1"
+        credit_card_address_2: "Address 2"
+        credit_card_city: "City"
+        credit_card_state: "State"
+        credit_card_zip: "Zip"
       user:
-        created_at: 'Joined on'
-        game_id: 'Primary Game'
-        matches_participated_in_count: 'Matches participated in'
-        match_dispute_won_count: 'Disputes won'
-        match_dispute_lost_count: 'Disputes lost'
+        created_at: "Joined on"
+        game_id: "Primary Game"
+        matches_participated_in_count: "Matches participated in"
+        match_dispute_won_count: "Disputes won"
+        match_dispute_lost_count: "Disputes lost"
       user_point_history:
-        action_source: 'Type'
+        action_source: "Type"
   search:
     type:
       spree/product: "Store"
@@ -85,19 +85,19 @@ en:
       user: "User"
   UserTransactionHistory:
     _type:
-      UserBetHistory: 'Bet'
-      UserPointHistory: 'Points'
-      UserBillingHistory: 'Order'
+      UserBetHistory: "Bet"
+      UserPointHistory: "Points"
+      UserBillingHistory: "Order"
   shared:
     desktop_client_helper:
       desktop_client_required_modal:
-        title: 'Desktop Client Required'
+        title: "Desktop Client Required"
       desktop_client_out_of_date_modal:
-        title: 'Desktop Client Upgrade Required'
+        title: "Desktop Client Upgrade Required"
   reports:
     point_audit: "Point Auditing Report"
   dispute:
     state:
-      new: 'New'
-      cancelled: 'Cancelled'
-      finalized: 'Finalized'
+      new: "New"
+      cancelled: "Cancelled"
+      finalized: "Finalized"
