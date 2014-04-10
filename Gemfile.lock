@@ -63,6 +63,9 @@ GEM
     builder (3.0.4)
     bunny (1.1.0.pre2)
       amq-protocol (>= 1.9.0)
+    byebug (2.7.0)
+      columnize (~> 0.3)
+      debugger-linecache (~> 1.2)
     callsite (0.0.11)
     cancan (1.6.10)
     capistrano (2.15.5)
@@ -94,8 +97,10 @@ GEM
     cocaine (0.5.3)
       climate_control (>= 0.0.3, < 1.0)
     coderay (1.1.0)
+    columnize (0.3.6)
     database_cleaner (1.2.0)
     debug_inspector (0.0.2)
+    debugger-linecache (1.2.0)
     devise (3.1.2)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.1)
@@ -388,6 +393,7 @@ DEPENDENCIES
   binding_of_caller (>= 0.6.8)
   bootstrap-sass (~> 2.3.1.0)
   bunny (>= 0.9.0.pre6)
+  byebug
   cancan
   capistrano (~> 2.15.1)
   capistrano-ext

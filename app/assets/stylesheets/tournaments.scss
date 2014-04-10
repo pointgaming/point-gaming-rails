@@ -38,6 +38,10 @@
   }
 }
 
+#tourney-brackets {
+  overflow-x: scroll;
+}
+
 .tourney-players li {
   margin: 0 3px 3px 3px;
   padding: 0.4em;
@@ -47,4 +51,8 @@
 .tourney-players li.draggable:hover {
   background-color: #fff;
   cursor: move;
+}
+
+.center {
+  text-align: center;
 }

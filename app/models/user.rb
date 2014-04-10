@@ -256,6 +256,10 @@ class User
     90
   end
 
+  def to_s
+    username
+  end
+
   def self.find_first_by_auth_conditions(warden_conditions)
     conditions = warden_conditions.dup
     if username = conditions.delete(:username)

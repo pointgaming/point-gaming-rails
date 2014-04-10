@@ -2,7 +2,7 @@ class TournamentsController < EngineController
   before_filter :ensure_tournament, except: [:index, :collaborated, :new, :create]
   before_filter :ensure_tournament_prizepool_required, only: [:prize_pool]
   before_filter :ensure_tournament_editable_by_user, only: [:edit, :update, :destroy]
-  before_filter :ensure_tournament_started, only: [:brackets]
+  before_filter :ensure_tournament_started, only: [:brackets, :report_scores]
 
   respond_to :html, :json
 
@@ -79,10 +79,17 @@ class TournamentsController < EngineController
       format.html
       format.json do
         brackets = @tournament.brackets
-        brackets["teams"].map! { |p| p.map { |t| t.blank? || t == "BYE" ? "BYE" : @tournament.players.find(t).user.username } }
+        brackets["teams"].map! { |p| p.map { |t| t.blank? || t == "BYE" ? "BYE" : @tournament.players.find(t).username } }
         render json: brackets
       end
     end
+  end
+
+  def report_scores
+    player = @tournament.player_for_user(current_user)
+    player.report_scores!(params[:mine], params[:his])
+
+    redirect_to :back, notice: "Match scores submitted!"
   end
 
   private

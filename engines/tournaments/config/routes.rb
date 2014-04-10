@@ -17,6 +17,7 @@ PointGamingRails::Application.routes.draw do
       get "seeds"
       put "seeds"
       put "collaborators"
+      post "report_scores"
     end
   end
 end

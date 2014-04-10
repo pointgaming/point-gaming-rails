@@ -17,7 +17,7 @@
             <% @tournament.seeds.each do |id| %>
               <% player = Player.find(id) rescue nil %>
               <% next unless player %>
-              <li class="draggable" data-id="<%= id %>"><%= player.user.username %></li>
+              <li class="draggable" data-id="<%= id %>"><%= player.username %></li>
             <% end %>
           </ol>
         </div>

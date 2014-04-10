@@ -27,14 +27,6 @@
         </div>
       </div>
     </div>
-    <div class="widget">
-      <div class="widget-header">
-        <h3>Rules</h3>
-      </div>
-      <div class="widget-content">
-        <%= @tournament.details %>
-      </div>
-    </div>
     <div id="prize-pool-widget" class="widget">
       <div class="widget-header">
         <h3>Prize Pool</h3>
@@ -73,6 +65,20 @@
         <% end %>
       </div>
     </div>
+    <div class="widget">
+      <div class="widget-header">
+        <h3>Players (<%= "#{@tournament.player_count}/#{@tournament.player_limit}" %>)</h3>
+      </div>
+      <div class="widget-content">
+        <% @tournament.players.each do |player| %>
+          <div class="control-group">
+            <div class="controls">
+              <%= link_to player.username, user_path(player.username) %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
   </div>
   <div class="span9">
     <div id="tournament-name-wrapper" class="row-fluid widget">
@@ -92,11 +98,69 @@
         </div>
       </div>
     </div>
-    <div class="span9 middle-content">
-      <%= render "registered_players" %>
-    </div>
+    <% if @tournament.started? && @tournament.checked_in?(current_user) %>
+      <div class="span9 middle-content">
+        <div class="widget">
+          <div class="widget-header">
+            <h3>
+              Current Match
+            </h3>
+          </div>
+          <div class="widget-content center">
+            <h3>
+              Opponent:
+            </h3>
+            <h4>
+              <%= current_player.current_opponent || "TBD" %>
+            </h4>
+            <% if current_player.current_opponent != "TBD" %>
+              <p>
+                <%= link_to "Report Scores", "#report-scores", class: "btn btn-success", role: "button", data: { toggle: "modal" } %>
+              </p>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <% if current_player.current_opponent != "TBD" %>
+        <div id="report-scores" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="report-scores-label" aria-hidden="true">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="report-scores-label">Report Scores</h3>
+          </div>
+          <%= form_tag report_scores_tournament_path do %>
+            <div class="modal-body">
+              <p>
+                Games <strong><%= current_user %></strong> has won:
+              </p>
+
+              <%= number_field_tag :mine, nil, in: 0..9 %>
+
+              <p>
+                Games <strong><%= current_player.current_opponent %></strong> has won:
+              </p>
+
+              <%= number_field_tag :his %>
+            </div>
+            <div class="modal-footer">
+              <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+              <%= submit_tag "Submit", class: "btn btn-primary" %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    <% end %>
     <div class="span2">
       <%= render "sponsors" %>
+    </div>
+    <div class="span9 middle-content">
+      <div class="widget">
+        <div class="widget-header">
+          <h3>Rules</h3>
+        </div>
+        <div class="widget-content">
+          <%= @tournament.details %>
+        </div>
+      </div>
     </div>
   </div>
 </div>

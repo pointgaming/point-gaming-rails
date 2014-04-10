@@ -39,7 +39,7 @@ class Tournament
   #   teams: [
   #     ["rapha",       "Cypher" ],
   #     ["ZeRo4",       "zar" ],
-  #     ["DaHanG",      "jochs" ],
+  #     ["jochs",       "DaHanG" ],
   #     ["dkt",         "chance" ],
   #     ["sparks",      "evil"],
   #     ["_ash",        "VeT"],
@@ -47,7 +47,7 @@ class Tournament
   #     ["id_",         "andriiiiii"]
   #   ],
   #   results: [[ /* WINNER BRACKET */
-  #     [[3,5], [2,4], [6,3], [2,3], [1,5], [5,3], [7,2], [1,2]],
+  #     [[3,5], [2,4], [3,6], [2,3], [1,5], [5,3], [7,2], [1,2]],
   #     [[1,2], [3,4], [5,6], [7,8]],
   #     [[9,1], [8,2]],
   #     [[1,3]]
@@ -170,8 +170,17 @@ class Tournament
     prizepool_submitted! if prizepool.present? && prizepool_required?
   end
 
+  # This is just a convenience method for development/console use.
+  def report_scores_for(username, mine, his)
+    players.find_by(username: username).report_scores!(mine, his)
+  end
+
+  def player_for_user(user)
+    players.find_by(user_id: user.id)
+  end
+
   def generate_brackets!
-    self.brackets = { teams: [], results: [] }
+    self.brackets = { "teams" => [], "results" => [] }
 
     # Split up players and seeds
     seeds   = self.seeds.map { |s| players.find(s) }
@@ -201,26 +210,43 @@ class Tournament
     end
 
     bracket_list.each_slice(2).to_a.each do |pair|
-      self.brackets[:teams] << [(pair[0].id rescue "BYE"), (pair[1].id rescue "BYE")]
+      self.brackets["teams"] << [(pair[0].id rescue "BYE"), (pair[1].id rescue "BYE")]
     end
 
-    # Go through and move players forward if BYEs are present
-    winners_bracket = []
-    self.brackets[:teams].each do |pair|
-      score = []
+    # Go through and set up the first round for the winners, losers, finals
+    self.brackets["results"] = [
+      [Array.new(self.brackets["teams"].count)      { [] }],  # winners
+      [Array.new(self.brackets["teams"].count / 2)  { [] }],  # losers
+      [[nil, nil], [nil]]
+    ]
 
-      if pair[0] == "BYE"
-        score = [0,1]
-      elsif pair[1] == "BYE"
-        score = [1,0]
-      end
-
-      winners_bracket << score
+    # Set up all subsequent rounds as well, to avoid nil errors
+    Math.log2(self.brackets["teams"].count).to_i.times do
+      self.brackets["results"][0] << []
     end
 
-    self.brackets[:results] = [winners_bracket]
+    # Number of losers bracket rounds
+    (2 * (Math.log2(self.brackets["teams"].count).to_i - 1)).times do
+      self.brackets["results"][1] << []
+    end
+
+    # Always 2 rounds in the finals
+    self.brackets["results"][2] = [[], []]
 
     save
+
+    # If there are any BYEs, have the other player automatically report a win.
+    self.brackets["teams"].each do |pair|
+      player = nil
+
+      if pair[0] == "BYE" && pair[1] != "BYE"
+        player = self.players.find(pair[1])
+      elsif pair[1] == "BYE" && pair[0] != "BYE"
+        player = self.players.find(pair[0])
+      end
+
+      player.report_scores!(1, 0) if player
+    end
   end
 
   def prizepool_submitted
