@@ -47,7 +47,7 @@ group :development do
   gem "meta_request"
   gem "quiet_assets"
   gem "byebug"
-  gem "pry"
+  gem "pry-rails"
 end
 
 group :test, :development do
