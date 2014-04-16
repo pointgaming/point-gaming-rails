@@ -18,6 +18,8 @@ class Team
   field :game_points, :type => Hash, default: {}
   field :member_count, :type => Integer, :default => 0
 
+  field :temporarily, :type => Boolean, default: false
+
   has_many :members, class_name: 'TeamMember', dependent: :destroy
   has_many :active_users, class_name: 'User'
   has_many :sponsors, class_name: 'TeamSponsor'
