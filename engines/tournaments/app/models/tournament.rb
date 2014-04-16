@@ -148,7 +148,7 @@ class Tournament
   end
 
   def checked_in?(user)
-    players.where(user: user, :checked_in_at.ne => nil).exists?
+    players.checked_in.where(user: user).exists?
   end
 
   def signed_up?(user)
@@ -176,9 +176,7 @@ class Tournament
     self.brackets = { "teams" => [], "results" => [] }
 
     # Split up players and seeds
-    clean_seeds!
-
-    seeds = self.players.asc(:seed).to_a
+    seeds = self.players.checked_in.to_a.clone
     save and return unless seeds.present?
 
     # Add BYEs if we have n players where n is not a power of 2
@@ -239,9 +237,7 @@ class Tournament
       player.report_scores!(1, 0) if player
     end
 
-    players.each do |player|
-      player.set_current_position and save
-    end
+    players.each(&:set_current_position!)
   end
 
   def prizepool_submitted
@@ -289,19 +285,5 @@ class Tournament
     # We want to remove all non-word charcters, reduce multiple consecutive
     # spaces down to a single space, and replace the spaces with dashes.
     self.slug = self.name.to_s.downcase.gsub(/[^\w\s]+/i, "").gsub(/\s+/, "-")
-  end
-
-  def clean_seeds!
-    if seeds.present?
-      dead = []
-      seeds.each { |seed| dead << seed unless players.where(_id: seed).exists? }
-
-      if dead.present?
-        seeds.delete_if { |seed| dead.include?(seed) }
-        save
-      end
-    end
-
-    self.seeds = players.map { |p| p.id.to_s }.shuffle unless seeds.present?
   end
 end

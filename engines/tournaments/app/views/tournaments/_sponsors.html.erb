@@ -1,5 +1,5 @@
 <h4>Sponsors</h4>
-<% @tournament.sponsors.order_by(sort_order: :asc).each do |sponsor| %>
+<% @tournament.sponsors.asc(:sort_order).each do |sponsor| %>
   <div id="sponsor_<%= sponsor._id %>" data-hook="sponsor" class="sponsor">
     <%= link_to image_tag(main_app_user_asset_url(sponsor.image.url(:medium)), alt: sponsor.name, class: "thumbnail"), sponsor.url %>
   </div>

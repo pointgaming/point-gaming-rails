@@ -407,5 +407,4 @@ protected
       Resque.enqueue RecalculateTeamPointsJob, team_id
     end
   end
-
 end

@@ -1,13 +1,16 @@
 class Player
   include Mongoid::Document
 
-  before_save :set_username
+  default_scope asc(:seed)
+
+  before_save :set_username!
 
   # Update tournament brackets if there's a new player, 
-  after_save :update_tournament_brackets, if: :checked_in_at_changed?
-  after_destroy :update_tournament_brackets
+  after_save :update_tournament_brackets!, if: :checked_in_at_changed?
+  after_destroy :update_tournament_brackets!
 
   scope :for_user, lambda { |user| where(user_id: user._id) }
+  scope :checked_in, where(:checked_in_at.ne => nil)
 
   field :checked_in_at, type: DateTime
   field :username, type: String
@@ -63,9 +66,9 @@ class Player
       tournament.save
 
       opponent = current_opponent()
+      opponent.set_current_position! unless opponent == "TBD"
 
-      opponent.set_current_position and opponent.save unless opponent == "TBD"
-      set_current_position and save
+      set_current_position!
     else
       false
     end
@@ -88,9 +91,9 @@ class Player
     "TBD"
   end
 
-  def set_current_position
+  def set_current_position!
     index_data = follow_bracket(0, 0, starting_index, starting_team)
-    self.current_position = index_data.is_a?(Array) ? index_data : nil
+    self.update_attribute(:current_position, index_data.is_a?(Array) ? index_data : nil)
   end
 
   def to_s
@@ -110,28 +113,12 @@ class Player
   end
 
   def follow_bracket(bracket, round, index, team)
+    #puts "#{bracket} #{round} #{index} #{team}"
     # +bracket+ 0 -> winner
     # +bracket+ 1 -> loser
     # +bracket+ 2 -> final
     # +index+ describes the index in the bracket
     # +team+ is either a 0 or 1. See Tournament.brackets structure.
-    #
-    # results #=> [[ # WINNER BRACKET
-    #   [[3,5], [2,4], [3,6], [2,3], [1,5], [5,3], [7,2], [1,2]],
-    #   [[1,2], [3,4], [5,6], [7,8]],
-    #   [[9,1], [8,2]],
-    #   [[1,3]]
-    # ],[         # LOSER BRACKET
-    #   [[5,1], [1,2], [3,2], [6,9]],
-    #   [[8,2], [1,2], [6,2], [1,3]],
-    #   [[1,2], [3,1]],
-    #   [[3,0], [1,9]],
-    #   [[3,2]],
-    #   [[4,2]]
-    # ],[         # FINALS
-    #   [[3,8], [1,2]],
-    #   [[2,1]]
-    # ]]
 
     results         = self.tournament.brackets["results"]
     opponent        = team == 0 ? 1 : 0
@@ -147,17 +134,49 @@ class Player
       # This is the position that we're reporting for.
       return [bracket, round, index, team]
     else
-      win   = team_score > opponent_score
-      team  = index.even?? 0 : 1
+      win = team_score > opponent_score
 
       if win
+        if bracket == 0
+          team  = index.even?? 0 : 1
+          index = index / 2
+        elsif bracket == 1
+          if round.even?
+            team  = 0
+            index = index / 2
+          else
+            team  = index.even?? 0 : 1
+            index = round.even?? index : index / 2
+          end
+        elsif bracket == 2
+          # TODO
+        end
+
         # Stay in the same bracket, continue recursive traversal.
-        return follow_bracket(bracket, round + 1, index / 2, team)
+        return follow_bracket(bracket, round + 1, index, team)
       else
         if bracket == 0
           # We're dropping into the losers bracket. Figure out where we're
           # supposed to go. Most algorithms involve dropping down to the
-          # "opposite" index in the round.
+          # "opposite" index in the odd-numbered rounds.
+          #
+          # The team is constant if you're dropping down to the losers bracket,
+          # except for the first round.
+          team = if round.zero?
+                   index.even?? 0 : 1
+                 else
+                   1
+                 end
+
+          # Every losers bracket round has the same number of indices as its
+          # corresponding winners bracket round.
+          index = round.even?? index / 2 : results[bracket][round].count - (index + 1)
+
+          # The losers bracket only takes in new players every other round,
+          # so the round the player drops down to is (r * 2) - 1, except for
+          # round 0.
+          round = round.zero?? 0 : (round * 2) - 1
+
           return follow_bracket(1, round, index, team)
         elsif bracket == 1
           # If this is a loss and we're in the loser's bracket, we have
@@ -170,11 +189,11 @@ class Player
     end
   end
 
-  def set_username
+  def set_username!
     self.username = user.username
   end
 
-  def update_tournament_brackets
-    self.tournament.generate_brackets!
+  def update_tournament_brackets!
+    self.tournament.try(:generate_brackets!)
   end
 end
