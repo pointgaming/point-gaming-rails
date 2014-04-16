@@ -43,7 +43,7 @@ task :fake_tournament => :environment do
     "Av3k"    => [3,0],
     "dem0n"   => [3,0]
   }.each do |user, scores|
-    tournament.report_scores_for(user, *scores)
+    tournament.report_scores_for!(user, *scores)
   end
 
   {
@@ -52,7 +52,7 @@ task :fake_tournament => :environment do
     "Gienon"  => [3,0],
     "FraZe"   => [3,1]
   }.each do |user, scores|
-    tournament.report_scores_for(user, *scores)
+    tournament.report_scores_for!(user, *scores)
   end
 
   {
@@ -61,13 +61,17 @@ task :fake_tournament => :environment do
     "Spart1e" => [3,0],
     "Av3k"    => [3,1]
   }.each do |user, scores|
-    tournament.report_scores_for(user, *scores)
+    tournament.report_scores_for!(user, *scores)
   end
 
   {
     "rapha"   => [3,2],
     "Av3k"    => [3,2]
   }.each do |user, scores|
-    tournament.report_scores_for(user, *scores)
+    tournament.report_scores_for!(user, *scores)
   end
+
+  tournament.report_scores_for!("fazz",   3, 0)
+  tournament.report_scores_for!("Cypher", 3, 0)
+  tournament.report_scores_for!("FraZe",  3, 0)
 end

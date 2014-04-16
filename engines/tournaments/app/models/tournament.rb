@@ -164,12 +164,17 @@ class Tournament
   end
 
   # This is just a convenience method for development/console use.
-  def report_scores_for(username, mine, his)
-    players.find_by(username: username).report_scores!(mine, his)
+  def report_scores_for!(username, mine, his)
+    player = players.find_by(username: username)
+    player.current_opponent.set_current_position! rescue nil
+    player.set_current_position!
+    player.current_opponent.set_current_position! rescue nil
+    player.report_scores!(mine, his)
   end
 
   def player_for_user(user)
-    players.find_by(user_id: user.id)
+    query = user.is_a?(String) ? {username: user} : {user_id: user.id}
+    players.find_by(query)
   end
 
   def generate_brackets!

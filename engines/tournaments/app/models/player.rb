@@ -30,7 +30,8 @@ class Player
 
   def report_scores!(mine, his)
     # Only the winner can report scores. Scores cannot be equal.
-    return if mine <= his
+    return false if mine <= his
+    return false if current_opponent == "TBD"
 
     results = tournament.brackets["results"]
     index   = starting_index()
@@ -51,19 +52,8 @@ class Player
       score = index_data[3] == 0 ? [mine, his] : [his, mine]
       results[b][r][i] = score
 
-      # Now we need to figure out if our next opponent is ready. Specifically:
-      # if the adjacent match is finished, we can set the match to be an empty
-      # array, which is the way it gets marked as "pending". Matches in the
-      # brackets that are nil reflect that we do not yet know who the opponents
-      # are. Therefore, it's important that we only set a match as [] if we
-      # know the opponent is ready.
-      adjacent = i.even?? i + 1 : i - 1
-      if results[b][r][adjacent].present?
-        results[b][r + 1][i / 2] = []
-      end
-
       tournament.brackets["results"] = results
-      tournament.save
+      tournament.save!
 
       opponent = current_opponent()
       opponent.set_current_position! unless opponent == "TBD"
@@ -83,7 +73,7 @@ class Player
       current_position[0],
       current_position[1],
       current_position[2],
-      current_position[3] == 0 ? 1 : 0
+      current_position[3].zero?? 1 : 0
     ]
 
     tournament.players.find_by(current_position: opponent_position)
@@ -113,7 +103,7 @@ class Player
   end
 
   def follow_bracket(bracket, round, index, team)
-    #puts "#{bracket} #{round} #{index} #{team}"
+    puts "#{username} \t\t #{bracket} #{round} #{index} #{team}"
     # +bracket+ 0 -> winner
     # +bracket+ 1 -> loser
     # +bracket+ 2 -> final
@@ -126,11 +116,7 @@ class Player
     team_score      = result[team]                    rescue nil
     opponent_score  = result[opponent]                rescue nil
 
-    if result.nil?
-      # Reporting a score for a game that hasn't occurred yet. This will
-      # happen if the opponent has not yet been decided.
-      return -1
-    elsif result == []
+    if result.blank?
       # This is the position that we're reporting for.
       return [bracket, round, index, team]
     else
@@ -143,7 +129,6 @@ class Player
         elsif bracket == 1
           if round.even?
             team  = 0
-            index = index / 2
           else
             team  = index.even?? 0 : 1
             index = round.even?? index : index / 2
@@ -169,8 +154,15 @@ class Player
                  end
 
           # Every losers bracket round has the same number of indices as its
-          # corresponding winners bracket round.
-          index = round.even?? index / 2 : results[bracket][round].count - (index + 1)
+          # corresponding winners bracket round, except the first round.
+          index = if round.zero?
+                    index / 2
+                  elsif round.even?
+                    index
+                  else
+                    count = tournament.brackets["teams"].flatten.count / (2 ** (round + 1))
+                    count - (index + 1)
+                  end
 
           # The losers bracket only takes in new players every other round,
           # so the round the player drops down to is (r * 2) - 1, except for
@@ -190,7 +182,7 @@ class Player
   end
 
   def set_username!
-    self.username = user.username
+    self.username = user.username if username.blank?
   end
 
   def update_tournament_brackets!
