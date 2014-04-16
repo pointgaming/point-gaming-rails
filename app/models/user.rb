@@ -287,6 +287,20 @@ class User
     return UserBan.where(user: self, game: game).first.present?
   end
 
+  def team
+    if self.team_id.present?
+      team = Team.where(id: self.team_id).first
+      team.temporarily = false
+    else
+      user_team = UserTeam.where(user: self).first
+      if user_team.present?
+        team = user_team.team
+        team.temporarily = true
+      end
+    end
+    return team
+  end
+
   settings analysis: {
       analyzer: {
         partial_match: {

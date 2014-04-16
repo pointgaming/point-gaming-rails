@@ -2,7 +2,7 @@ module Api
   module GameRooms
     class GameRoomsController < Api::GameRooms::ContextController
       before_filter :authenticate_user!, only: [:create, :update]
-      before_filter :authenticate_node_api!, except: [:create, :update, :take_over, :can_take_over, :can_hold, :team_bot, :settings]
+      before_filter :authenticate_node_api!, except: [:create, :update, :take_over, :can_take_over, :can_hold, :team_bot, :settings, :show]
       before_filter :ensure_user, only: [:join, :leave]
       before_filter :ensure_not_banned, only: [:join, :update]
       before_filter :ensure_params, only: [:create, :update]
@@ -11,7 +11,7 @@ module Api
 
       def show
         @game_room.matches = @game_room.pending_matches
-        json = @game_room.as_json(:methods => [:bets])
+        json = @game_room.as_json(:methods => [:bets], include: [:members, :team])
 
         respond_with(json)
       end

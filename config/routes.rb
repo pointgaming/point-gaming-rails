@@ -63,7 +63,12 @@ PointGamingRails::Application.routes.draw do
     end
 
     scope module: :users do
-      resources :users, only: [:index, :show]
+      resources :users, only: [:index, :show] do
+        member do
+          get 'add_to_team'
+	  get 'remove_from_team'
+        end
+      end
     end
 
     scope module: :friends do
