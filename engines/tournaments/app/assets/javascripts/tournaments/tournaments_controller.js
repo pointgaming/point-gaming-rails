@@ -46,7 +46,8 @@
                 data: { format: "json" },
                 success: function (data) {
                     $("#tourney-brackets").bracket({
-                        init: data
+                        init: data,
+                        skipSecondaryFinal: true
                     });
                 }
             });

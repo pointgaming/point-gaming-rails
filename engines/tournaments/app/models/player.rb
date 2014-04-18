@@ -103,11 +103,11 @@ class Player
   end
 
   def follow_bracket(bracket, round, index, team)
-    puts "#{username} \t\t #{bracket} #{round} #{index} #{team}"
+    puts "#{username}\t#{bracket} #{round} #{index} #{team}"
     # +bracket+ 0 -> winner
     # +bracket+ 1 -> loser
     # +bracket+ 2 -> final
-    # +index+ describes the index in the bracket
+    # +index+ describes the index in the round
     # +team+ is either a 0 or 1. See Tournament.brackets structure.
 
     results         = self.tournament.brackets["results"]
@@ -119,9 +119,42 @@ class Player
     if result.blank?
       # This is the position that we're reporting for.
       return [bracket, round, index, team]
+    elsif bracket == 2
+      # We've reached the finals bracket and the score is already reported.
+      return 1
     else
       win = team_score > opponent_score
 
+      # Let's check whether or not we're a finalist here, before getting into
+      # winner/loser bracket placement.
+      if bracket == 0 && round == (tournament.number_of_winners_bracket_rounds - 1)
+        if win
+          # Either going to be placed 1st or 2nd.
+          return follow_bracket(2, 0, 0, 0)
+        else
+          # Dropping to loser's bracket. Still a chance to make 1st.
+          return follow_bracket(1, tournament.number_of_losers_bracket_rounds - 1, 0, 1)
+        end
+      elsif bracket == 1 && round >= (tournament.number_of_losers_bracket_rounds - 2)
+        if round == (tournament.number_of_losers_bracket_rounds - 1)
+          if win
+            return follow_bracket(2, 0, 0, 1)
+          else
+            return follow_bracket(2, 0, 1, 1)
+          end
+        elsif round == (tournament.number_of_losers_bracket_rounds - 2)
+          # If you lose before the final losers bracket round, you can still make
+          # 3rd place.
+          if win
+            return follow_bracket(1, tournament.number_of_losers_bracket_rounds - 1, 0, 0)
+          else
+            return follow_bracket(2, 0, 1, 0)
+          end
+        end
+      end
+
+      # All of the following logic is for traversing the bracket tree as a
+      # non-finalist.
       if win
         if bracket == 0
           team  = index.even?? 0 : 1
@@ -133,8 +166,6 @@ class Player
             team  = index.even?? 0 : 1
             index = round.even?? index : index / 2
           end
-        elsif bracket == 2
-          # TODO
         end
 
         # Stay in the same bracket, continue recursive traversal.
@@ -174,8 +205,6 @@ class Player
           # If this is a loss and we're in the loser's bracket, we have
           # nowhere else to go. Return -2 to represent a knockout.
           return -2
-        elsif bracket == 2
-          # TODO
         end
       end
     end

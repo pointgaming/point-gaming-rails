@@ -165,11 +165,7 @@ class Tournament
 
   # This is just a convenience method for development/console use.
   def report_scores_for!(username, mine, his)
-    player = players.find_by(username: username)
-    player.current_opponent.set_current_position! rescue nil
-    player.set_current_position!
-    player.current_opponent.set_current_position! rescue nil
-    player.report_scores!(mine, his)
+    players.find_by(username: username).report_scores!(mine, his)
   end
 
   def player_for_user(user)
@@ -207,27 +203,28 @@ class Tournament
       self.brackets["teams"] << [(pair[0].id rescue "BYE"), (pair[1].id rescue "BYE")]
     end
 
-    # Go through and set up the first round for the winners, losers, finals
+    # Go through and set up the first round for the winners, losers, finals.
     self.brackets["results"] = [
       [Array.new(self.brackets["teams"].count)      { [] }],  # winners
       [Array.new(self.brackets["teams"].count / 2)  { [] }],  # losers
-      [[nil, nil], [nil]]
+      [[[], []]]                                              # finals
     ]
 
-    # Set up all subsequent rounds as well, to avoid nil errors
+    # Set up all subsequent rounds as well, to avoid nil errors.
     Math.log2(self.brackets["teams"].count).to_i.times do
       self.brackets["results"][0] << []
     end
 
-    # Number of losers bracket rounds
-    (2 * (Math.log2(self.brackets["teams"].count).to_i - 1)).times do
+    # Subtracting 1 because we've already set up the first round.
+    (number_of_losers_bracket_rounds - 1).times do
       self.brackets["results"][1] << []
     end
 
-    # Always 2 rounds in the finals
+    # Always 2 rounds in the finals.
     self.brackets["results"][2] = [[], []]
 
-    save
+    # Throw an exception if anything goes wrong here.
+    save!
 
     # If there are any BYEs, have the other player automatically report a win.
     self.brackets["teams"].each do |pair|
@@ -243,6 +240,14 @@ class Tournament
     end
 
     players.each(&:set_current_position!)
+  end
+
+  def number_of_winners_bracket_rounds
+    Math.log2(self.brackets["teams"].flatten.count).to_i
+  end
+
+  def number_of_losers_bracket_rounds
+    2 * (Math.log2(self.brackets["teams"].flatten.count).to_i - 1)
   end
 
   def prizepool_submitted
