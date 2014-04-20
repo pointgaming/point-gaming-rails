@@ -15,6 +15,7 @@ class Player
   field :checked_in_at, type: DateTime
   field :username, type: String
   field :seed, type: Integer
+  field :placed, type: Integer
   field :current_position, type: Array
 
   embedded_in :tournament
@@ -59,6 +60,11 @@ class Player
       opponent.set_current_position! unless opponent == "TBD"
 
       set_current_position!
+    elsif index_data.is_a?(Integer) && index_data > 0
+      self.placed = index_data
+      save!
+
+      true
     else
       false
     end
@@ -103,7 +109,7 @@ class Player
   end
 
   def follow_bracket(bracket, round, index, team)
-    puts "#{username}\t#{bracket} #{round} #{index} #{team}"
+    #puts "#{username}\t#{bracket} #{round} #{index} #{team}"
     # +bracket+ 0 -> winner
     # +bracket+ 1 -> loser
     # +bracket+ 2 -> final
@@ -121,7 +127,14 @@ class Player
       return [bracket, round, index, team]
     elsif bracket == 2
       # We've reached the finals bracket and the score is already reported.
-      return 1
+      win = team_score > opponent_score
+
+      # These numbers represent top 4 placings
+      if index == 0
+        return win ? 1 : 2
+      elsif index == 1
+        return win ? 3 : 4
+      end
     else
       win = team_score > opponent_score
 
@@ -203,7 +216,12 @@ class Player
           return follow_bracket(1, round, index, team)
         elsif bracket == 1
           # If this is a loss and we're in the loser's bracket, we have
-          # nowhere else to go. Return -2 to represent a knockout.
+          # nowhere else to go. Return the placement here.
+          #
+          # Note that there cannot be a 6th place in tournaments, because there
+          # can only be 2^n players. Therefore, 5th-8th place would be an
+          # example of a tie.
+
           return -2
         end
       end

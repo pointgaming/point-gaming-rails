@@ -1,6 +1,8 @@
 <div id="registration-widget" class="well well-small">
   <div class="widget-content scrollable">
-    <% if @tournament.started? %>
+    <% if @tournament.ended? %>
+      <a href="#" class="btn btn-block btn-danger btn-disabled" disabled="disabled">Tournament Ended</a>
+    <% elsif @tournament.started? %>
       <a href="#" class="btn btn-block btn-primary btn-disabled" disabled="disabled">Tournament Started</a>
     <% else %>
       <% if @tournament.signed_up?(current_user) %>

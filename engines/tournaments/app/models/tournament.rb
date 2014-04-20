@@ -134,6 +134,10 @@ class Tournament
     !signup_open?
   end
 
+  def ended?
+    players.checked_in.where(current_position: nil).count == players.checked_in.count
+  end
+
   def checkin_date
     signup_ends_at - checkin_hours.hours
   end
@@ -266,7 +270,7 @@ class Tournament
 
   def parse_datetime(string)
     return nil unless string.present?
-    ["DateTime", "Date"].include?(string.class.name) ? string : Chronic.parse(string, time_class: Time.zone)
+    ["DateTime", "Date", "Time"].include?(string.class.name) ? string : Chronic.parse(string, time_class: Time.zone)
   end
 
   def signup_ends_at=(value)
