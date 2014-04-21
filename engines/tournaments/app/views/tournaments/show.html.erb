@@ -54,7 +54,7 @@
                 <ul>
                   <% @tournament.players.unscoped.asc(:placed).each do |player| %>
                     <li>
-                      <%= friendly_placement(player.placed) %> - <%= link_to player, player.user %>
+                      <%= friendly_placement(player.placed) %> - <%= link_to player, user_path(player.username) %>
                     </li>
                   <% end %>
                 </ul>

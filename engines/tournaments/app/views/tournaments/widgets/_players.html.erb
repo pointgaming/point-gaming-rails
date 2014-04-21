@@ -6,7 +6,7 @@
     <% @tournament.players.each do |player| %>
       <div class="control-group">
         <div class="controls">
-          <%= link_to player.username, user_path(player.username) %>
+          <%= link_to player, user_path(player.username) %>
         </div>
       </div>
     <% end %>
