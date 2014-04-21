@@ -135,7 +135,10 @@ class Tournament
   end
 
   def ended?
-    players.checked_in.where(current_position: nil).count == players.checked_in.count
+    checked_in_players  = players.checked_in.count
+    finished_players    = players.checked_in.where(current_position: nil).count
+
+    started? && checked_in_players >= 2 && checked_in_players == finished_players
   end
 
   def checkin_date

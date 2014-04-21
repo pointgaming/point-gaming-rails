@@ -1,0 +1,27 @@
+<% if current_player.current_opponent != "TBD" %>
+  <div id="report-scores" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="report-scores-label" aria-hidden="true">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      <h3 id="report-scores-label">Report Scores</h3>
+    </div>
+    <%= form_tag report_scores_tournament_path do %>
+      <div class="modal-body">
+        <p>
+          Games <strong><%= current_user %></strong> has won:
+        </p>
+
+        <%= number_field_tag :mine, nil, in: 0..9 %>
+
+        <p>
+          Games <strong><%= current_player.current_opponent %></strong> has won:
+        </p>
+
+        <%= number_field_tag :his %>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+        <%= submit_tag "Submit", class: "btn btn-primary" %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

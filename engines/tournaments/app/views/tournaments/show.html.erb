@@ -26,9 +26,7 @@
         <div id="tournament-name-wrapper" class="row-fluid widget">
           <div class="span1 tournament-thumb"><img src="//placehold.it/80x80"></div>
           <div class="span8 widget-content">
-            <h3>
-              <%= @tournament.name %>
-            </h3>
+            <h3><%= @tournament.name %></h3>
             <h4>Organizer: <%= link_to @tournament.owner.username, @tournament.owner %></h4>
           </div>
           <div class="span3 widget-content game-type">
@@ -40,64 +38,37 @@
             </div>
           </div>
         </div>
-        <% if @tournament.started? && @tournament.checked_in?(current_user) %>
-          <div class="span9 middle-content">
-            <div class="widget">
-              <div class="widget-header">
-                <h3>
+        <div class="span9 middle-content">
+          <div class="widget">
+            <div class="widget-header">
+              <h3>
+                <% if @tournament.ended? %>
+                  Tournament Standings
+                <% elsif currently_playing? %>
                   Current Match
-                </h3>
-              </div>
-              <div class="widget-content center">
-                <h3>
-                  Opponent:
-                </h3>
-                <h4>
-                  <%= current_player.current_opponent || "TBD" %>
-                </h4>
+                <% end %>
+              </h3>
+            </div>
+            <div class="widget-content <%= 'center' if currently_playing? %>">
+              <% if @tournament.ended? %>
+                <ul>
+                  <% @tournament.players.unscoped.asc(:placed).each do |player| %>
+                    <li>
+                      <%= friendly_placement(player.placed) %> - <%= link_to player, player.user %>
+                    </li>
+                  <% end %>
+                </ul>
+              <% elsif currently_playing? %>
+                <h3>Opponent:</h3>
+                <h4><%= current_player.current_opponent %></h4>
                 <% if current_player.current_opponent != "TBD" %>
                   <p>
                     <%= link_to "Report Scores", "#report-scores", class: "btn btn-success", role: "button", data: { toggle: "modal" } %>
                   </p>
                 <% end %>
-              </div>
-            </div>
-          </div>
-          <% if current_player.current_opponent != "TBD" %>
-            <div id="report-scores" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="report-scores-label" aria-hidden="true">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h3 id="report-scores-label">Report Scores</h3>
-              </div>
-              <%= form_tag report_scores_tournament_path do %>
-                <div class="modal-body">
-                  <p>
-                    Games <strong><%= current_user %></strong> has won:
-                  </p>
 
-                  <%= number_field_tag :mine, nil, in: 0..9 %>
-
-                  <p>
-                    Games <strong><%= current_player.current_opponent %></strong> has won:
-                  </p>
-
-                  <%= number_field_tag :his %>
-                </div>
-                <div class="modal-footer">
-                  <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
-                  <%= submit_tag "Submit", class: "btn btn-primary" %>
-                </div>
+                <%= widget :report_scores %>
               <% end %>
-            </div>
-          <% end %>
-        <% end %>
-        <div class="span9 middle-content">
-          <div class="widget">
-            <div class="widget-header">
-              <h3>Rules</h3>
-            </div>
-            <div class="widget-content">
-              <%= @tournament.details %>
             </div>
           </div>
         </div>
@@ -108,6 +79,16 @@
               <%= link_to image_tag(main_app_user_asset_url(sponsor.image.url(:medium)), alt: sponsor.name, class: "thumbnail"), sponsor.url %>
             </div>
           <% end %>
+        </div>
+        <div class="span9 middle-content">
+          <div class="widget">
+            <div class="widget-header">
+              <h3>Rules</h3>
+            </div>
+            <div class="widget-content">
+              <%= @tournament.details %>
+            </div>
+          </div>
         </div>
       </div>
     </div>
