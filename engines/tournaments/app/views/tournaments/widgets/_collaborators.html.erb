@@ -1,0 +1,21 @@
+<div id="collaborators-widget" class="widget">
+  <div class="widget-header">
+    <h3>Admins</h3>
+  </div>
+  <div class="widget-content scrollable">
+    <div class="control-group">
+      <div class="controls">
+        <%= link_to @tournament.owner.username, @tournament.owner %>
+      </div>
+    </div>
+
+    <% @tournament.collaborators.each do |collaborator| %>
+      <div class="control-group">
+        <div class="controls">
+          <%- c = User.find(collaborator) -%>
+          <%= link_to c.username, c %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

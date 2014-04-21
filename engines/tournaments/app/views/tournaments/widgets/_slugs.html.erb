@@ -1,0 +1,10 @@
+<div class="well well-small">
+  <div class="row-fluid">
+    <div class="span6">
+      <%= link_to "Stream", @tournament.stream_slug.present?? stream_path(@tournament.stream_slug) : nil, class: "btn btn-block", disabled: !@tournament.stream_slug.present? %>
+    </div>
+    <div class="span6">
+      <%= link_to "Brackets", brackets_tournament_path(@tournament), class: "btn btn-block", disabled: !@tournament.started? %>
+    </div>
+  </div>
+</div>

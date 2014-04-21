@@ -16,69 +16,11 @@
 
           Starts: <%= ldate @tournament.signup_ends_at %>
         </div>
-        <%= render "registrations/widget" %>
-        <div class="well well-small">
-          <div class="row-fluid">
-            <div class="span6">
-              <%= link_to "Stream", @tournament.stream_slug.present?? stream_path(@tournament.stream_slug) : nil, class: "btn btn-block", disabled: !@tournament.stream_slug.present? %>
-            </div>
-            <div class="span6">
-              <%= link_to "Brackets", brackets_tournament_path(@tournament), class: "btn btn-block", disabled: !@tournament.started? %>
-            </div>
-          </div>
-        </div>
-        <div id="prize-pool-widget" class="widget">
-          <div class="widget-header">
-            <h3>Prize Pool</h3>
-          </div>
-          <div class="widget-content scrollable">
-            <table class="table table-bordered table-striped">
-              <tbody>
-                <% @tournament.prizepool.each do |placement, amount| %>
-                  <tr>
-                    <td><%= label placement, ActiveSupport::Inflector.ordinalize(placement) %></td>
-                    <td><%= number_to_currency amount %></td>
-                  </tr>
-                <% end %>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div id="collaborators-widget" class="widget">
-          <div class="widget-header">
-            <h3>Admins</h3>
-          </div>
-          <div class="widget-content scrollable">
-            <div class="control-group">
-              <div class="controls">
-                <%= link_to @tournament.owner.username, @tournament.owner %>
-              </div>
-            </div>
-
-            <% @tournament.collaborators.each do |collaborator| %>
-              <div class="control-group">
-                <div class="controls">
-                  <%- c = User.find(collaborator) -%>
-                  <%= link_to c.username, c %>
-                </div>
-              </div>
-            <% end %>
-          </div>
-        </div>
-        <div class="widget">
-          <div class="widget-header">
-            <h3>Players (<%= "#{@tournament.players.count}/#{@tournament.player_limit}" %>)</h3>
-          </div>
-          <div class="widget-content">
-            <% @tournament.players.each do |player| %>
-              <div class="control-group">
-                <div class="controls">
-                  <%= link_to player.username, user_path(player.username) %>
-                </div>
-              </div>
-            <% end %>
-          </div>
-        </div>
+        <%= widget :registration %>
+        <%= widget :slugs %>
+        <%= widget :prize_pool %>
+        <%= widget :collaborators %>
+        <%= widget :players %>
       </div>
       <div class="span9">
         <div id="tournament-name-wrapper" class="row-fluid widget">
@@ -149,9 +91,6 @@
             </div>
           <% end %>
         <% end %>
-        <div class="span2">
-          <%= render "sponsors" %>
-        </div>
         <div class="span9 middle-content">
           <div class="widget">
             <div class="widget-header">
@@ -161,6 +100,14 @@
               <%= @tournament.details %>
             </div>
           </div>
+        </div>
+        <div class="span2">
+          <h4>Sponsors</h4>
+          <% @tournament.sponsors.each do |sponsor| %>
+            <div id="sponsor_<%= sponsor._id %>" data-hook="sponsor" class="sponsor">
+              <%= link_to image_tag(main_app_user_asset_url(sponsor.image.url(:medium)), alt: sponsor.name, class: "thumbnail"), sponsor.url %>
+            </div>
+          <% end %>
         </div>
       </div>
     </div>

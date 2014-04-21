@@ -60,9 +60,8 @@ class Player
       opponent.set_current_position! unless opponent == "TBD"
 
       set_current_position!
-    elsif index_data.is_a?(Integer) && index_data > 0
-      self.placed = index_data
-      save!
+
+      tournament.players.each(&:set_placed!) if tournament.ended?
 
       true
     else
@@ -90,6 +89,11 @@ class Player
   def set_current_position!
     index_data = follow_bracket(0, 0, starting_index, starting_team)
     self.update_attribute(:current_position, index_data.is_a?(Array) ? index_data : nil)
+  end
+
+  def set_placed!
+    place = follow_bracket(0, 0, starting_index, starting_team)
+    self.update_attribute(:placed, place.is_a?(Integer) ? place : nil)
   end
 
   def to_s
@@ -221,8 +225,14 @@ class Player
           # Note that there cannot be a 6th place in tournaments, because there
           # can only be 2^n players. Therefore, 5th-8th place would be an
           # example of a tie.
+          #
+          # In a 16-player tournament, round 0/1 -> 9th
+          #                            round 2/3 -> 5th
 
-          return -2
+          round = round + 2 if round.even?
+          round = round + 1 if round.odd?
+
+          return (tournament.brackets["teams"].flatten.count / round) + 1
         end
       end
     end

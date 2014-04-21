@@ -84,11 +84,15 @@ describe Tournament do
     @tournament.report_scores_for!("evil",   3, 0).should eq(true)
     @tournament.report_scores_for!("Cypher", 3, 0).should eq(true)
     @tournament.report_scores_for!("rapha",  3, 0).should eq(true)
-  end
 
-  @tournament.ended?.should eq(true)
-  @tournament.player_for_user("rapha").placed.should   eq(1)
-  @tournament.player_for_user("evil").placed.should    eq(2)
-  @tournament.player_for_user("Cypher").placed.should  eq(3)
-  @tournament.player_for_user("Av3k").placed.should    eq(4)
+    @tournament.ended?.should eq(true)
+
+    @tournament.player_for_user("rapha").placed.should   eq(1)
+    @tournament.player_for_user("evil").placed.should    eq(2)
+    @tournament.player_for_user("Cypher").placed.should  eq(3)
+    @tournament.player_for_user("Av3k").placed.should    eq(4)
+
+    @tournament.players.where(placed: 5).count.should    eq(4)
+    @tournament.players.where(placed: 9).count.should    eq(8)
+  end
 end

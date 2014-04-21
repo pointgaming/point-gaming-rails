@@ -1,0 +1,14 @@
+<div class="widget">
+  <div class="widget-header">
+    <h3>Players (<%= "#{@tournament.players.count}/#{@tournament.player_limit}" %>)</h3>
+  </div>
+  <div class="widget-content">
+    <% @tournament.players.each do |player| %>
+      <div class="control-group">
+        <div class="controls">
+          <%= link_to player.username, user_path(player.username) %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

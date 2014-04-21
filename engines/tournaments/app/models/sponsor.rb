@@ -2,6 +2,8 @@ class Sponsor
   include Mongoid::Document
   include Mongoid::Paperclip
 
+  default_scope asc(:sort_order)
+
   has_mongoid_attached_file :image, default_url: "/system/:class/:attachment/missing_:style.png", styles: { thumb: "50x50", medium: "200" }
 
   field :name, type: String

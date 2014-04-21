@@ -1,0 +1,17 @@
+<div id="prize-pool-widget" class="widget">
+  <div class="widget-header">
+    <h3>Prize Pool</h3>
+  </div>
+  <div class="widget-content scrollable">
+    <table class="table table-bordered table-striped">
+      <tbody>
+        <% @tournament.prizepool.each do |placement, amount| %>
+          <tr>
+            <td><%= label placement, ActiveSupport::Inflector.ordinalize(placement) %></td>
+            <td><%= number_to_currency amount %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
