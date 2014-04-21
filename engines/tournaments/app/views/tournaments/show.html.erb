@@ -46,10 +46,12 @@
                   Tournament Standings
                 <% elsif currently_playing? %>
                   Current Match
+                <% else %>
+                  Tournament In Progress
                 <% end %>
               </h3>
             </div>
-            <div class="widget-content <%= 'center' if currently_playing? %>">
+            <div class="widget-content <%= "center" if currently_playing? %>">
               <% if @tournament.ended? %>
                 <ul>
                   <% @tournament.players.unscoped.asc(:placed).each do |player| %>
@@ -68,6 +70,8 @@
                 <% end %>
 
                 <%= widget :report_scores %>
+              <% else %>
+                Dummy data here.
               <% end %>
             </div>
           </div>
