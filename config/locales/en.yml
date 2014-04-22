@@ -18,13 +18,6 @@ en:
   time:
     formats:
       default: ! "%m/%d/%Y %I:%M %p"
-  models:
-    tournament_status_steps:
-      creation: "Tournament created"
-      prizepool: "Prizepool locked in"
-      payment: "Payment information submitted"
-      payment_verification: "Verifying payment"
-      activation: "Tournament Activated"
   mongoid:
     models:
       team_member: "Member"

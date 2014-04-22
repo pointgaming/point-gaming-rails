@@ -15,9 +15,9 @@
               <% @steps.each do |step| %>
                 <tr class="<%= class_name_for_status_step(step) %>">
                   <td>
-                    <input type="checkbox" disabled="disabled" <%= "checked=\"checked\"" if step.is_completed? %> />
+                    <input type="checkbox" disabled="disabled" <%= "checked=\"checked\"" if step_completed?(step) %> />
                   </td>
-                  <td><%= step.display_name %></td>
+                  <td><%= step_name(step) %></td>
                 </tr>
               <% end %>
             </tbody>

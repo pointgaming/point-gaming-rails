@@ -102,28 +102,9 @@ class Tournament
   validates :game, presence: true
   validates :game_type, presence: true
   validates :details, presence: true
-  validate :validate_prizepool
-  validate :validate_prizepool_fields
 
   def status_steps
-    StatusStep.steps.map do |step|
-      StatusStep.new(tournament: self, step: step)
-    end
-  end
-
-  def validate_prizepool
-    if prizepool_was.present? && prizepool_changed? && prizepool_required? == false
-      self.errors[:prizepool] << "can no longer be changed"
-    end
-  end
-
-  def validate_prizepool_fields
-    return unless prizepool.present?
-    prizepool.each do |placement, prize|
-      if prize.present? && prize !~ /^\d+(\.\d{1,2})?$/
-        self.errors[:base] << "#{ActiveSupport::Inflector.ordinalize(placement)} must be numeric"
-      end
-    end
+    current_state.spec.states.keys
   end
 
   def signup_open?

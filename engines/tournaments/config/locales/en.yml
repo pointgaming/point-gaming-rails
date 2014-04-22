@@ -1,0 +1,8 @@
+en:
+  tournament:
+    status_steps:
+      new: "Tournament created"
+      prizepool_required: "Prizepool required"
+      payment_required: "Prizepool locked in"
+      payment_pending: "Payment information submitted"
+      activated: "Tournament Activated"
