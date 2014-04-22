@@ -5,7 +5,7 @@ class TournamentsController < EngineController
   before_filter :ensure_tournament_started, only: [:brackets, :report_scores]
 
   def index
-    @tournaments = Tournament.activated.asc(:signup_ends_at).all
+    @tournaments = Tournament.activated.asc(:starts_at).all
     respond_with(@tournaments)
   end
 

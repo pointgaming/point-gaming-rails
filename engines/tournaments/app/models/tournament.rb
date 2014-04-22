@@ -18,7 +18,7 @@ class Tournament
   field :name
   field :slug
   field :stream_slug
-  field :signup_ends_at, type: DateTime
+  field :starts_at, type: DateTime
   field :checkin_hours, type: Integer, default: 1
   field :player_limit, type: Integer, default: 128
   field :format
@@ -94,7 +94,7 @@ class Tournament
 
   validates :name, presence: true, uniqueness: true
   validates :slug, presence: true, uniqueness: true
-  validates :signup_ends_at, presence: true
+  validates :starts_at, presence: true
   validates :checkin_hours, presence: true, numericality: { only_integer: true, greater_than: 0, less_than: 4 }
   validates :player_limit, presence: true, numericality: { only_integer: true, greater_than: 0, even: true }
   validates :format, presence: true
@@ -108,7 +108,7 @@ class Tournament
   end
 
   def signup_open?
-    signup_ends_at >= DateTime.now
+    starts_at >= DateTime.now
   end
 
   def started?
@@ -123,12 +123,12 @@ class Tournament
   end
 
   def checkin_date
-    signup_ends_at - checkin_hours.hours
+    starts_at - checkin_hours.hours
   end
 
   def checkin_open?
     now = DateTime.now
-    now > checkin_date && now < signup_ends_at
+    now > checkin_date && now < starts_at
   end
 
   def checkin_open_for?(user)
@@ -257,8 +257,8 @@ class Tournament
     ["DateTime", "Date", "Time"].include?(string.class.name) ? string : Chronic.parse(string, time_class: Time.zone)
   end
 
-  def signup_ends_at=(value)
-    write_attribute(:signup_ends_at, parse_datetime(value))
+  def starts_at=(value)
+    write_attribute(:starts_at, parse_datetime(value))
   end
 
   def prizepool=(value)
