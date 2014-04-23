@@ -1,9 +1,10 @@
 require "spec_helper"
+require "byebug"
 
 describe Tournament do
   before(:each) do
     @tournament = Fabricate.build(:tournament)
-    @tournament.save
+    @tournament.save!
 
     @usernames ||= [
       "rapha",
@@ -26,7 +27,7 @@ describe Tournament do
 
     @usernames.each_with_index do |username, i|
       user = Fabricate.build(:user, username: username)
-      user.save
+      user.save!
 
       @tournament.players.create(user: user, seed: i).check_in!
     end

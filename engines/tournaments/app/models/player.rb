@@ -22,7 +22,7 @@ class Player
   belongs_to :user
 
   def check_in!
-    set(:checked_in_at, DateTime.now)
+    update_attribute(:checked_in_at, DateTime.now)
   end
 
   def checked_in?
@@ -88,7 +88,7 @@ class Player
 
   def set_current_position!
     index_data = follow_bracket(0, 0, starting_index, starting_team)
-    self.set(:current_position, index_data.is_a?(Array) ? index_data : nil)
+    set(:current_position, index_data.is_a?(Array) ? index_data : nil)
   end
 
   def set_placed!

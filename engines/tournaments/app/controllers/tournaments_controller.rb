@@ -35,8 +35,7 @@ class TournamentsController < EngineController
 
   def update
     @tournament.update_attributes(params[:tournament])
-    respond_with(@tournament, { action: default_update_action, 
-                                location: next_tournament_path })
+    redirect_to :back
   end
 
   def destroy

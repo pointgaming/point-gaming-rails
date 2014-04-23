@@ -2,7 +2,10 @@ ENV["RAILS_ENV"] = "test"
 
 require File.expand_path("../../../../config/environment", __FILE__)
 require "fabrication"
-Dir[File.join(File.dirname(__FILE__), "fabricators", "**", "*.rb")].each { |f| require f }
+
+["fabricators"].each do |subdir|
+  Dir[File.join(File.dirname(__FILE__), subdir, "**", "*.rb")].each { |f| require f }
+end
 
 RSpec.configure do |config|
   config.treat_symbols_as_metadata_keys_with_true_values = true

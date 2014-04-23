@@ -1,11 +1,14 @@
 Fabricator(:user) do
-  first_name { |user| user[:username] }
+  username { Faker::Internet.user_name }
   last_name "Derpina"
-  email { |user| "#{user[:username]}@pointgaming.com" }
   password "watwat"
-  password_confirmation { |user| user[:password] }
   points 500
   country "Murica"
   phone "(999) 555-4444"
-  registration_pin "1337"
+  registration_pin "pgrpin"
+
+  after_build do |user|
+    user.first_name = user.username
+    user.email = "#{user.username}@pointgaming.com"
+  end
 end

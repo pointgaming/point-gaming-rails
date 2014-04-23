@@ -1,18 +1,1 @@
-<div class="row-fluid" id="tournaments">
-  <h1>Tournament: <%= @tournament.name %></h1>
-
-  <div id="ajax-modal" class="modal hide fade" tabindex="-1"></div>
-
-  <%= render "workflow_navigation" %>
-
-  <div class="row-fluid">
-    <div class="span9">
-      <%= render "form" %>
-    </div>
-    <% if @tournament.sponsors.present? %>
-      <div class="span3">
-        <%= render "sponsors", locals: { edit: true } %>
-      </div>
-    <% end %>
-  </div>
-</div>
+<%= render "form" %>

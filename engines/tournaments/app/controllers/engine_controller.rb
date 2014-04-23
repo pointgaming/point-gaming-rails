@@ -1,5 +1,4 @@
 class EngineController < ApplicationController
-  include Rails.application.routes.url_helpers
   before_filter :authenticate_user!
 
   respond_to :html, :json
@@ -49,18 +48,6 @@ class EngineController < ApplicationController
       respond_with({errors: [message]}, status: 403) do |format|
         format.html { redirect_to tournaments_path, alert: message }
       end
-    end
-  end
-
-  def next_tournament_path
-    if @tournament.prizepool_required?
-      prize_pool_tournament_path(@tournament)
-    elsif @tournament.payment_required?
-      new_tournament_payment_path(@tournament)
-    elsif @tournament.payment_pending?
-      status_tournament_path(@tournament)
-    elsif @tournament.activated?
-      users_tournament_path(@tournament)
     end
   end
 end

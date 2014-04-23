@@ -46,23 +46,24 @@ group :development do
   gem "binding_of_caller", ">= 0.6.8"
   gem "meta_request"
   gem "quiet_assets"
-  gem "byebug"
-  gem "pry-rails"
 end
 
 group :test, :development do
-  gem "fabrication", require: false
-  gem "guard-rspec", require: false
-  gem "rb-fsevent", require: RUBY_PLATFORM =~ /darwin/i ? "rb-fsevent" : false
-  gem "rspec-rails", require: false
-  gem "mongoid-rspec", require: false
-  gem "simplecov", require: false
-  gem "database_cleaner", require: false
-  gem "capybara", require: false
-  gem "selenium-webdriver", require: false
-  gem "spring", require: false
-  gem "launchy", require: false
-  gem "resque_spec", require: false
+  gem "fabrication"
+  gem "guard-rspec"
+  gem "rb-fsevent"
+  gem "rspec-rails"
+  gem "mongoid-rspec"
+  gem "simplecov"
+  gem "database_cleaner"
+  gem "capybara"
+  gem "selenium-webdriver"
+  gem "spring"
+  gem "launchy"
+  gem "resque_spec"
+  gem "byebug"
+  gem "pry-rails"
+  gem "faker"
 end
 
 gem "whenever", require: false

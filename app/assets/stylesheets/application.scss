@@ -11,11 +11,11 @@
  *= require flags16
  *= require_self
  *= require point_gaming_frontend
+ *= require tournaments/application
 */
 
 @import "bootstrap_and_overrides";
 @import "profile";
-@import "tournaments";
 @import "team";
 @import "user_account_balance";
 @import "user_points";

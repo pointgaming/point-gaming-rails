@@ -29,6 +29,8 @@ class Tournament
   field :prizepool_total, type: BigDecimal, default: BigDecimal.new("0")
   field :sponsor_request_state, default: "not_requested"
   field :collaborators, type: Array, default: []
+  field :has_groupstage, type: Boolean
+  field :invite_only, type: Boolean
 
   # The brackets format here needs to match the format used in the jQuery
   # brackets library. Here"s an example:
@@ -103,6 +105,20 @@ class Tournament
   validates :game_type, presence: true
   validates :details, presence: true
 
+  validate do |tournament|
+    unless tournament.player_limit.pow2?
+      tournament.errors.add :player_limit, "must be a power of 2."
+    end
+  end
+
+  validate do |tournament|
+    if tournament.stream_slug.present?
+      unless Stream.where(slug: tournament.stream_slug).exists?
+        tournament.errors.add :stream_slug, "must point to a valid stream."
+      end
+    end
+  end
+
   def status_steps
     current_state.spec.states.keys
   end
@@ -115,11 +131,15 @@ class Tournament
     !signup_open?
   end
 
+  def full?
+    players.checked_in.count >= player_limit
+  end
+
   def ended?
     checked_in_players  = players.checked_in.count
     finished_players    = players.checked_in.where(current_position: nil).count
 
-    started? && checked_in_players >= 2 && checked_in_players == finished_players
+    checked_in_players >= 2 && checked_in_players == finished_players
   end
 
   def checkin_date
@@ -141,6 +161,10 @@ class Tournament
 
   def signed_up?(user)
     players.where(user: user).exists?
+  end
+
+  def to_s
+    name
   end
 
   def to_param
