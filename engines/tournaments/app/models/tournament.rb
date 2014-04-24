@@ -118,10 +118,6 @@ class Tournament
     end
   end
 
-  def status_steps
-    current_state.spec.states.keys
-  end
-
   def signup_open?
     starts_at >= DateTime.now
   end

@@ -46,10 +46,6 @@ class TournamentsController < EngineController
   def prize_pool
   end
 
-  def status
-    @steps = @tournament.status_steps
-  end
-
   def users
     @collaborators = @tournament.collaborators
     @invites = @tournament.invites
