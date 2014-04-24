@@ -22,10 +22,13 @@ module TournamentsHelper
       end
     }
 
+    f = ActiveSupport::Inflector.ordinalize(placed)
+
     if placed <= 4
-      suffixify.call(placed)
+      f
     else
-      "#{suffixify.call(placed)}/#{suffixify.call((placed - 1) * 2)}"
+      l = ActiveSupport::Inflector.ordinalize((placed - 1) * 2)
+      "#{f}/#{l}"
     end
   end
 end

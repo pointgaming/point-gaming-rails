@@ -10,6 +10,7 @@
 //= require bootstrap-modalmanager
 //= require bootstrap-modal
 //= require bootstrap-typeahead
+//= require accounting
 //= require moment
 //= require URI.min
 //= require ./pg_init.js

@@ -33,7 +33,7 @@ class Ability
     alias_action :create, :read, :update, :destroy, to: :crud
 
     can :join, Tournament do |tournament|
-      (!(tournament.owner == user || tournament.collaborators.include?(user.id.to_s))) && tournament.signup_open? && !tournament.signed_up?(user) && !tournament.full?
+      tournament.activated? && (!(tournament.owner == user || tournament.collaborators.include?(user.id.to_s))) && tournament.signup_open? && !tournament.signed_up?(user) && !tournament.full?
     end
 
     can :crud, Tournament do |tournament|

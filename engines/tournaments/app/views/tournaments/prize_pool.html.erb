@@ -13,9 +13,10 @@
           </div>
           <div class="widget-content scrollable">
             <%= f.fields_for :prizepool do |prizepool| %>
-              <% 1.upto(@tournament.prize_pool_size) do |placement| %>
+              <% 1.upto(@tournament.player_limit) do |placement| %>
+                <% next unless (1..4).to_a.include?(placement) || (placement - 1).pow2? %>
                 <div class="control-group">
-                  <%= prizepool.label placement, ActiveSupport::Inflector.ordinalize(placement), class: "control-label"  %>
+                  <%= prizepool.label placement, friendly_placement(placement), class: "control-label"  %>
                   <div class="controls">
                     $ <%= prizepool.text_field placement, value: @tournament.prizepool[placement.to_s], class: "text_field", :"data-hook" => "prizepool-field" %>
                   </div>

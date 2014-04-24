@@ -37,7 +37,16 @@
         },
 
         prize_pool: function () {
-            var form = new window.PointGaming.views.tournament_prizepool_form();
+            var inputsPath = "input[data-hook=prizepool-field]";
+            $(inputsPath).on("change", function () {
+                var total = 0;
+
+                $(inputsPath).each(function(index, element) {
+                    total += parseFloat(accounting.toFixed($(element).val(), 2));
+                });
+
+                $("span[data-hook=prize-pool-total]").html(accounting.formatMoney(total));
+            });
         },
 
         brackets: function () {

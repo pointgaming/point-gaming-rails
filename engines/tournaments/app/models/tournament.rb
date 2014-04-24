@@ -8,7 +8,7 @@ class Tournament
   before_validation :set_tournament_slug, on: :create
   after_save :move_to_next_state!
 
-  @@formats = [:single_elimination, :double_elimination, :round_robin]
+  @@formats = [:single_elimination, :double_elimination]
   @@types = [:open, :invite]
 
   scope :pending, lambda { where(state: :payment_pending) }
@@ -100,7 +100,6 @@ class Tournament
   validates :checkin_hours, presence: true, numericality: { only_integer: true, greater_than: 0, less_than: 4 }
   validates :player_limit, presence: true, numericality: { only_integer: true, greater_than: 0, even: true }
   validates :format, presence: true
-  validates :type, presence: true
   validates :game, presence: true
   validates :game_type, presence: true
   validates :details, presence: true

@@ -11,7 +11,7 @@ module StatusHelper
   end
 
   def step_completed?(step)
-    return true if step == :activated
+    return true if @tournament.activated?
     steps = @tournament.status_steps
     steps.index(step) < steps.index(@tournament.current_state.name)
   rescue
@@ -19,7 +19,7 @@ module StatusHelper
   end
 
   def current_step?(step)
-    step == :activated || step == @tournament.current_state.name
+    step == @tournament.current_state.name
   end
 
   def step_name(step)
