@@ -3,11 +3,18 @@
 
     window.PointGaming.controllers.tournaments = {
         init: function () {
-            var workflowWidget = new window.PointGaming.views.tournament_workflow_widget();
-
             $("a[disabled=disabled]").click(function () {
                 return false;
             });
+
+            if ($("#tournament-tabs").length) {
+                $("#tournament-tabs a").click(function (e) {
+                  e.preventDefault();
+                  $(this).tab("show");
+                })
+
+                $("#tournament-tabs a:first").tab("show");
+            }
 
             if ($("#time-left").length) {
                 $("#time-left").countdown({
@@ -33,7 +40,21 @@
 
         edit: function () {
             var form = new window.PointGaming.views.tournament_form(),
-                sponsors = new window.PointGaming.views.tournament_sponsors();
+                sponsors = new window.PointGaming.views.tournament_sponsors(),
+                lastDetails = null;
+
+            setInterval(function () {
+                var currentDetails = $("#tournament_details").val();
+
+                if (!lastDetails) {
+                    lastDetails = currentDetails;
+                }
+
+                if (lastDetails !== currentDetails) {
+                    lastDetails = currentDetails;
+                    console.log("Updating preview.");
+                }
+            }, 5000);
         },
 
         prize_pool: function () {
@@ -41,7 +62,7 @@
             $(inputsPath).on("change", function () {
                 var total = 0;
 
-                $(inputsPath).each(function(index, element) {
+                $(inputsPath).each(function (index, element) {
                     total += parseFloat(accounting.toFixed($(element).val(), 2));
                 });
 

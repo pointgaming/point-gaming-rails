@@ -1,5 +1,5 @@
 <div class="row-fluid" id="tournaments">
-  <h1><%= @tournament.new_record?? "New Tournament" : @tournament %></h1>
+  <h1><%= @tournament.new_record?? "New" : "Editing" %> Tournament</h1>
 
   <%= render partial: "workflow_navigation" unless @tournament.new_record? %>
 
@@ -123,12 +123,12 @@
           </div>
         </div>
       </div>
-    </div>
+    </fieldset>
 
     <div class="row-fluid">
       <div class="span12">
         <div class="form-actions">
-          <%= f.submit :Next, class: "btn btn-primary" %>
+          <%= f.submit "Save", class: "btn btn-primary" %>
         </div>
       </div>
     </div>

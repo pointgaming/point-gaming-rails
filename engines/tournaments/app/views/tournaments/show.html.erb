@@ -69,14 +69,7 @@
           </div>
         <% end %>
         <div class="span9 middle-content">
-          <div class="widget">
-            <div class="widget-header">
-              <h3>Rules</h3>
-            </div>
-            <div class="widget-content">
-              <%= markdown @tournament.details %>
-            </div>
-          </div>
+          <%= widget :rules, details: @tournament.details %>
         </div>
       </div>
     </div>
