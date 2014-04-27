@@ -20,9 +20,10 @@ class Tournament
   field :stream_slug
   field :starts_at, type: DateTime
   field :checkin_hours, type: Integer, default: 1
-  field :player_limit, type: Integer, default: 128
+  field :player_limit, type: Integer, default: MAX_PLAYERS
   field :format
   field :type
+  field :payment
   field :details, default: I18n.t("tournament.form.details")
   field :state, default: "new"
   field :prizepool, type: Hash, default: {}
@@ -97,7 +98,7 @@ class Tournament
   validates :slug, presence: true, uniqueness: true
   validates :starts_at, presence: true
   validates :checkin_hours, presence: true, numericality: { only_integer: true, greater_than: 0, less_than: 4 }
-  validates :player_limit, presence: true, numericality: { only_integer: true, greater_than: 0, even: true }
+  validates :player_limit, presence: true, numericality: { only_integer: true, greater_than: 0, less_than: MAX_PLAYERS, even: true }
   validates :format, presence: true
   validates :game, presence: true
   validates :game_type, presence: true

@@ -3,7 +3,6 @@ PointGamingRails::Application.routes.draw do
     resources :registrations, only: [:create, :update, :destroy]
     resources :sponsors, except: [:index, :show]
     resources :invites, only: [:create, :destroy]
-    resources :payments, only: [:new, :create]
 
     resources :seeds, only: [:index, :destroy] do
       collection do

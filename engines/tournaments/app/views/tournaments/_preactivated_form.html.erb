@@ -33,7 +33,7 @@
           <div class="control-group">
             <%= f.label :player_limit, class: "control-label" %>
             <div class="controls">
-              <%= f.select :player_limit, (2..128).to_a.select { |n| n.pow2? }.collect { |p| [p, p] }, include_blank: "- select -" %>
+              <%= f.select :player_limit, (2..MAX_PLAYERS).to_a.select { |n| n.pow2? }.collect { |p| [p, p] }, include_blank: "- select -" %>
             </div>
           </div>
         </div>
@@ -118,12 +118,12 @@
 
           <div class="form-horizontal">
             <%= f.fields_for :prizepool do |prizepool| %>
-              <% 1.upto(@tournament.player_limit) do |placement| %>
+              <% 1.upto(MAX_PLAYERS) do |placement| %>
                 <% next unless (1..4).to_a.include?(placement) || (placement - 1).pow2? %>
                 <div class="control-group">
                   <%= prizepool.label placement, friendly_placement(placement), class: "control-label"  %>
                   <div class="controls">
-                    <%= prizepool.text_field placement, value: @tournament.prizepool[placement.to_s], placeholder: "$0.00", class: "input-medium", :"data-hook" => "prizepool-field" %>
+                    <%= prizepool.text_field placement, value: @tournament.prizepool[placement.to_s], placeholder: "Prize description here", class: "input-large", :"data-hook" => "prizepool-field" %>
                   </div>
                 </div>
               <% end %>
@@ -135,11 +135,9 @@
         <fieldset>
           <legend>Payment</legend>
 
-          You can omit payment details if you are not awarding cash prizes.
+          <p>You can omit payment details if you are not awarding cash prizes. Otherwise, include <strong>non-sensitive</strong> payment details here. We will contact you for payment after reviewing your tournament.</p>
 
-          <%= f.fields_for :payment do |payment| %>
-
-          <% end %>
+          <%= f.text_area :payment, rows: 8 %>
         </fieldset>
       </div>
     </div>
