@@ -1,8 +1,39 @@
 en:
   tournament:
-    status_steps:
-      new: "Tournament created"
-      prizepool_required: "Prizepool required"
-      payment_required: "Prizepool locked in"
-      payment_pending: "Payment information submitted"
-      activated: "Tournament Activated"
+    form:
+      details: |
+        ### Tournament
+
+        Hello! This is where you'll want to place all of your tournament rules. Note that the details will be rendered using a markdown parser. If you're unfamiliar with Markdown and its awesomeness, you can read up more about it on Wikipedia: https://en.wikipedia.org/wiki/Markdown
+
+        If you'd rather not use Markdown to your advantage, that's fine, too. Just write out your rules in plain text and it'll display normally. Keep in mind that we'll automatically link any URLs in your rules.
+
+        We won't make your tournament public until payment is confirmed and completed, so if you want to save drafts and come back to this later, feel free to do so!
+
+        ### Game Settings
+
+        You can follow the template we have here, or make your own. Remember to specify all game settings for your tournament to avoid confusion.
+
+        ### Map Pool
+
+        Of course, if your game involves different maps, you need to tell your players which maps are in the pool. You can make a list like this:
+
+        * Silence
+        * Cure
+        * Sinister
+
+        Or, if you prefer, a table:
+
+        Map | Name
+        --- | ---
+        *1* | `Silence`
+        *2* | `Cure`
+        *3* | `Sinister`
+
+        ### Groupstage
+
+        If your tournament will have an initial groupstage, you can post details about it here.
+
+        ### No cheating!
+
+        You can always remove users from registration, or if the tournament has already started, force a user to forfeit by overriding their match scores. If any cheating is suspected, please report it to cheating@pointgaming.com

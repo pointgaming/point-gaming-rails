@@ -11,6 +11,24 @@ module TournamentsHelper
     @currently_playing ||= @tournament.started? && @tournament.checked_in?(current_user)
   end
 
+  def markdown(details)
+    @html_renderer  ||= Redcarpet::Render::HTML.new(filter_html: true,
+                                                    hard_wrap: true,
+                                                    link_attributes: { target: "_blank" })
+
+    @renderer       ||= Redcarpet::Markdown.new(@html_renderer,
+                                                no_intra_emphasis: true,
+                                                autolink: true,
+                                                tables: true,
+                                                strikethrough: true,
+                                                superscript: true,
+                                                underline: true,
+                                                prettify: true,
+                                                highlight: true)
+
+    @renderer.render(details).gsub("<table>", "<table class='table table-striped table-bordered'>").html_safe
+  end
+
   def friendly_placement(placed)
     suffixify = lambda { |p|
       suffixes = [nil, "st", "nd", "rd"]

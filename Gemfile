@@ -35,6 +35,7 @@ gem "rabl-rails"
 gem "sass-rails", "~> 3.2.3"
 gem "bootstrap-sass", "~> 2.3.1.0"
 gem "twitter-bootstrap-rails"
+gem "redcarpet"
 
 group :assets do
   gem "uglifier", ">= 1.0.3"

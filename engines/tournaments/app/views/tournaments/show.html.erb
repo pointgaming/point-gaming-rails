@@ -29,68 +29,52 @@
             <h3><%= @tournament.name %></h3>
             <h4>Organizer: <%= link_to @tournament.owner.username, @tournament.owner %></h4>
           </div>
-          <div class="span3 widget-content game-type">
-            <div class="span12">
-              <h4><%= @tournament.game_type.try(:name) %></h4>
-            </div>
-            <div class="span12">
-              <h4><%=t @tournament.format %></h4>
-            </div>
-          </div>
         </div>
-        <div class="span9 middle-content">
-          <div class="widget">
-            <div class="widget-header">
-              <h3>
-                <% if @tournament.ended? %>
-                  Tournament Standings
-                <% elsif currently_playing? %>
-                  Current Match
-                <% else %>
-                  Tournament In Progress
-                <% end %>
-              </h3>
-            </div>
-            <div class="widget-content <%= "center" if currently_playing? %>">
-              <% if @tournament.ended? %>
-                <ul>
-                  <% @tournament.players.unscoped.asc(:placed).each do |player| %>
-                    <li>
-                      <%= friendly_placement(player.placed) %> - <%= link_to player, user_path(player.username) %>
-                    </li>
+        <% if @tournament.ended? || currently_playing? %>
+          <div class="span9 middle-content">
+            <div class="widget">
+              <div class="widget-header">
+                <h3>
+                  <% if @tournament.ended? %>
+                    Tournament Standings
+                  <% elsif currently_playing? %>
+                    Current Match
                   <% end %>
-                </ul>
+                </h3>
+              </div>
+              <% if @tournament.ended? %>
+                <div class="widget-content">
+                  <ul>
+                    <% @tournament.players.unscoped.asc(:placed).each do |player| %>
+                      <li>
+                        <%= friendly_placement(player.placed) %> - <%= link_to player, user_path(player.username) %>
+                      </li>
+                    <% end %>
+                  </ul>
+                </div>
               <% elsif currently_playing? %>
-                <h3>Opponent:</h3>
-                <h4><%= current_player.current_opponent %></h4>
-                <% if current_player.current_opponent != "TBD" %>
-                  <p>
-                    <%= link_to "Report Scores", "#report-scores", class: "btn btn-success", role: "button", data: { toggle: "modal" } %>
-                  </p>
-                <% end %>
+                <div class="widget-content center">
+                  <h3>Opponent:</h3>
+                  <h4><%= current_player.current_opponent %></h4>
+                  <% if current_player.current_opponent != "TBD" %>
+                    <p>
+                      <%= link_to "Report Scores", "#report-scores", class: "btn btn-success", role: "button", data: { toggle: "modal" } %>
+                    </p>
+                  <% end %>
 
-                <%= widget :report_scores %>
-              <% else %>
-                Dummy data here.
+                  <%= widget :report_scores %>
+                </div>
               <% end %>
             </div>
           </div>
-        </div>
-        <div class="span2">
-          <h4>Sponsors</h4>
-          <% @tournament.sponsors.each do |sponsor| %>
-            <div id="sponsor_<%= sponsor._id %>" data-hook="sponsor" class="sponsor">
-              <%= link_to image_tag(main_app_user_asset_url(sponsor.image.url(:medium)), alt: sponsor.name, class: "thumbnail"), sponsor.url %>
-            </div>
-          <% end %>
-        </div>
+        <% end %>
         <div class="span9 middle-content">
           <div class="widget">
             <div class="widget-header">
               <h3>Rules</h3>
             </div>
             <div class="widget-content">
-              <%= @tournament.details %>
+              <%= markdown @tournament.details %>
             </div>
           </div>
         </div>

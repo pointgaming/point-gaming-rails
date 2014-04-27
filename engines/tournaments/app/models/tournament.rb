@@ -23,7 +23,7 @@ class Tournament
   field :player_limit, type: Integer, default: 128
   field :format
   field :type
-  field :details
+  field :details, default: I18n.t("tournament.form.details")
   field :state, default: "new"
   field :prizepool, type: Hash, default: {}
   field :prizepool_total, type: BigDecimal, default: BigDecimal.new("0")
