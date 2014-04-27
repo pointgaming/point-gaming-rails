@@ -1,5 +1,5 @@
 class TournamentsController < EngineController
-  before_filter :ensure_tournament, except: [:index, :collaborated, :new, :create]
+  before_filter :ensure_tournament, except: [:index, :collaborated, :new, :create, :markdown]
   before_filter :ensure_tournament_prizepool_required, only: [:prize_pool]
   before_filter :ensure_tournament_editable_by_user, only: [:edit, :update, :destroy]
   before_filter :ensure_tournament_started, only: [:brackets, :report_scores]
@@ -67,6 +67,13 @@ class TournamentsController < EngineController
     player.report_scores!(params[:mine], params[:his])
 
     redirect_to :back, notice: "Match scores submitted!"
+  end
+
+  def markdown
+    @tournament = Tournament.new
+    @tournament.details = params[:details]
+
+    render partial: "/tournaments/widgets/rules"
   end
 
   private

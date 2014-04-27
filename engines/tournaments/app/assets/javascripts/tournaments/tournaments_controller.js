@@ -52,7 +52,11 @@
 
                 if (lastDetails !== currentDetails) {
                     lastDetails = currentDetails;
-                    console.log("Updating preview.");
+                    $.post("/tournaments/markdown", {
+                        details: lastDetails
+                    }, function (data) {
+                        $("#details-preview").html(data);
+                    });
                 }
             }, 5000);
         },

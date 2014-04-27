@@ -3,8 +3,8 @@ module TournamentsHelper
     @current_player ||= @tournament.player_for_user(current_user)
   end
 
-  def widget(partial, options = {})
-    render "tournaments/widgets/#{partial}", options
+  def widget(partial)
+    render "tournaments/widgets/#{partial}"
   end
 
   def currently_playing?

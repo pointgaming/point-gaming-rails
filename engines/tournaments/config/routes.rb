@@ -12,7 +12,8 @@ PointGamingRails::Application.routes.draw do
     end
 
     collection do
-      get "collaborated"
+      get     "collaborated"
+      post    "markdown"
     end
 
     member do
