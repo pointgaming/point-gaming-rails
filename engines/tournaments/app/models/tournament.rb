@@ -88,11 +88,10 @@ class Tournament
   belongs_to :sponsor_request
   belongs_to :owner, class_name: "User"
 
-  has_one :payment
-
   has_many :sponsors, dependent: :destroy
   has_many :invites,  dependent: :destroy
   embeds_many :players
+  embeds_one :payment
 
   validates :name, presence: true, uniqueness: true
   validates :slug, presence: true, uniqueness: true

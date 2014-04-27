@@ -32,18 +32,6 @@
 
                 $("#time-left").show();
             }
-
-            if ($("[data-hook=prizepool-field]").length) {
-                $("input[data-hook=prizepool-field]").on("change", function () {
-                    var total = 0;
-
-                    $("input[data-hook=prizepool-field]").each(function (index, element) {
-                        total += parseFloat(accounting.toFixed($(element).val(), 2));
-                    });
-
-                    $("span[data-hook=prize-pool-total]").html(accounting.formatMoney(total));
-                });
-            }
         },
 
         new: function () {

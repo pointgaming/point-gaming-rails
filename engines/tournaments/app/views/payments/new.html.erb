@@ -1,8 +1,6 @@
 <div class="row-fluid" id="tournaments">
   <h1>Tournament: <%= @tournament.name %></h1>
 
-  <%= render "/tournaments/workflow_navigation" %>
-
   <%= form_for [:tournament, @payment], html: { class: "form-horizontal", :"data-hook"=>"payment-form" } do |f| %>
     <%= render partial: "shared/form_errors", locals: { model: f.object } %>
 

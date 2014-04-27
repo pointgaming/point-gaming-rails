@@ -52,11 +52,6 @@ class Payment
     update_fee
   end
 
-  #def source=(value)
-  #  write_attribute(:source, value)
-  #  update_fee
-  #end
-
   def update_fee
     self.fee = BigDecimal.new("0")
     update_total
@@ -66,32 +61,21 @@ class Payment
     self.total = amount + fee
   end
 
-  def bank_account_payment?
-    source === 'bank_account'
-  end
-
-  def credit_card_payment?
-    source === 'credit_card'
-  end
-
-  def dwolla_payment?
-    source === 'dwolla'
-  end
-
-  def paypal_payment?
-    source === 'paypal'
+  SOURCES.each do |src|
+    define_method "#{source}_payment?" do
+      self.source.to_s == src.to_s
+    end
   end
 
   private
 
   def verify_source
     if source.present?
-      self.errors[:source] << "is invalid" unless SOURCES.include?(source.to_sym)
+      self.errors[:source] << "is invalid" unless SOURCES.include?(source.to_s.to_sym)
     end
   end
 
   def move_tournament_to_next_state!
     tournament.payment_submitted! if tournament.payment_required?
   end
-
 end
