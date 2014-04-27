@@ -26,7 +26,6 @@
         <td>
           <% if can? :crud, Tournament %>
             <%= link_to "Approve", approve_admin_tournament_path(tournament), method: :put, class: "btn btn-mini" %>
-            <%= link_to "Deny", deny_admin_tournament_path(tournament), method: :put, class: "btn btn-mini" %>
           <% end %>
 
           <br />

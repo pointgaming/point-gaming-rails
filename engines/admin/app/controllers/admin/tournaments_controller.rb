@@ -21,12 +21,7 @@ module Admin
     end
 
     def approve
-      @tournament.payment_approved!
-      respond_with(@tournament, location: admin_tournaments_path)
-    end
-
-    def deny
-      @tournament.payment_denied! && @payment.destroy
+      @tournament.set(:activated, true)
       respond_with(@tournament, location: admin_tournaments_path)
     end
 

@@ -6,13 +6,12 @@ class Tournament
 
   after_create :trigger_created
   before_validation :set_tournament_slug, on: :create
-  after_save :move_to_next_state!
 
   @@formats = [:single_elimination, :double_elimination]
   @@types = [:open, :invite]
 
-  scope :pending, lambda { where(state: :payment_pending) }
-  scope :activated, lambda { where(state: :activated) }
+  scope :pending, lambda { where(:activated.ne => true) }
+  scope :activated, lambda { where(activated: true) }
   scope :collaborated, lambda { |user| any_of({ owner_id: user.id }, { collaborators: user.id }) }
 
   field :name
@@ -25,13 +24,13 @@ class Tournament
   field :type
   field :payment
   field :details, default: I18n.t("tournament.form.details")
-  field :state, default: "new"
   field :prizepool, type: Hash, default: {}
   field :prizepool_total, type: BigDecimal, default: BigDecimal.new("0")
   field :sponsor_request_state, default: "not_requested"
   field :collaborators, type: Array, default: []
   field :has_groupstage, type: Boolean
   field :invite_only, type: Boolean
+  field :activated, type: Boolean, default: false
 
   # The brackets format here needs to match the format used in the jQuery
   # brackets library. Here"s an example:
@@ -65,24 +64,6 @@ class Tournament
   #   ]]
   # }
   field :brackets, type: Hash, default: {}
-
-  workflow_column :state
-  workflow do
-    state :new do
-      event :created, transitions_to: :prizepool_required
-    end 
-    state :prizepool_required do
-      event :prizepool_submitted, transitions_to: :payment_required
-    end 
-    state :payment_required do
-      event :payment_submitted, transitions_to: :payment_pending
-    end
-    state :payment_pending do
-      event :payment_approved, transitions_to: :activated
-      event :payment_denied, transitions_to: :payment_required
-    end
-    state :activated
-  end
 
   belongs_to :game
   belongs_to :game_type
@@ -172,10 +153,6 @@ class Tournament
 
   def to_param
     slug
-  end
-
-  def move_to_next_state!
-    prizepool_submitted! if prizepool.present? && prizepool_required?
   end
 
   # This is just a convenience method for development/console use.

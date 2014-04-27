@@ -5,7 +5,6 @@ PointGamingRails::Application.routes.draw do
       member do
         get "payment"
         put "approve"
-        put "deny"
       end
     end
     resources :disputes, only: [:index, :show, :edit, :update] do
