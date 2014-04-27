@@ -105,6 +105,14 @@ class Tournament
   validates :details, presence: true
 
   validate do |tournament|
+    if tournament.new_record? && tournament.starts_at.present?
+      if tournament.starts_at < (Time.now + 7.days)
+        tournament.errors.add :starts_at, "must be at least a week away."
+      end
+    end
+  end
+
+  validate do |tournament|
     unless tournament.player_limit.pow2?
       tournament.errors.add :player_limit, "must be a power of 2."
     end
@@ -295,7 +303,7 @@ class Tournament
   end
 
   def update_prizepool_total
-    self.prizepool_total = prizepool.values.select { |val| val.numeric? }.map { |val| BigDecimal.new(val) }.reduce(:+) || BigDecimal.new("0")
+    self.prizepool_total = prizepool.values.map { |val| BigDecimal.new(val.gsub(/[^\d\.]+/, "")) }.reduce(:+) || BigDecimal.new("0")
   end
 
   def set_tournament_slug

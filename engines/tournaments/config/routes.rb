@@ -17,7 +17,6 @@ PointGamingRails::Application.routes.draw do
     end
 
     member do
-      get     "prize_pool"
       get     "users"
       get     "brackets"
       put     "collaborators"

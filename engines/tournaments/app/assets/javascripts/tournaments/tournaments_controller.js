@@ -32,6 +32,18 @@
 
                 $("#time-left").show();
             }
+
+            if ($("[data-hook=prizepool-field]").length) {
+                $("input[data-hook=prizepool-field]").on("change", function () {
+                    var total = 0;
+
+                    $("input[data-hook=prizepool-field]").each(function (index, element) {
+                        total += parseFloat(accounting.toFixed($(element).val(), 2));
+                    });
+
+                    $("span[data-hook=prize-pool-total]").html(accounting.formatMoney(total));
+                });
+            }
         },
 
         new: function () {
@@ -58,20 +70,7 @@
                         $("#details-preview").html(data);
                     });
                 }
-            }, 5000);
-        },
-
-        prize_pool: function () {
-            var inputsPath = "input[data-hook=prizepool-field]";
-            $(inputsPath).on("change", function () {
-                var total = 0;
-
-                $(inputsPath).each(function (index, element) {
-                    total += parseFloat(accounting.toFixed($(element).val(), 2));
-                });
-
-                $("span[data-hook=prize-pool-total]").html(accounting.formatMoney(total));
-            });
+            }, 3000);
         },
 
         brackets: function () {

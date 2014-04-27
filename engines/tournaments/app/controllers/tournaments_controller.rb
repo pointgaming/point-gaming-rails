@@ -30,20 +30,22 @@ class TournamentsController < EngineController
     @tournament.owner = current_user
     @tournament.save
 
+    flash.notice = "Thanks! Your tournament has been created. You will be notified when your payment details have been approved. After activation, you will no longer be able to edit these fields."
+
     respond_with(@tournament, location: edit_tournament_path(@tournament.slug))
   end
 
   def update
-    @tournament.update_attributes(params[:tournament])
+    if @tournament.update_attributes(params[:tournament])
+      flash.notice = "Tournament successfully updated."
+    end
+
     redirect_to :back
   end
 
   def destroy
     @tournament.destroy
     respond_with(@tournament, location: user_tournaments_path)
-  end
-
-  def prize_pool
   end
 
   def users
