@@ -1,10 +1,8 @@
 class Tournament
   include Mongoid::Document
-  include Workflow
 
   cattr_reader :formats, :types
 
-  after_create :trigger_created
   before_validation :set_tournament_slug, on: :create
 
   @@formats = [:single_elimination, :double_elimination]
@@ -73,13 +71,12 @@ class Tournament
   has_many :sponsors, dependent: :destroy
   has_many :invites,  dependent: :destroy
   embeds_many :players
-  embeds_one :payment
 
   validates :name, presence: true, uniqueness: true
   validates :slug, presence: true, uniqueness: true
   validates :starts_at, presence: true
   validates :checkin_hours, presence: true, numericality: { only_integer: true, greater_than: 0, less_than: 4 }
-  validates :player_limit, presence: true, numericality: { only_integer: true, greater_than: 0, less_than: MAX_PLAYERS, even: true }
+  validates :player_limit, presence: true, numericality: { only_integer: true, greater_than: 0, less_than: MAX_PLAYERS + 1, even: true }
   validates :format, presence: true
   validates :game, presence: true
   validates :game_type, presence: true
@@ -273,10 +270,6 @@ class Tournament
 
   def prize_pool_size
     player_limit / 2
-  end
-
-  def trigger_created
-    created!
   end
 
   def update_prizepool_total

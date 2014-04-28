@@ -28,9 +28,10 @@ class TournamentsController < EngineController
   def create
     @tournament = Tournament.new(params[:tournament])
     @tournament.owner = current_user
-    @tournament.save
 
-    flash.notice = "Thanks! Your tournament has been created. You will be notified when your payment details have been approved. After activation, you will no longer be able to edit these fields."
+    if @tournament.save
+      flash.notice = "Thanks! Your tournament has been created. You will be notified when your payment details have been approved. After activation, you will no longer be able to edit these fields."
+    end
 
     respond_with(@tournament, location: edit_tournament_path(@tournament.slug))
   end

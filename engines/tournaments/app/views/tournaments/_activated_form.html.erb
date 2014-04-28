@@ -6,6 +6,7 @@
       <ul class="nav nav-tabs" id="tournament-tabs">
         <li class="active"><a href="#details">Rules</a></li>
         <li><a href="#control">Control Panel</a></li>
+        <li><a href="#seeds">Seeds</a></li>
       </ul>
     </div>
   </div>
@@ -34,6 +35,14 @@
             </fieldset>
           </div>
         </div>
+
+        <div class="row-fluid">
+          <div class="span12">
+            <div class="form-actions">
+              <%= f.submit "Save", class: "btn btn-primary" %>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="tab-pane" id="control">
@@ -41,12 +50,33 @@
           wut
         </div>
       </div>
-    </div>
 
-    <div class="row-fluid">
-      <div class="span12">
-        <div class="form-actions">
-          <%= f.submit "Save", class: "btn btn-primary" %>
+      <div class="tab-pane" id="seeds">
+        <div class="row-fluid">
+          <div class="span6">
+            <p>Drag players to set their seed in the tournament.</p>
+
+            <div class="widget">
+              <div class="widget-header">
+                <h3>Players</h3>
+              </div>
+
+              <div class="widget-content">
+                <% if @tournament.players.present? %>
+                  <ol class="tourney-players sortable">
+                    <% @tournament.players.each do |player| %>
+                      <li class="draggable" data-id="<%= player.id %>">
+                        <%= link_to "[x]", "#", class: "remove-player", data: { tournament_id: @tournament.slug, id: player.id.to_s, confirm: "Are you sure?" } %>
+                        <%= player.username %>
+                      </li>
+                    <% end %>
+                  </ol>
+                <% else %>
+                    No tournament players to seed yet.
+                <% end %>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
