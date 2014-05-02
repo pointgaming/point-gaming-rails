@@ -1,24 +1,21 @@
-<div id="tournament-collaborators-widget" class="widget">
+<div id="tournament-admins-widget" class="widget">
   <div class="widget-header">
-    <h3>Collaborators</h3>
+    <h3>Admins</h3>
   </div>
 
   <div class="widget-content scrollable">
-    <h4>People to help you administrate the tournament</h4>
-    <% if current_user == @tournament.owner %>
-      <%= render "/collaborators/form" %>
-    <% end %>
+    <%= render "/admins/form" if current_user == @tournament.owner %>
 
-    <% if @collaborators.present? %>
+    <% if @tournament.admins.present? %>
       <ul>
-        <% @collaborators.each do |collaborator| %>
+        <% @tournament.admins.each do |admin| %>
           <li>
             <div class="control-group">
-              <%= collaborator.user.try(:username) %>
+              <%= User.find(admin) %>
               <div class="pull-right">
                 <% if current_user == @tournament.owner %>
                   <%= link_to "Destroy",
-                          tournament_collaborator_path(@tournament, collaborator),
+                          tournament_admin_path(@tournament, admin),
                           data: { confirm: "Are you sure?" },
                           method: :delete, class: "btn btn-mini btn-danger" %>
                 <% end %>

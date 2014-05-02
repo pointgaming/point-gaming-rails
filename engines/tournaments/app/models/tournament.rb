@@ -10,7 +10,7 @@ class Tournament
 
   scope :pending, lambda { where(:activated.ne => true) }
   scope :activated, lambda { where(activated: true) }
-  scope :collaborated, lambda { |user| any_of({ owner_id: user.id }, { collaborators: user.id }) }
+  scope :collaborated, lambda { |user| any_of({ owner_id: user.id }, { admins: user.id }) }
 
   field :name
   field :slug
@@ -25,7 +25,7 @@ class Tournament
   field :prizepool, type: Hash, default: {}
   field :prizepool_total, type: BigDecimal, default: BigDecimal.new("0")
   field :sponsor_request_state, default: "not_requested"
-  field :collaborators, type: Array, default: []
+  field :admins, type: Array, default: []
   field :has_groupstage, type: Boolean
   field :invite_only, type: Boolean
   field :activated, type: Boolean, default: false

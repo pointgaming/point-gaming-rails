@@ -3,15 +3,28 @@
 
     window.PointGaming.controllers.tournaments = {
         init: function () {
+            $(document).ready(function () {
+                var url = document.location.toString();
+
+                if (url.match("#")) {
+                    $(".nav-tabs a[href=#" + url.split("#")[1] + "]").tab("show");
+                    console.log(url.split("#")[1]);
+                }
+
+                $(".nav-tabs a").on("shown", function (e) {
+                    window.location.hash = e.target.hash;
+                });
+            });
+
             $("a[disabled=disabled]").click(function () {
                 return false;
             });
 
             if ($("#tournament-tabs").length) {
                 $("#tournament-tabs a").click(function (e) {
-                  e.preventDefault();
-                  $(this).tab("show");
-                })
+                    e.preventDefault();
+                    $(this).tab("show");
+                });
 
                 $("#tournament-tabs a:first").tab("show");
             }
@@ -34,7 +47,7 @@
             }
         },
 
-        new: function () {
+        "new": function () {
             var form = new window.PointGaming.views.tournament_form();
         },
 
@@ -42,7 +55,9 @@
             var form = new window.PointGaming.views.tournament_form(),
                 sponsors = new window.PointGaming.views.tournament_sponsors(),
                 lastDetails = null,
-                updateServer = function () {
+                hasBeenEdited = false,
+
+                updateServerSeeds = function () {
                     var seeds = [];
 
                     $(".tourney-players li").each(function (i, e) {
@@ -56,6 +71,27 @@
                         method: "PUT",
                         data: { seeds: seeds }
                     });
+                },
+                
+                setTypeahead = function () {
+                    var self = this;
+
+                    if (!this.typeaheadIsSetup) {
+                        $(this).typeahead({
+                            ajax: {
+                                url: "/users/search.json",
+                                triggerLength: 1,
+                                method: "get"
+                            },
+                            display: "username",
+                            val: "username",
+                            itemSelected: function (item, val, text) {
+                                $(self).closest("form.typeahead").submit();
+                            }
+                        });
+
+                        this.typeaheadIsSetup = true;
+                    }
                 };
 
             setInterval(function () {
@@ -67,6 +103,7 @@
 
                 if (lastDetails !== currentDetails) {
                     lastDetails = currentDetails;
+
                     $.post("/tournaments/markdown", {
                         details: lastDetails
                     }, function (data) {
@@ -75,9 +112,13 @@
                 }
             }, 3000);
 
+            $("#tournament_details").bind("input propertychange", function () {
+                hasBeenEdited = true;
+            });
+
             $(".sortable").disableSelection();
             $(".sortable").sortable({
-                stop: updateServer
+                stop: updateServerSeeds
             });
 
             $(".remove-player").click(function () {
@@ -93,6 +134,14 @@
 
                 return false;
             });
+
+            $("input.search-query").click(setTypeahead);
+
+            window.onbeforeunload = function () {
+                if (hasBeenEdited === true) {
+                    return "Your data has not been saved.";
+                }
+            };
         },
 
         brackets: function () {
@@ -106,10 +155,6 @@
                     });
                 }
             });
-        },
-
-        users: function(){
-            new window.PointGaming.views.tournament_users();
         }
     };
-})(window);
+}(window));

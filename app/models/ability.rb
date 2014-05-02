@@ -9,7 +9,7 @@ class Ability
       user.group.permissions.each do |permission_id|
         begin
           permission = Permission.find(permission_id)
-          can *permission.ability unless permission.nil?
+          can(*permission.ability) unless permission.nil?
         rescue ActiveHash::RecordNotFound
           # no big deal
         end
@@ -23,9 +23,9 @@ class Ability
         permission_check = {}
         permission_check[permission.check_owner] = user._id
 
-        can *permission.ability, permission_check
+        can(*permission.ability, permission_check)
       else
-        can *permission.ability
+        can(*permission.ability)
       end
     end
 
@@ -33,11 +33,15 @@ class Ability
     alias_action :create, :read, :update, :destroy, to: :crud
 
     can :join, Tournament do |tournament|
-      tournament.activated? && (!(tournament.owner == user || tournament.collaborators.include?(user.id.to_s))) && tournament.signup_open? && !tournament.signed_up?(user) && !tournament.full?
+      tournament.activated? && (!(tournament.owner == user || tournament.admins.include?(user.id))) && tournament.signup_open? && !tournament.signed_up?(user) && !tournament.full?
     end
 
     can :crud, Tournament do |tournament|
-      tournament.owner == user || tournament.collaborators.include?(user.id.to_s)
+      tournament.owner == user || tournament.admins.include?(user.id)
+    end
+
+    can :administer, Tournament do |tournament|
+      tournament.players.where(username: user.username).first.blank? && tournament.owner != user
     end
   end
 end

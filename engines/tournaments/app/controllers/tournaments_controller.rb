@@ -46,12 +46,8 @@ class TournamentsController < EngineController
 
   def destroy
     @tournament.destroy
-    respond_with(@tournament, location: user_tournaments_path)
-  end
-
-  def users
-    @collaborators = @tournament.collaborators
-    @invites = @tournament.invites
+    flash.notice = "Tournament successfully destroyed."
+    redirect_to :back
   end
 
   def brackets

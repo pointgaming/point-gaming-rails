@@ -1,4 +1,4 @@
-<div id="collaborators-widget" class="widget">
+<div id="admins-widget" class="widget">
   <div class="widget-header">
     <h3>Admins</h3>
   </div>
@@ -9,11 +9,11 @@
       </div>
     </div>
 
-    <% @tournament.collaborators.each do |collaborator| %>
+    <% @tournament.admins.each do |admin| %>
       <div class="control-group">
         <div class="controls">
-          <%- c = User.find(collaborator) -%>
-          <%= link_to c.username, c %>
+          <%- a = User.find(admin) -%>
+          <%= link_to a.username, user_path(username: a.username) %>
         </div>
       </div>
     <% end %>

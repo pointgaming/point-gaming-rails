@@ -1,8 +1,9 @@
 PointGamingRails::Application.routes.draw do
   resources :tournaments do
     resources :registrations, only: [:create, :update, :destroy]
-    resources :sponsors, except: [:index, :show]
-    resources :invites, only: [:create, :destroy]
+    resources :invites,       only: [:create, :destroy]
+    resources :admins,        only: [:create, :destroy]
+    resources :sponsors,      except: [:index, :show]
 
     resources :seeds, only: [:index, :destroy] do
       collection do
@@ -11,15 +12,13 @@ PointGamingRails::Application.routes.draw do
     end
 
     collection do
-      get     "collaborated"
-      post    "markdown"
+      get   "collaborated"
+      post  "markdown"
     end
 
     member do
-      get     "users"
-      get     "brackets"
-      put     "collaborators"
-      post    "report_scores"
+      get   "brackets"
+      post  "report_scores"
     end
   end
 end

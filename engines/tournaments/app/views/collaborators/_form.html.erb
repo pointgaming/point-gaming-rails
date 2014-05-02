@@ -1,7 +1,0 @@
-<%= form_for :collaborator, url: collaborators_tournament_path(@tournament), html: { autocomplete: :off, class: "typeahead", :"data-hook" => "collaborator-form" } do |f| %>
-  <div class="control-group">
-    <%= f.text_field :username, class: "search-query", placeholder: "Add" %>
-  </div>
-
-  <%= f.submit nil, style: "position: absolute; left: -9999px; width: 1px; height: 1px;" %>
-<% end %>
