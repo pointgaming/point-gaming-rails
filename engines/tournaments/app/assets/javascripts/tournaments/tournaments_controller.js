@@ -59,7 +59,7 @@
                 updateServerSeeds = function () {
                     var seeds = [];
 
-                    $(".tourney-players li").each(function (i, e) {
+                    $(".tourney-players tr").each(function (i, e) {
                         if ($(e).data("id")) {
                             seeds.push($(e).data("id"));
                         }
@@ -124,12 +124,14 @@
                 var tournamentId = $(this).data("tournament-id"),
                     playerId = $(this).data("id");
 
-                $.ajax({
-                    url: "/tournaments/" + tournamentId + "/seeds/" + playerId,
-                    method: "DELETE"
-                });
+                if (confirm("Are you sure?")) {
+                    $.ajax({
+                        url: "/tournaments/" + tournamentId + "/seeds/" + playerId,
+                        method: "DELETE"
+                    });
 
-                $(this).parentsUntil("tbody", "tr.draggable").remove();
+                    $(this).parentsUntil("tbody", "tr.draggable").remove();
+                }
 
                 return false;
             });

@@ -71,12 +71,12 @@
                 </tr>
               </thead>
 
-              <tbody class="sortable">
+              <tbody class="tourney-players sortable">
                 <% @tournament.players.each do |player| %>
-                  <tr class="draggable">
+                  <tr class="draggable" data-id="<%= player.id %>">
                     <td><%= player.username %></td>
                     <td>
-                      <%= link_to "Kick", nil, class: "remove-player btn btn-danger", data: { tournament_id: @tournament.slug, id: player.id.to_s, confirm: "Are you sure?" } %>
+                      <%= link_to "Kick", nil, class: "remove-player btn btn-danger", data: { tournament_id: @tournament.slug, id: player.id.to_s } %>
                     </td>
                   </tr>
                 <% end %>
