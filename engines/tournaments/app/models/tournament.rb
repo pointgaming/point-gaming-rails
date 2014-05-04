@@ -26,6 +26,7 @@ class Tournament
   field :prizepool_total, type: BigDecimal, default: BigDecimal.new("0")
   field :sponsor_request_state, default: "not_requested"
   field :admins, type: Array, default: []
+  field :invites, type: Array, default: []
   field :has_groupstage, type: Boolean
   field :invite_only, type: Boolean
   field :activated, type: Boolean, default: false
@@ -69,7 +70,6 @@ class Tournament
   belongs_to :owner, class_name: "User"
 
   has_many :sponsors, dependent: :destroy
-  has_many :invites,  dependent: :destroy
   embeds_many :players
 
   validates :name, presence: true, uniqueness: true

@@ -3,7 +3,7 @@ class UsersController < ApplicationController
 
   def search
     params[:query] ||= ""
-    @users = User.where(username: /#{Regexp.escape(params[:query])}/).page(params[:page])
+    @users = User.where(username: /#{Regexp.escape(params[:query])}/i).page(params[:page])
 
     respond_to do |format|
         format.html { render action: :search }

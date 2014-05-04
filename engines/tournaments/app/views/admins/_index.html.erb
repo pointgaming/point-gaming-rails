@@ -1,29 +1,36 @@
-<div id="tournament-admins-widget" class="widget">
-  <div class="widget-header">
-    <h3>Admins</h3>
-  </div>
+<fieldset>
+  <legend>Admins</legend>
 
-  <div class="widget-content scrollable">
+  <div class="row-fluid">
     <%= render "/admins/form" if current_user == @tournament.owner %>
 
     <% if @tournament.admins.present? %>
-      <ul>
-        <% @tournament.admins.each do |admin| %>
-          <li>
-            <div class="control-group">
-              <%= User.find(admin) %>
-              <div class="pull-right">
-                <% if current_user == @tournament.owner %>
-                  <%= link_to "Destroy",
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <td>User</td>
+            <% if current_user == @tournament.owner %>
+              <td>Action</td>
+            <% end %>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @tournament.admins.each do |admin| %>
+            <tr>
+              <td><%= User.find(admin) %></td>
+              <% if current_user == @tournament.owner %>
+                <td>
+                  <%= link_to "Revoke",
                           tournament_admin_path(@tournament, admin),
                           data: { confirm: "Are you sure?" },
                           method: :delete, class: "btn btn-mini btn-danger" %>
-                <% end %>
-              </div>
-            </div>
-          </li>
-        <% end %>
-      </ul>
+                </td>
+              <% end %>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
     <% end %>
   </div>
-</div>
+</fieldset>

@@ -41,7 +41,11 @@ class Ability
     end
 
     can :administer, Tournament do |tournament|
-      tournament.players.where(username: user.username).first.blank? && tournament.owner != user
+      tournament.players.where(username: user.username).first.blank? && tournament.owner != user && !tournament.invites.include?(user.id)
+    end
+
+    can :be_invited, Tournament do |tournament|
+      !user.can?(:administer, tournament)
     end
   end
 end

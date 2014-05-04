@@ -1,6 +1,6 @@
 <%= form_for :admin, url: tournament_admins_path(@tournament), html: { autocomplete: :off, class: "typeahead", :"data-hook" => "admins-form" } do |f| %>
   <div class="control-group">
-    <%= f.text_field :username, class: "search-query", placeholder: "Search by username..." %>
+    <%= f.text_field :username, class: "search-query", placeholder: "Add an admin..." %>
   </div>
 
   <%= f.submit nil, style: "position: absolute; left: -9999px; width: 1px; height: 1px;" %>
