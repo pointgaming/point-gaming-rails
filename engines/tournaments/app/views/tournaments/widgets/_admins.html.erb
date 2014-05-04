@@ -13,7 +13,7 @@
       <div class="control-group">
         <div class="controls">
           <%- a = User.find(admin) -%>
-          <%= link_to a.username, user_path(username: a.username) %>
+          <%= link_to a.username, user_path(a.username) %>
         </div>
       </div>
     <% end %>
