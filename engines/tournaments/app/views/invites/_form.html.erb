@@ -1,6 +1,6 @@
 <%= form_for :invite, url: tournament_invites_path(@tournament), html: { autocomplete: :off, class: "typeahead", :"data-hook" => "invites-form" } do |f| %>
   <div class="control-group">
-    <%= f.text_field :username, class: "search-query", placeholder: "Invite a player..." %>
+    <%= f.text_field :username, class: "search-query", placeholder: "Invite a player...", data: { controller: "users", val: "username" } %>
   </div>
   <%= f.submit nil, style: "position: absolute; left: -9999px; width: 1px; height: 1px;" %>
 <% end %>

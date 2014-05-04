@@ -4,6 +4,7 @@ class Tournament
   cattr_reader :formats, :types
 
   before_validation :set_tournament_slug, on: :create
+  before_save :set_stream_slug
 
   @@formats = [:single_elimination, :double_elimination]
   @@types = [:open, :invite]
@@ -14,6 +15,7 @@ class Tournament
 
   field :name
   field :slug
+  field :stream_name
   field :stream_slug
   field :starts_at, type: DateTime
   field :checkin_hours, type: Integer, default: 1
@@ -97,9 +99,9 @@ class Tournament
   end
 
   validate do |tournament|
-    if tournament.stream_slug.present?
-      unless Stream.where(slug: tournament.stream_slug).exists?
-        tournament.errors.add :stream_slug, "must point to a valid stream."
+    if tournament.stream_name.present?
+      unless Stream.where(name: tournament.stream_name).exists?
+        tournament.errors.add :stream_name, "must point to a valid stream."
       end
     end
   end
@@ -279,6 +281,10 @@ class Tournament
   def set_tournament_slug
     # We want to remove all non-word charcters, reduce multiple consecutive
     # spaces down to a single space, and replace the spaces with dashes.
-    self.slug = self.name.to_s.downcase.gsub(/[^\w\s]+/i, "").gsub(/\s+/, "-")
+    self.slug = self.name.to_s.downcase.gsub(/[^\w\s]+/i, "").gsub(/\s+/, "-") if name_changed?
+  end
+
+  def set_stream_slug
+    self.stream_slug = Stream.where(name: stream_name).first.try(:slug) if stream_name_changed?
   end
 end

@@ -17,9 +17,9 @@
       </div>
       <div class="span4">
         <div class="control-group">
-          <%= f.label :stream_slug, "Stream", class: "control-label" %>
+          <%= f.label :stream_name, "Stream", class: "control-label" %>
           <div class="controls">
-            <%= f.text_field :stream_slug %>
+            <%= f.text_field :stream_name, class: "search-query", data: { controller: "streams", val: "name" } %>
           </div>
         </div>
       </div>

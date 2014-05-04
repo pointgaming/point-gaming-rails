@@ -157,6 +157,7 @@ PointGamingRails::Application.routes.draw do
   get "/search/store", :to => "search#store"
 
   get "/users/search", :to => "users#search"
+  get "/streams/search", :to => "streams#search"
 
   resources :demos, only: [:index, :show]
 

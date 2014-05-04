@@ -6,8 +6,8 @@ class UsersController < ApplicationController
     @users = User.where(username: /#{Regexp.escape(params[:query])}/i).page(params[:page])
 
     respond_to do |format|
-        format.html { render action: :search }
-        format.json { render json: @users }
+      format.html { render action: :search }
+      format.json { render json: @users }
     end
   end
 end

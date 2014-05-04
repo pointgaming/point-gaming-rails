@@ -131,21 +131,25 @@
         });
     }
 
-    function userSearch() {
+    function searchFields() {
         var setTypeahead = function () {
-                var self = this;
+                var self = this,
+                    controller = $(this).data("controller"),
+                    val = $(this).data("val");
 
                 if (!this.typeaheadIsSetup) {
                     $(this).typeahead({
                         ajax: {
-                            url: "/users/search.json",
+                            url: "/" + controller + "/search.json",
                             triggerLength: 1,
                             method: "get"
                         },
-                        display: "username",
-                        val: "username",
+                        display: val,
+                        val: val,
                         itemSelected: function (item, val, text) {
-                            $(self).closest("form.typeahead").submit();
+                            if (controller === "users") {
+                                $(self).closest("form.typeahead").submit();
+                            }
                         }
                     });
 
@@ -162,6 +166,7 @@
             datepicker();
             countdown();
             seeds();
+            searchFields();
 
             $("a[disabled=disabled]").click(function () {
                 return false;
@@ -183,7 +188,6 @@
 
         edit: function () {
             editDetails();
-            userSearch();
         },
 
         brackets: function () {

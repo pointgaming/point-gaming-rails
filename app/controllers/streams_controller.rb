@@ -10,6 +10,12 @@ class StreamsController < ApplicationController
     respond_with(@streams)
   end
 
+  def search
+    params[:query] ||= ""
+    @streams = Stream.where(name: /#{Regexp.escape(params[:query])}/i).page(params[:page])
+    render json: @streams, only: [:_id, :name]
+  end
+
   def show
     @stream_owner = @stream.owner
     @collaborator = Collaborator.where(stream_id: @stream._id, user_id: current_user._id)
