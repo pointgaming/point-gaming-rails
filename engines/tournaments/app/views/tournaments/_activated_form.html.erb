@@ -6,7 +6,7 @@
       <ul class="nav nav-tabs" id="tournament-tabs">
         <li><a href="#details">Rules</a></li>
         <li><a href="#control">Control Panel</a></li>
-        <li><a href="#seeds">Seeds</a></li>
+        <li><a href="#players">Players</a></li>
         <li><a href="#users">Admins &amp; Invites</a></li>
       </ul>
     </div>
@@ -53,31 +53,38 @@
       </div>
     </div>
 
-    <div class="tab-pane" id="seeds">
+    <div class="tab-pane" id="players">
       <div class="row-fluid">
         <div class="span6">
-          <p>Drag players to set their seed in the tournament.</p>
+          <fieldset>
+            <legend>Players</legend>
+          </fieldset>
 
-          <div class="widget">
-            <div class="widget-header">
-              <h3>Players</h3>
-            </div>
+          <% if @tournament.players.present? %>
+            <p>Drag players to set their seed in the tournament.</p>
 
-            <div class="widget-content">
-              <% if @tournament.players.present? %>
-                <ol class="tourney-players sortable">
-                  <% @tournament.players.each do |player| %>
-                    <li class="draggable" data-id="<%= player.id %>">
-                      <%= link_to "[x]", "#", class: "remove-player", data: { tournament_id: @tournament.slug, id: player.id.to_s, confirm: "Are you sure?" } %>
-                      <%= player.username %>
-                    </li>
-                  <% end %>
-                </ol>
-              <% else %>
-                  No tournament players to seed yet.
-              <% end %>
-            </div>
-          </div>
+            <table class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <td>Player</td>
+                  <td></td>
+                </tr>
+              </thead>
+
+              <tbody class="sortable">
+                <% @tournament.players.each do |player| %>
+                  <tr class="draggable">
+                    <td><%= player.username %></td>
+                    <td>
+                      <%= link_to "Kick", nil, class: "remove-player btn btn-danger", data: { tournament_id: @tournament.slug, id: player.id.to_s, confirm: "Are you sure?" } %>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          <% else %>
+            No tournament players yet.
+          <% end %>
         </div>
       </div>
     </div>

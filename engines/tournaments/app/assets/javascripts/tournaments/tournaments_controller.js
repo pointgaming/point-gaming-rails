@@ -8,7 +8,6 @@
 
                 if (url.match("#")) {
                     $(".nav-tabs a[href=#" + url.split("#")[1] + "]").tab("show");
-                    console.log(url.split("#")[1]);
                 }
 
                 $(".nav-tabs a").on("shown", function (e) {
@@ -130,7 +129,7 @@
                     method: "DELETE"
                 });
 
-                $(this).parent("li.draggable").remove();
+                $(this).parentsUntil("tbody", "tr.draggable").remove();
 
                 return false;
             });
