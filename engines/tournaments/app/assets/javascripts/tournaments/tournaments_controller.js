@@ -15,6 +15,26 @@
                 });
             });
 
+            $(document).on("click", "[data-behavior~='datepicker']", function (e) {
+                $(e.target).datetimepicker({
+                    format: "mm/dd/yyyy HH:ii p",
+                    autoclose: true,
+                    todayHighlight: true,
+                    showMeridian: true
+                }).focus();
+            });
+
+            $(document).on("change", "select#tournament_game_id", function (e) {
+                var gameId = $(this).val(),
+                    selectWrapper = $("#game_type_wrapper"),
+                    url;
+
+                $("select", selectWrapper).attr("disabled", true).val("");
+
+                url = "/game_type_options?for=tournament&game_id=" + gameId;
+                selectWrapper.load(url);
+            });
+
             $("a[disabled=disabled]").click(function () {
                 return false;
             });
