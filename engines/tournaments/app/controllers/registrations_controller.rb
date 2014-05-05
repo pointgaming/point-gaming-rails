@@ -11,12 +11,12 @@ class RegistrationsController < EngineController
   end
 
   def update
-    @player.check_in!
+    @tournament.check_in!(@player)
     respond_with(@player, location: @tournament)
   end
 
   def destroy
-    @player.destroy
+    @tournament.kick!(@player)
     respond_with(@player, location: @tournament)
   end
 

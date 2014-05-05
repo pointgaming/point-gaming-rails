@@ -66,6 +66,7 @@
             <table class="table table-bordered table-striped">
               <thead>
                 <tr>
+                  <td>#</td>
                   <td>Player</td>
                   <td></td>
                 </tr>
@@ -74,6 +75,7 @@
               <tbody class="tourney-players sortable">
                 <% @tournament.players.each do |player| %>
                   <tr class="draggable" data-id="<%= player.id %>">
+                    <td><%= count(:seed) %></td>
                     <td><%= player.username %></td>
                     <td>
                       <%= link_to "Kick", nil, class: "remove-player btn btn-danger", data: { tournament_id: @tournament.slug, id: player.id.to_s } %>

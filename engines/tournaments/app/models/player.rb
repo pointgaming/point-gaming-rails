@@ -3,11 +3,7 @@ class Player
 
   default_scope asc(:seed)
 
-  before_save :set_username!
-
-  # Update tournament brackets if there's a new player, 
-  after_save :update_tournament_brackets!, if: :checked_in_at_changed?
-  after_destroy :update_tournament_brackets!
+  before_validation :set_username!
 
   scope :for_user, lambda { |user| where(user_id: user._id) }
   scope :checked_in, where(:checked_in_at.ne => nil)
@@ -21,9 +17,7 @@ class Player
   embedded_in :tournament
   belongs_to :user
 
-  def check_in!
-    update_attribute(:checked_in_at, DateTime.now)
-  end
+  validates_presence_of :user_id, :username
 
   def checked_in?
     checked_in_at.is_a?(DateTime)
@@ -240,9 +234,5 @@ class Player
 
   def set_username!
     self.username = user.username if username.blank?
-  end
-
-  def update_tournament_brackets!
-    self.tournament.try(:generate_brackets!)
   end
 end

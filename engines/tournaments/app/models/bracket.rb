@@ -1,2 +1,0 @@
-class Bracket
-end

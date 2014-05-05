@@ -131,7 +131,7 @@ class Tournament
 
   def checkin_open?
     now = DateTime.now
-    now > checkin_date && now < starts_at
+    now > checkin_date && now < starts_at && players.checked_in.count < player_limit
   end
 
   def checkin_open_for?(user)
@@ -139,11 +139,21 @@ class Tournament
   end
 
   def checked_in?(user)
-    players.checked_in.where(user: user).exists?
+    players.for_user(user).checked_in.exists?
   end
 
   def signed_up?(user)
-    players.where(user: user).exists?
+    players.for_user(user).exists?
+  end
+
+  def check_in!(player)
+    player.update_attributes(checked_in_at: DateTime.now)
+    generate_brackets!
+  end
+
+  def kick!(player)
+    player.destroy
+    generate_brackets!
   end
 
   def to_s
@@ -169,7 +179,7 @@ class Tournament
 
     # Split up players and seeds
     seeds = self.players.checked_in.to_a.clone
-    save and return unless seeds.present?
+    save and return unless seeds.count >= 2
 
     # Add BYEs if we have n players where n is not a power of 2
     seeds << "BYE" while seeds.count & (seeds.count - 1) != 0
@@ -230,7 +240,7 @@ class Tournament
       player.report_scores!(1, 0) if player
     end
 
-    players.each(&:set_current_position!)
+    players.checked_in.each(&:set_current_position!)
   end
 
   def number_of_winners_bracket_rounds

@@ -1,13 +1,17 @@
 <div class="widget">
   <div class="widget-header">
-    <h3>Players (<%= "#{@tournament.players.count}/#{@tournament.player_limit}" %>)</h3>
+    <h3>Players (Checked In: <%= "#{@tournament.players.checked_in.count}/#{@tournament.player_limit}" %>)</h3>
   </div>
   <div class="widget-content">
     <% if @tournament.players.present? %>
       <% @tournament.players.each do |player| %>
         <div class="control-group">
           <div class="controls">
-            <%= link_to player, user_path(player.username) %>
+            <% if player.checked_in? %>
+              <strong><%= link_to player, user_path(player.username) %></strong>
+            <% else %>
+              <%= link_to player, user_path(player.username) %>
+            <% end %>
           </div>
         </div>
       <% end %>
