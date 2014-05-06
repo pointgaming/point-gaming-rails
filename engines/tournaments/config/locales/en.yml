@@ -1,4 +1,7 @@
 en:
+  unauthorized:
+    join:
+      tournament: "You are not allowed to join this tournament."
   tournament:
     form:
       details: |

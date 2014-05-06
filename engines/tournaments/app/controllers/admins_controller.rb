@@ -1,5 +1,5 @@
 class AdminsController < EngineController
-  before_filter :ensure_tournament
+  load_resource :tournament, find_by: :slug
   before_filter :ensure_tournament_owner
 
   def create

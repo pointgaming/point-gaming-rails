@@ -67,7 +67,7 @@ GEM
       columnize (~> 0.3)
       debugger-linecache (~> 1.2)
     callsite (0.0.11)
-    cancan (1.6.10)
+    cancancan (1.7.1)
     capistrano (2.15.5)
       highline
       net-scp (>= 1.0.0)
@@ -399,7 +399,7 @@ DEPENDENCIES
   bootstrap-sass (~> 2.3.1.0)
   bunny (>= 0.9.0.pre6)
   byebug
-  cancan
+  cancancan
   capistrano (~> 2.15.1)
   capistrano-ext
   capybara

@@ -1,8 +1,8 @@
 class SponsorsController < EngineController
-  before_filter :ensure_tournament
+  load_resource :tournament, find_by: :slug
   before_filter :ensure_sponsor, only: [:edit, :update, :destroy]
   before_filter :ensure_params, only: [:create, :update]
-  before_filter :ensure_tournament_editable
+  before_filter :ensure_tournament_editable_by_user
 
   def new
     @sponsor = @tournament.sponsors.build

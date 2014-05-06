@@ -1,7 +1,7 @@
 class TournamentsController < EngineController
-  before_filter :ensure_tournament, except: [:index, :collaborated, :new, :create, :markdown]
-  before_filter :ensure_tournament_prizepool_required, only: [:prize_pool]
-  before_filter :ensure_tournament_editable_by_user, only: [:edit, :update, :destroy]
+  load_resource :tournament, find_by: :slug, except: [:index, :collaborated, :create, :markdown]
+  before_filter :ensure_tournament_editable_by_user, only: [:edit, :update]
+  before_filter :ensure_tournament_owner, only: [:destroy]
   before_filter :ensure_tournament_started, only: [:brackets, :report_scores]
 
   def index
@@ -14,7 +14,6 @@ class TournamentsController < EngineController
   end
 
   def new
-    @tournament = Tournament.new
   end
 
   def edit

@@ -30,7 +30,7 @@ class Ability
     end
 
     # Tournament-specific permissions
-    alias_action :create, :read, :update, :destroy, to: :crud
+    alias_action :create, :update, :destroy, to: :crud
 
     can :join, Tournament do |tournament|
       tournament.activated? && (!(tournament.owner == user || tournament.admins.include?(user.id))) && tournament.signup_open? && !tournament.signed_up?(user) && !tournament.full?
@@ -46,6 +46,10 @@ class Ability
 
     can :be_invited, Tournament do |tournament|
       !user.can?(:administer, tournament)
+    end
+
+    can :manage, Player do |player|
+      user.can?(:crud, player.tournament) || player.user == user
     end
   end
 end
