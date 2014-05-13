@@ -15,26 +15,27 @@ module Api
       end
 
       def add_to_team
-	team_id = params[:team_id]
-	user = User.where(id: params[:id]).first
-	team = Team.where(id: team_id).first
-	user_team = UserTeam.where(user: user).first
-	if user_team.blank? && current_user.as_team_member.can_edit_team?
-	  user_team = UserTeam.create(user: user, team: team, owner: current_user)
-	end
-	team_json = user.team.as_json
-	respond_with(team_json)
+        team_id = params[:team_id]
+        user = User.where(id: params[:id]).first
+        team = Team.where(id: team_id).first
+        user_team = UserTeam.where(user: user).first
+        if user_team.blank? && current_user.as_team_member.can_edit_team?
+          user_team = UserTeam.create(user: user, team: team, owner: current_user)
+        end
+        team_json = user.team.as_json
+
+        respond_with(team_json)
       end
 
       def remove_from_team
         team_id = params[:team_id]
-	user_id = params[:id]
-	if current_user.as_team_member.can_edit_team?
-	  user_team = UserTeam.where(user_id: user_id, team_id: team_id).first
-	  user_team.delete if user_team.present?
-	end
-	user = User.where(id: user_id).first
-	respond_with :api, user.team
+        user_id = params[:id]
+        if current_user.as_team_member.can_edit_team?
+          user_team = UserTeam.where(user_id: user_id, team_id: team_id).first
+          user_team.delete if user_team.present?
+        end
+        user = User.where(id: user_id).first
+        respond_with :api, user.team
       end
     end
   end
