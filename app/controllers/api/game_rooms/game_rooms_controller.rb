@@ -2,8 +2,8 @@ module Api
   module GameRooms
     class GameRoomsController < Api::GameRooms::ContextController
       before_filter :authenticate_user!, only: [:create, :update]
-      before_filter :authenticate_node_api!, except: [:create, :update, :take_over, :can_take_over, :can_hold, :team_bot, :settings, :show]
-      before_filter :ensure_user, only: [:join, :leave]
+      before_filter :authenticate_node_api!, except: [:create, :update, :take_over, :can_take_over, :can_hold, :team_bot, :settings, :show, :get_member_info, :mute_member, :unmute_member]
+      before_filter :ensure_user, only: [:join, :leave, :get_member_info, :mute_member, :unmute_member]
       before_filter :ensure_not_banned, only: [:join, :update]
       before_filter :ensure_params, only: [:create, :update]
       before_filter :check_owner_params, only: [:update]
@@ -94,6 +94,25 @@ module Api
       def settings
 	answer = { can_hold: current_user.can_hold?(@game_room), is_team_bot_placed: !@game_room.is_free?, is_advertising: @game_room.is_advertising }
 	respond_with answer
+      end
+
+      def get_member_info
+        @user.team = @user.team_for(@game_room)
+	@user.is_muted = UserMute.where(user: @user, game_room: @game_room).first.present?
+	respond_with(@user)
+      end
+
+      def mute_member
+	UserMute.create(user: @user, game_room: @game_room, owner: current_user) unless @user.is_muted_in?(@game_room)
+	@user.is_muted = @user.is_muted_in?(@game_room)
+	respond_with(@user)
+      end
+
+      def unmute_member
+	user_mute = UserMute.where(user: @user, game_room: @game_room).first
+	user_mute.delete if user_mute
+	@user.is_muted = @user.is_muted_in?(@game_room)
+	respond_with(@user)
       end
 
     protected

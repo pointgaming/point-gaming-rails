@@ -50,6 +50,8 @@ class User
   field :current_sign_in_ip, :type => String
   field :last_sign_in_ip,    :type => String
 
+  field :is_muted, :type => Boolean #is not saved into the DB, is used only to get the info about member for game room, is initialized localy to respond
+
   ## Confirmable
   # field :confirmation_token,   :type => String
   # field :confirmed_at,         :type => Time
@@ -299,6 +301,24 @@ class User
       end
     end
     return team
+  end
+
+  def team_for game_room
+    user_team = UserTeam.where(user: self, game_room: game_room).first
+    team = self.team
+    if user_team && !user_team.expired?
+      team = user_team.team
+      team.temporarily = true
+    end
+    return team
+  end
+
+  def mute_in game_room
+    UserMute.create(user: self, game_room: game_room)
+  end
+
+  def is_muted_in? game_room
+    UserMute.where(user: self, game_room: game_room).first.present?
   end
 
   settings analysis: {
