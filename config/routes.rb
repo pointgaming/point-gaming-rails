@@ -122,6 +122,9 @@ PointGamingRails::Application.routes.draw do
 	  get 'can_hold'
 	  get 'team_bot'
 	  get 'settings'
+	  get 'get_member_info'
+	  get 'mute_member'
+	  get 'unmute_member'
         end
         resources :bets, except: [:edit]
       end

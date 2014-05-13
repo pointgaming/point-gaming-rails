@@ -16,11 +16,13 @@ module Api
 
       def add_to_team
 	team_id = params[:team_id]
+	game_room_id = params[:game_room_id]
 	user = User.where(id: params[:id]).first
 	team = Team.where(id: team_id).first
-	user_team = UserTeam.where(user: user).first
+	game_room = GameRooms.where(id: game_room_id).first
+	user_team = UserTeam.where(user: user, game_room: game_room).first
 	if user_team.blank? && current_user.as_team_member.can_edit_team?
-	  user_team = UserTeam.create(user: user, team: team, owner: current_user)
+	  user_team = UserTeam.create(user: user, team: team, owner: current_user, game_room: game_room)
 	end
 	team_json = user.team.as_json
 	respond_with(team_json)
