@@ -10,8 +10,13 @@ class RegistrationsController < EngineController
 
   def update
     authorize! :manage, @player
-    @tournament.check_in!(@player)
-    respond_with(@player, location: @tournament)
+    if can?(:crud, @tournament)
+      @tournament.check_in!(@player)
+      redirect_to edit_tournament_path(@tournament, anchor: "players")
+    else
+      @tournament.check_in!(@player) if @tournament.checkin_open?
+      respond_with(@player, location: @tournament)
+    end
   end
 
   def destroy

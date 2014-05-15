@@ -45,24 +45,23 @@ class TournamentsController < EngineController
 
   def destroy
     @tournament.destroy
-    flash.notice = "Tournament successfully destroyed."
-    redirect_to :back
+    redirect_to :back, notice: "Tournament successfully destroyed."
   end
 
   def brackets
     respond_to do |format|
       format.html
-      format.json do
-        brackets = @tournament.brackets
-        brackets["teams"].map! { |p| p.map { |t| @tournament.players.unscoped.find(t).username } }
-        render json: brackets
-      end
+      format.json { render json: @tournament.friendly_brackets }
     end
   end
 
   def report_scores
-    player = @tournament.player_for_user(current_user)
-    player.report_scores!(params[:mine], params[:his])
+    if @tournament.admin?(current_user)
+      
+    else
+      player = @tournament.player_for_user(current_user)
+      player.report_scores!(params[:mine], params[:his])
+    end
 
     redirect_to :back, notice: "Match scores submitted!"
   end
@@ -72,11 +71,5 @@ class TournamentsController < EngineController
     @tournament.details = params[:details]
 
     render partial: "/tournaments/widgets/rules"
-  end
-
-  private
-
-  def default_update_action
-    params[:tournament] && params[:tournament][:prizepool] ? :prize_pool : :edit
   end
 end

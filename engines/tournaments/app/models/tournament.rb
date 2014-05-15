@@ -106,6 +106,15 @@ class Tournament
     end
   end
 
+  def friendly_brackets
+    {
+      "results" => brackets["results"],
+      "teams"   => brackets["teams"].map { |p|
+        p.map { |t| players.unscoped.find(t).username }
+      }
+    }
+  end
+
   def signup_open?
     starts_at >= DateTime.now
   end
@@ -144,6 +153,10 @@ class Tournament
 
   def signed_up?(user)
     players.for_user(user).exists?
+  end
+
+  def admin?(user)
+    owner == user || admins.include?(user.id)
   end
 
   def check_in!(player)

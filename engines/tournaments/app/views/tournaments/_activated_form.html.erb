@@ -49,7 +49,7 @@
 
     <div class="tab-pane" id="control">
       <div class="row-fluid">
-        wut
+        <a href="#" class="btn btn-danger">Something Cool</a>
       </div>
     </div>
 
@@ -79,6 +79,10 @@
                     <td><%= player.username %></td>
                     <td>
                       <%= link_to "Kick", nil, class: "remove-player btn btn-danger", data: { tournament_id: @tournament.slug, id: player.id.to_s } %>
+
+                      <% unless player.checked_in? %>
+                        <%= link_to "Check In", tournament_registration_path(@tournament, player), class: "btn", method: "PUT" %>
+                      <% end %>
                     </td>
                   </tr>
                 <% end %>
