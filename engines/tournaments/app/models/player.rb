@@ -2,11 +2,13 @@ class Player
   include Mongoid::Document
 
   default_scope asc(:seed)
+  default_scope where(:username.ne => "BYE")
 
   before_validation :set_username!
 
   scope :for_user, lambda { |user| where(user_id: user._id) }
   scope :checked_in, where(:checked_in_at.ne => nil)
+  scope :bye, where(username: "BYE")
 
   field :checked_in_at, type: DateTime
   field :username, type: String
@@ -17,7 +19,8 @@ class Player
   embedded_in :tournament
   belongs_to :user
 
-  validates_presence_of :user_id, :username
+  validates_presence_of :username
+  validates_presence_of :user_id, if: lambda { |p| p.username != "BYE" }
 
   def checked_in?
     checked_in_at.is_a?(DateTime)
@@ -51,7 +54,12 @@ class Player
       tournament.save!
 
       opponent = current_opponent()
-      opponent.set_current_position! unless opponent == "TBD"
+
+      unless opponent == "TBD"
+        opponent.set_current_position!
+        o_o = opponent.current_opponent
+        opponent.report_scores!(1, 0) if o_o != "TBD" && o_o.username == "BYE"
+      end
 
       set_current_position!
 
@@ -75,7 +83,7 @@ class Player
       current_position[3].zero?? 1 : 0
     ]
 
-    tournament.players.find_by(current_position: opponent_position)
+    tournament.players.unscoped.find_by(current_position: opponent_position)
   rescue
     "TBD"
   end

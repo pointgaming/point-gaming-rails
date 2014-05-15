@@ -54,7 +54,7 @@ class TournamentsController < EngineController
       format.html
       format.json do
         brackets = @tournament.brackets
-        brackets["teams"].map! { |p| p.map { |t| t.blank? || t == "BYE" ? "BYE" : @tournament.players.find(t).username } }
+        brackets["teams"].map! { |p| p.map { |t| @tournament.players.unscoped.find(t).username } }
         render json: brackets
       end
     end

@@ -34,7 +34,7 @@ class Tournament
   field :activated, type: Boolean, default: false
 
   # The brackets format here needs to match the format used in the jQuery
-  # brackets library. Here"s an example:
+  # brackets library. Here's an example:
   #
   # {
   #   teams: [
@@ -177,15 +177,16 @@ class Tournament
   def generate_brackets!
     self.brackets = { "teams" => [], "results" => [] }
 
-    # Split up players and seeds
-    seeds = self.players.checked_in.to_a.clone
-    save and return unless seeds.count >= 2
+    save and return unless self.players.checked_in.count >= 2
 
     # Add BYEs if we have n players where n is not a power of 2
-    seeds << "BYE" while seeds.count & (seeds.count - 1) != 0
+    self.players.unscoped.where(username: "BYE").destroy
+    while self.players.unscoped.checked_in.count & (self.players.unscoped.checked_in.count - 1) != 0
+      self.players.create(username: "BYE", seed: 9999, checked_in_at: Time.now)
+    end
 
-    # Perform the seeding
-    bracket_list = seeds.clone
+    # Perform the seeding.
+    bracket_list = self.players.unscoped.checked_in.to_a.clone
     slice = 1
 
     while slice < bracket_list.length / 2
@@ -201,7 +202,7 @@ class Tournament
     end
 
     bracket_list.each_slice(2).to_a.each do |pair|
-      self.brackets["teams"] << [(pair[0].id rescue "BYE"), (pair[1].id rescue "BYE")]
+      self.brackets["teams"] << [pair[0].id, pair[1].id]
     end
 
     # Go through and set up the first round for the winners, losers, finals.
@@ -227,20 +228,17 @@ class Tournament
     # Throw an exception if anything goes wrong here.
     save!
 
+    players.unscoped.checked_in.each(&:set_current_position!)
+
     # If there are any BYEs, have the other player automatically report a win.
-    self.brackets["teams"].each do |pair|
-      player = nil
-
-      if pair[0] == "BYE" && pair[1] != "BYE"
-        player = self.players.find(pair[1])
-      elsif pair[1] == "BYE" && pair[0] != "BYE"
-        player = self.players.find(pair[0])
+    3.times do
+      players.unscoped.bye.where(:current_position.ne => nil).each do |bye|
+        opponent = bye.current_opponent
+        opponent.report_scores!(1, 0) if opponent != "TBD"
       end
-
-      player.report_scores!(1, 0) if player
     end
 
-    players.checked_in.each(&:set_current_position!)
+    true
   end
 
   def number_of_winners_bracket_rounds
@@ -252,7 +250,7 @@ class Tournament
   end
 
   def prizepool_submitted
-    if !prizepool.present? || prizepool.values.all? {|item| !item.present?}
+    if !prizepool.present? || prizepool.values.all? { |item| !item.present? }
       self.errors[:prizepool] << "is required"
       halt "Prizepool is required"
     end
