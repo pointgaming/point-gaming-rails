@@ -16,12 +16,15 @@
 //= require_tree ./controllers/
 //= require_tree ./views/
 //= require jquery.remotipart
+//= require twitter/bootstrap/bootstrap-alert
 //= require twitter/bootstrap/bootstrap-tooltip
 //= require twitter/bootstrap/bootstrap-popover
 //= require twitter/bootstrap/bootstrap-tab
 //= require tournaments/application
 
 $(function(){
-  new PointGaming.ToolbarController();
-  new PointGaming.DesktopController();
+    new PointGaming.ToolbarController();
+    new PointGaming.DesktopController();
+
+    $(".alert").alert();
 });
