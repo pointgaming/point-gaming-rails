@@ -321,6 +321,13 @@ class User
     UserMute.where(user: self, game_room: game_room).first.present?
   end
 
+  def is_game_room_member?
+    GameRoom.all.each do |game_room|
+      return true if game_room.members.include?(self)
+    end
+    return false
+  end
+
   settings analysis: {
       analyzer: {
         partial_match: {

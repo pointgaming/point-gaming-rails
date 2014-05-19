@@ -76,7 +76,11 @@ class GameRoom
 
   def add_user_to_members!(user)
     if _id != user._id && !members.include?(user)
-      self.members << user
+      if user.is_game_room_member?#added the restriction to avoid many game rooms microphone issue
+	self.errors[:base] << "User is already another game room member!"
+      else
+        self.members << user
+      end
       update_member_count!
     end
   end
@@ -110,7 +114,6 @@ class GameRoom
     new_game_room = GameRoom.new game: self.game, position: self.position, owner: user
     self.shift_in_rate_queue
     new_game_room.save
-    #user.update_attributes take_over_time: Time.now does not work, need to change the code below
     user.take_over_time = Time.now
     user.save
   end
